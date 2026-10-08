@@ -1,0 +1,23 @@
+<!doctype html>
+<html lang="sv">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, user-scalable=no, viewport-fit=cover">
+  <meta name="theme-color" content="#0b0e1c">
+  <title>Mobilfabriken</title>
+  <meta name="description" content="Starta ett mobilbolag i ett garage 2007, designa telefoner, lansera dem och bygg ett imperium.">
+  <link rel="stylesheet" href="css/style.css">
+  <!-- three.js för telefonen i riktig 3D (designern, showen, telefonerna) – resten är pixel -->
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js" defer></script>
+</head>
+<body>
+  <div id="spel">
+    <canvas id="c" width="384" height="216"></canvas>
+    <canvas id="gl"></canvas>
+    <input id="falt" type="text" maxlength="22" autocomplete="off" spellcheck="false">
+  </div>
+  <div id="vand" class="dold"><div><b>Vänd på mobilen!</b><p>Mobilfabriken spelas liggande.</p><button id="vand-anda">Spela stående ändå</button></div></div>
+  <noscript>Mobilfabriken behöver JavaScript.</noscript>
+  <script type="module" src="js/main.js"></script>
+</body>
+</html>

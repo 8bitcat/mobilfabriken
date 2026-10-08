@@ -1,0 +1,35 @@
+<!doctype html>
+<meta charset="utf-8">
+<title>enheter-prov</title>
+<style>
+  html, body { margin: 0; background: #0b0e1c; color: #f1ebe0; font: 14px system-ui; }
+  body { display: grid; grid-template-columns: repeat(3, 380px); gap: 8px; padding: 8px; }
+  canvas { width: 380px; height: 300px; display: block; background: #10142a; }
+  div { position: relative; } b { position: absolute; left: 8px; top: 6px; font: 12px monospace; color: #ffd23f; }
+</style>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js"></script>
+<script type="module">
+  // ?vinkel=0.6&pitch=0.2&yta=klassisk&kropp=ebebee
+  import { skapaTelefonGL } from '../js/telefon/telefon-gl.js';
+  const q = new URLSearchParams(location.search);
+  const yaw = +(q.get('vinkel') || 0.6), pitch = +(q.get('pitch') || 0.2), yta = q.get('yta') || 'klassisk', kropp = '#' + (q.get('kropp') || 'ebebee');
+  const oppning = q.has('oppning') ? +q.get('oppning') : undefined;
+  const BAS = { radie: 0.1, ram: 0.06, haka: 0.14, kameraStorlek: 0.2, kameror: 1, selfie: true, glas: '#1d2a44', kamera: '#3a6bc2', marke: 'M', yta, kropp };
+  const ENH = [
+    ['telefon', { bredd: 0.69, hojd: 1.09, djup: 0.11 }],
+    ['platta', { bredd: 1.5, hojd: 2.0, djup: 0.08, ram: 0.09, haka: 0.16, radie: 0.12 }],
+    ['laptop', { bredd: 2.4, hojd: 1.6, djup: 0.15 }],
+    ['klocka', { bredd: 0.42, hojd: 0.5, djup: 0.11, radie: 0.08 }],
+    ['horlurar', { bredd: 0.5, hojd: 0.62, djup: 0.22 }],
+    ['vikbar', { bredd: 0.74, hojd: 1.62, djup: 0.09, ram: 0.02, haka: 0.02, radie: 0.08, kameror: 3, kameraStorlek: 0.28 }],
+  ];
+  window.__s = [];
+  for (const [id, f] of ENH) {
+    const d = document.createElement('div'); const c = document.createElement('canvas'); const b = document.createElement('b'); b.textContent = id;
+    d.append(c, b); document.body.append(d);
+    const s = skapaTelefonGL(c, { tel: { ...BAS, ...f, enhet: id }, vy: 'manuell', yaw, pitch, kompakt: true });
+    s.tel = { ...BAS, ...f, enhet: id }; s.vy = 'manuell'; s.yaw = yaw; s.pitch = pitch; s.oppning = oppning; s.rita(); s.rita();
+    window.__s.push(s);
+  }
+  window.__done = true;
+</script>

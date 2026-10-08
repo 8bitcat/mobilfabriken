@@ -1,0 +1,5 @@
+node_modules/
+tools/out/
+# inventeringen av Roblox-förlagan citerar originalets texter – ligger kvar lokalt, publiceras inte
+docs/FORLAGAN.md
+*.log
