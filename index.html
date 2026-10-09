@@ -6,6 +6,14 @@
   <meta name="theme-color" content="#0b0e1c">
   <title>Mobilfabriken</title>
   <meta name="description" content="Starta ett mobilbolag i ett garage 2007, designa telefoner, lansera dem och bygg ett imperium.">
+  <!-- hemskärmsapp: helskärm utan webbläsarens fält (Android via manifestet, iPhone via apple-taggarna) -->
+  <link rel="manifest" href="manifest.webmanifest">
+  <meta name="mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="apple-mobile-web-app-title" content="Mobilfabriken">
+  <link rel="apple-touch-icon" href="icons/ikon-180.png">
+  <link rel="icon" type="image/png" href="icons/ikon-32.png">
   <link rel="stylesheet" href="css/style.css">
   <!-- three.js för telefonen i riktig 3D (designern, showen, telefonerna) – resten är pixel -->
   <script src="https://cdnjs.cloudflare.com/ajax/libs/three.js/0.160.0/three.min.js" defer></script>
@@ -16,6 +24,7 @@
     <canvas id="gl"></canvas>
     <input id="falt" type="text" maxlength="22" autocomplete="off" spellcheck="false">
   </div>
+  <div id="hemskarm" class="dold" role="note">Större spel utan Safaris fält: tryck på <b>Dela</b> och välj <b>Lägg till på hemskärmen</b>.</div>
   <div id="vand" class="dold"><div><b>Vänd på mobilen!</b><p>Mobilfabriken spelas liggande.</p><button id="vand-anda">Spela stående ändå</button></div></div>
   <noscript>Mobilfabriken behöver JavaScript.</noscript>
   <script type="module" src="js/main.js"></script>

@@ -25,9 +25,23 @@ export function hit(x, y, w, h, o = {}) { U.hits.push({ x, y, w, h, ...o }); if 
 export const markera = (namn, x, y, w, h) => { U.mark[namn] = { x, y, w, h }; };
 export const inne = (x, y, w, h) => U.mus.x >= x && U.mus.x < x + w && U.mus.y >= y && U.mus.y < y + h;
 const traff = (lista, x, y) => { for (let i = lista.length - 1; i >= 0; i--) { const h = lista[i]; if (x >= h.x && x < h.x + h.w && y >= h.y && y < h.y + h.h && (h.klick || h.drag || h.block)) return h; } return null; };
-export function pekareNer(x, y) {
+// närmaste knapp inom tol spelpixlar. Ligger trycket på en spärryta (en ruta ovanpå spelet) räknas bara
+// knapparna som ritats efter den, alltså de som ligger ovanpå.
+const nara = (lista, x, y, tol, fran) => {
+  let bast = null, bd = tol + 1;
+  for (let i = lista.length - 1; i > fran; i--) {
+    const h = lista[i]; if (!h.klick || h.av) continue;
+    const d = Math.max(h.x - x, x - (h.x + h.w - 1), h.y - y, y - (h.y + h.h - 1), 0);
+    if (d <= tol && d < bd) { bd = d; bast = h; }
+  }
+  return bast;
+};
+// tol > 0 för fingrar: ett tryck som missar alla knappar tar den närmaste inom tol spelpixlar
+export function pekareNer(x, y, tol = 0) {
   U.mus = { x, y, ned: true }; U.klickat = true;
-  const h = traff(U.hits, x, y); if (!h) return false;
+  let h = traff(U.hits, x, y);
+  if (tol > 0 && (!h || (!h.klick && !h.drag))) { const n = nara(U.hits, x, y, tol, h ? U.hits.lastIndexOf(h) : -1); if (n) { h = n; x = Math.max(n.x, Math.min(n.x + n.w - 1, x)); y = Math.max(n.y, Math.min(n.y + n.h - 1, y)); U.mus.x = x; U.mus.y = y; } }
+  if (!h) return false;
   if (h.drag) { U.drag = h; h.drag(x, y, 'start'); }
   else if (h.klick && !h.av) { h.klick(x, y); }
   return true;

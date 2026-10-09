@@ -1,5 +1,13 @@
 # Nyheter i Mobilfabriken
 
+## 0.1.1 – Hela mobilskärmen (2026-10-09)
+
+- På mobil och surfplatta fyller spelet nu hela skärmens höjd, så knapparna blir större.
+- På Android och iPad går spelet till helskärm vid första trycket.
+- På iPhone kan spelet läggas på hemskärmen och startar då i helskärm utan Safaris fält, med egen ikon.
+  Ett tips om det visas de första gångerna i Safari.
+- Ett tryck med fingret strax bredvid en knapp räknas som en träff.
+
 ## 0.1.0 – Första spelbara versionen (2026-10-08)
 
 - Starta ett bolag i garaget 2007: döp det, få två miljoner kronor och en guide (Mio) som visar vägen i 13 steg.

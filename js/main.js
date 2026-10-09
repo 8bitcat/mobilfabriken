@@ -52,21 +52,54 @@ falt.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === 'Es
 falt.addEventListener('blur', () => setTimeout(() => { if (document.activeElement !== falt && falt.style.display !== 'none') A.dolj(); }, 50));
 
 // ---------- skalning ----------
+const pek = () => matchMedia('(pointer: coarse)').matches;   // mobil eller surfplatta
 function fit() {
   dpr = window.devicePixelRatio || 1;
   const w = window.innerWidth, h = window.innerHeight;
   const s = Math.min(w * dpr / UI.W, h * dpr / UI.H);
-  // hela steg ger knivskarpa pixlar; mellan 1,5 och 2 hellre lite ojämna pixlar än en pytteliten bild
-  skala = s >= 2 ? Math.floor(s) : s >= 1.5 ? s : Math.max(1, Math.floor(s)) || s;
+  // Dator: hela steg ger knivskarpa pixlar; mellan 1,5 och 2 hellre lite ojämna pixlar än en pytteliten bild.
+  // Pekskärm: fyll skärmen helt. Avrundat nedåt tappade en iPhone i Safari en sjundedel (4,65× → 4×), och
+  // med 2–3 skärmpixlar per CSS-pixel syns de ojämna pixlarna inte.
+  skala = pek() ? s : s >= 2 ? Math.floor(s) : s >= 1.5 ? s : Math.max(1, Math.floor(s)) || s;
   cv.width = Math.round(UI.W * skala); cv.height = Math.round(UI.H * skala);
   cv.style.width = cv.width / dpr + 'px'; cv.style.height = cv.height / dpr + 'px';
   ctx.imageSmoothingEnabled = false;
-  const stående = matchMedia('(pointer: coarse)').matches && h > w && !A.staendeOk;
+  const stående = pek() && h > w && !A.staendeOk;
   $('#vand').classList.toggle('dold', !stående);
 }
 addEventListener('resize', fit);
+addEventListener('orientationchange', () => setTimeout(fit, 250));
+window.visualViewport?.addEventListener('resize', fit);
 $('#vand-anda').addEventListener('click', () => { A.staendeOk = true; fit(); });
 fit();
+
+// Helskärm vid första trycket på pekskärmar som kan det (Android, iPad). iPhone kan inte – där ger
+// "Lägg till på hemskärmen" helskärm (manifest.webmanifest + apple-mobile-web-app-capable i index.html).
+const hemskarmsApp = matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
+let helskarmProvad = false;
+function helskarm() {
+  if (helskarmProvad || A.test || !pek() || hemskarmsApp || document.fullscreenElement || document.webkitFullscreenElement) return;
+  const el = document.documentElement, f = el.requestFullscreen || el.webkitRequestFullscreen;
+  if (!f) return;
+  helskarmProvad = true;   // bara en gång – går man ur helskärm själv får man vara kvar utanför
+  try {
+    const p = f.call(el, { navigationUI: 'hide' });
+    if (p && p.then) p.then(() => screen.orientation?.lock?.('landscape')?.catch(() => {})).catch(() => {});
+  } catch { /* webbläsaren sa nej */ }
+}
+addEventListener('pointerup', helskarm, true);   // pointerup räknas som användarhandling även för fingrar
+document.addEventListener('fullscreenchange', () => setTimeout(fit, 50));
+
+// Tips på iPhone i Safari: spelet blir större utan Safaris fält. Visas högst tre gånger, försvinner av sig själv.
+(() => {
+  const ios = /iPhone|iPod/.test(navigator.userAgent), tips = $('#hemskarm');
+  if (!tips || !ios || hemskarmsApp || A.test) return;
+  let n = 0; try { n = +(localStorage.getItem('mobilfabriken.hemskarmTips') || 0); } catch { /* ingen lagring */ }
+  if (n >= 3) return;
+  try { localStorage.setItem('mobilfabriken.hemskarmTips', String(n + 1)); } catch { /* ingen lagring */ }
+  const gom = () => tips.classList.add('dold');
+  tips.classList.remove('dold'); tips.addEventListener('click', gom); setTimeout(gom, 12000);
+})();
 
 // ---------- pekare ----------
 const lokal = (e) => { const r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * UI.W), Math.floor((e.clientY - r.top) / r.height * UI.H)]; };
@@ -74,7 +107,8 @@ cv.addEventListener('pointerdown', (e) => {
   Ljud.lasUpp(); if (A._falt) A.dolj();
   cv.setPointerCapture(e.pointerId);
   const [x, y] = lokal(e);
-  if (UI.pekareNer(x, y)) Ljud.spela('klick');
+  // fingret är grövre än musen: ett tryck strax bredvid en knapp räknas som en träff
+  if (UI.pekareNer(x, y, e.pointerType === 'mouse' ? 0 : 3)) Ljud.spela('klick');
   else A.scen?.ner?.(x, y);
   e.preventDefault();
 });
