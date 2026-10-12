@@ -2,22 +2,33 @@
 import { U, F, W, rect, ram, text, textB, knapp, panel, kort, ikon, hit, tw, kapa, matare, stycke, lista, stjarnor, ljusa, mixa, BIG } from '../core/ui.js';
 import { hud, flikrad } from './ram.js';
 import { REGIONER, KONTOR, kontorAv } from '../data/varld.js';
-import { MAL, nastaMal, marknadsandel, UTMARKELSER } from '../sim/mal.js';
+import { MAL, nastaMal, marknadsandel, UTMARKELSER, senasteVeckor } from '../sim/mal.js';
 import { tackning } from '../sim/marknad.js';
 import { kravUppfyllt, flytta } from '../sim/kontor.js';
-import { betala, nyhet, signal } from '../sim/spel.js';
+import { betala, nyhet, signal, SALJ_AR } from '../sim/spel.js';
+import { lonPerManad } from '../sim/personal.js';
 import { modellVinst } from '../sim/projekt.js';
-import { kr, dec, datumText, arAv, tal } from '../sim/bas.js';
+import { kr, dec, datumText, arAv, dagForAr, tal } from '../sim/bas.js';
 import * as Spara from '../core/spara.js';
 import { rensaRum } from '../art/kontor-art.js';
 
 const FLIKAR = [['ekonomi', 'EKONOMI'], ['mal', 'MÅL'], ['marknader', 'MARKNADER'], ['kontor', 'KONTOR'], ['salj', 'SÄLJ BOLAGET']];
 const KAT = { forsaljning: 'FÖRSÄLJNING', mal: 'MÅLBELÖNINGAR', mobler: 'MÖBLER', loner: 'LÖNER', utveckling: 'UTVECKLING', tillverkning: 'TILLVERKNING', fabrik: 'FABRIKER', reklam: 'REKLAM', kontor: 'KONTOR', personal: 'PERSONAL', marknader: 'MARKNADER', ranta: 'RÄNTA', gavor: 'GÅVOR', lan: 'LÅN' };
 
+// SPELDESIGN §2.12: (kassa − lån + 10 × telefonernas vinst de senaste 52 kalenderveckorna) × rykte.
+// En nedlagd telefon räknas bara för de veckor av året då den fortfarande såldes.
 export const bolagsVarde = (G) => {
-  const vinst = G.produkter.reduce((s, p) => s + Math.max(0, p.veckor.slice(-52).reduce((a, b) => a + b, 0) * (p.pris - p.styck)), 0);
+  const vinst = G.produkter.reduce((s, p) => s + Math.max(0, senasteVeckor(G, p, 52).reduce((a, b) => a + b, 0) * (p.pris - p.styck)), 0);
   return Math.max(0, Math.round((G.bolag.kassa - G.lan + 10 * vinst) * G.bolag.rykte));
 };
+// Bolaget går att sälja vid Slutgalan 1 januari 2027 (§2.12) – inte tidigare, annars går arvet att samla
+// genom att starta och sälja nya bolag direkt.
+export { SALJ_AR };   // (sim/spel.js – nyårsrapporten 2027 säger att säljknappen är upplåst)
+export const kanSaljas = (G) => arAv(G.dag) >= SALJ_AR;
+// BETALA AV: så mycket stannar kvar i kassan (tre månadslöner, minst 100 000) så att nästa lönedag
+// inte tömmer kassan och ger ett nytt nödlån direkt
+export const lanBuffert = (G) => Math.max(100_000, 3 * lonPerManad(G));
+export const kanBetalaAv = (G) => Math.max(0, Math.min(G.lan, Math.floor(G.bolag.kassa - lanBuffert(G))));
 
 export function bolaget(A, o = {}) {
   const G = A.G;
@@ -55,7 +66,16 @@ export function bolaget(A, o = {}) {
     text('RYKTE', 8, 148, F.dim); textB(dec(G.bolag.rykte, 2), 8, 155, F.guld);
     text('BÄSTA BETYG', 120, 148, F.dim); textB(dec(G.bolag.bastaBetyg, 1), 120, 155, F.guld);
     text('LÅN', 8, 168, F.dim); textB(kr(G.lan), 8, 175, G.lan ? F.rod2 : F.dim);
-    if (G.lan) knapp(80, 172, 100, 10, 'BETALA AV ' + kr(Math.min(G.lan, Math.max(0, G.bolag.kassa)), true), { stil: 'rod', av: G.bolag.kassa <= 0, klick: () => { const b = Math.min(G.lan, G.bolag.kassa); betala(G, b, 'lan'); G.lan -= b; } });
+    if (G.lan) {
+      // återbetalningen är ingen kostnad (lånet var ingen intäkt) – bara räntan räknas i årets resultat
+      const b = kanBetalaAv(G);
+      knapp(80, 172, 100, 10, b > 0 ? 'BETALA AV ' + kr(b, true) : 'BETALA AV', { stil: 'rod', av: b <= 0, namn: 'bolag-betala', klick: () => {
+        const n = kanBetalaAv(G); if (n <= 0) return;
+        G.bolag.kassa -= n; G.lan -= n; A.ljud('mynt');
+        nyhet(G, 'DU', `${G.bolag.namn} BETALADE TILLBAKA ${kr(n)} TILL BANKEN.${G.lan ? ` KVAR ATT BETALA: ${kr(G.lan)}.` : ' LÅNET ÄR BETALT!'}`);
+      } });
+      text(`${kr(lanBuffert(G), true)} STANNAR I KASSAN TILL LÖNERNA`, 8, 185, F.dim2);
+    }
     // årets resultat per kategori
     text(`ÅR ${a} HITTILLS`, 236, 44, F.text);
     let y = 53;
@@ -115,16 +135,26 @@ export function bolaget(A, o = {}) {
     });
   }
   function salj() {
-    const varde = bolagsVarde(G), arv = Spara.arv() || { saldaBolag: 0, ytor: [], gamlaBolag: [] };
+    const varde = bolagsVarde(G), arv = Spara.arv() || { saldaBolag: 0, ytor: [], gamlaBolag: [] }, kan = kanSaljas(G);
     textB('SÄLJ BOLAGET', 8, 46, F.guld);
-    stycke('NÄR DU SÄLJER FÅR DU ETT ARV TILL NÄSTA BOLAG: +10 % STARTKASSA OCH +10 % FORSKNING PER SÅLT BOLAG (MAX 5), OCH DITT GAMLA BOLAG BLIR EN RIVAL. SPELET BÖRJAR OM I GARAGET 2007.', 8, 58, 360, F.dim);
-    text('BOLAGETS VÄRDE', 8, 86, F.dim); textB(kr(varde), 8, 94, F.gron2, { k: 2 });
+    stycke('VID SLUTGALAN 1 JANUARI 2027 KAN DU SÄLJA BOLAGET. DÅ FÅR NÄSTA BOLAG ETT ARV: +10 % STARTKASSA OCH +10 % FORSKNING PER SÅLT BOLAG (MAX 5) OCH DINA LEGENDARISKA YTOR, OCH DITT GAMLA BOLAG BLIR EN RIVAL. SPELET BÖRJAR OM I GARAGET 2007.', 8, 58, 360, F.dim);
+    text(kan ? 'BOLAGETS VÄRDE' : 'BOLAGETS VÄRDE IDAG', 8, 86, F.dim); textB(kr(varde), 8, 94, F.gron2, { k: 2 });
     text('(KASSA - LÅN + 10 × ÅRSVINSTEN PÅ TELEFONERNA) × RYKTE', 8, 112, F.dim2);
     text(`TIDIGARE SÅLDA BOLAG: ${arv.saldaBolag}`, 8, 124, F.text);
-    knapp(8, 140, 160, 16, bekr ? 'ÄR DU SÄKER? TRYCK IGEN' : 'SÄLJ BOLAGET', { stil: 'rod', F: BIG, klick: () => {
+    if (!kan) {
+      knapp(8, 140, 160, 16, 'KAN SÄLJAS 1 JAN 2027', { stil: 'rod', F: BIG, av: true, namn: 'bolag-salj' });
+      const dagar = dagForAr(SALJ_AR) - G.dag, ar = Math.floor(dagar / 365);
+      text(ar >= 1 ? `${ar} ÅR KVAR TILL SLUTGALAN` : `${dagar} DAGAR KVAR TILL SLUTGALAN`, 176, 146, F.dim);
+      return;
+    }
+    knapp(8, 140, 160, 16, bekr ? 'ÄR DU SÄKER? TRYCK IGEN' : 'SÄLJ BOLAGET', { stil: 'rod', F: BIG, namn: 'bolag-salj', klick: () => {
       if (!bekr) { bekr = true; return; }
+      if (!kanSaljas(G) || G.salt) return;
       const nytt = { saldaBolag: Math.min(5, arv.saldaBolag + 1), ytor: [...new Set([...(arv.ytor || []), ...G.legendariska])], gamlaBolag: [...(arv.gamlaBolag || []), { namn: G.bolag.namn, initial: G.bolag.initial, betyg: G.bolag.bastaBetyg, varde }].slice(-5) };
-      Spara.sparaArv(nytt); G.salt = { dag: G.dag, varde }; A.spara(); A.G = null; A.go('start');
+      // det sålda bolaget raderas: arvet har redan namn, betyg och värde, och sparningen får aldrig öppnas igen
+      Spara.sparaArv(nytt); G.salt = { dag: G.dag, varde }; Spara.radera(G.id); A.G = null; A.ljud('mal');
+      A.go('start', { salt: { namn: G.bolag.namn, varde } });
     } });
+    if (bekr) text('BOLAGET FÖRSVINNER UR DINA BOLAG', 176, 146, F.rod2);
   }
 }

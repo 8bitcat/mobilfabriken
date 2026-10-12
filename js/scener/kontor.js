@@ -4,7 +4,7 @@ import { U, F, W, rect, ram, text, textB, knapp, panel, ikon, hit, tw, kapa, mat
 import { ritaKontor } from '../art/kontor-vy.js';
 import { hud, flikrad } from './ram.js';
 import { kr, dec, datumText } from '../sim/bas.js';
-import { byggkostnadPerDag, kopPrick, lagaBugg, avbryt, PRICK_FP } from '../sim/projekt.js';
+import { byggkostnadPerDag, kopPrick, lagaBugg, avbryt, direktbygg, lanseringsKalkyl, PRICK_FP } from '../sim/projekt.js';
 import { nastaMal } from '../sim/mal.js';
 import { NOD } from '../data/noder.js';
 import { onskemal } from '../sim/personal.js';
@@ -67,6 +67,13 @@ export function kontor(A) {
   };
 }
 
+// lanseringskalkylen (utan reklam) räknas om bara när dagen, kassan eller projektet ändras – inte varje bildruta
+let kalkyl = { nyckel: '', fattig: false };
+function forLitePengar(G, pr) {
+  const nyckel = pr.id + '|' + G.dag + '|' + Math.round(G.bolag.kassa) + '|' + pr.kvalitet + '|' + pr.buggar;
+  if (kalkyl.nyckel !== nyckel) kalkyl = { nyckel, fattig: lanseringsKalkyl(G, pr.id, 'ingen').kvar < 0 };
+  return kalkyl.fattig;
+}
 function ring(cx, cy, r, c, tjock = 2) {
   for (let y = -r; y <= r; y++) for (let x = -r; x <= r; x++) { const d = Math.hypot(x, y); if (d <= r && d > r - tjock) rect(cx + x, cy + y, 1, 1, c); }
 }
@@ -79,15 +86,19 @@ function panelen(A) {
     textB((klar ? '' : 'BYGGER ') + kapa(pr.design.namn, 150), 27, y + 4, F.text);
     text(klar ? `KLAR ${datumText(pr.klarDag)} · BUGGFIXARNA PUTSAR VIDARE` : `DAG ${pr.dagNu} AV ${pr.dagar} · ${Math.round(proc * 100)} % KLART · ${kr(byggkostnadPerDag(G))}/DAG`, 27, y + 14, F.dim);
     matare(8, y + 21, 266, 4, proc, klar ? F.gron : F.orange);
-    text('BLÅ PRICK = KVALITET · RÖD = BUGG', 8, y + 30, F.dim2);
-    knapp(150, y + 27, 124, 11, klar ? 'LANSERA!' : 'LANSERA NÄR KLAR', { stil: 'gron', av: !klar, klick: () => A.go('lansering', { projekt: pr.id }), namn: 'kontor-lansera' });
+    // raden under mätaren: bekräftelsen för AVBRYT, gåvan DIREKTBYGGE eller förklaringen av prickarna
+    if (!klar && A.bekrafta === pr.id) text('TRYCK X IGEN FÖR ATT AVBRYTA', 8, y + 30, F.rod2);
+    else if (!klar && G.inventarie.direktbygge > 0) knapp(8, y + 27, 136, 11, 'DIREKTBYGGE (' + G.inventarie.direktbygge + ' KVAR)', { stil: 'guld', namn: 'kontor-direktbygge', klick: () => { if (direktbygg(G, pr.id).ok) A.ljud('klar'); else A.ljud('fel'); } });
+    else text('BLÅ PRICK = KVALITET · RÖD = BUGG', 8, y + 30, F.dim2);
+    // räcker inte kassan till lanseringen säger knappen det (lånet erbjuds på lanseringsskärmen)
+    const fattig = klar && forLitePengar(G, pr);
+    knapp(150, y + 27, 124, 11, !klar ? 'LANSERA NÄR KLAR' : fattig ? 'LANSERA (FÖR LITE PENGAR)' : 'LANSERA!', { stil: fattig ? 'orange' : 'gron', av: !klar, klick: () => A.go('lansering', { projekt: pr.id }), namn: 'kontor-lansera' });
     // ringarna med köpknappar under
     ring(298, y + 12, 9, F.bla); textB(String(pr.kvalitet), 298, y + 9, F.text, { just: 'c' }); text('KVALITET', 298, y + 23, F.bla2, { just: 'c' });
     ring(338, y + 12, 9, F.rod); textB(String(pr.buggar), 338, y + 9, F.text, { just: 'c' }); text('BUGGAR', 338, y + 23, F.rod2, { just: 'c' });
     knapp(281, y + 30, 34, 8, '+' + PRICK_FP + ' FP', { stil: 'bla', klick: () => { if (!kopPrick(G, pr.id).ok) A.ljud('fel'); }, av: klar || G.bolag.fp < PRICK_FP });
     knapp(321, y + 30, 34, 8, 'LAGA ' + PRICK_FP, { stil: 'rod', klick: () => { if (!lagaBugg(G, pr.id).ok) A.ljud('fel'); }, av: G.bolag.fp < PRICK_FP || !pr.buggar });
     if (!klar) knapp(362, y + 4, 16, 11, 'X', { stil: 'rod', klick: () => { if (A.bekrafta === pr.id) { avbryt(G, pr.id); A.bekrafta = null; } else { A.bekrafta = pr.id; setTimeout(() => { A.bekrafta = null; }, 2500); } } });
-    if (A.bekrafta === pr.id) text('TRYCK X IGEN FÖR ATT AVBRYTA', 358, y - 7, F.rod2, { just: 'h' });
     return;
   }
   // inget bygge: nästa mål, labbet och stora knappen

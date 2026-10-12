@@ -2,7 +2,7 @@
 import { U, F, W, rect, ram, text, textB, knapp, panel, kort, ikon, hit, tw, kapa, matare, stjarnor, lista, stycke, ljusa, mixa, BIG } from '../core/ui.js';
 import { personSprite } from '../core/people.js';
 import { hud, flikrad } from './ram.js';
-import { ROLLER, kontorAv } from '../data/varld.js';
+import { ROLLER } from '../data/varld.js';
 import { kr, dec } from '../sim/bas.js';
 import { anstall, sparka, teamfest, festPris, omrull, omrullPris, kanTrana, trana, ledigaBord, lonPerManad, fpPerDag, moralFaktor, maxStjarnor } from '../sim/personal.js';
 import { kontorsVarden } from '../sim/kontor.js';
@@ -18,13 +18,15 @@ export function personal(A) {
   return {
     tid: false,
     rita(ctx) {
-      const v = kontorsVarden(G), ko = kontorAv(G.kontor.niva);
+      const v = kontorsVarden(G);
       rect(0, 14, W, 11, 0x0a0d1a);
       textB('PERSONAL', 4, 16, F.guld); text('ANSTÄLL, TRÄNA OCH HÅLL TEAMET GLATT · TIDEN STÅR STILL', 54, 18, F.dim);
       // statistikkort
       const bugg = G.personal.filter((p) => p.roll === 'buggfixare').reduce((s, p) => s + 0.1 * p.kraft * moralFaktor(G) * v.buggfix, 0);
-      const kort6 = [['BORD (' + ko.namn + ')', `${G.personal.length}/${v.bord}`, F.text], ['LÖNER/MÅN', kr(lonPerManad(G)), F.text], ['FORSKNING/DAG', dec(fpPerDag(G), 1) + ' FP', F.bla2], ['BUGGFIX/DAG', dec(bugg, 2), F.rod2], ['MORAL', Math.round(G.moral) + ' %', G.moral >= 50 ? F.gron2 : F.orange2]];
-      kort6.forEach(([e, val, c], i) => { const x = 4 + i * 64; panel(x, 27, 60, 21, { fyll: F.panel2 }); text(e, x + 4, 31, F.dim); textB(val, x + 4, 38, c); });
+      // BORD: anställda / utställda bord, och hur många bord lokalen rymmer (kontorsnamnet fick inte plats)
+      const kort6 = [['BORD (MAX ' + v.platser + ')', `${G.personal.length}/${v.bord}`, F.text], ['LÖNER/MÅN', kr(lonPerManad(G)), F.text], ['FORSKNING/DAG', dec(fpPerDag(G), 1) + ' FP', F.bla2], ['BUGGFIX/DAG', dec(bugg, 2), F.rod2], ['MORAL', Math.round(G.moral) + ' %', G.moral >= 50 ? F.gron2 : F.orange2]];
+      // texten håller sig inom kortet (54 px): stora värden ritas i det lilla typsnittet
+      kort6.forEach(([e, val, c], i) => { const x = 4 + i * 64; panel(x, 27, 60, 21, { fyll: F.panel2 }); text(kapa(e, 54), x + 4, 31, F.dim); if (tw(val, BIG) <= 54) textB(val, x + 4, 38, c); else text(kapa(val, 54), x + 4, 40, c); });
       panel(324, 27, 56, 21, { fyll: mixa(F.lila, F.panel, 0.6) });
       text('TEAMFEST', 328, 31, F.lila2); knapp(328, 38, 48, 8, kr(festPris(G)), { stil: 'lila', klick: () => gjort(teamfest(G)), av: !G.personal.length });
       // vänster: ditt team
@@ -49,8 +51,17 @@ export function personal(A) {
       const lediga = ledigaBord(G).length;
       let y0 = 64;
       if (G.kontor.niva === 'garage') { stycke('BARA ★-NYBÖRJARE VILL JOBBA I ETT GARAGE, OCH INGEN BLIR BÄTTRE HÄR. FLYTTA TILL ETT KONTOR FÖR ATT ANSTÄLLA PROFFS.', 199, y0, 176, F.orange2); y0 += 22; }
-      else { text(`KANDIDATERNA HAR UPP TILL ${'★'.repeat(maxStjarnor(G))} (KONTORETS STJÄRNOR + 2)`, 199, y0, F.dim); y0 += 9; }
-      if (!lediga) { text(v.bord ? 'ALLA BORD UPPTAGNA – STÄLL UT FLER I BYGG' : 'STÄLL UT ETT BORD I BYGG FÖRST', 199, y0, F.rod2); knapp(330, y0 - 2, 46, 9, 'BYGG', { stil: 'orange', klick: () => A.go('bygg', { kategori: 'bord' }) }); y0 += 10; }
+      else { text(`UPP TILL ${'★'.repeat(maxStjarnor(G))} (KONTORETS STJÄRNOR + 2)`, 199, y0, F.dim); y0 += 9; }
+      // inga lediga bord: ställ ut ett första bord, ställ ut fler – eller, om lokalen är full, flytta.
+      // Texten slutar före knappen (x 344).
+      if (!lediga) {
+        const fullt = v.bord >= v.platser, sista = G.kontor.niva === 'hk';
+        if (!v.bord) { text('STÄLL UT ETT BORD I BYGG FÖRST', 199, y0, F.rod2); knapp(344, y0 - 2, 32, 9, 'BYGG', { stil: 'orange', klick: () => A.go('bygg', { kategori: 'bord' }), namn: 'personal-bygg' }); }
+        else if (!fullt) { text('ALLA BORD UPPTAGNA – STÄLL UT FLER', 199, y0, F.rod2); knapp(344, y0 - 2, 32, 9, 'BYGG', { stil: 'orange', klick: () => A.go('bygg', { kategori: 'bord' }), namn: 'personal-bygg' }); }
+        else if (!sista) { text('LOKALEN ÄR FULL – FLYTTA FÖR FLER', 199, y0, F.rod2); knapp(344, y0 - 2, 32, 9, 'FLYTTA', { stil: 'orange', klick: () => A.go('bolaget', { flik: 'kontor' }), namn: 'personal-flytta' }); }
+        else text(`ALLA ${v.platser} BORD I HUVUDKONTORET ÄR UPPTAGNA`, 199, y0, F.rod2);
+        y0 += 10;
+      }
       lista(196, y0, 182, 198 - y0, G.kandidater.length, 26, (i, y) => {
         const p = G.kandidater[i], roll = ROLLER[p.roll];
         rect(198, y, 176, 24, F.panel2); rect(198, y, 2, 24, roll.farg);

@@ -87,11 +87,11 @@ try {
   await klicka('redo-funk-gps'); await klicka('starta-forskning'); await vanta(300); await bild('forskning');
   L = await lage(); ok(L.forsk > 0, 'GPS-forskningen är startad');
   ok(L.klar === true, 'handledningen är klar (13 av 13)');
-  // spara och ladda om
-  await page.evaluate(() => window.__A.spara());
+  // spara och ladda om – pausa först, annars hinner dagen gå mellan läsningen och sparningen (8×)
+  const sparadDag = await page.evaluate(() => { window.__A.pausa(); window.__A.spara(); return window.__A.G.dag; });
   await page.reload(); await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 15000 }); await vanta(400);
   await klicka('start-fortsatt'); await vanta(300);
-  const L2 = await lage(); ok(L2.produkter === 1 && L2.dag === L.dag, 'sparningen laddas med samma dag och telefon');
+  const L2 = await lage(); ok(L2.produkter === 1 && L2.dag === sparadDag, `sparningen laddas med samma dag och telefon (dag ${L2.dag} = ${sparadDag})`);
   await bild('laddat');
 } catch (e) { fel.push(String(e.stack || e)); }
 

@@ -110,15 +110,19 @@ export const FUNKTIONER = [
   D('rost', 'RÖSTASSISTENT', 2011, 20, 150), D('ar', 'AR-KAMERA', 2017, 50, 500), D('uwb', 'ULTRABREDBAND', 2019, 35, 650), D('aiass', 'AI-ASSISTENT', 2023, 60, 1100),
 ];
 
-// Enhetstyper. bas = marknadens storlek jämfört med telefoner, fabrik = faktor på fabrikskostnaden.
+// Enhetstyper. bas = marknadens storlek jämfört med telefoner, fabrik = faktor på fabrikskostnaden,
+// kostnad = faktor på styckkostnaden (samma delar men mer eller mindre av dem), pris = faktor på rimligt pris
+// (en laptop är värd mer än en telefon med samma betyg). pris ≈ kostnad ger telefonens marginal; de stora
+// enheterna får lite mer eftersom de har högre kvalitetsmål och dyrare fabrik.
 export const ENHETER = [
-  { id: 'telefon', namn: 'TELEFON', ar: 2007, fp: 0, bas: 1, fabrik: 1, kvalMal: 13, info: 'ER FÖRSTA ENHET' },
-  { id: 'platta', namn: 'SURFPLATTA', ar: 2010, fp: 150, bas: 0.4, fabrik: 1.3, kvalMal: 13, info: 'STÖRRE SKÄRM, FÖR SOFFAN' },
-  { id: 'laptop', namn: 'LAPTOP', ar: 2012, fp: 219, bas: 0.3, fabrik: 1.8, kvalMal: 16, info: 'TANGENTBORD OCH STOR SKÄRM' },
-  { id: 'klocka', namn: 'SMARTKLOCKA', ar: 2014, fp: 375, bas: 0.5, fabrik: 0.8, kvalMal: 13, info: 'TELEFONEN PÅ HANDLEDEN' },
-  { id: 'horlurar', namn: 'TRÅDLÖSA HÖRLURAR', ar: 2016, fp: 441, bas: 0.8, fabrik: 0.6, kvalMal: 13, info: 'MUSIK UTAN SLADD' },
-  { id: 'vikbar', namn: 'VIKBAR TELEFON', ar: 2019, fp: 1057, bas: 0.2, fabrik: 2.2, kvalMal: 18, info: 'SKÄRMEN GÅR ATT VIKA' },
+  { id: 'telefon', namn: 'TELEFON', ar: 2007, fp: 0, bas: 1, fabrik: 1, kostnad: 1, pris: 1, kvalMal: 13, info: 'ER FÖRSTA ENHET' },
+  { id: 'platta', namn: 'SURFPLATTA', ar: 2010, fp: 150, bas: 0.4, fabrik: 1.3, kostnad: 1.6, pris: 1.6, kvalMal: 13, info: 'STÖRRE SKÄRM, FÖR SOFFAN' },
+  { id: 'laptop', namn: 'LAPTOP', ar: 2012, fp: 219, bas: 0.3, fabrik: 1.8, kostnad: 2.6, pris: 2.7, kvalMal: 16, info: 'TANGENTBORD OCH STOR SKÄRM' },
+  { id: 'klocka', namn: 'SMARTKLOCKA', ar: 2014, fp: 375, bas: 0.5, fabrik: 0.8, kostnad: 0.7, pris: 0.7, kvalMal: 13, info: 'TELEFONEN PÅ HANDLEDEN' },
+  { id: 'horlurar', namn: 'TRÅDLÖSA HÖRLURAR', ar: 2016, fp: 441, bas: 0.8, fabrik: 0.6, kostnad: 0.45, pris: 0.45, kvalMal: 13, info: 'MUSIK UTAN SLADD' },
+  { id: 'vikbar', namn: 'VIKBAR TELEFON', ar: 2019, fp: 1057, bas: 0.2, fabrik: 2.2, kostnad: 2.0, pris: 2.1, kvalMal: 18, info: 'SKÄRMEN GÅR ATT VIKA' },
 ];
+export const enhetAv = (id) => ENHETER.find((e) => e.id === id) || ENHETER[0];
 
 // Standardvalen för en ny design (en 2007-telefon som kostar 660 kr att tillverka).
 export const STANDARD_VAL = {

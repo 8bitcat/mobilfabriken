@@ -49,6 +49,7 @@ export function placera(G, plats, mobelId) {
   if (iForrad >= 0) k.forrad.splice(iForrad, 1); else betala(G, pris, 'mobler');
   if (gammal && MOBEL[gammal] && MOBEL[gammal].pris > 0) k.forrad.push(gammal);   // den gamla hamnar i förrådet
   G.flaggor.kopteMobel = true;
+  if (pris > 0) G.flaggor.kopteNyMobel = true;   // mål 5: bara ett riktigt köp (inte gratismöbler eller förrådet)
   return { ok: true, pris };
 }
 // ta bort: hälften av priset tillbaka (förrådet om man vill spara den)
@@ -70,7 +71,7 @@ export function kravUppfyllt(G, niva) {
   const k = kontorAv(niva); if (!k.krav) return true;
   const c = k.krav;
   if (c.lanserade && G.bolag.lanseringar < c.lanserade) return false;
-  if (c.salda && G.bolag.totaltSalda < c.salda) return false;
+  if (c.salda && !(G.bolag.totaltSalda >= c.salda)) return false;   // NaN får aldrig släppa igenom kravet
   if (c.enhetstyper && G.bolag.enhetstyper.length < c.enhetstyper) return false;
   if (c.mal && !G.mal.klara.includes(c.mal)) return false;
   return true;

@@ -1,5 +1,5 @@
 // Ramen runt spelet: HUD:en överst (bolag, kassa, FP, team, rykte, hastighet) och flikraden nederst.
-import { U, F, W, rect, ram, text, textB, knapp, ikon, hit, inne, tw, ljusa, mixa, BIG } from '../core/ui.js';
+import { U, F, W, rect, ram, text, textB, knapp, ikon, hit, inne, tw, kapa, ljusa, mixa, BIG } from '../core/ui.js';
 import { kr, dec, datumText, arsdel, arAv } from '../sim/bas.js';
 import { ljudPa, sattLjud } from '../core/ljud.js';
 import { kontorsVarden } from '../sim/kontor.js';
@@ -22,9 +22,11 @@ export function hud(A) {
   rect(0, 0, W, 14, 0x0a0d1a); rect(0, 13, W, 1, F.hi);
   // bolagsbricka
   rect(1, 1, 11, 11, F.bla); rect(1, 1, 11, 1, ljusa(F.bla, 0.3)); textB(b.initial, 7, 3, F.text, { just: 'c' });
-  text(b.namn.length > 18 ? b.namn.slice(0, 17) + '…' : b.namn, 15, 2, F.text);
+  // namnet kapas i pixlar så att det slutar före KASSA (x 96); datumet är högst 43 px brett (slutar x 58),
+  // så årslinjen börjar på x 61 och täcker aldrig årtalets sista siffra
+  text(kapa(b.namn, 78), 15, 2, F.text);
   text(datumText(G.dag), 15, 8, F.dim);
-  const del = arsdel(G.dag) - arAv(G.dag); rect(56, 9, 36, 3, F.lo); rect(56, 9, Math.round(36 * del), 3, F.bla);
+  const del = arsdel(G.dag) - arAv(G.dag); rect(61, 9, 31, 3, F.lo); rect(61, 9, Math.round(31 * del), 3, F.bla);
   hit(0, 0, 94, 13, { klick: () => A.go('bolaget'), namn: 'hud-bolag' });
   const cell = (x, ik, ikc, etikett, varde, vc, namn, klick) => {
     ikon(ik, x, 3, ikc); text(etikett, x + 9, 2, F.dim2); text(varde, x + 9, 8, vc);
@@ -47,7 +49,7 @@ export function hud(A) {
     x += w + 1;
   }
   // gåva, ljud, meny
-  const gava = gavaKlar();
+  const gava = gavaKlar(G);   // gåvoserien räknas per bolag (fynd 36)
   ikon('gava', 343, 3, gava ? F.guld : F.dim); if (gava && Math.floor(A.t * 2) % 2) rect(349, 2, 2, 2, F.rod2);
   hit(341, 0, 11, 13, { klick: () => A.go('gavor'), namn: 'hud-gava' });
   ikon(ljudPa() ? 'ljud' : 'tyst', 355, 3, F.dim); hit(353, 0, 11, 13, { klick: () => { sattLjud(!ljudPa()); A.G.installningar.ljud = ljudPa(); } });

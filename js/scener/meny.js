@@ -14,8 +14,9 @@ export function meny(A) {
       textB('MENY', 4, 16, F.guld);
       panel(8, 28, 180, 168);
       text('INSTÄLLNINGAR', 14, 33, F.text);
-      const vaxel = (y, namn, pa, klick, info) => { text(namn, 14, y + 2, F.text); knapp(130, y, 52, 10, pa ? 'PÅ' : 'AV', { stil: pa ? 'gron' : 'morkt', klick }); if (info) text(info, 14, y + 9, F.dim2); };
-      vaxel(44, 'STANNA TIDEN NÄR NÅGOT HÄNDER', G.installningar.autopaus, () => { G.installningar.autopaus = !G.installningar.autopaus; }, 'BYGGE KLART, FORSKNING KLAR, MÅL …');
+      // etiketten slutar före knappen (x 130), förklaringen ligger under knappen
+      const vaxel = (y, namn, pa, klick, info) => { text(namn, 14, y + 2, F.text); knapp(130, y, 52, 10, pa ? 'PÅ' : 'AV', { stil: pa ? 'gron' : 'morkt', klick }); if (info) text(info, 14, y + 12, F.dim2); };
+      vaxel(44, 'PAUSA NÄR NÅGOT HÄNDER', G.installningar.autopaus, () => { G.installningar.autopaus = !G.installningar.autopaus; }, 'BYGGE KLART, FORSKNING KLAR, MÅL …');
       vaxel(64, 'LJUD', ljudPa(), () => { sattLjud(!ljudPa()); G.installningar.ljud = ljudPa(); });
       text('TELEFONEN RITAS SOM', 14, 86, F.text);
       knapp(14, 94, 80, 10, 'RIKTIG 3D', { stil: 'dim', aktiv: G.installningar.telefon !== 'pixel', klick: () => { G.installningar.telefon = '3d'; } });

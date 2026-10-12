@@ -1,6 +1,7 @@
 // TELEFONER – dina enheter till salu och hur de står sig mot konkurrenterna (förlagans "Your phones").
 // Ändra pris, lägg ner, gå viralt, släpp uppdatering 1.1. Plus MUSEET med alla telefoner du gjort.
-import { U, F, W, rect, ram, text, textB, knapp, panel, kort, ikon, hit, tw, kapa, matare, stycke, lista, reglage, stjarnor, ljusa, mixa, BIG } from '../core/ui.js';
+import { U, F, W, rect, ram, text, textB, knapp, panel, kort, ikon, hit, tw, kapa, matare, stycke, lista, radbryt, reglage, stjarnor, ljusa, mixa, BIG } from '../core/ui.js';
+import { ENHETER } from '../data/delar.js';
 import * as Vy3d from '../telefon/vy3d.js';
 import { ritaTelefon } from '../telefon/telefon3d.js';
 import { Pix } from '../art/kit.js';
@@ -11,10 +12,24 @@ import { andraPris, laggNer, bliViral, kanViral, uppdatering, modellVinst, VIRAL
 import { KAMPANJER, RIVALER } from '../data/varld.js';
 import { kr, dec, datumText, tal } from '../sim/bas.js';
 
-const MINI = new Map();
+// museets miniatyr (37×35): skalan följer enheten (samma ram som vy3d: bredd × 1,6 och höjd × 1,35),
+// så att en laptop eller surfplatta ryms lika väl som en telefon
+const MINI = new Map(), MW = 37, MH = 35;
 function mini(d) {
   const key = d.id; let c = MINI.get(key); if (c) return c;
-  const P = new Pix(30, 40); ritaTelefon(P, 15, 20, 22, telAv(d), 0.5, 0.15); c = P.flush(); MINI.set(key, c); return c;
+  const t = telAv(d), S = Math.min(MW / (t.bredd * 1.6), MH / (t.hojd * 1.35));
+  const P = new Pix(MW, MH); ritaTelefon(P, MW / 2, MH / 2, S, t, 0.5, 0.15); c = P.flush(); MINI.set(key, c); return c;
+}
+const enhetsNamn = (id) => ENHETER.find((e) => e.id === id)?.namn || 'TELEFON';
+// antal (inte kronor) så exakt som ryms i max px: 988 654 → 989 T, 1 500 000 → 1,5 MILJ. → 1,5 M → 1,5M
+// (tvinga = false: null om inget ryms, annars den kortaste formen)
+function antal(n, max, tvinga = true) {
+  n = Math.max(0, Math.round(n || 0));
+  const alt = [tal(n)];
+  if (n >= 999_500) { const mm = n / 1e6, m = mm >= 9.95 ? String(Math.round(mm)) : dec(mm, 1); alt.push(m + ' MILJ.', m + ' M', m + 'M', Math.round(mm) + 'M'); }
+  else if (n >= 1e4) { const t = String(Math.round(n / 1e3)); alt.push(t + ' T', t + 'T'); }
+  for (const s of alt) if (tw(s) <= max) return s;
+  return tvinga ? alt[alt.length - 1] : null;
 }
 
 export function telefoner(A, o = {}) {
@@ -43,7 +58,9 @@ export function telefoner(A, o = {}) {
         kort(6, y, 130, 19, { vald, klick: () => { valdId = p.id; nyttPris = null; bekr = false; } });
         rect(9, y + 3, 9, 13, F.lo); ikon('telefon', 10, y + 6, p.aktiv ? F.bla2 : F.dim2);
         text(kapa(p.namn, 80), 21, y + 4, p.aktiv ? F.text : F.dim);
-        text(p.aktiv ? `${p.lager} I LAGER · ${tal(p.salda)} SÅLDA` : `UTGÅNGEN · ${tal(p.salda)} SÅLDA`, 21, y + 11, p.aktiv ? F.gron2 : F.dim2);
+        // andra raden slutar före betyget: sålda kortas (1,5 MILJ. / 988 T), lagret släpps sist (det står i rutan till höger)
+        const max = 132 - tw(dec(p.betyg, 1), BIG) - 4 - 21, fore = p.aktiv ? `${p.lager} I LAGER · ` : 'UTGÅNGEN · ', s = antal(p.salda, max - tw(fore + ' SÅLDA'), false);
+        text(s ? fore + s + ' SÅLDA' : antal(p.salda, max - tw(' SÅLDA')) + ' SÅLDA', 21, y + 11, p.aktiv ? F.gron2 : F.dim2);
         textB(dec(p.betyg, 1), 132, y + 6, F.guld, { just: 'h' });
       }, skP);
       const ry = 40 + hEgna + 4;
@@ -64,7 +81,7 @@ export function telefoner(A, o = {}) {
       Vy3d.visa({ x: 148, y: 29, w: 80, h: 84 }, telAv(p.design), { vy: 'auto', spin, pitch: 0.15, pixel: G.installningar.telefon === 'pixel', ctx });
       textB(kapa(p.namn, 148), 232, 30, F.text);
       const kamp = KAMPANJER.find((k) => k.id === p.kampanj);
-      text(`${p.design.enhet === 'telefon' ? 'TELEFON' : p.design.enhet.toUpperCase()} · ${datumText(p.lanseradDag)} · ${kamp?.namn || ''}`, 232, 40, F.dim);
+      text(kapa(`${enhetsNamn(p.design.enhet)} · ${datumText(p.lanseradDag)}${kamp ? ' · ' + kamp.namn : ''}`, 146), 232, 40, F.dim);
       const vinst = modellVinst(p), vecka = Math.round(veckoEfterfragan(G, p));
       const korten = [
         ['BETYG', dec(p.betyg, 1) + ' / 10', F.guld], ['PRIS', kr(p.pris), F.text], ['KOSTAR', kr(p.styck), F.text],
@@ -73,7 +90,7 @@ export function telefoner(A, o = {}) {
       ];
       korten.forEach(([e, v, c], i) => { const x = 232 + (i % 3) * 49, y = 48 + Math.floor(i / 3) * 19; rect(x, y, 47, 17, F.panel2); text(e, x + 3, y + 3, F.dim); text(kapa(v, 43), x + 3, y + 10, c); });
       // priset
-      const rim = Math.round(rimligtPris(G.dag, p.betyg) / 10) * 10;
+      const rim = Math.round(rimligtPris(G.dag, p.betyg, p.design.enhet) / 10) * 10;   // per enhet (en laptop är värd mer)
       if (p.aktiv) {
         const np = nyttPris ?? p.pris;
         text('NYTT PRIS', 150, 116, F.dim); text(kr(np), 226, 116, np !== p.pris ? F.guld : F.text, { just: 'h' });
@@ -84,7 +101,8 @@ export function telefoner(A, o = {}) {
         text('AUTOMATISK PRODUKTION ÄR PÅ', 154, 138, F.gron2);
         knapp(296, 135, 79, 10, 'BLI VIRAL · ' + VIRAL_FP + ' FP', { stil: 'rosa', av: !kanViral(G, p) || G.bolag.fp < VIRAL_FP, klick: () => gjort(bliViral(G, p.id)) });
         if (p.buggar) knapp(150, 148, 120, 9, `UPPDATERING 1.1 (${p.buggar * PRICK_FP} FP)`, { stil: 'orange', av: G.bolag.fp < p.buggar * PRICK_FP, klick: () => gjort(uppdatering(G, p.id)) });
-        stycke(`KÖPARE TYCKER ATT EN ${dec(p.betyg, 1)}/10-TELEFON ÄR VÄRD UNGEFÄR ${kr(rim)} IDAG. NU ~${vecka} KÖPARE/VECKA · BUZZ ${Math.round(buzz(p, G.dag) * 100)} %.`, 150, p.buggar ? 159 : 149, 226, F.dim, { rad: 6 });
+        // två fasta rader (priset bryts aldrig mitt i talet); rimligt pris följer enheten
+        stycke(`MED BETYG ${dec(p.betyg, 1)} ÄR DEN VÄRD UNGEFÄR ${kr(rim)} IDAG.\nNU ~${vecka} KÖPARE/VECKA · BUZZ ${Math.round(buzz(p, G.dag) * 100)} %.`, 150, p.buggar ? 159 : 149, 226, F.dim, { rad: 6 });
       } else text(`UTGÅNGEN ${datumText(p.nedlagdDag)} · SÅLDES I ${p.veckor.length} VECKOR`, 150, 120, F.dim);
       // staplar per vecka
       const gy = 179, gh = 19, v = p.veckor.slice(-46), max = Math.max(10, ...v);
@@ -100,14 +118,19 @@ export function telefoner(A, o = {}) {
     text('MUSEET – ALLA TELEFONER DU HAR GJORT', 6, 31, F.guld);
     const alla = [...G.produkter];
     if (!alla.length) { stycke('HÄR SAMLAS VARJE TELEFON DU LANSERAR, MED BETYG OCH HUR MÅNGA SOM SÅLDES.', 6, 42, 300, F.dim); return; }
+    // kortet 39×56: miniatyren, namnet på två rader (PIXEL / PHONE 12), betyget och antal sålda
     const per = 9, rader = Math.ceil(alla.length / per);
-    lista(4, 39, 374, 160, rader, 56, (r, y) => {
+    lista(4, 39, 374, 160, rader, 58, (r, y) => {
       for (let k = 0; k < per; k++) {
         const p = alla[r * per + k]; if (!p) break;
         const x = 6 + k * 41;
-        rect(x, y, 39, 54, F.panel2); ctx.drawImage(mini(p.design), x + 4, y + 1);
-        text(kapa(p.namn, 37), x + 2, y + 41, F.text); text(dec(p.betyg, 1) + ' · ' + kr(p.salda, true).replace(' KR', ''), x + 2, y + 47, F.guld);
-        hit(x, y, 39, 54, { klick: () => { valdId = p.id; } });
+        rect(x, y, 39, 56, F.panel2); ctx.drawImage(mini(p.design), x + 1, y + 1);
+        const rader2 = radbryt(p.namn, 35);
+        text(kapa(rader2[0], 35), x + 2, y + 38, F.text);
+        if (rader2.length > 1) text(kapa(rader2.slice(1).join(' '), 35), x + 2, y + 45, F.text);
+        const b = dec(p.betyg, 1); text(b, x + 2, y + 51, F.guld); text(antal(p.salda, 33 - tw(b) - 3), x + 37, y + 51, F.bla2, { just: 'h' });
+        // ett tryck visar telefonen (pris, sålda, veckorna) under TILL SALU
+        hit(x, y, 39, 56, { klick: () => { valdId = p.id; nyttPris = null; bekr = false; lage = 'salu'; }, namn: 'museum-' + p.id });
       }
     }, skM);
   }

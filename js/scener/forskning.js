@@ -29,6 +29,7 @@ export function forskning(A, o = {}) {
   const skR = { v: 0 };
   const maxX = (AR1 - AR0 + 1) * KOLW - VW + 50, maxY = RADER.length * RADH - VH + 30;
   const klampa = () => { kx = Math.max(0, Math.min(maxX, kx)); ky = Math.max(0, Math.min(maxY, ky)); };
+  klampa();   // 2025–26 hamnar annars förbi trädets slut (nästan tom vy)
   return {
     tid: false,
     ner(x, y) { if (x >= KX && y >= VY && y < 202 && !(vald && y > 146 && x > KX)) drag = { x, y, kx, ky, rorde: false }; },

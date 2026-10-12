@@ -55,7 +55,8 @@ Omordnad så att alla 13 kritikerdelar har ett val och granskningen förblir ste
 | 12 | FÄRG & MÄRKE | 8 färger · yta Klassisk 0 / Mjuk matt 40 / Borstad 90 / Kolfiber 120 / legendarisk · märke = initial |
 | 13 | GRANSKNING | Att tillverka **660** · Fabrik 300 000 · pris 800–4 000 (rimligt 1 740) · marginal rött <30/gult <55/grönt · beräknad veckoförsäljning live · namn · STARTA UTVECKLING |
 
-Konceptyllan sparar design utan start. Ny forskad del kostar ~2× nivån den ersätter, −10 %/år efter uppfinningsåret.
+Konceptyllan sparar design utan start (högst 8; ett klick laddar konceptet, STARTA tar det från hyllan, AVBRYT lägger tillbaka det). Ny forskad del kostar ~2× nivån den ersätter, −10 %/år efter uppfinningsåret.
+Nästa design utgår från den senast startade (pågående bygge, annars senast lanserade). Forskade funktioner som saknas läggs till – nyast först och bara upp till bonusens tak (§2.7). Vallistorna rullar och visar nyast överst. Formens reglage (bredd/höjd/tjocklek) har gränser per enhet; LITEN/LAGOM/STOR = enhetens förval × 0,87 / 1 / 1,13.
 
 ### 2.5 Bygget
 - **Dagar** = ⌈(10 + delar + 1 per del över förväntan) / ((Σkraft/2) × (1+arbetsfart))⌉ → telefon 2007 med två ★: 23 ✓; fyra ★: 12. (B:s täljare + A:s personalfaktor – fler anställda ska synas.)
@@ -67,22 +68,24 @@ Konceptyllan sparar design utan start. Ny forskad del kostar ~2× nivån den ers
 
 ### 2.6 Lansering
 - Panel som förlagan: 3D-telefon + pris/kostnad/buggar/utvecklingskostnad; kampanjer **Ingen 0 · Nätannonser 600 000 (+40 %) · TV 4 M (+90 %) · Global 15 M (+180 %)**, hype klingar av 10 %/vecka. Panelen visar **"Reklamen beräknas ge +N sålda ≈ ±X kr"** i grönt/rött (B:s reklamfälla). Global låst under 70 % täckning.
-- Fabrik **300 000 per modell** × enhetsfaktor × (1 + 0,1 × (år−2007)). Första parti 100 st. LANSERA! låst om kassan efter lansering < 0 (nödlånet, §2.11).
+- Fabrik **300 000 per modell** × enhetsfaktor × (1 + 0,1 × (år−2007)). Första parti 100 st. LANSERA! låst om kassan efter lansering < 0 – då erbjuder banken ett lån av det som fattas (hela 500 000, 10 %/år, som nödlånet §2.11) så att ingen fastnar med en färdig telefon (`lanseringsKalkyl().lanBehov`, `lana()`).
+- Kritikerna bedömer telefonen mot året som var **högst ett halvår före lanseringen**: ett bygge över nyår straffas inte, men en färdig telefon som får ligga olanserad i åratal bedöms mot sin tid. Telefonen hör till **lanseringsåret** (nyårsrapportens "Årets telefon").
+- **DIREKTBYGGE** (gåvan 24K GULD, inventariet): bygget blir klart direkt, med de blå prickar teamet i snitt hade hunnit lägga under resten av bygget.
 - **Lanseringsshowen** (C, nedkortad): 8 s, hoppa över-knapp; ridå, 3D-telefonen i strålkastare, tre staplar TEKNIK/DESIGN/PUTS fylls, betyget rullar upp siffra för siffra, tre citat (Mobiltidningen/Skärm & Signal/Bytesize), ≥ 7,0 konfetti, < 5,0 tomat. Betyget döljs tills ridån går upp. Influencer-kortet ger +60 % hype.
 
 ### 2.7 Marknad och försäljning
-- **Betyg** = 10 × (0,60 × Teknik + 0,20 × Design + 0,20 × Puts) − 0,1 × buggar + 0,1 × funktioner (max +1,0), tak 10.
+- **Betyg** = 10 × (0,60 × Teknik + 0,20 × Design + 0,20 × Puts) − 0,1 × buggar + 0,1 × funktioner (max +1,0), tak 10. Funktioner = valda funktioner + extra linser + tunna ramar + enhetens egna forskade tekniker (klocka, hörlurar, laptop, vikbar); designern visar "+X AV +taket".
   - Teknik = medel av 13 delar mot årets förväntan (= högsta nivå vars uppfinningsår nåtts): ≥ 1,0 · ett steg under 0,5 · två+ under 0,2 · över 1,2.
   - Design = 0,4 × fräschhet + 0,3 × material (plast 0,3 … titan 1,0) + 0,3 × yta (klassisk 0,2 … legendarisk 1,0).
   - Puts = kvalitetsprickar / kvalitetsmål. Storlek och ram påverkar inte.
   - Pixel Phone 1: 0,77 / 0,55 / 0,38 → 6,3 ≈ 6,2 ✓. Staplarna i showen = dessa tre tal.
 - **Rykte** ← 0,8 × rykte + 0,2 × (betyg − 0,1 × buggar)/marknadssnitt, låst 0,25–3,0 (→ 0,99 ✓).
-- **Efterfrågan/vecka** = Bas(år, enhet) × Täckning × 2^((betyg−snitt)/1,5) × (rimligt/pris)^1,5 [0,15–2,5] × Rykte × Buzz × Delning. Bas 100/vecka 2007, +25 %/år; platta ×0,4 · laptop ×0,3 · klocka ×0,5 · hörlurar ×0,8 · vikbar ×0,2. Buzz = 0,977^(v−1) + hype × 0,90^(v−1). Delning = 1/(1 + 0,25 × (egna modeller av samma typ − 1)). Kalibrering: 22 köpare första veckan ✓, 71 % buzz vecka 15 ✓.
-- **Rimligt pris** = marknadspris(år) × (1 + 0,25 × (betyg − snitt)); 1 740 kr 2007, +6 %/år. Marknadssnitt: 6,2 (2007) → 7,2 (2020+).
-- **Partier**: om 100 och dynamiskt (nytt när lager < 2 × förra veckans sälj, storlek = närmaste hundratal av 4 × veckosälj), leverans 3 dagar, minst 10 vid pengabrist. Missade köp = efterfrågan utan lager.
-- **Modellvinst** = intäkt − tillverkade × styck − fabrik − utveckling − reklam (förlagans sätt; "har telefonen betalat sig?"). Prissänkning ≥ 10 % → nyhet +10 pp buzz (max var 4:e vecka). LÄGG NER säljer lager till 50 %. **BLI VIRAL 39 FP** = +50 pp hype, var 4:e vecka.
-- **Marknadsandel** = sålda 4 veckor / (16 × Bas(år)).
-- **Rivaler**: förlagans nio parodier (Motorola → Motorolla), C:s karaktärer, ny generation per år med betyg +0,3 ± slump, pris = rimligt för deras betyg (Motorolla −10 %). Reagerar med nyheter, forskar inte. Ditt sålda bolag blir rival i nästa omgång.
+- **Efterfrågan/vecka** = Bas(år, enhet) × Täckning × 2^((betyg−snitt)/2) × (rimligt/pris)^1,5 [0,15–2,5] × Rykte × Buzz × Delning. Bas 100/vecka 2007, +20 %/år (som koden är kalibrerad); platta ×0,4 · laptop ×0,3 · klocka ×0,5 · hörlurar ×0,8 · vikbar ×0,2. Buzz = 0,977^(v−1) + hype × 0,90^(v−1). Delning = 1/(1 + 0,25 × (egna modeller av samma typ − 1)). Kalibrering: 22 köpare första veckan ✓, 71 % buzz vecka 15 ✓.
+- **Rimligt pris** = marknadspris(år) × (1 + 0,25 × (betyg − snitt)) × enhetens prisfaktor, golv 15 %; 1 740 kr 2007, +6 %/år. Prisfaktor (data/delar.js ENHETER.pris, bredvid kostnadsfaktorn): telefon 1 · platta 1,6 · laptop 2,7 · klocka 0,7 · hörlurar 0,45 · vikbar 2,1 (≈ styckkostnadens faktor 1 / 1,6 / 2,6 / 0,7 / 0,45 / 2,0 – samma marginal som telefonen, lite mer för de stora). Rivalerna är telefoner. Marknadssnitt: 6,2 (2007) → 7,2 (2020+).
+- **Partier**: om 100 och dynamiskt (nytt när lager < 2 × förra veckans sälj, storlek = närmaste hundratal av 4 × veckosälj), leverans 3 dagar, minst 10 vid pengabrist. Missade köp = efterfrågan utan lager. Komponentbrist (+20 %) gäller bara partier som beställs medan den pågår – telefonens egen styckkostnad är grundkostnaden.
+- **Modellvinst** = intäkt − tillverkade × styck − fabrik − utveckling − reklam (förlagans sätt; "har telefonen betalat sig?"). Prissänkning ≥ 10 % → nyhet +10 pp buzz (max var 4:e vecka). LÄGG NER säljer lager (och ett betalt parti på väg) till 50 % av priset, högst 50 % av lanseringspriset eller rimligt pris vid lanseringen. **BLI VIRAL 39 FP** = +50 pp hype, var 4:e vecka.
+- **Marknadsandel** = sålda 4 veckor / (16 × Bas(år)), samma Bas som efterfrågan. En nedlagd telefon räknas bara för de veckor av perioden då den fortfarande såldes.
+- **Rivaler**: förlagans nio parodier (Motorola → Motorolla), C:s karaktärer, ny generation per år med betyg +0,3 ± slump, pris = rimligt för deras betyg (Motorolla −10 %). Reagerar med nyheter, forskar inte. Ditt sålda bolag blir rival i nästa omgång: egen modell "<FÖRSTA ORDET> PHONE", betyg = snitt + (bolagets bästa betyg − 6,5), högst ±1 (högst fem sålda bolag, varje namn en gång, aldrig samma namn som det nya bolaget).
 - **Regioner** (BOLAGET): Norden 30 % start · Europa +25 % 2 M kr (mål 17) · Amerika +25 % 8 M · Asien & övriga +20 % 20 M (mål 26); kräver rykte ≥ 1,0.
 
 ### 2.8 Forskning
@@ -95,13 +98,14 @@ Konceptyllan sparar design utan start. Ny forskad del kostar ~2× nivån den ers
 
 ### 2.9 Nyheter och händelser
 - NYHETER: VÄRLDSHÄNDELSER-ruta, rubriker DU/RIVAL/VÄRLD i kvällstidningston, "KRITIKERNA VÄNTAR SIG <år>" med 13 rader ✓/FORSKAS. Ticker i hubben.
-- **Nyårsrapport 1 jan** (helskärm, fyrverkeri): årets vinst, nya förväntningar, rivalernas generation, "Årets telefon".
+- **Nyårsrapport 1 jan** (helskärm, fyrverkeri): årets vinst, nya förväntningar, rivalernas generation, "Årets telefon" (bästa telefonen som lanserades det året).
+- **Forskning klar** med autopaus på: helskärmskort "NY TEKNIK!" med vad som låstes upp och OK (som bygget klart och nödlånet) – en autopaus visas alltid med ett kort. Utan autopaus: bara bannern.
 - Händelser (alla tidsbegränsade, förklarade): Pekskärmsfeber 2007 (utan hemknapp +15 %, 8 v) · Finanskrisen 2008 (−25 % efterfrågan, 12 v) · Appbutiksfebern 2009 (OS väger dubbelt) · Selfievågen 2013 (selfie dubbelt) · 5G-racet 2020 · Komponentbrist (styck +20 %, 6 v, slumpat) · Julhandeln varje dec (+30 %) · Rivalens flopp (sänk priset, ta andelar). Egna: **Floppen** (< 5,0: −50 %, tomat, Mio tröstar) · **Buggskandalen** (≥ 5 buggar: buzz −20 % v 2–4, uppdrag "Uppdatering 1.1" à 30 FP/bugg återställer).
 
 ### 2.10 Mål, utmärkelser, gåvor, Samlingen
-- **28 mål** (nr 5 belagt), visas ett i taget, belöning 5–20 % av rimlig kassa: 1 Ställ ut 2 bord 20 000 · 2 Anställ 2 30 000 · 3 Designa en telefon 50 000 · 4 Lansera den 80 000 · **5 Köp nya kontorsmöbler 100 000** · 6 Forska fram en teknik 120 000 · 7 Sälj 100 st 150 000 · 8 Betyg ≥ 6,5 200 000 · 9 Tjäna in fabriken 250 000 · 10 Telefon nr 2 300 000 · 11 Kör en reklamkampanj 400 000 · 12 Sälj 1 000 st 500 000 · 13 Trivsel ★ 2,0 500 000 · 14 Litet kontor 800 000 · 15 Anställ en ★★ 600 000 · 16 Betyg ≥ 7,5 1 M · 17 Öppna Europa 1,5 M · 18 Surfplatta 2 M · 19 Marknadsandel 10 % 2,5 M · 20 25 tekniker 3 M · 21 Kontorsvåning 4 M · 22 Eget OS 6 M · 23 Smartklocka 8 M · 24 Betyg ≥ 9,0 10 M · 25 Studio 15 M · 26 Hela världen 25 M · 27 100 tekniker 40 M · 28 Huvudkontor 100 M.
+- **28 mål** (nr 5 belagt), visas ett i taget, belöning 5–20 % av rimlig kassa: 1 Ställ ut 2 bord 20 000 · 2 Anställ 2 30 000 · 3 Designa en telefon 50 000 · 4 Lansera den 80 000 · **5 Köp nya kontorsmöbler 100 000** (klart vid första betalda möbeln – gratisfällborden från mål 1 och möbler ur förrådet räknas inte) · 6 Forska fram en teknik 120 000 · 7 Sälj 100 st 150 000 · 8 Betyg ≥ 6,5 200 000 · 9 Tjäna in fabriken 250 000 · 10 Telefon nr 2 300 000 · 11 Kör en reklamkampanj 400 000 · 12 Sälj 1 000 st 500 000 · 13 Trivsel ★ 2,0 500 000 · 14 Litet kontor 800 000 · 15 Anställ en ★★ 600 000 · 16 Betyg ≥ 7,5 1 M · 17 Öppna Europa 1,5 M · 18 Surfplatta 2 M · 19 Marknadsandel 10 % 2,5 M · 20 25 tekniker 3 M · 21 Kontorsvåning 4 M · 22 Eget OS 6 M · 23 Smartklocka 8 M · 24 Betyg ≥ 9,0 10 M · 25 Studio 15 M · 26 Hela världen 25 M · 27 100 tekniker 40 M · 28 Huvudkontor 100 M.
 - Utmärkelser separat ("Hej världen" m.fl.), kosmetiska.
-- **Gåvor**: sju kort i förlagans belopp, per **riktig kalenderdag** du spelar, ingen streak-nollning, kontantgåvor = max(grundbelopp, 10 % av förra veckans omsättning). Mysterielådan visar innehållet före öppning (en av sex legendariska ytor, aldrig tom). Influencer och Direktbygge sparas i inventariet. Dag 5-bonus +10 % blir permanent.
+- **Gåvor**: sju kort i förlagans belopp, per **riktig kalenderdag** du spelar och **per bolag** (G.gavor), ingen streak-nollning, kontantgåvor = max(grundbelopp, 10 % av förra veckans omsättning). Mysterielådan visar innehållet före öppning (en av sex legendariska ytor, aldrig tom). Influencer och Direktbygge sparas i inventariet. Dag 5-bonus +10 % blir permanent.
 - **Samlingen** (i TELEFONER → MUSEET): alla dina telefoner i 3D, utmärkelser, legendariska ytor (3 ur lådan, 3 via bedrifter: Krom = 2007-telefon ≥ 7, Guld = 100 000 sålda, Galax = 50 tekniker). Ytor = ytnivå 1,0 i betyget + stolthet.
 
 ### 2.11 Kontorsnivåer och ekonomiskydd
@@ -113,14 +117,15 @@ Konceptyllan sparar design utan start. Ny forskad del kostar ~2× nivån den ers
 | Studio | 40 M | 20 | 4 | ★★★★ | 3 enhetstyper |
 | Huvudkontor | 200 M | 32 | 6 | ★★★★★ | mål 26 |
 
-Flytt = ny scen, möblerna till förrådet och placeras om. **Nödlånet**: kassa < 0 → banken lånar 500 000 kr automatiskt, 10 %/år, dras av vinsten; ingen konkurs, inget game over. Tal ≥ 10 M formateras "12,5 MKR / 1,2 MDR".
+Flytt = ny scen, möblerna till förrådet och placeras om. **Nödlånet**: kassa < 0 → banken lånar 500 000 kr automatiskt (flera på en gång om det behövs), 10 %/år; lånet är ingen intäkt och återbetalningen ingen kostnad – bara räntan dras av vinsten; ingen konkurs, inget game over. Kortet NÖDLÅN (paus, säger vad lönerna kostar per månad) kommer första gången och sedan högst var 30:e dag; däremellan en toast "NYTT NÖDLÅN · LÅN TOTALT". **BETALA AV** (BOLAGET → EKONOMI) lämnar max(100 000, 3 × månadslönerna) i kassan, så att nästa lönedag inte ger ett nytt nödlån direkt. Tal ≥ 10 M formateras "12,5 MKR / 1,2 MDR".
 
 ### 2.12 Slutspel
 1 jan 2027: **Slutgalan** (20 år i siffror, museet rullar, titel Garagegeniet → Mobilmagnaten). Val: sandlåda eller **SÄLJ BOLAGET**. Värde = (kassa + 10 × senaste 52 veckornas modellvinst) × rykte. Arv: +10 % startkassa och +10 % FP-takt per sålt bolag (max 5), en legendarisk yta, och gamla bolaget blir rival. Lokala topplistor på garageväggen per sparfil.
+- Tills Slutgalan finns: **SÄLJ BOLAGET** (BOLAGET → SÄLJ BOLAGET) går att trycka först 1 jan 2027 – tidigare visar knappen "KAN SÄLJAS 1 JAN 2027" och hur lång tid som är kvar. Nyårsrapporten 2027 säger att bolaget nu kan säljas. Det sålda bolaget raderas från enheten (arvet har namn, betyg och värde) och startskärmen visar ett kvitto.
 
 ### 2.13 Flerspelar- och Snabbfilen-koppling
 - Lagring under prefix `mobilfabriken.` (Legacy i egen nyckel); Snabbfilens nycklar läses bara (`snabbfilen_avatar`, `snabbfilen_avatars`) – 8bitcat.github.io delar localStorage.
-- Flera bolag per enhet (DINA BOLAG) → familjen tävlar på fasadens tavlor.
+- Flera bolag per enhet (DINA BOLAG) → familjen tävlar på fasadens tavlor. Högst 12 bolag per enhet: taket gäller när ett bolag skapas (NYTT BOLAG visar då listan med "RADERA ETT FÖRST"), listan rullar, X raderar efter JA/NEJ och inget bolag knuffas ut.
 - Efter 1.0: PeerJS-rum som Snabbfilen – kompisens telefon i rivalistan, "lansera samma vecka". Spelet måste vara komplett utan nät (TURN död).
 
 ---
@@ -138,9 +143,9 @@ Flytt = ny scen, möblerna till förrådet och placeras om. **Nödlånet**: kass
 10. Rivaler: lanseringsdag nådd → ny generation, RIVAL-nyhet; marknadssnitt uppdateras.
 11. Moral glider mot målvärdet (±5/dag); fest klingar av.
 12. Den 1:a: månadsrapport-toast, kandidater fylls på (3 nya), gratis omrull återställs, nödlåneränta.
-13. 1 jan: nyårsrapport (autopaus), förväntningar byts, UPPFINNS-noder öppnas, FP-priser räknas om, rivalerna slumpar lanseringsdagar, marknadspris +6 %, Bas +25 %.
+13. 1 jan: nyårsrapport (autopaus), förväntningar byts, UPPFINNS-noder öppnas, FP-priser räknas om, rivalerna slumpar lanseringsdagar, marknadspris +6 %, Bas +20 %.
 14. Mål och utmärkelser kontrolleras → belöning, DU-nyhet, konfetti, autopaus.
-15. Nödlån: kassa < 0 → +500 000, nyhet.
+15. Nödlån: kassa < 0 → +500 000 (eller så många 500 000 som behövs), nyhet; kort högst var 30:e dag, annars toast (§2.11).
 16. Autospar (var 7:e dag + varje skärmbyte).
 
 ---
@@ -171,7 +176,7 @@ Rival  { id, bolag, modell, generation, betyg, pris, nastaLanseringDag, karaktar
 Handelse { id, namn, text, effekt:{typ,varde}, langdDagar, villkor:{ar?,manad?,egen?} }
 Nyhet  { dag, typ:'DU'|'RIVAL'|'VÄRLD', text }
 Mal    { nasta:1..28, klara:[int], utmarkelser:[string] }   // mållista statisk: {nr, text, villkor(fn), belopp}
-Gavor  { senastRiktigDag:'2026-10-08', kort:1..7, bonusPermanent:bool, legendariska:[string] }
+Gavor  { senastRiktigDag:'2026-10-08', kort:1..7, bonusPermanent:bool, legendariska:[string] }   // per bolag i G.gavor { senast, kort }; enhetsnyckeln 'mobilfabriken.gavor' från 0.1.0 läses en gång
 Legacy { saldaBolag:int, ytor:[string], gamlaBolag:[{namn,initial,betyg}] }   // nyckel 'mobilfabriken.legacy'
 ```
 Statiska JSON-tabeller: katalog, delar, noder (144), karosser (16), förväntan per år, rivaler (9), mål (28), händelser, handledning.

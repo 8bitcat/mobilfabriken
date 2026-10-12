@@ -4,7 +4,7 @@
 //   DESIGN = 0,4 × karossens fräschhet + 0,3 × materialet + 0,3 × ytan
 //   PUTS   = kvalitetsprickar under bygget / kvalitetsmålet
 // Kalibrerat mot förlagan: en 2007-telefon med standarddelar, 5 prickar och 2 buggar får ~6,2.
-import { GRUPPER, DELAR, KAROSSER, YTOR, RAMAR, LINSER, FUNKTIONER, ENHETER, STANDARD_VAL, delAv, nivaAv } from '../data/delar.js';
+import { GRUPPER, DELAR, KAROSSER, YTOR, RAMAR, LINSER, FUNKTIONER, ENHETER, STANDARD_VAL, delAv, nivaAv, enhetAv } from '../data/delar.js';
 import { NOD } from '../data/noder.js';
 import { arAv, klamp } from './bas.js';
 
@@ -69,11 +69,10 @@ export function styckkostnad(G, d, effekter = {}) {
   if (ramTeknik) sum += ramTeknik.kostnad;
   // större skärm än 3,7" kostar 6 kr per tiondels tum
   sum += Math.max(0, Math.round((tum(d) - 3.7) * 10)) * 6;
-  // andra enheter än telefonen: samma delar men mer eller mindre av dem
-  sum *= ENHETS_KOSTNAD[d.enhet] || 1;
+  // andra enheter än telefonen: samma delar men mer eller mindre av dem (ENHETER.kostnad i data/delar.js)
+  sum *= enhetAv(d.enhet).kostnad;
   return Math.round(sum * (effekter.styck || 1));
 }
-const ENHETS_KOSTNAD = { telefon: 1, platta: 1.6, laptop: 2.6, klocka: 0.7, horlurar: 0.45, vikbar: 2.0 };
 // minsta tjocklek som batteriet kräver: 1,1 cm för 1 000 mAh, +0,1 cm per 500 mAh
 export const minDjup = (d) => { const b = delAv('batteri', d.val.batteri); return 0.11 + Math.max(0, ((b?.mah || 1000) - 1000) / 500) * 0.01 - (d.kaross === 'lufttunn' ? 0.02 : 0); };
 
@@ -106,9 +105,10 @@ export function funktioner(G, d) {
   if (G) for (const id of G.forskning.klara) if (id.startsWith('et-') && NOD[id]?.lasUpp.enhet === d.enhet) n++;
   return n;
 }
+export const FUNK_MAX = 1.0;   // funktionsbonusen: +0,1 per funktion, högst +1,0 (SPELDESIGN §2.7)
 export function betyg(G, d, ar, kvalitet, kvalMal, buggar, effekter = {}) {
   const T = teknik(d, ar, effekter).poang, Dp = designPoang(d, ar), P = klamp(kvalitet / Math.max(1, kvalMal), 0, 1);
-  const funk = Math.min(0.6, 0.1 * funktioner(G, d));
+  const funk = Math.min(FUNK_MAX, 0.1 * funktioner(G, d));
   const b = 10 * (0.6 * T + 0.2 * Dp + 0.2 * P) - 0.1 * buggar + funk;
   return { betyg: Math.round(klamp(b, 1, 10) * 10) / 10, teknik: klamp(T / 1.2 * 1.2, 0, 1.2), design: Dp, puts: P, funk };
 }

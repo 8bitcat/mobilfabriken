@@ -35,8 +35,9 @@ function scenBild() {
   SCEN = P.flush(); return SCEN;
 }
 function ridå(ctx, oppen) {
-  // röd sammet, går isär
+  // röd sammet, går isär. 3D-telefonen ligger i ett eget lager ovanpå – ridåhalvorna klipper bort den
   const bredd = Math.round((W / 2) * (1 - oppen));
+  Vy3d.skymma({ x: 0, y: 14, w: bredd, h: H - 14 }); Vy3d.skymma({ x: W - bredd, y: 14, w: bredd, h: H - 14 });
   for (let x = 0; x < bredd; x++) {
     const v = (x % 16) / 16, c = mix(0x8a1020, 0xd03040, Math.sin(v * Math.PI) * 0.8);
     ctx.fillStyle = '#' + c.toString(16).padStart(6, '0');
@@ -58,7 +59,7 @@ export function show(A, o = {}) {
   const G = A.G, p = G.produkter.find((x) => x.id === o.produkt) || G.produkter[G.produkter.length - 1];
   let t = o.t || 0, spin = 0, ljudSteg = o.t ? 9 : 0;
   if (!p) return { tid: false, enter() { A.go('kontor'); }, rita() {} };
-  const C = citat(p), stj = Math.max(1, Math.round(p.betyg / 2)), rim = Math.round(rimligtPris(p.lanseradDag, p.betyg) / 10) * 10;
+  const C = citat(p), stj = Math.max(1, Math.round(p.betyg / 2)), rim = Math.round(rimligtPris(p.lanseradDag, p.betyg, p.design.enhet) / 10) * 10;
   const hoppa = () => { if (t < 8.5) { t = 8.5; ljudSteg = 9; } };
   return {
     tid: false,
@@ -106,7 +107,7 @@ export function show(A, o = {}) {
       if (t < 8.5) knapp(W - 64, H - 14, 60, 10, 'HOPPA ÖVER', { stil: 'morkt', klick: hoppa });
       else {
         knapp(8, H - 16, 100, 12, 'TILL KONTORET', { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
-        knapp(112, H - 16, 100, 12, 'SE TELEFONEN', { stil: 'morkt', klick: () => A.go('telefoner', { produkt: p.id }) });
+        knapp(112, H - 16, 100, 12, 'SE TELEFONEN', { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
       }
       rect(0, 0, W, 14, 0x0a0d1a);
       text('LANSERINGEN · ' + G.bolag.namn, 4, 4, F.dim);

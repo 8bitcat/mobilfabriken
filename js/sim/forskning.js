@@ -47,7 +47,11 @@ export function dagligForskning(G) {
     G.forskning.klara.push(p.nod);
     const n = NOD[p.nod];
     nyhet(G, 'DU', `${G.bolag.namn} HAR FORSKAT FRAM ${n.namn}.`);
-    signal(G, 'banner', { text: `NY TEKNIK: ${n.namn} – ${vadLasesUpp(n)}`, farg: 'bla', paus: true, ljud: 'forskning' });
+    // autopaus (SPELDESIGN §2.1) ska alltid synas: ett kort med OK som bygget klart och nödlånet,
+    // inte en banner som försvinner medan tiden står still. Utan autopaus räcker bannern.
+    const vad = vadLasesUpp(n);
+    if (G.installningar.autopaus) signal(G, 'stor', { rubrik: 'NY TEKNIK!', text: vad ? `${n.namn}: ${vad}${/[.!]$/.test(vad) ? '' : '.'}` : `${n.namn}.`, paus: true, ljud: 'forskning' });
+    else signal(G, 'banner', { text: vad ? `NY TEKNIK: ${n.namn} – ${vad}` : `NY TEKNIK: ${n.namn}`, farg: 'bla', ljud: 'forskning' });
   }
 }
 export function vadLasesUpp(n) {

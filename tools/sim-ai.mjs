@@ -16,6 +16,9 @@ import { KONTOR, REGIONER, KAMPANJER } from '../js/data/varld.js';
 import { arAv, kr, dec } from '../js/sim/bas.js';
 
 const args = process.argv.slice(2), N = +(args.find((a) => /^\d+$/.test(a)) || 3), snal = args.includes('--snal');
+// robotens egna val slumpas med ett frö per körning (mulberry32), så att två körningar går att jämföra
+let rnd = () => 0.5;
+const fro = (s) => { let a = s >>> 0; rnd = () => { a = (a + 0x6d2b79f5) >>> 0; let t = a; t = Math.imul(t ^ (t >>> 15), t | 1); t ^= t + Math.imul(t ^ (t >>> 7), t | 61); return ((t ^ (t >>> 14)) >>> 0) / 4294967296; }; };
 
 function basta(G) {
   const ar = arAv(G.dag), d = nyDesign(G, null);
@@ -26,9 +29,9 @@ function basta(G) {
   d.yta = ar >= 2012 ? 'borstad' : ar >= 2009 ? 'matt' : 'klassisk';
   // ny enhetstyp om den finns och vi inte har sålt den än
   const ny = ENHETER.find((e) => e.id !== 'telefon' && harEnhet(G, e.id) && !G.bolag.enhetstyper.includes(e.id));
-  if (ny && G.produkter.filter((p) => p.aktiv).length >= 1 && Math.random() < 0.5) d.enhet = ny.id;
+  if (ny && G.produkter.filter((p) => p.aktiv).length >= 1 && rnd() < 0.5) d.enhet = ny.id;
   const b = betygAv(G, d, ar, 9, 13, 1).betyg;
-  d.pris = Math.round(rimligtPris(G.dag, b) * 1.05 / 10) * 10;
+  d.pris = Math.round(rimligtPris(G.dag, b, d.enhet) * 1.05 / 10) * 10;   // rimligt pris för enheten (en laptop är värd mer)
   d.namn = (d.enhet === 'telefon' ? 'PIXEL PHONE ' : d.enhet.toUpperCase() + ' ') + (G.bolag.lanseringar + 1);
   return d;
 }
@@ -85,7 +88,7 @@ function expandera(G) {
 
 const sammanfattning = [];
 for (let seed = 1; seed <= N; seed++) {
-  const G = nyttSpel({ namn: 'ROBOTBOLAGET', seed: seed * 101 }); G.installningar.autopaus = false;
+  const G = nyttSpel({ namn: 'ROBOTBOLAGET', seed: seed * 101 }); G.installningar.autopaus = false; fro(seed * 7919);
   startKandidater(G);
   const rader = [], milstolpar = {};
   let minKassa = Infinity, lanAr = null, forraAr = 2007;

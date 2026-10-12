@@ -7,7 +7,8 @@ import { nyDesign, styckkostnad } from '../js/sim/design.js';
 import { startaUtveckling, lansera, lanseringsKalkyl, modellVinst } from '../js/sim/projekt.js';
 import { starta } from '../js/sim/forskning.js';
 import { dagTick } from '../js/sim/tick.js';
-import { kr, dec, datumText } from '../js/sim/bas.js';
+import { rimligtPris, prognos } from '../js/sim/marknad.js';
+import { kr, dec, datumText, dagForAr } from '../js/sim/bas.js';
 
 const fel = [];
 const ok = (villkor, text) => { console.log((villkor ? '  ✓ ' : '  ✗ ') + text); if (!villkor) fel.push(text); };
@@ -45,5 +46,14 @@ ok(resultat.every((r) => r.gps), 'GPS hinner forskas före/under lanseringen');
 ok(Math.abs(r0.k.fabrik + r0.k.parti - 366_000) < 1000, 'lanseringen kostar ~366 000 kr (fabrik + 100 st)');
 ok(medel((r) => r.kassa) > 1_500_000, 'kassan håller efter tre månader');
 ok(resultat.every((r) => r.rykte > 0.95 && r.rykte < 1.05), 'ryktet ~0,99 efter första telefonen');
+// regression (fynd 0/10): ett betyg långt under snittet gav negativt rimligt pris → NaN i sålda, lager och målen
+{
+  const G = nyttSpel({ namn: 'Regression', seed: 7 }); G.dag = dagForAr(2020) + 40;
+  const rim = rimligtPris(G.dag, 1.5), v = prognos(G, nyDesign(G), 1.5, 2000);
+  ok(rim > 0 && Number.isFinite(v) && v >= 0, `betyg 1,5 år 2020: rimligt pris ${kr(rim)} och ${dec(v, 2)} köpare/vecka (ändligt, ≥ 0)`);
+  // fynd 12: rimligt pris följer enheten (en laptop med samma betyg är värd 2,7 telefoner)
+  const k = rimligtPris(G.dag, 7, 'laptop') / rimligtPris(G.dag, 7);
+  ok(Math.abs(k - 2.7) < 0.01, `rimligt pris för en laptop = ${dec(k, 2)} × telefonens`);
+}
 console.log(fel.length ? `✗ sim-test: ${fel.length} fel` : '✓ sim-test: första telefonen stämmer med förlagan');
 process.exit(fel.length ? 1 : 0);

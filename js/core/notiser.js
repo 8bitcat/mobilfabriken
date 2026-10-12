@@ -1,10 +1,12 @@
 // Det som dyker upp ovanpå scenerna: toasts (små rutor), banner (rad under HUD:en), stora kort
 // (bygget klart, nytt kontor, nödlån, nyårsrapport, mål klart) och konfetti.
-import { U, F, rect, ram, text, textB, panel, papper, knapp, stycke, morkna, ikon, tw, radbryt, ljusa, W, H, BIG } from './ui.js';
+import { U, F, rect, ram, text, textB, panel, papper, knapp, stycke, morkna, ikon, tw, kapa, radbryt, ljusa, W, H, BIG } from './ui.js';
 import { kr, dec } from '../sim/bas.js';
+import * as Vy3d from '../telefon/vy3d.js';
 
 const N = { toasts: [], banner: null, stora: [], konfetti: [], mal: [] };
 const FARG = { gron: F.gron, rod: F.rod, bla: F.bla, lila: F.lila, guld: F.guld2, orange: F.orange };
+const TOAST_W = 200;
 
 export function ta(h, A) {
   switch (h.typ) {
@@ -34,25 +36,39 @@ export function rita(A, dt) {
     const b = N.banner; b.t += dt;
     const y = 15 + (b.t < 0.2 ? Math.round((b.t / 0.2 - 1) * 12) : 0);
     rect(0, y, W, 11, b.farg); rect(0, y, W, 1, ljusa(b.farg, 0.35)); rect(0, y + 11, W, 1, F.skugga);
-    text(b.text, W / 2, y + 3, F.text, { just: 'c' });
+    Vy3d.skymma({ x: 0, y, w: W, h: 12 });
+    text(kapa(b.text, W - 8), W / 2, y + 3, F.text, { just: 'c' });
     if (b.t > 4.5) N.banner = null;
   }
-  // toasts uppe till höger
-  let ty = 28;
+  // toasts uppe till höger (långa texter bryts på två rader i stället för att rinna ut ur rutan),
+  // under Mios ruta om den står uppe till höger (forskningen)
+  const mio = A.mioRuta;
+  let ty = mio && mio.x + mio.w > W - TOAST_W - 4 && mio.y < 80 ? Math.max(28, mio.y + mio.h + 2) : 28;
   for (const t of N.toasts) {
     t.t += dt;
-    const w = Math.min(200, tw(t.text) + 12), x = W - w - 4 + (t.t < 0.15 ? Math.round((1 - t.t / 0.15) * 30) : 0);
-    panel(x, ty, w, 11, { fyll: F.panel2, block: false }); rect(x, ty, 2, 11, t.farg);
-    text(t.text, x + 6, ty + 3, F.text);
-    ty += 13;
+    const delar = tw(t.text) + 12 > TOAST_W ? radbryt(t.text, TOAST_W - 12) : [t.text];
+    const rader = delar.length > 1 ? [kapa(delar[0], TOAST_W - 12), kapa(delar.slice(1).join(' '), TOAST_W - 12)] : [kapa(delar[0], TOAST_W - 12)];
+    const w = Math.min(TOAST_W, Math.max(...rader.map((r) => tw(r))) + 12), h = 4 + rader.length * 7;
+    const x = W - w - 4 + (t.t < 0.15 ? Math.round((1 - t.t / 0.15) * 30) : 0);
+    panel(x, ty, w, h, { fyll: F.panel2, block: false }); rect(x, ty, 2, h, t.farg);
+    Vy3d.skymma({ x, y: ty, w: w + 2, h: h + 2 });
+    rader.forEach((r, i) => text(r, x + 6, ty + 3 + i * 7, F.text));
+    ty += h + 2;
   }
   N.toasts = N.toasts.filter((t) => t.t < 3.2);
-  // mål klart: en papperslapp som glider in uppe i mitten och försvinner av sig själv
+  // mål klart: en papperslapp som glider in nere i mitten och försvinner av sig själv. Står Mios ruta där
+  // (handledningen, A.mioRuta) lägger sig lappen bredvid den i stället för över hennes text.
   const m = N.mal[0];
   if (m) {
     m.t += dt;
-    const w = 210, x = (W - w) / 2, y = 168 + (m.t < 0.25 ? Math.round((1 - m.t / 0.25) * 40) : m.t > 3.2 ? Math.round((m.t - 3.2) / 0.3 * 40) : 0);
+    let w = 210, x = (W - w) / 2;
+    const r = A.mioRuta, ly = 168;
+    if (r && x < r.x + r.w && r.x < x + w + 2 && ly < r.y + r.h && r.y < ly + 28) {
+      if (r.x + r.w / 2 < W / 2) { x = r.x + r.w + 2; w = Math.min(w, W - 2 - x); } else { w = Math.min(w, r.x - 4); x = r.x - w - 2; }
+    }
+    const y = ly + (m.t < 0.25 ? Math.round((1 - m.t / 0.25) * 40) : m.t > 3.2 ? Math.round((m.t - 3.2) / 0.3 * 40) : 0);
     rect(x + 2, y + 2, w, 26, F.skugga); rect(x, y, w, 26, F.papper); ram(x, y, w, 26, 0xb9ad94); rect(x, y, 4, 26, F.guld2);
+    Vy3d.skymma({ x, y, w: w + 2, h: 28 });
     text(`MÅL ${m.nr} AV 28 KLART!`, x + 9, y + 4, 0x9e1b22); text('+' + kr(m.belopp), x + w - 6, y + 4, 0x2f8f46, { just: 'h' });
     textB(m.text, x + 9, y + 13, F.blak);
     if (m.t > 3.5) N.mal.shift();
@@ -75,7 +91,13 @@ export function rita(A, dt) {
   } else knapp(x + w / 2 - 40, by, 80, 11, 'OK', { stil: 'bla', klick: () => stang(A), namn: 'stor-ok' });
 }
 function hitBlock() { U.hits.push({ x: 0, y: 0, w: W, h: H, block: true }); }
-function stang(A) { N.stora.shift(); A.ljud('klick'); }
+// kortet stängs. Pausade loopen spelet för att något hände (autopaus, A.autopausad i main.js) går tiden
+// igen när sista kortet är läst – annars står spelet tyst stilla efter OK och barnet förstår inte varför.
+// Har barnet själv pausat eller bytt fart sedan dess rörs tiden inte.
+function stang(A) {
+  N.stora.shift(); A.ljud('klick');
+  if (!N.stora.length && A.autopausad) { A.autopausad = false; A.spelaTid(); }
+}
 function malKort(A, s) {
   const w = 190, h = 74, x = (W - w) / 2, y = (H - h) / 2 - 6;
   papper(x, y, w, h);
@@ -102,7 +124,9 @@ function nyarsKort(A, s) {
   rad('KOSTNADER', kr(-(r.kostnad || 0)), F.text, y + 68);
   rad('ÅRETS RESULTAT', kr(r.vinst || 0), (r.vinst || 0) >= 0 ? F.gron2 : F.rod2, y + 78);
   rad('ÅRETS TELEFON', r.basta ? `${r.basta.namn} (${dec(r.basta.betyg)})` : '-', F.guld, y + 88);
-  text(`KRITIKERNA HÖJER KRAVEN: SNITTET ÄR ${dec(r.snitt || 6.2)}`, W / 2, y + 98, F.bla2, { just: 'c' });
+  // 2027: säljknappen har låsts upp (BOLAGET > SÄLJ BOLAGET) – det viktigare beskedet tar kritikerraden
+  if (r.salj) text('NU KAN DU SÄLJA BOLAGET (BOLAGET > SÄLJ BOLAGET)', W / 2, y + 98, F.guld, { just: 'c' });
+  else text(`KRITIKERNA HÖJER KRAVEN: SNITTET ÄR ${dec(r.snitt || 6.2)}`, W / 2, y + 98, F.bla2, { just: 'c' });
   knapp(x + w / 2 - 34, y + h - 14, 68, 11, 'NYTT ÅR!', { stil: 'guld', klick: () => stang(A), namn: 'stor-ok' });
 }
 export function rensa() { N.toasts = []; N.banner = null; N.stora = []; N.konfetti = []; N.mal = []; }

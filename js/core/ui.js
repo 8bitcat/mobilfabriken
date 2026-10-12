@@ -171,11 +171,14 @@ export function lista(x, y, w, h, antal, radH, ritaRad, sk) {
   sk.v = Math.max(0, Math.min(maxS, sk.v || 0));
   U.ctx.save(); U.ctx.beginPath(); U.ctx.rect(x, y, w, h); U.ctx.clip();
   const forsta = Math.floor(sk.v / radH);
-  const hitsFore = U.hits.length;
+  const hitsFore = U.hits.length, markFore = { ...U.mark };
   for (let i = forsta; i < antal && i * radH - sk.v < h; i++) ritaRad(i, y + i * radH - Math.round(sk.v));
   U.ctx.restore();
-  // klickytor utanför listan tas bort (klippta rader)
-  U.hits = U.hits.filter((hh, i) => i < hitsFore || (hh.y + hh.h > y && hh.y < y + h));
+  // klickytorna klipps till listan som ritningen: en halvt synlig rad går bara att trycka på där den syns,
+  // och ytor helt utanför listan tas bort. Radernas märken (robotar, handledningen) klipps likadant.
+  const klipp = (r) => { const y0 = Math.max(r.y, y), y1 = Math.min(r.y + r.h, y + h); if (y1 <= y0) return false; r.y = y0; r.h = y1 - y0; return true; };
+  U.hits = U.hits.filter((hh, i) => i < hitsFore || klipp(hh));
+  for (const k in U.mark) if (U.mark[k] !== markFore[k] && !klipp(U.mark[k])) { if (k in markFore) U.mark[k] = markFore[k]; else delete U.mark[k]; }
   if (maxS > 0) { const th = Math.max(8, Math.round(h * h / (antal * radH))), ty = y + Math.round((h - th) * sk.v / maxS); rect(x + w - 2, y, 2, h, F.lo); rect(x + w - 2, ty, 2, th, F.hi); }
   // rullytan läggs UNDER raderna så att knapparna i raderna går att trycka på
   U.hits.splice(hitsFore, 0, { x, y, w, h, hjul: (dy) => { sk.v += dy; }, drag: maxS > 0 ? (mx, my, fas) => { if (fas === 'start') { sk.dragY = my; sk.dragV = sk.v; } else sk.v = sk.dragV - (my - sk.dragY); } : null, block: true });

@@ -1,5 +1,23 @@
 # Nyheter i Mobilfabriken
 
+## 0.1.2 – Granskningens rättningar (2026-10-13)
+
+- Designern: alla forskade delar går att välja – listorna rullar. Storlek och form följer prylen, så en laptop
+  kan inte längre bli 7 cm bred. Ny forskning kommer med i nästa telefon, och funktionerna syns utan att man rullar.
+- Koncepthyllan laddar konceptet du trycker på, och alla sparade koncept syns.
+- Mål 5 klaras av första möbeln man köper. Förut kunde hela målkedjan fastna där.
+- En telefon med mycket lågt betyg förstör inte längre försäljningssiffrorna. Trasiga sparningar lagas när de laddas.
+- Varje pryl har ett eget rimligt pris: laptop, surfplatta och vikbar går att tjäna pengar på, och hörlurarna
+  är inte längre en guldgruva.
+- Kritikerna bedömer telefonen mot året den lanseras. Ett parti på väg försvinner inte när man lägger ner en telefon.
+- Ett sålt bolag går inte att sälja igen, och det gamla bolaget dyker upp som konkurrent. Startrutan visar rätt kassa.
+- DINA BOLAG visar alla bolag och går att rulla. Nödlånet kommer inte var fjärde dag längre, och BETALA AV tömmer
+  inte kassan.
+- Mios ruta täcker inte det man ska trycka på, och 3D-telefonen ritas inte längre ovanpå ridån eller rutan.
+  Handledningen fastnar inte om man avbryter ett bygge eller trycker SE TELEFONEN.
+- Laptops, klockor och hörlurar ser ut som sig själva i museet och i pixelläget. Texter som klipptes eller gick
+  utanför sina rutor är lagade.
+
 ## 0.1.1 – Hela mobilskärmen (2026-10-09)
 
 - På mobil och surfplatta fyller spelet nu hela skärmens höjd, så knapparna blir större.

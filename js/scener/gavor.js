@@ -1,5 +1,6 @@
 // GÅVOR – sju kort, ett per riktig kalenderdag du spelar. Ingen streak som nollställs (familjespel):
 // missar du en dag fortsätter du där du var. Pengagåvorna växer med bolaget.
+// Serien räknas per bolag (G.gavor, SPELDESIGN §4) – samma bolag som får gåvorna och dag 5-bonusen.
 import { F, W, rect, ram, text, textB, knapp, panel, kort, ikon, hit, stycke, mixa, ljusa, BIG } from '../core/ui.js';
 import { hud, flikrad } from './ram.js';
 import { konfetti } from '../core/notiser.js';
@@ -14,18 +15,31 @@ export const KORT = [
   { dag: 2, namn: 'FORSKNING', typ: 'fp', bas: 60, farg: F.bla, ikon: 'fp' },
   { dag: 3, namn: 'PENGAR', typ: 'pengar', bas: 300_000, farg: F.gron, ikon: 'pengar' },
   { dag: 4, namn: 'FORSKNING', typ: 'fp', bas: 90, farg: F.bla, ikon: 'fp' },
-  { dag: 5, namn: 'MYSTERIELÅDA', typ: 'lada', farg: F.lila, ikon: 'gava', info: 'EN LEGENDARISK YTA' },
-  { dag: 6, namn: 'INFLUENCER', typ: 'influencer', farg: F.rod, ikon: 'mega', info: '+60 % HYPE VID LANSERING' },
+  { dag: 5, namn: 'MYSTERIELÅDA', typ: 'lada', farg: F.lila, ikon: 'gava', info: 'LEGENDARISK YTA' },
+  { dag: 6, namn: 'INFLUENCER', typ: 'influencer', farg: F.rod, ikon: 'mega', info: '+60 % HYPE\n1 LANSERING' },
   { dag: 7, namn: '24K GULD', typ: 'guld', farg: F.guld2, ikon: 'stjarna', info: 'DIREKTBYGGE + GULDYTA' },
 ];
-export function gavaKlar() { const g = Spara.gavoLage(); return g.senast !== idag(); }
+// gåvoläget för ett bolag. Bolag från 0.1.0 (då räknades gåvorna per enhet) tar över enhetens läge en gång;
+// dag 5-bonusen räknas bara som tagen om just det bolaget fick den.
+export function gavoLaget(G) {
+  if (!G.gavor) {
+    const g = Spara.gamlaGavoLaget() || {};
+    let kort = Math.max(0, Math.floor(+g.kort || 0));
+    if (kort >= 5 && !G.flaggor?.saljBonus) kort = 4;
+    G.gavor = { senast: typeof g.senast === 'string' ? g.senast : null, kort };
+  }
+  return G.gavor;
+}
+// HUD:ens gåvoikon blinkar när bolaget inte har öppnat dagens gåva (ram.js bör skicka A.G)
+export function gavaKlar(G = globalThis.__A?.G) { return !!G && gavoLaget(G).senast !== idag(); }
 
 export function gavor(A) {
   const G = A.G;
-  let lage = Spara.gavoLage(), oppnat = null;
-  const nasta = lage.senast === idag() ? null : (lage.kort % 7);
+  let lage = gavoLaget(G), oppnat = null;
+  const nastaKort = () => lage.senast === idag() ? null : (lage.kort % 7);
   const belopp = (k) => k.typ === 'pengar' ? Math.max(k.bas, Math.round(0.1 * veckoOmsattning(G) / 1000) * 1000) : k.bas;
   function oppna() {
+    const nasta = nastaKort();
     if (nasta == null) return;
     const k = KORT[nasta];
     if (k.typ === 'pengar') intakt(G, belopp(k), 'gavor');
@@ -34,7 +48,7 @@ export function gavor(A) {
     else if (k.typ === 'influencer') G.inventarie.influencer++;
     else if (k.typ === 'guld') { G.inventarie.direktbygge++; if (!G.legendariska.includes('guld')) G.legendariska.push('guld'); }
     if (nasta === 4) G.flaggor.saljBonus = true;   // dag 5-bonusen: +10 % på varje försäljning, för alltid
-    lage = { senast: idag(), kort: lage.kort + 1 }; Spara.sparaGavoLage(lage);
+    G.gavor = lage = { senast: idag(), kort: lage.kort + 1 };
     nyhet(G, 'DU', `${G.bolag.namn} ÖPPNADE DAGENS GÅVA: ${k.namn}.`);
     konfetti(60); A.ljud('mal'); A.spara();
   }
@@ -43,6 +57,7 @@ export function gavor(A) {
     rita() {
       rect(0, 14, W, 188, 0x0b0e1c);
       textB('GÅVOR', 4, 16, F.guld); text('EN GÅVA VARJE DAG DU SPELAR – MISSAR DU EN DAG FORTSÄTTER DU DÄR DU VAR', 44, 18, F.dim);
+      const nasta = nastaKort();
       KORT.forEach((k, i) => {
         const x = 4 + i * 54, y = 30, klar = i < (lage.kort % 7) || (lage.senast === idag() && i === (lage.kort - 1) % 7), nu = i === nasta;
         kort(x, y, 51, 80, { vald: nu, kant: nu ? F.guld : k.farg });
@@ -50,7 +65,7 @@ export function gavor(A) {
         rect(x + 8, y + 15, 35, 30, mixa(k.farg, F.panel2, 0.7)); ikon(k.ikon, x + 19, y + 24, k.farg, 2);
         text(k.namn, x + 26, y + 50, F.text, { just: 'c' });
         text(k.typ === 'pengar' ? kr(belopp(k), true) : k.typ === 'fp' ? '+' + k.bas + ' FP' : '', x + 26, y + 58, k.farg, { just: 'c' });
-        if (k.info) stycke(k.info, x + 3, y + 57, 45, F.dim, { rad: 6 });
+        if (k.info) stycke(k.info, x + 26, y + 56, 45, F.dim, { rad: 6, just: 'c' });   // högst två rader (y + 56–66) – ÖPPNA!/låsraden börjar på y + 67
         if (klar) { rect(x + 3, y + 68, 45, 9, F.panel3); ikon('bock', x + 22, y + 69, F.gron2); }
         else if (nu) knapp(x + 3, y + 67, 45, 11, 'ÖPPNA!', { stil: 'gron', klick: oppna, namn: 'gava-oppna' });
         else { rect(x + 3, y + 68, 45, 9, F.panel2); ikon('las', x + 15, y + 69, F.dim2); text('DAG ' + k.dag, x + 25, y + 70, F.dim2); }

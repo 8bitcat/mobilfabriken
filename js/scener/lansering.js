@@ -8,6 +8,7 @@ import { telAv } from '../sim/design.js';
 import { lanseringsKalkyl, lansera, FORSTA_PARTI } from '../sim/projekt.js';
 import { tackning } from '../sim/marknad.js';
 import { kr, dec, tal } from '../sim/bas.js';
+import { lana, NODLAN } from '../sim/spel.js';
 
 export function lansering(A, o = {}) {
   const G = A.G;
@@ -37,27 +38,39 @@ export function lansering(A, o = {}) {
         rect(x + 3, y + 3, 9, 9, mixa(c.farg, F.panel, 0.4)); ikon(['kryss', 'graf', 'tidning', 'stjarna'][i], x + 4, y + 4, c.farg);
         text(kapa(c.namn, 44), x + 15, y + 5, F.text);
         textB(c.pris ? kr(c.pris, true) : 'GRATIS', x + 3, y + 15, c.pris ? F.guld : F.gron2);
-        text(last ? 'KRÄVER 3 MARKNADER' : (c.hype ? '+' + Math.round(c.hype * 100) + ' % TIDIGT' : 'GRUNDNIVÅ'), x + 3, y + 25, last ? F.orange2 : c.farg);
+        if (last) { ikon('las', x + 3, y + 24, F.orange2); text('3 MARKNADER', x + 12, y + 25, F.orange2); }   // kortet rymmer 55 px
+        else text(c.hype ? '+' + Math.round(c.hype * 100) + ' % TIDIGT' : 'GRUNDNIVÅ', x + 3, y + 25, c.farg);
         matare(x + 3, y + 31, 55, 2, c.hype / 1.8, c.farg);
       });
       // 2. vad kampanjen ger
       text('2. VAD KAMPANJEN GER', RX, 66, F.text);
       panel(RX, 74, 254, 34, { fyll: F.panel2, kant: F.hi });
-      text('BERÄKNAD EFTERFRÅGAN FÖRSTA VECKAN', RX + 5, 78, F.bla2);
+      text('EFTERFRÅGAN FÖRSTA VECKAN', RX + 5, 78, F.bla2);   // kort rubrik: reklamens rad står till höger på samma rad
       textB(`${Math.round(k.forstaVeckan)} KÖPARE`, RX + 5, 86, F.text);
       text(`SÄLJS I ${Math.round(tackning(G) * 100)} % AV VÄRLDEN. BETYG, PRIS OCH LAGER AVGÖR RESTEN.`, RX + 5, 98, F.dim2);
-      if (kamp !== 'ingen') { const v = k.reklamVinst; text(`REKLAMEN: +${Math.round(k.extraSalda)} SÅLDA ≈ ${v >= 0 ? '+' : ''}${kr(v)}`, RX + 249, 78, v >= 0 ? F.gron2 : F.rod2, { just: 'h' }); }
+      if (kamp !== 'ingen') { const v = k.reklamVinst; text(kapa(`REKLAMEN: +${Math.round(k.extraSalda)} SÅLDA, CA ${v >= 0 ? '+' : ''}${kr(v, true)}`, 138), RX + 249, 78, v >= 0 ? F.gron2 : F.rod2, { just: 'h' }); }
       else text('INGEN REKLAM', RX + 249, 78, F.dim, { just: 'h' });
       if (G.inventarie.influencer) { knapp(RX + 160, 86, 89, 9, influencer ? 'INFLUENCER: PÅ' : 'ANVÄND INFLUENCER', { stil: influencer ? 'rosa' : 'dim', klick: () => { influencer = !influencer; } }); }
       // 3. produktion
       text('3. PRODUKTION', RX, 113, F.text);
-      text(`FÖRSTA PARTIET: ${FORSTA_PARTI} TELEFONER · ${kr(k.parti)}`, RX, 121, F.text);
+      text(`FÖRSTA PARTIET: ${FORSTA_PARTI} ST · ${kr(k.parti)}`, RX, 121, F.text);   // ST: enheten kan vara en laptop eller hörlurar
       text('NYA PARTIER BESTÄLLS AUTOMATISKT NÄR LAGRET TAR SLUT.', RX, 129, F.dim);
       // summa
-      text(`FABRIK ${kr(k.fabrik)}  +  REKLAM ${kr(k.kamp.pris)}  +  FÖRSTA PARTIET ${kr(k.parti)}`, RX, 141, F.dim);
+      text(`FABRIK ${kr(k.fabrik, true)}  +  REKLAM ${kr(k.kamp.pris, true)}  +  FÖRSTA PARTIET ${kr(k.parti, true)}`, RX, 141, F.dim);
       textB('LANSERING TOTALT: ' + kr(k.total), RX, 150, F.text);
       text(`DU HAR ${kr(G.bolag.kassa)} · ${kr(k.kvar)} KVAR EFTER LANSERINGEN`, RX, 162, k.kvar < 0 ? F.rod2 : F.dim);
-      if (fel) text(fel, RX, 172, F.rod2);
+      // räcker inte pengarna ens utan reklam kommer inget nödlån (kassan går aldrig under noll) – banken
+      // erbjuder lånet här i stället, lika mycket som behövs (hela 500 000), 10 % ränta som nödlånet
+      const k0 = kamp === 'ingen' ? k : k.kvar < 0 ? lanseringsKalkyl(G, pr.id, 'ingen') : null;
+      if (k0 && k0.kvar < 0) {
+        const behov = k0.lanBehov || Math.ceil(-k0.kvar / NODLAN) * NODLAN;
+        knapp(RX, 169, 82, 9, 'LÅNA ' + kr(behov), { stil: 'orange', namn: 'lansering-lana', klick: () => {
+          const r = lana(G, behov, `BANKEN LÅNAR ${G.bolag.namn} ${kr(behov)} TILL LANSERINGEN AV ${pr.design.namn}. RÄNTAN ÄR 10 % OM ÅRET.`);
+          if (r?.ok) { fel = ''; A.ljud('mynt'); }
+        } });
+        text('AV BANKEN · 10 % RÄNTA OM ÅRET', RX + 86, 171, F.dim);
+      } else if (k.kvar < 0) text('FÖR DYR REKLAM – VÄLJ EN BILLIGARE', RX, 172, F.orange2);
+      else if (fel) text(fel, RX, 172, F.rod2);
       knapp(RX, 180, 90, 18, 'INTE ÄN', { stil: 'morkt', klick: () => A.go('kontor') });
       knapp(RX + 96, 180, 158, 18, 'LANSERA!', { stil: 'gron', F: BIG, av: k.kvar < 0, klick: () => {
         const r = lansera(G, pr.id, kamp); if (!r.ok) { fel = r.fel; A.ljud('fel'); return; }

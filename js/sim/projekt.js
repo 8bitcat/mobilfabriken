@@ -4,10 +4,10 @@
 //   Varje dag: forskare lägger en blå prick (p 0,22 × kraft × moral × forskning×), buggar uppstår
 //   (p (0,15 + 0,05 × delar över förväntan) / buggfix×), buggfixare lagar (p 0,10 × kraft × moral × buggfix×).
 //   +30 FP köper en prick (max halva målet), 30 FP lagar en bugg.
-import { GRUPPER, ENHETER } from '../data/delar.js';
+import { GRUPPER, ENHETER, enhetAv } from '../data/delar.js';
 import { KAMPANJER, kontorAv } from '../data/varld.js';
 import { arAv, slump, slumpRund, klamp, kr, dec, datumText } from './bas.js';
-import { betala, intakt, signal, nyhet } from './spel.js';
+import { betala, intakt, signal, nyhet, NODLAN } from './spel.js';
 import { styckkostnad, betyg as betygAv, kvalitetsMal, delarOver, minDjup } from './design.js';
 import { kontorsVarden } from './kontor.js';
 import { moralFaktor } from './personal.js';
@@ -16,6 +16,7 @@ import { veckoEfterfragan, aktivaEffekter, snitt, rimligtPris } from './marknad.
 export const FABRIK = 300_000;
 export const DAGKOSTNAD = 700;
 export const PRICK_FP = 30;
+export const KONCEPT_MAX = 8;   // koncepthyllan (samma tak som SPARA i designern)
 const FIX_P = 0.1;   // buggfixarens chans per dag att laga en bugg (× kraft × moral × buggfix)
 
 export function byggdagar(G, d) {
@@ -41,7 +42,9 @@ export function startaUtveckling(G, design) {
   d.namn = (d.namn || '').trim().toUpperCase() || nastaNamn(G);
   d.form.djup = Math.max(d.form.djup, minDjup(d));
   const dagar = byggdagar(G, d);
-  G.projekt.push({ id: 'pr' + G.dag + '-' + G.projekt.length, design: d, startDag: G.dag, dagar, dagNu: 0, kvalitet: 0, kvalMal: kvalitetsMal(d, arAv(G.dag)), buggar: 0,
+  // löpnummer per bolag: 'pr' + dag + antal kunde krocka (avbryt + starta samma dag). Gamla id har '-' och krockar inte.
+  G.lopnr = (G.lopnr || 0) + 1;
+  G.projekt.push({ id: 'pr' + G.lopnr, design: d, startDag: G.dag, dagar, dagNu: 0, kvalitet: 0, kvalMal: kvalitetsMal(d, arAv(G.dag)), buggar: 0,
     koptaPrickar: 0, kostnad: 0, status: 'bygger', ar: arAv(G.dag) });
   G.koncept = G.koncept.filter((c) => c.id !== design.id);
   nyhet(G, 'DU', `TEAMET BÖRJAR BYGGA ${d.namn}. BERÄKNAD TID: ${dagar} DAGAR.`);
@@ -67,16 +70,17 @@ export function dagligtBygge(G) {
       for (const p of G.personal) {
         if (p.roll === 'buggfixare' && pr.buggar > 0 && slump(G) < FIX_P * p.kraft * mf * v.buggfix) { pr.buggar--; signal(G, 'prick', { farg: 'lagad', bord: p.bord }); }
       }
-      if (pr.dagNu >= pr.dagar) {
-        pr.status = 'klar'; pr.klarDag = G.dag;
-        nyhet(G, 'DU', `${pr.design.namn} ÄR KLAR ATT LANSERA!`);
-        signal(G, 'stor', { rubrik: `${pr.design.namn} ÄR KLAR!`, text: 'LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.', paus: true, knapp: 'lansera', projekt: pr.id, ljud: 'klar' });
-      }
+      if (pr.dagNu >= pr.dagar) blirKlar(G, pr);
     } else if (pr.status === 'klar') {
       // buggfixarna putsar vidare: ungefär en bugg var tredje dag
       for (const p of G.personal) if (p.roll === 'buggfixare' && pr.buggar > 0 && slump(G) < FIX_P / 3 * p.kraft * mf * v.buggfix) pr.buggar--;
     }
   }
+}
+function blirKlar(G, pr) {
+  pr.status = 'klar'; pr.klarDag = G.dag;
+  nyhet(G, 'DU', `${pr.design.namn} ÄR KLAR ATT LANSERA!`);
+  signal(G, 'stor', { rubrik: `${pr.design.namn} ÄR KLAR!`, text: 'LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.', paus: true, knapp: 'lansera', projekt: pr.id, ljud: 'klar' });
 }
 export function kopPrick(G, prId) {
   const pr = G.projekt.find((p) => p.id === prId); if (!pr || pr.status !== 'bygger') return { ok: false };
@@ -92,23 +96,35 @@ export function lagaBugg(G, prId) {
 export function avbryt(G, prId) {
   const pr = G.projekt.find((p) => p.id === prId); if (!pr) return { ok: false };
   G.projekt = G.projekt.filter((p) => p !== pr);
-  G.koncept.unshift(pr.design);
+  // samma tak som SPARA i designern (8 koncept); samma design ligger aldrig två gånger på hyllan
+  G.koncept = [pr.design, ...G.koncept.filter((c) => c.id !== pr.design.id)].slice(0, KONCEPT_MAX);
   nyhet(G, 'DU', `${pr.design.namn} LADES PÅ HYLLAN.`);
   return { ok: true };
 }
+// DIREKTBYGGE (gåvan 24K GULD): bygget blir klart direkt. Teamet hinner de blå prickar det i snitt
+// skulle ha lagt under resten av bygget (avrundat uppåt – en gåva ska aldrig ge en sämre telefon än att vänta).
 export function direktbygg(G, prId) {
   const pr = G.projekt.find((p) => p.id === prId); if (!pr || pr.status !== 'bygger' || !G.inventarie.direktbygge) return { ok: false };
-  G.inventarie.direktbygge--; pr.dagNu = pr.dagar - 1; return { ok: true };
+  const v = kontorsVarden(G), mf = moralFaktor(G), rest = Math.max(0, pr.dagar - pr.dagNu);
+  const perDag = G.personal.filter((p) => p.roll === 'forskare').reduce((s, p) => s + Math.min(1, 0.22 * p.kraft * mf * v.forskning), 0);
+  G.inventarie.direktbygge--;
+  pr.kvalitet = Math.min(pr.kvalMal, pr.kvalitet + Math.ceil(rest * perDag - 1e-9));
+  pr.dagNu = pr.dagar;
+  blirKlar(G, pr);
+  return { ok: true };
 }
 
 // ---------- lansering ----------
-export const fabriksPris = (G, d) => Math.round(FABRIK * (ENHETER.find((e) => e.id === d.enhet)?.fabrik || 1) * (1 + 0.1 * (arAv(G.dag) - 2007)));
+export const fabriksPris = (G, d) => Math.round(FABRIK * enhetAv(d.enhet).fabrik * (1 + 0.1 * (arAv(G.dag) - 2007)));
 export const FORSTA_PARTI = 100;
+// Kritikerna jämför med året som var högst ett halvår före lanseringen: ett bygge över nyår straffas inte,
+// men en färdig telefon som får ligga olanserad i åratal bedöms mot sin tid.
+export const betygsAr = (G, pr) => arAv(Math.max(pr.startDag ?? G.dag, G.dag - 180));
 export function lanseringsKalkyl(G, prId, kampanjId) {
   const pr = G.projekt.find((p) => p.id === prId); const kamp = KAMPANJER.find((k) => k.id === kampanjId) || KAMPANJER[0];
   const eff = aktivaEffekter(G), styck = styckkostnad(G, pr.design, eff);
   const fabrik = fabriksPris(G, pr.design), parti = FORSTA_PARTI * styck;
-  const b = betygAv(G, pr.design, pr.ar, pr.kvalitet, pr.kvalMal, pr.buggar, eff);
+  const b = betygAv(G, pr.design, betygsAr(G, pr), pr.kvalitet, pr.kvalMal, pr.buggar, eff);
   const hype = kamp.hype + (G.flaggor.influencer ? 0.6 : 0);
   const p = { design: pr.design, betyg: b.betyg, pris: pr.design.pris, hype, lanseradDag: G.dag, aktiv: true };
   const ord = G.produkter; G.produkter = [...ord, p];
@@ -117,8 +133,10 @@ export function lanseringsKalkyl(G, prId, kampanjId) {
   let extra = 0; for (let v = 0; v < 12; v++) extra += veckoEfterfragan(G, p, G.dag + v * 7) - veckoEfterfragan(G, { ...p, hype: 0 }, G.dag + v * 7);
   G.produkter = ord;
   const reklamVinst = extra * (pr.design.pris - styck) - kamp.pris;
-  const total = fabrik + parti + kamp.pris;
-  return { pr, kamp, styck, fabrik, parti, total, kvar: G.bolag.kassa - total, forstaVeckan: forsta, betyg: b, extraSalda: extra, reklamVinst };
+  const total = fabrik + parti + kamp.pris, kvar = G.bolag.kassa - total;
+  // räcker inte kassan: så mycket banken behöver låna ut (hela 500 000) för att lanseringen ska gå (lana() i spel.js)
+  const lanBehov = kvar < 0 ? Math.ceil(-kvar / NODLAN) * NODLAN : 0;
+  return { pr, kamp, styck, fabrik, parti, total, kvar, lanBehov, forstaVeckan: forsta, betyg: b, extraSalda: extra, reklamVinst };
 }
 export function lansera(G, prId, kampanjId) {
   const k = lanseringsKalkyl(G, prId, kampanjId), pr = k.pr;
@@ -127,13 +145,15 @@ export function lansera(G, prId, kampanjId) {
   if (k.kvar < 0) return { ok: false, fel: 'FÖR LITE PENGAR' };
   betala(G, k.fabrik, 'fabrik'); betala(G, k.parti, 'tillverkning'); if (k.kamp.pris) betala(G, k.kamp.pris, 'reklam');
   const d = pr.design;
+  // ar = lanseringsåret (nyårsrapportens "Årets telefon"). styck = grundkostnaden UTAN tillfälliga händelser:
+  // en komponentbrist gäller bara partier som beställs medan den pågår (k.styck ovan, aktivaEffekter vid nya partier).
   const prod = {
-    id: 't' + G.dag + '-' + G.produkter.length, design: d, namn: d.namn, lanseradDag: G.dag, ar: pr.ar,
+    id: 't' + G.dag + '-' + G.produkter.length, design: d, namn: d.namn, lanseradDag: G.dag, ar: arAv(G.dag),
     betyg: k.betyg.betyg, staplar: { teknik: Math.min(1, k.betyg.teknik), design: k.betyg.design, puts: k.betyg.puts }, buggar: pr.buggar, kvalitet: pr.kvalitet,
-    pris: d.pris, styck: k.styck, kampanj: k.kamp.id, hype: k.kamp.hype + (G.flaggor.influencer ? 0.6 : 0),
+    pris: d.pris, styck: styckkostnad(G, d), kampanj: k.kamp.id, hype: k.kamp.hype + (G.flaggor.influencer ? 0.6 : 0),
     lager: FORSTA_PARTI, tillverkade: FORSTA_PARTI, bestallning: null, salda: 0, missade: 0, intakt: 0,
     kostnader: { fabrik: k.fabrik, utveckling: pr.kostnad, reklam: k.kamp.pris, tillverkning: k.parti },
-    veckor: [], veckaNu: 0, forraVeckan: 0, aktiv: true, viralDag: null, prisDag: null, rimligt: Math.round(rimligtPris(G.dag, k.betyg.betyg)),
+    veckor: [], veckaNu: 0, forraVeckan: 0, aktiv: true, viralDag: null, prisDag: null, rimligt: Math.round(rimligtPris(G.dag, k.betyg.betyg, d.enhet)),
     skandal: pr.buggar >= 5, uppdaterad: false,
   };
   G.flaggor.influencer = false;
@@ -153,8 +173,11 @@ export function lansera(G, prId, kampanjId) {
 
 // ---------- telefoner till salu ----------
 export function andraPris(G, prodId, pris) {
-  const p = G.produkter.find((x) => x.id === prodId); if (!p || !p.aktiv) return { ok: false };
-  pris = Math.round(klamp(pris, p.styck * 0.5, p.rimligt * 3) / 10) * 10;
+  const p = G.produkter.find((x) => x.id === prodId); if (!p || !p.aktiv || !Number.isFinite(pris)) return { ok: false };
+  // taket får aldrig hamna under golvet (gamla sparningar kan ha ett trasigt eller för lågt rimligt pris)
+  const rim = Number.isFinite(p.rimligt) ? p.rimligt : rimligtPris(p.lanseradDag, p.betyg, p.design.enhet);
+  const golv = Math.ceil(p.styck * 0.5 / 10) * 10, tak = Math.max(golv, rim * 3);
+  pris = Math.round(klamp(pris, golv, tak) / 10) * 10;
   if (pris <= p.pris * 0.9 && (p.prisDag == null || G.dag - p.prisDag >= 28)) { p.prisDag = G.dag; nyhet(G, 'DU', `${p.namn} SÄNKER PRISET TILL ${kr(pris)}!`); }
   p.pris = pris; return { ok: true };
 }
@@ -176,9 +199,14 @@ export function uppdatering(G, prodId) {
 }
 export function laggNer(G, prodId) {
   const p = G.produkter.find((x) => x.id === prodId); if (!p || !p.aktiv) return { ok: false };
-  const rea = Math.round(p.lager * p.pris * 0.5);
+  // ett parti på väg är redan betalt – det kommer fram och reas ut med resten av lagret
+  if (p.bestallning) { p.lager += p.bestallning.antal; p.tillverkade += p.bestallning.antal; p.bestallning = null; }
+  // rean ger halva priset – men högst halva DAGENS rimliga pris, så ett uppskruvat pris precis före rean
+  // aldrig ger mer än vanlig försäljning (en gammal telefon är värd mindre än när den var ny)
+  const idag = rimligtPris(G.dag, p.betyg, p.design.enhet), tak = Number.isFinite(idag) ? Math.max(0, idag) : 0;
+  const rea = Math.round(p.lager * Math.min(Number.isFinite(p.pris) ? p.pris : tak, tak) * 0.5);
   intakt(G, rea, 'forsaljning'); p.intakt += rea; p.salda += p.lager; G.bolag.totaltSalda += p.lager; p.lager = 0;
-  p.aktiv = false; p.nedlagdDag = G.dag; p.bestallning = null;
+  p.aktiv = false; p.nedlagdDag = G.dag;
   nyhet(G, 'DU', `${p.namn} SLUTAR SÄLJAS. LAGRET REAS UT FÖR ${kr(rea)}.`);
   return { ok: true };
 }
@@ -190,7 +218,8 @@ export function dagligForsaljning(G) {
     if (!p.aktiv) continue;
     // leverans
     if (p.bestallning && G.dag >= p.bestallning.levDag) { p.lager += p.bestallning.antal; p.tillverkade += p.bestallning.antal; p.bestallning = null; }
-    const vecka = veckoEfterfragan(G, p);
+    let vecka = veckoEfterfragan(G, p);
+    if (!Number.isFinite(vecka) || vecka < 0) vecka = 0;   // skydd: NaN får aldrig nå lager, sålda eller målen
     // nytt parti när lagret räcker mindre än två veckor
     const tak = Math.max(p.forraVeckan, vecka);
     if (!p.bestallning && p.lager < 2 * tak) {

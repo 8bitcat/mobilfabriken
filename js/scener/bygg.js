@@ -88,10 +88,10 @@ export function bygg(A, o = {}) {
       // paletten
       const py = 148;
       rect(0, py, W, 54, 0x0a0d1a); rect(0, py, W, 1, F.orange);
-      rect(0, py + 1, 50, 10, F.orange); text('BYGGLÄGE', 5, py + 4, F.text);
+      // förrådet har en egen knapp längst till vänster (i kategoriraden fick den aldrig plats)
+      knapp(1, py + 2, 49, 9, 'FÖRRÅD ' + G.kontor.forrad.length, { stil: 'orange', aktiv: kat === 'forrad', klick: () => { kat = 'forrad'; sk = 0; vald = null; }, namn: 'bygg-forrad' });
       let cx = 54;
-      const kats = [...KATEGORIER, { id: 'forrad', namn: 'FÖRRÅD (' + G.kontor.forrad.length + ')' }];
-      for (const c of kats) { const w = tw(c.namn) + 6; if (cx + w > W - 30) break; knapp(cx, py + 2, w, 9, c.namn, { stil: 'dim', aktiv: kat === c.id, klick: () => { kat = c.id; sk = 0; vald = null; } }); cx += w + 2; }
+      for (const c of KATEGORIER) { const w = tw(c.namn) + 6; if (cx + w > W - 30) break; knapp(cx, py + 2, w, 9, c.namn, { stil: 'dim', aktiv: kat === c.id, klick: () => { kat = c.id; sk = 0; vald = null; }, namn: 'bygg-kat-' + c.id }); cx += w + 2; }
       knapp(W - 28, py + 2, 26, 9, 'KLAR', { stil: 'gron', klick: () => A.go('kontor'), namn: 'bygg-klar' });
       const varor = kat === 'forrad' ? [...new Set(G.kontor.forrad)].map((id) => MOBEL[id]).filter(Boolean) : KATALOG.filter((m) => m.kat === kat);
       const kw = 48, maxSk = Math.max(0, varor.length * kw - (W - 8));
@@ -115,6 +115,7 @@ export function bygg(A, o = {}) {
         else text(iForrad ? 'I FÖRRÅDET' : m.pris ? kr(m.pris, true) : 'GRATIS', x + 2, y + 34, iForrad ? F.bla2 : !m.pris ? F.gron2 : rad ? F.text : F.rod2);
       });
       ctx.restore();
+      if (kat === 'forrad' && !varor.length) stycke('FÖRRÅDET ÄR TOMT. HIT HAMNAR MÖBLER SOM DU LÄGGER UNDAN ELLER SOM INTE FÅR PLATS VID EN FLYTT.', 8, py + 22, W - 16, F.dim);
       if (maxSk > 0) hit(4, py + 13, W - 8, 40, { hjul: (dy) => { sk += dy * 2; }, block: false });
       if (maxSk > 0) { knapp(0, py + 22, 6, 18, '<', { klick: () => { sk -= kw * 3; } }); knapp(W - 6, py + 22, 6, 18, '>', { klick: () => { sk += kw * 3; } }); }
       if (vald) { const m = MOBEL[vald]; const t = { bord: 'TRYCK PÅ EN GRÖN ARBETSPLATS', dator: 'TRYCK PÅ ETT BORD FÖR NY DATOR', stol: 'TRYCK PÅ ETT BORD FÖR NY STOL', golv: 'TRYCK PÅ EN GRÖN GOLVPLATS', vagg: 'TRYCK PÅ EN GRÖN PLATS PÅ VÄGGEN' }[m.plats]; rect(0, 136, W, 10, F.gron); text(t + ' · ' + m.namn + ' · ' + (m.pris ? kr(m.pris) : 'GRATIS'), W / 2, 138, F.text, { just: 'c' }); }

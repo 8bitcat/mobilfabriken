@@ -17,7 +17,7 @@ const buf = document.createElement('canvas'); buf.width = UI.W; buf.height = UI.
 const b = buf.getContext('2d'); b.imageSmoothingEnabled = false;
 Vy3d.init($('#gl'), stage);
 
-let skala = 3, dpr = 1, ack = 0, senast = performance.now(), sparadDag = -1;
+let skala = 3, dpr = 1, ack = 0, senast = performance.now(), sparadDag = -1, sparatG = null;
 
 export const A = {
   G: null, scen: null, scenNamn: '', t: 0, test: new URLSearchParams(location.search).has('test'),
@@ -32,7 +32,9 @@ export const A = {
   ljud: (n) => Ljud.spela(n),
   pausa() { if (A.G && A.G.fart > 0) { A.G.fartFore = A.G.fart; A.G.fart = 0; } },
   spelaTid() { if (A.G && !A.G.fart) A.G.fart = A.G.fartFore || 1; },
-  sattFart(f) { if (A.G) { A.G.fart = f; if (f) A.G.fartFore = f; } },
+  sattFart(f) { if (A.G) { A.G.fart = f; if (f) A.G.fartFore = f; A.autopausad = false; } },
+  // true när loopen pausade för att något hände (autopaus) – tiden går igen när sista kortet är läst (notiser.js)
+  autopausad: false,
   tidGar: () => !!(A.G && A.scen && A.scen.tid !== false && A.G.fart > 0 && !Notiser.storOppen() && !handledningAktiv(A)),
   // textfält ovanpå spelet (bolagsnamn, telefonens namn)
   textfalt(rect, varde, klar, max = 22) {
@@ -121,7 +123,7 @@ addEventListener('keydown', (e) => {
   if (A._falt) return;
   if (A.scen?.tangent?.(e)) { e.preventDefault(); return; }
   if (!A.G || A.scenNamn === 'start') return;
-  if (e.key === ' ') { A.G.fart ? A.pausa() : A.spelaTid(); e.preventDefault(); }
+  if (e.key === ' ') { A.G.fart ? A.pausa() : A.spelaTid(); A.autopausad = false; e.preventDefault(); }
   else if (['1', '2', '3', '4'].includes(e.key)) A.sattFart([1, 2, 4, 8][+e.key - 1]);
   else if (e.key === 'Escape' && A.scenNamn !== 'kontor') A.go('kontor');
 });
@@ -133,12 +135,18 @@ addEventListener('pointerdown', () => Ljud.lasUpp(), { once: true, capture: true
 function loop(nu) {
   const dt = Math.min(0.1, (nu - senast) / 1000); senast = nu; A.t += dt;
   const G = A.G;
+  // autospar var 7:e dag räknas per bolag (byter man till ett bolag med lägre dag börjar räkningen om)
+  // (förra bolagets toasts, kort och mål-lappar följer inte med till nästa bolag)
+  if (G !== sparatG) { sparatG = G; sparadDag = G ? G.dag : -1; A.autopausad = false; Notiser.rensa(); }
+  // autopausen gäller det som hände under en speldag. En signal från ett klick (flytt, direktbygge) har redan
+  // sitt kort som stoppar tiden medan det visas – låg flaggan kvar pausade spelet tyst en dag senare.
+  if (G?.flaggor.autopaus) G.flaggor.autopaus = false;
   if (G && A.tidGar()) {
     ack += dt * G.fart / DAG_SEK;
     let n = 0;
     while (ack >= 1 && n < 8) {
       dagTick(G); ack -= 1; n++;
-      if (G.flaggor.autopaus) { G.flaggor.autopaus = false; A.pausa(); ack = 0; break; }
+      if (G.flaggor.autopaus) { G.flaggor.autopaus = false; A.pausa(); A.autopausad = true; ack = 0; break; }
     }
     if (G.dag - sparadDag >= 7) { sparadDag = G.dag; A.spara(); }
   } else ack = Math.min(ack, 0.99);
@@ -154,6 +162,7 @@ function loop(nu) {
   UI.borja(b, A.t);
   b.fillStyle = '#0b0e1c'; b.fillRect(0, 0, UI.W, UI.H);
   try { A.scen?.rita(b, dt); } catch (e) { console.error(e); b.fillStyle = '#c9323a'; b.fillRect(0, 0, UI.W, 10); UI.text('FEL: ' + String(e.message).toUpperCase().slice(0, 80), 4, 2, 0xffffff); }
+  A.mioRuta = null;   // handledningens ruta den här bildrutan (sätts i ritaHandledning)
   if (G && A.scenNamn !== 'start') ritaHandledning(A, dt);
   Notiser.rita(A, dt);
   ctx.drawImage(buf, 0, 0, cv.width, cv.height);

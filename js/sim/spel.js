@@ -2,9 +2,11 @@
 // pengaflödet (alla in- och utbetalningar går genom betala/intakt så att årsstatistiken stämmer),
 // händelsekön till gränssnittet (toast, banner, autopaus) och nyheterna.
 import { RIVALER, KONTOR } from '../data/varld.js';
-import { arAv, datumText, slump, klamp } from './bas.js';
+import { arAv, datumText, slump, klamp, kr } from './bas.js';
 
 export const SPAR_VERSION = 1;
+// Slutgalan (SPELDESIGN §2.12): bolaget går att sälja från 1 januari detta år (BOLAGET → SÄLJ BOLAGET)
+export const SALJ_AR = 2027;
 export const START_KASSA = 2_000_000;
 export const START_FP = 20;
 
@@ -30,11 +32,28 @@ export function nyttSpel({ namn = 'MIKROVÅG MOBIL', initial = null, seed = null
     installningar: { autopaus: true, telefon: '3d', snabbt: false, ljud: true },
     ko: [], flaggor: {},
   };
-  if (arv) { G.bolag.kassa = Math.round(START_KASSA * (1 + 0.1 * arv.saldaBolag)); G.arv = arv; G.legendariska = [...(arv.ytor || [])]; }
+  if (arv) {
+    const n = klamp(Math.floor(+arv.saldaBolag || 0), 0, 5);
+    G.arv = { ...arv, saldaBolag: n };
+    G.bolag.kassa = Math.round(START_KASSA * (1 + 0.1 * n)); G.legendariska = [...(arv.ytor || [])];
+  }
   // rivalerna börjar med fjolårets modell (generation 1, lanserad 2006)
-  for (const r of RIVALER) G.marknad.rivaler.push({ id: r.id, gen: 1, betyg: Math.round((6.0 + r.offset) * 10) / 10, pris: Math.round(1640 * r.prisF / 10) * 10, lanseradDag: r.dag - 365, nastaDag: r.dag });
+  const rival = (id, R, egen) => G.marknad.rivaler.push({ id, ...(egen ? { egen: R } : {}), gen: 1, betyg: Math.round((6.0 + R.offset) * 10) / 10, pris: Math.round(1640 * R.prisF / 10) * 10, lanseradDag: R.dag - 365, nastaDag: R.dag });
+  for (const r of RIVALER) rival(r.id, r, false);
+  // dina sålda bolag blir rivaler (SPELDESIGN §2.12): lika bra som de var, mot snittet
+  arvRivaler(arv, namn).forEach((R, i) => rival('arv' + (i + 1), R, true));
   nyhet(G, 'DU', `DU GRUNDADE ${G.bolag.namn} I ETT GARAGE. DAGS ATT RITA DIN FÖRSTA TELEFON!`);
   return G;
+}
+const ARV_FARGER = [0x8e5bd1, 0xf060b0, 0xe07a2e, 0x4ff0ff, 0x7ee09a];
+export function arvRivaler(arv, nyttNamn = '') {
+  const unika = new Map();
+  for (const b of arv?.gamlaBolag || []) if (b && b.namn && String(b.namn).toUpperCase() !== nyttNamn) unika.set(String(b.namn).toUpperCase(), b);
+  return [...unika.values()].slice(-5).map((b, i) => {
+    const bolag = String(b.namn).toUpperCase().slice(0, 22);
+    return { bolag, modell: (bolag.split(' ')[0] || 'GARAGE').slice(0, 12) + ' PHONE', offset: Math.round(klamp((+b.betyg || 6.2) - 6.5, -1, 1) * 10) / 10,
+      prisF: 1, dag: 140 + i * 30, farg: ARV_FARGER[i % ARV_FARGER.length], karaktar: 'DITT GAMLA BOLAG' };
+  });
 }
 
 // ---------- pengar ----------
@@ -48,6 +67,15 @@ export function intakt(G, belopp, kategori) {
   G.bolag.kassa += belopp; const s = arStat(G); s.intakt += belopp; s.per[kategori] = (s.per[kategori] || 0) + belopp;
 }
 export const harRad = (G, belopp) => G.bolag.kassa >= belopp;
+// Banklån: pengarna kommer in i kassan men är ingen intäkt (och återbetalningen ingen kostnad) – bara räntan
+// (10 %/år, dras den 1:a i tick.js) räknas i årets resultat. Nödlånet (kassa < 0) och LÅNA på lanseringsdagen.
+export const NODLAN = 500_000;
+export function lana(G, belopp = NODLAN, text = null) {
+  belopp = Math.round(belopp); if (!(belopp > 0)) return { ok: false };
+  G.lan += belopp; G.bolag.kassa += belopp;
+  nyhet(G, 'DU', text || `BANKEN LÅNAR ${G.bolag.namn} ${kr(belopp)}. RÄNTAN ÄR 10 % OM ÅRET.`);
+  return { ok: true, belopp };
+}
 
 // ---------- gränssnittets händelsekö ----------
 // typ: 'toast' (liten ruta), 'banner' (blå rad överst), 'stor' (helskärmskort), 'konfetti'

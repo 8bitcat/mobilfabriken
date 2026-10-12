@@ -1,24 +1,34 @@
 // De 28 målen (förlagans "GOAL n OF 28" med kontantbelöning). Ett i taget visas i kontoret.
 import { NOD } from '../data/noder.js';
 import { kontorsVarden } from './kontor.js';
-import { tackning } from './marknad.js';
+import { tackning, bas } from './marknad.js';
 import { modellVinst } from './projekt.js';
 import { intakt, signal, nyhet } from './spel.js';
 import { kr } from './bas.js';
 
 const salda = (G) => G.bolag.totaltSalda;
+// en produkts sålda per vecka under de senaste n kalenderveckorna – en nedlagd telefon räknas bara
+// för de veckor av perioden då den fortfarande såldes (marknadsandelen, bolagets värde)
+export function senasteVeckor(G, p, n) {
+  const kvar = p.aktiv ? n : Math.max(0, n - Math.floor((G.dag - (p.nedlagdDag ?? G.dag)) / 7));
+  return kvar ? p.veckor.slice(-kvar) : [];   // OBS slice(-0) ger hela listan
+}
+// Sparningar från 0.1.x saknar flaggan kopteNyMobel. Årsstatistiken visar ändå om bolaget någon gång har
+// betalat för en möbel (kategorin 'mobler' blir minus: ett köp kostar hela priset, en såld möbel ger halva
+// tillbaka) – då har barnet redan köpt möbler och ska inte behöva göra det igen för att komma förbi mål 5.
+const harBetaltMobler = (G) => Object.values(G.stat?.ar || {}).some((s) => (s?.per?.mobler || 0) < 0);
 const andel = (G) => {
-  // sålda senaste 4 veckorna / (16 × bas) ≈ marknadsandel i den del av världen man säljer i
-  const s = G.produkter.reduce((sum, p) => sum + p.veckor.slice(-4).reduce((a, b) => a + b, 0), 0);
-  const b = 100 * Math.pow(1.25, Math.max(0, G.dag / 365.25));
-  return s / (16 * b * Math.max(0.3, tackning(G)));
+  // sålda senaste 4 veckorna / (16 × bas) ≈ marknadsandel i den del av världen man säljer i (samma bas som efterfrågan)
+  const s = G.produkter.reduce((sum, p) => sum + senasteVeckor(G, p, 4).reduce((a, b) => a + b, 0), 0);
+  return s / (16 * bas(G.dag) * Math.max(0.3, tackning(G)));
 };
 export const MAL = [
   { nr: 1, text: 'STÄLL UT 2 BORD', belopp: 20_000, klart: (G) => G.kontor.bord.filter(Boolean).length >= 2 },
   { nr: 2, text: 'ANSTÄLL 2 PERSONER', belopp: 30_000, klart: (G) => G.personal.length >= 2 },
   { nr: 3, text: 'DESIGNA EN TELEFON', belopp: 50_000, klart: (G) => G.projekt.length > 0 || G.produkter.length > 0 },
   { nr: 4, text: 'LANSERA DIN FÖRSTA TELEFON', belopp: 80_000, klart: (G) => G.bolag.lanseringar >= 1 },
-  { nr: 5, text: 'KÖP NYA KONTORSMÖBLER', belopp: 100_000, klart: (G) => !!G.flaggor.kopteMobel && kontorsVarden(G).kontorStj > 1.05 },
+  // klart vid första BETALDA möbeln (gratisfällborden i mål 1 och möbler ur förrådet räknas inte).
+  { nr: 5, text: 'KÖP NYA KONTORSMÖBLER', belopp: 100_000, klart: (G) => !!G.flaggor.kopteNyMobel || harBetaltMobler(G) },
   { nr: 6, text: 'FORSKA FRAM EN TEKNIK', belopp: 120_000, klart: (G) => G.forskning.klara.length >= 1 },
   { nr: 7, text: 'SÄLJ 100 TELEFONER', belopp: 150_000, klart: (G) => salda(G) >= 100 },
   { nr: 8, text: 'FÅ MINST 6,5 I BETYG', belopp: 200_000, klart: (G) => G.bolag.bastaBetyg >= 6.5 },
