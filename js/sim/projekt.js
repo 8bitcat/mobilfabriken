@@ -4,14 +4,17 @@
 //   Varje dag: forskare lägger en blå prick (p 0,22 × kraft × moral × forskning×), buggar uppstår
 //   (p (0,15 + 0,05 × delar över förväntan) / buggfix×), buggfixare lagar (p 0,10 × kraft × moral × buggfix×).
 //   +30 FP köper en prick (max halva målet), 30 FP lagar en bugg.
-import { GRUPPER, ENHETER, enhetAv } from '../data/delar.js';
 import { KAMPANJER, kontorAv } from '../data/varld.js';
+import { K_KAMPANJER } from '../data/konsol-varld.js';
+import { linjeAv } from '../data/linjer.js';
 import { arAv, slump, slumpRund, klamp, kr, dec, datumText } from './bas.js';
-import { betala, intakt, signal, nyhet, NODLAN } from './spel.js';
+import { betala, intakt, signal, nyhet, NODLAN, arKonsolSpel, prisniva } from './spel.js';
 import { styckkostnad, betyg as betygAv, kvalitetsMal, delarOver, minDjup } from './design.js';
 import { kontorsVarden } from './kontor.js';
 import { moralFaktor } from './personal.js';
 import { veckoEfterfragan, aktivaEffekter, snitt, rimligtPris } from './marknad.js';
+import { packinDagar, dagligPackin, konsolLanserad, spelMal, egnaStjarnor, klararKrav } from './konsol.js';
+import { egetSpelAv } from '../data/konsol-varld.js';
 
 export const FABRIK = 300_000;
 export const DAGKOSTNAD = 700;
@@ -22,36 +25,48 @@ const FIX_P = 0.1;   // buggfixarens chans per dag att laga en bugg (× kraft ×
 export function byggdagar(G, d) {
   const v = kontorsVarden(G), kraft = G.personal.reduce((s, p) => s + p.kraft, 0);
   if (!kraft) return Infinity;
-  const delar = GRUPPER.length + delarOver(d, arAv(G.dag));
+  const delar = linjeAv(d).GRUPPER.length + delarOver(d, arAv(G.dag));
   return Math.max(4, Math.ceil((10 + delar) / ((kraft / 2) * (1 + v.arbetsfart))));
 }
 export const byggkostnadPerDag = (G) => DAGKOSTNAD * G.personal.length;
 export const labbspar = (G) => kontorAv(G.kontor.niva).labb;
 export const pagaendeBygg = (G) => G.projekt.filter((p) => p.status === 'bygger');
+const sak = (d) => (d?.linje === 'konsol' ? 'KONSOL' : 'TELEFON');
 
 // kan designen startas? (granskningsknappen)
 export function kanStarta(G, d) {
   if (!G.personal.length) return { ok: false, fel: 'ANSTÄLL NÅGON FÖRST' };
-  if (pagaendeBygg(G).length >= labbspar(G)) return { ok: false, fel: labbspar(G) > 1 ? 'ALLA LABBSPÅR BYGGER REDAN' : 'TEAMET BYGGER REDAN EN TELEFON' };
-  if (!ENHETER.find((e) => e.id === d.enhet)) return { ok: false, fel: 'OKÄND ENHET' };
+  if (pagaendeBygg(G).length >= labbspar(G)) return { ok: false, fel: labbspar(G) > 1 ? 'ALLA LABBSPÅR BYGGER REDAN' : 'TEAMET BYGGER REDAN EN ' + sak(d) };
+  if (!linjeAv(d).ENHETER.find((e) => e.id === d.enhet)) return { ok: false, fel: 'OKÄND ENHET' };
+  // konsolspelet: telefoner först när telefonavdelningen är öppen; snabbstarten gör inga konsoler
+  if (d.linje === 'konsol' && !arKonsolSpel(G)) return { ok: false, fel: 'KONSOLER FINNS I KONSOLSPELET' };
+  if (d.linje !== 'konsol' && arKonsolSpel(G) && !G.flaggor.mobil) return { ok: false, fel: 'FORSKA FRAM TELEFONAVDELNINGEN FÖRST' };
+  if (d.packin && !klararKrav(d, egetSpelAv(d.packin.id)?.kraver)) return { ok: false, fel: 'KONSOLEN KLARAR INTE SPELET I LÅDAN' };
   return { ok: true };
 }
 export function startaUtveckling(G, design) {
   const k = kanStarta(G, design); if (!k.ok) return k;
   const d = JSON.parse(JSON.stringify(design));
-  d.namn = (d.namn || '').trim().toUpperCase() || nastaNamn(G);
-  d.form.djup = Math.max(d.form.djup, minDjup(d));
+  d.namn = (d.namn || '').trim().toUpperCase() || nastaNamn(G, d);
+  if (d.form) d.form.djup = Math.max(d.form.djup, minDjup(d));
   const dagar = byggdagar(G, d);
   // löpnummer per bolag: 'pr' + dag + antal kunde krocka (avbryt + starta samma dag). Gamla id har '-' och krockar inte.
   G.lopnr = (G.lopnr || 0) + 1;
-  G.projekt.push({ id: 'pr' + G.lopnr, design: d, startDag: G.dag, dagar, dagNu: 0, kvalitet: 0, kvalMal: kvalitetsMal(d, arAv(G.dag)), buggar: 0,
-    koptaPrickar: 0, kostnad: 0, status: 'bygger', ar: arAv(G.dag) });
+  const pr = { id: 'pr' + G.lopnr, design: d, startDag: G.dag, dagar, dagNu: 0, kvalitet: 0, kvalMal: kvalitetsMal(d, arAv(G.dag)), buggar: 0,
+    koptaPrickar: 0, kostnad: 0, status: 'bygger', ar: arAv(G.dag) };
+  // en konsol byggs i två faser: hårdvaran (som telefonerna) och sedan spelet i lådan (gröna prickar)
+  if (d.linje === 'konsol') { pr.fas = 'hardvara'; if (d.packin) { pr.spelDagar = 0; pr.spelDagNu = 0; pr.spelKval = 0; pr.spelMal = spelMal(G); } }
+  G.projekt.push(pr);
   G.koncept = G.koncept.filter((c) => c.id !== design.id);
   nyhet(G, 'DU', `TEAMET BÖRJAR BYGGA ${d.namn}. BERÄKNAD TID: ${dagar} DAGAR.`);
   G.flaggor.startatBygge = true;
   return { ok: true };
 }
-export function nastaNamn(G) {
+export function nastaNamn(G, d = null) {
+  if (d?.linje === 'konsol') {
+    const n = [...G.produkter, ...G.projekt].filter((p) => p.design?.linje === 'konsol').length + 1;
+    return `PIXELBOX ${n}`;
+  }
   const n = G.produkter.length + G.projekt.length + 1;
   return `PIXEL PHONE ${n}`;
 }
@@ -59,18 +74,31 @@ export function nastaNamn(G) {
 export function dagligtBygge(G) {
   const v = kontorsVarden(G), mf = moralFaktor(G);
   for (const pr of G.projekt) {
-    if (pr.status === 'bygger') {
+    if (pr.status === 'bygger' && pr.fas === 'mjukvara') {
+      // konsolens andra fas: spelutvecklarna gör spelet i lådan
+      const kost = byggkostnadPerDag(G); betala(G, kost, 'utveckling'); pr.kostnad += kost;
+      if (dagligPackin(G, pr)) blirKlar(G, pr);
+    } else if (pr.status === 'bygger') {
       const kost = byggkostnadPerDag(G); betala(G, kost, 'utveckling'); pr.kostnad += kost;
       pr.dagNu++;
       const over = delarOver(pr.design, pr.ar);
       for (const p of G.personal) {
         if (p.roll === 'forskare' && pr.kvalitet < pr.kvalMal && slump(G) < 0.22 * p.kraft * mf * v.forskning) { pr.kvalitet++; signal(G, 'prick', { farg: 'bla', bord: p.bord }); }
       }
+      // en lånad utvecklare från en studio (sim/konsol.js lanaUtvecklare) jobbar som en ★★★-forskare
+      if (pr.lanad && pr.kvalitet < pr.kvalMal && slump(G) < 0.22 * pr.lanad.kraft * v.forskning) { pr.kvalitet++; signal(G, 'prick', { farg: 'bla', lanad: true }); }
       if (slump(G) < (0.15 + 0.05 * over) / v.buggfix) { pr.buggar++; signal(G, 'prick', { farg: 'rod' }); }
       for (const p of G.personal) {
         if (p.roll === 'buggfixare' && pr.buggar > 0 && slump(G) < FIX_P * p.kraft * mf * v.buggfix) { pr.buggar--; signal(G, 'prick', { farg: 'lagad', bord: p.bord }); }
       }
-      if (pr.dagNu >= pr.dagar) blirKlar(G, pr);
+      if (pr.fas) pr.prognosBetyg = betygAv(G, pr.design, arAv(G.dag), pr.kvalitet, pr.kvalMal, pr.buggar).betyg;
+      if (pr.dagNu >= pr.dagar) {
+        if (pr.fas === 'hardvara' && pr.design.packin) {
+          pr.fas = 'mjukvara'; pr.spelDagar = packinDagar(G);
+          nyhet(G, 'DU', `HÅRDVARAN TILL ${pr.design.namn} ÄR KLAR. NU GÖR SPELUTVECKLARNA ${pr.design.packin.titel}.`);
+          signal(G, 'toast', { text: `HÅRDVARAN KLAR! NU: ${pr.design.packin.titel}`, farg: 'gron' });
+        } else blirKlar(G, pr);
+      }
     } else if (pr.status === 'klar') {
       // buggfixarna putsar vidare: ungefär en bugg var tredje dag
       for (const p of G.personal) if (p.roll === 'buggfixare' && pr.buggar > 0 && slump(G) < FIX_P / 3 * p.kraft * mf * v.buggfix) pr.buggar--;
@@ -79,8 +107,11 @@ export function dagligtBygge(G) {
 }
 function blirKlar(G, pr) {
   pr.status = 'klar'; pr.klarDag = G.dag;
+  if (pr.fas === 'mjukvara') pr.packinStj = egnaStjarnor(G, pr.spelKval, pr.spelMal);
   nyhet(G, 'DU', `${pr.design.namn} ÄR KLAR ATT LANSERA!`);
-  signal(G, 'stor', { rubrik: `${pr.design.namn} ÄR KLAR!`, text: 'LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.', paus: true, knapp: 'lansera', projekt: pr.id, ljud: 'klar' });
+  // konsolspelet börjar utan buggfixare (Lykke är spelutvecklare): då finns ingen som putsar vidare
+  const putsar = !arKonsolSpel(G) || G.personal.some((p) => p.roll === 'buggfixare');
+  signal(G, 'stor', { rubrik: `${pr.design.namn} ÄR KLAR!`, text: putsar ? 'LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.' : 'DAGS ATT LANSERA! (EN BUGGFIXARE KAN PUTSA BORT BUGGAR FÖRST.)', paus: true, knapp: 'lansera', projekt: pr.id, ljud: 'klar' });
 }
 export function kopPrick(G, prId) {
   const pr = G.projekt.find((p) => p.id === prId); if (!pr || pr.status !== 'bygger') return { ok: false };
@@ -104,29 +135,38 @@ export function avbryt(G, prId) {
 // DIREKTBYGGE (gåvan 24K GULD): bygget blir klart direkt. Teamet hinner de blå prickar det i snitt
 // skulle ha lagt under resten av bygget (avrundat uppåt – en gåva ska aldrig ge en sämre telefon än att vänta).
 export function direktbygg(G, prId) {
-  const pr = G.projekt.find((p) => p.id === prId); if (!pr || pr.status !== 'bygger' || !G.inventarie.direktbygge) return { ok: false };
+  const pr = G.projekt.find((p) => p.id === prId); if (!pr || pr.status !== 'bygger' || pr.fas === 'mjukvara' || !G.inventarie.direktbygge) return { ok: false };
   const v = kontorsVarden(G), mf = moralFaktor(G), rest = Math.max(0, pr.dagar - pr.dagNu);
   const perDag = G.personal.filter((p) => p.roll === 'forskare').reduce((s, p) => s + Math.min(1, 0.22 * p.kraft * mf * v.forskning), 0);
   G.inventarie.direktbygge--;
   pr.kvalitet = Math.min(pr.kvalMal, pr.kvalitet + Math.ceil(rest * perDag - 1e-9));
   pr.dagNu = pr.dagar;
+  // en konsol med spel i lådan: gåvan bygger hårdvaran, spelet görs som vanligt efteråt
+  if (pr.fas === 'hardvara' && pr.design.packin) { pr.fas = 'mjukvara'; pr.spelDagar = packinDagar(G); return { ok: true }; }
   blirKlar(G, pr);
   return { ok: true };
 }
 
 // ---------- lansering ----------
-export const fabriksPris = (G, d) => Math.round(FABRIK * enhetAv(d.enhet).fabrik * (1 + 0.1 * (arAv(G.dag) - 2007)));
+// konsolernas fabrik: samma 300 000 kr 1982, +6 % av det per år (2007 ≈ 750 000)
+export const fabriksPris = (G, d) => (d.linje === 'konsol'
+  ? Math.round(FABRIK * linjeAv(d).enhetAv(d.enhet).fabrik * (1 + 0.06 * (arAv(G.dag) - 1982)))
+  : Math.round(FABRIK * linjeAv(d).enhetAv(d.enhet).fabrik * (1 + 0.1 * (arAv(G.dag) - 2007))));
+// reklamkampanjerna för en design: konsolerna har sina (speltidningar 1982, nätet 1998) med konsolspelets prisnivå
+export const kampanjer = (G, d) => (d?.linje === 'konsol'
+  ? K_KAMPANJER.filter((k) => !k.fran || k.fran <= arAv(G.dag)).map((k) => ({ ...k, pris: Math.round(k.pris * prisniva(G) / 10_000) * 10_000 }))
+  : KAMPANJER);
 export const FORSTA_PARTI = 100;
 // Kritikerna jämför med året som var högst ett halvår före lanseringen: ett bygge över nyår straffas inte,
 // men en färdig telefon som får ligga olanserad i åratal bedöms mot sin tid.
 export const betygsAr = (G, pr) => arAv(Math.max(pr.startDag ?? G.dag, G.dag - 180));
 export function lanseringsKalkyl(G, prId, kampanjId) {
-  const pr = G.projekt.find((p) => p.id === prId); const kamp = KAMPANJER.find((k) => k.id === kampanjId) || KAMPANJER[0];
+  const pr = G.projekt.find((p) => p.id === prId), K = kampanjer(G, pr.design), kamp = K.find((k) => k.id === kampanjId) || K[0];
   const eff = aktivaEffekter(G), styck = styckkostnad(G, pr.design, eff);
   const fabrik = fabriksPris(G, pr.design), parti = FORSTA_PARTI * styck;
   const b = betygAv(G, pr.design, betygsAr(G, pr), pr.kvalitet, pr.kvalMal, pr.buggar, eff);
   const hype = kamp.hype + (G.flaggor.influencer ? 0.6 : 0);
-  const p = { design: pr.design, betyg: b.betyg, pris: pr.design.pris, hype, lanseradDag: G.dag, aktiv: true };
+  const p = { id: '?' + pr.id, prognos: pr.id, packinStj: pr.packinStj, design: pr.design, betyg: b.betyg, pris: pr.design.pris, hype, lanseradDag: G.dag, aktiv: true };
   const ord = G.produkter; G.produkter = [...ord, p];
   const forsta = veckoEfterfragan(G, p);
   // reklamens vinst: extra sålda de första 12 veckorna × marginal − kampanjpris
@@ -156,18 +196,24 @@ export function lansera(G, prId, kampanjId) {
     veckor: [], veckaNu: 0, forraVeckan: 0, aktiv: true, viralDag: null, prisDag: null, rimligt: Math.round(rimligtPris(G.dag, k.betyg.betyg, d.enhet)),
     skandal: pr.buggar >= 5, uppdaterad: false,
   };
+  if (d.linje === 'konsol') {
+    prod.installerade = 0;
+    if (d.packin) prod.packin = { ...d.packin, stj: pr.packinStj || 1 };
+    if (pr.lanad) prod.lanad = pr.lanad.studio;
+  }
   G.flaggor.influencer = false;
   G.produkter.push(prod);
   G.projekt = G.projekt.filter((p) => p !== pr);
+  if (d.linje === 'konsol') konsolLanserad(G, pr.id, prod);
   // rykte: 80 % gammalt, 20 % hur bra lanseringen var mot snittet
-  const s = snitt(G.dag);
+  const s = snitt(G.dag, d.linje);
   G.bolag.rykte = Math.round(klamp(0.8 * G.bolag.rykte + 0.2 * (prod.betyg - 0.1 * pr.buggar) / s, 0.25, 3) * 100) / 100;
   G.bolag.lanseringar++;
   G.bolag.bastaBetyg = Math.max(G.bolag.bastaBetyg, prod.betyg);
   if (!G.bolag.enhetstyper.includes(d.enhet)) G.bolag.enhetstyper.push(d.enhet);
   nyhet(G, 'DU', `${G.bolag.namn} LANSERAR ${d.namn}! KRITIKERNA: ${dec(prod.betyg)}/10.`);
   if (prod.betyg < 5) nyhet(G, 'DU', `FLOPP! ${d.namn} SÅGAS AV KRITIKERNA. FÖRSÄLJNINGEN HALVERAS DE FÖRSTA VECKORNA.`);
-  if (prod.skandal) nyhet(G, 'DU', `BUGGSKANDAL! ${d.namn} KOM UT MED ${pr.buggar} BUGGAR. SLÄPP UPPDATERING 1.1 I TELEFONER.`);
+  if (prod.skandal) nyhet(G, 'DU', `BUGGSKANDAL! ${d.namn} KOM UT MED ${pr.buggar} BUGGAR. SLÄPP UPPDATERING 1.1 I ${d.linje === 'konsol' ? 'KONSOLER' : 'TELEFONER'}.`);
   return { ok: true, produkt: prod };
 }
 
@@ -234,10 +280,11 @@ export function dagligForsaljning(G) {
     // försäljning
     const kopare = slumpRund(G, vecka / 7), salda = Math.min(kopare, p.lager);
     p.lager -= salda; p.salda += salda; p.missade += kopare - salda; p.veckaNu += salda;
+    if (p.installerade != null) p.installerade += salda;   // konsolerna: fler ägare som köper spel
     const bonus = G.flaggor.saljBonus ? 1.1 : 1;
     const in_ = salda * p.pris * bonus; intakt(G, in_, 'forsaljning'); p.intakt += in_;
     G.bolag.totaltSalda += salda;
-    if (salda && !G.flaggor.forstaForsaljning) { G.flaggor.forstaForsaljning = true; signal(G, 'toast', { text: 'KA-CHING! FÖRSTA TELEFONEN SÅLD!', farg: 'gron', ljud: 'kaching' }); }
+    if (salda && !G.flaggor.forstaForsaljning) { G.flaggor.forstaForsaljning = true; signal(G, 'toast', { text: `KA-CHING! FÖRSTA ${p.design.linje === 'konsol' ? 'KONSOLEN' : 'TELEFONEN'} SÅLD!`, farg: 'gron', ljud: 'kaching' }); }
     // veckoslut för produkten
     if ((G.dag - p.lanseradDag) % 7 === 6) {
       p.veckor.push(p.veckaNu); if (p.veckor.length > 104) p.veckor.shift();

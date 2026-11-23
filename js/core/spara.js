@@ -1,6 +1,7 @@
 // Sparning i localStorage. 8bitcat.github.io delar lagring mellan alla spel – därför har ALLA nycklar
 // prefixet 'mobilfabriken.' (Snabbfilens nycklar läses aldrig skrivande).
-//   mobilfabriken.bolag      = lista över sparade bolag [{ id, namn, initial, dag, kassa, sparad }]
+//   mobilfabriken.bolag      = lista över sparade bolag [{ id, namn, initial, dag, kassa, sparad, lage }]
+//                              (lage 'konsol' | 'telefon'; poster från 0.1.x saknar lage = telefonbolag)
 //   mobilfabriken.spel.<id>  = hela spelet (JSON)
 //   mobilfabriken.senaste    = id för senast spelade bolag
 //   mobilfabriken.arv        = arvet från sålda bolag
@@ -15,8 +16,12 @@ const taBort = (k) => { try { localStorage.removeItem(P + k); } catch { /* ok */
 // ett bolag skapas – startskärmen släpper inte fram NYTT BOLAG när listan är full, man raderar ett bolag
 // först. Listan själv kapas aldrig, så inget bolag knuffas ut och ingen sparfil blir kvar som inte går att nå.
 export const MAX_BOLAG = 12;
-const post = (G, sparad = Date.now()) => ({ id: G.id, namn: G.bolag.namn, initial: G.bolag.initial, dag: G.dag, kassa: Math.round(G.bolag.kassa), sparad });
+// spelläget: ett konsolbolag (startade 1982) eller ett telefonbolag (SNABBSTART 2007 och alla gamla sparningar)
+const lageFor = (G) => (G?.lage === 'konsol' ? 'konsol' : 'telefon');
+const post = (G, sparad = Date.now()) => ({ id: G.id, namn: G.bolag.namn, initial: G.bolag.initial, dag: G.dag, kassa: Math.round(G.bolag.kassa), sparad, lage: lageFor(G) });
 export const bolagsLista = () => { const L = las('bolag', []); return Array.isArray(L) ? L.filter((b) => b && b.id) : []; };
+// en post i DINA BOLAG: 'konsol' eller 'telefon' (en post utan lage är ett telefonbolag)
+export const lageAv = (b) => (b?.lage === 'konsol' ? 'konsol' : 'telefon');
 export const senaste = () => las('senaste', null);
 export function spara(G) {
   if (!G || G.salt) return false;   // ett sålt bolag sparas aldrig igen
@@ -60,7 +65,8 @@ export function stada() {
       }
       taBort('spel.' + id); return null;
     };
-    for (const b of bolagsLista()) if (!ids.has(b.id) && giltig(b.id)) { ids.add(b.id); lista.push(b); }
+    // en post utan lage får sparfilens läge (äldre poster: telefonbolag)
+    for (const b of bolagsLista()) { if (ids.has(b.id)) continue; const G = giltig(b.id); if (G) { ids.add(b.id); lista.push(b.lage ? b : { ...b, lage: lageFor(G) }); } }
     const filer = [];
     for (let i = 0; i < localStorage.length; i++) { const k = localStorage.key(i); if (k && k.startsWith(PS)) filer.push(k.slice(PS.length)); }
     for (const id of filer) {

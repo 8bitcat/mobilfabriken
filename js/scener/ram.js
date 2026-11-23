@@ -56,18 +56,34 @@ export function hud(A) {
   ikon('meny', 368, 3, F.dim); hit(365, 0, 14, 13, { klick: () => A.go('meny'), namn: 'hud-meny' });
 }
 
+// Konsolspelet (G.lage 'konsol'): nio flikar. Scenen 'telefoner' heter KONSOLER (den visar telefonerna också när
+// telefonavdelningen är öppen) och STUDIOS är spelstudiornas förfrågningar, spelbiblioteket och egna spel.
+export const K_FLIKAR = [
+  { id: 'kontor', namn: 'KONTOR', ikon: 'hus' },
+  { id: 'telefoner', namn: 'KONSOLER', ikon: 'kontroll' },
+  { id: 'studios', namn: 'STUDIOS', ikon: 'kassett', farg: F.lila2 },
+  { id: 'bolaget', namn: 'BOLAGET', ikon: 'graf' },
+  { id: 'personal', namn: 'PERSONAL', ikon: 'team' },
+  { id: 'bygg', namn: 'BYGG', ikon: 'hammare', farg: F.orange },
+  { id: 'design', namn: 'DESIGN', ikon: 'penna', farg: F.gron },
+  { id: 'forskning', namn: 'FORSKNING', ikon: 'kolv' },
+  { id: 'nyheter', namn: 'NYHETER', ikon: 'tidning' },
+];
+export const flikarFor = (G) => (G?.lage === 'konsol' ? K_FLIKAR : FLIKAR);
 export function flikrad(A, aktiv) {
-  const y = 202, w = 48;
+  const y = 202, lista = flikarFor(A.G), w = Math.floor(W / lista.length), smal = w < 48;
   rect(0, y, W, 14, 0x0a0d1a); rect(0, y, W, 1, F.hi);
-  FLIKAR.forEach((f, i) => {
-    const x = i * w, valt = f.id === aktiv, hov = inne(x, y, w, 14);
+  lista.forEach((f, i) => {
+    // smala flikar (nio i konsolspelet): ikonen bara på den valda, annars namnet centrerat
+    const x = i * w + (smal ? Math.floor((W - w * lista.length) / 2) : 0), valt = f.id === aktiv, hov = inne(x, y, w, 14);
     const bas = valt ? (f.farg ? mixa(f.farg, F.panel, 0.55) : F.panel3) : hov ? F.panel2 : 0x0a0d1a;
     rect(x + 1, y + 2, w - 2, 12, bas);
     if (f.farg) { rect(x + 1, y + 2, w - 2, 1, f.farg); }
     if (valt) rect(x + 1, y + 13, w - 2, 1, f.farg || F.bla2);
     const tc = valt ? F.text : F.dim;
-    ikon(f.ikon, x + 3, y + 5, valt ? (f.farg || F.bla2) : F.dim2);
-    text(f.namn, x + 12, y + 6, tc);
+    if (!smal) { ikon(f.ikon, x + 3, y + 5, valt ? (f.farg || F.bla2) : F.dim2); text(f.namn, x + 12, y + 6, tc); }
+    else if (tw(f.namn) + 12 <= w) { ikon(f.ikon, x + 3, y + 5, valt ? (f.farg || F.bla2) : F.dim2); text(f.namn, x + 11, y + 6, tc); }
+    else text(f.namn, x + Math.floor(w / 2), y + 6, tc, { just: 'c' });
     hit(x, y, w, 14, { klick: () => A.go(f.id), namn: 'flik-' + f.id });
   });
 }

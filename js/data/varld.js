@@ -46,6 +46,8 @@ export const KRAFT = { 1: 1, 2: 1.6, 3: 2.4, 4: 3.4, 5: 4.6 };
 export const ROLLER = {
   forskare: { namn: 'FORSKARE', farg: 0x3a8ff0, info: 'GÖR TELEFONERNA BÄTTRE (BLÅ PRICKAR) OCH TJÄNAR FORSKNINGSPOÄNG' },
   buggfixare: { namn: 'BUGGFIXARE', farg: 0xe8484e, info: 'STOPPAR BUGGAR OCH LAGAR RÖDA BUGGPRICKAR' },
+  // bara i konsolspelet: gör spelet i lådan (PANG! först) och bolagets egna spel (gröna prickar)
+  spelutvecklare: { namn: 'SPELUTVECKLARE', farg: 0x45c864, info: 'GÖR SPELEN – FÖRST PANG!, SEDAN BOLAGETS EGNA SPEL' },
 };
 
 export const FORNAMN = ['ALVA', 'ELSA', 'MAJA', 'ELLA', 'WILMA', 'SAGA', 'NORA', 'LIV', 'STINA', 'INES', 'GRETA', 'OSCAR', 'LIAM', 'NOAH',

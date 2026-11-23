@@ -1,5 +1,23 @@
 # Nyheter i Mobilfabriken
 
+## 0.2.0 – Konsolfabriken 1982 (2026-11-23)
+
+- Spelet börjar nu 1982 med spelkonsoler. Välj KONSOLFABRIKEN 1982 (hela resan) eller SNABBSTART 2007
+  (bara mobilbolaget, som förut) när du startar ett nytt spel. Gamla sparningar fungerar som vanligt.
+- Konsoldesignern i sexton steg: processor, grafik, ljud, minne, spelmedia, handkontroll, uppkoppling, sparning,
+  material och kaross – trettio konsolformer i riktig 3D (hemdator, kassettlåda, fickkonsol, skiva, torn, hybrid, VR …)
+  och spelet i lådan (PANG! först).
+- STUDIOS: spelstudios knackar på och vill göra spel till din konsol – ja, förhandla, exklusivt eller nej. Bibliotek,
+  egna spel med rollen SPELUTVECKLARE, låna en utvecklare och rivalernas konsoler. Trettio rivalkonsoler 1977–2026.
+- Varje spel visas som en animerad glimt i sin tids upplösning och får en REKLAMFILM när det släpps.
+- Forskningen går från 1982 till 2026 med flikarna KONSOL och MOBIL. Noden TELEFONAVDELNINGEN (2007) öppnar
+  telefonerna – forskningspoäng, personal och kassa delas mellan konsoler och telefoner.
+- Konsolmarknaden: installerad bas, spelbiblioteket avgör, spelkraschen 1983, cd-revolutionen, piratkopieringen,
+  chipbristen och julhandeln. Priser och kontor växer från 1982 års nivå till 2007 års.
+- Mios handledning för 1982, kontorets två byggfaser (hårdvara, sedan mjukvara) och nya kort för studios och spelsläpp.
+- Appen: spelet finns som iOS-app (mappen app/, Capacitor), byggd i Codemagic och på väg till App Store.
+  I appen ligger three.js lokalt, så spelet går utan internet. Tipset om hemskärmen visas inte i appen.
+
 ## 0.1.2 – Granskningens rättningar (2026-10-13)
 
 - Designern: alla forskade delar går att välja – listorna rullar. Storlek och form följer prylen, så en laptop

@@ -1,12 +1,20 @@
 // MENYN – inställningar, spara, starta om handledningen, tillbaka till startskärmen.
+// Texterna följer spelläget: konsolspelet (G.lage 'konsol', från 1982) eller SNABBSTART 2007 (telefonerna).
 import { F, W, rect, text, textB, knapp, panel, stycke, ikon } from '../core/ui.js';
 import { hud, flikrad } from './ram.js';
 import { sattLjud, ljudPa } from '../core/ljud.js';
 import { VERSION, DATE, TITLE } from '../version.js';
+import { arKonsolSpel } from '../sim/spel.js';
+
+const OM = {
+  telefon: 'STARTA ETT MOBILBOLAG I ETT GARAGE 2007. DESIGNA TELEFONER, LÅT TEAMET BYGGA DEM, LANSERA OCH SÄLJ, FORSKA FRAM NY TEKNIK ÅR FÖR ÅR OCH VÄX TILL ETT HUVUDKONTOR.',
+  konsol: 'KONSOLSPELET: STARTA I ETT GARAGE 1982. DESIGNA SPELKONSOLER, LÅT STUDIOS GÖRA SPEL TILL DEM, LANSERA OCH SÄLJ, FORSKA FRAM TELEFONERNA 2007 OCH VÄX TILL ETT HUVUDKONTOR.',
+};
 
 export function meny(A) {
   const G = A.G;
   let sparat = '';
+  const konsol = arKonsolSpel(G);
   return {
     tid: false,
     rita() {
@@ -18,7 +26,8 @@ export function meny(A) {
       const vaxel = (y, namn, pa, klick, info) => { text(namn, 14, y + 2, F.text); knapp(130, y, 52, 10, pa ? 'PÅ' : 'AV', { stil: pa ? 'gron' : 'morkt', klick }); if (info) text(info, 14, y + 12, F.dim2); };
       vaxel(44, 'PAUSA NÄR NÅGOT HÄNDER', G.installningar.autopaus, () => { G.installningar.autopaus = !G.installningar.autopaus; }, 'BYGGE KLART, FORSKNING KLAR, MÅL …');
       vaxel(64, 'LJUD', ljudPa(), () => { sattLjud(!ljudPa()); G.installningar.ljud = ljudPa(); });
-      text('TELEFONEN RITAS SOM', 14, 86, F.text);
+      // samma inställning gäller konsolerna och (från 2007) telefonerna
+      text(konsol ? 'KONSOLEN RITAS SOM' : 'TELEFONEN RITAS SOM', 14, 86, F.text);
       knapp(14, 94, 80, 10, 'RIKTIG 3D', { stil: 'dim', aktiv: G.installningar.telefon !== 'pixel', klick: () => { G.installningar.telefon = '3d'; } });
       knapp(100, 94, 82, 10, 'PIXEL', { stil: 'dim', aktiv: G.installningar.telefon === 'pixel', klick: () => { G.installningar.telefon = 'pixel'; } });
       vaxel(112, 'SNABBT LÄGE', G.installningar.snabbt, () => { G.installningar.snabbt = !G.installningar.snabbt; }, 'KONTOREN KOSTAR HALVA PRISET');
@@ -31,10 +40,10 @@ export function meny(A) {
       textB('MOBILFABRIKEN', 202, 44, F.guld);
       text(`VERSION ${VERSION} · ${DATE}`, 202, 56, F.dim);
       text(TITLE, 202, 63, F.dim);
-      stycke('STARTA ETT MOBILBOLAG I ETT GARAGE 2007. DESIGNA TELEFONER, LÅT TEAMET BYGGA DEM, LANSERA OCH SÄLJ, FORSKA FRAM NY TEKNIK ÅR FÖR ÅR OCH VÄX TILL ETT HUVUDKONTOR.', 202, 76, 168, F.dim);
+      stycke(OM[konsol ? 'konsol' : 'telefon'], 202, 76, 168, F.dim);
       text('TANGENTER', 202, 122, F.text);
       stycke('MELLANSLAG = PAUS · 1-4 = FART · ESC = TILL KONTORET · PILAR = BLÄDDRA I DESIGNERN', 202, 130, 168, F.dim);
-      stycke('BYGGT I PIXELSTADENS STIL. TELEFONEN RITAS I RIKTIG 3D ELLER SOM PIXLAR.', 202, 160, 168, F.dim2);
+      stycke(konsol ? 'BYGGT I PIXELSTADENS STIL. KONSOLERNA RITAS I RIKTIG 3D ELLER SOM PIXLAR.' : 'BYGGT I PIXELSTADENS STIL. TELEFONEN RITAS I RIKTIG 3D ELLER SOM PIXLAR.', 202, 160, 168, F.dim2);
       hud(A);
     },
   };

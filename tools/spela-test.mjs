@@ -50,7 +50,8 @@ const ok = (v, t) => { kontroller.push([v, t]); console.log((v ? '  ✓ ' : '  �
 
 try {
   await vanta(600); await bild('start');
-  await klicka('start-nytt'); await klicka('start-namnfalt');
+  // startvalet (0.2): SNABBSTART 2007 är telefonspelet
+  await klicka('start-nytt'); await klicka('start-snabb'); await klicka('start-namnfalt');
   await page.keyboard.type('Robotfonen AB'); await page.keyboard.press('Enter');
   await klicka('start-skapa'); await vanta(400); await bild('valkomst');
   ok((await lage()).scen === 'kontor', 'nytt bolag startar i kontoret');

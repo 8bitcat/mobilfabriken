@@ -3,7 +3,8 @@
 //   TRIVSEL = summan av allt · KONTOR ★ = medelstjärnan av allt som står där
 import { MOBEL } from '../data/katalog.js';
 import { KONTOR, kontorAv } from '../data/varld.js';
-import { betala, intakt, signal, nyhet, PLATSER } from './spel.js';
+import { K_KONTORSKRAV } from '../data/konsol-varld.js';
+import { betala, intakt, signal, nyhet, PLATSER, arKonsolSpel, prisniva } from './spel.js';
 
 const ORDNING = KONTOR.map((k) => k.id);
 export const lastOk = (G, m) => !m.las || ORDNING.indexOf(G.kontor.niva) >= ORDNING.indexOf(m.las);
@@ -67,10 +68,14 @@ export function taBort(G, plats, salj = true) {
 }
 
 // flytta till nästa kontorsnivå: platserna växer, möblerna följer med (fler platser blir tomma)
+// Konsolspelet har egna krav (K_KONTORSKRAV) och billigare lokaler innan 2007 (prisnivån).
+export const kontorKrav = (G, niva) => (arKonsolSpel(G) && K_KONTORSKRAV[niva]) || kontorAv(niva);
+export const flyttPris = (G, niva) => Math.round(kontorAv(niva).pris * (G.installningar.snabbt ? 0.5 : 1) * prisniva(G) / 10_000) * 10_000;
 export function kravUppfyllt(G, niva) {
-  const k = kontorAv(niva); if (!k.krav) return true;
+  const k = kontorKrav(G, niva); if (!k.krav) return true;
   const c = k.krav;
   if (c.lanserade && G.bolag.lanseringar < c.lanserade) return false;
+  if (c.spel && (G.k?.spel || []).filter((s) => s.status === 'ute' || s.status === 'slut').length < c.spel) return false;
   if (c.salda && !(G.bolag.totaltSalda >= c.salda)) return false;   // NaN får aldrig släppa igenom kravet
   if (c.enhetstyper && G.bolag.enhetstyper.length < c.enhetstyper) return false;
   if (c.mal && !G.mal.klara.includes(c.mal)) return false;
@@ -79,8 +84,8 @@ export function kravUppfyllt(G, niva) {
 export function flytta(G, niva) {
   const k = kontorAv(niva), i = ORDNING.indexOf(niva);
   if (i !== ORDNING.indexOf(G.kontor.niva) + 1) return { ok: false, fel: 'FLYTTA ETT STEG I TAGET' };
-  if (!kravUppfyllt(G, niva)) return { ok: false, fel: 'KRAV: ' + k.kravText };
-  const pris = Math.round(k.pris * (G.installningar.snabbt ? 0.5 : 1));
+  if (!kravUppfyllt(G, niva)) return { ok: false, fel: 'KRAV: ' + kontorKrav(G, niva).kravText };
+  const pris = flyttPris(G, niva);
   if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
   betala(G, pris, 'kontor');
   const ko = G.kontor, p = PLATSER[niva];

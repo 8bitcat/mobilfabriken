@@ -222,12 +222,17 @@ function paketera(inre) {
   let sist = {};
   yttre.userData.satt = (o) => { if (o === sist) return; sist = o; if (inre.userData.satt) inre.userData.satt(o); passa(); };
   yttre.userData.satt(undefined);
+  yttre.userData.tick = (t) => { if (inre.userData.tick) inre.userData.tick(t); };   // levande skärmar (spelglimtar)
   return yttre;
 }
+// Fler prylar registrerar sina byggare här (konsolerna i js/konsol/konsol-gl.js) – samma studio, ljus och kamera.
+export const BYGGARE = {};
 export function byggEnhet(tel) {
-  const bygg = { laptop: byggLaptop, klocka: byggKlocka, horlurar: byggHorlurar, vikbar: byggVikbar }[tel.enhet] || byggTelefon;
+  const bygg = BYGGARE[tel.enhet] || { laptop: byggLaptop, klocka: byggKlocka, horlurar: byggHorlurar, vikbar: byggVikbar }[tel.enhet] || byggTelefon;
   return paketera(bygg(tel));
 }
+// ritverktygen för andra modeller
+export { roundedRect, rektHorn, roundedBox, skarmYta, lysande, kroppMaterial, morkMetall, klamp01, logoTextur };
 function skrivbordTextur() {
   const T = window.THREE, c = document.createElement('canvas'); c.width = 512; c.height = 320; const x = c.getContext('2d');
   const gr = x.createLinearGradient(0, 0, 512, 320); gr.addColorStop(0, '#2d7cf0'); gr.addColorStop(0.55, '#6a4bd8'); gr.addColorStop(1, '#e05aa8'); x.fillStyle = gr; x.fillRect(0, 0, 512, 320);
@@ -421,19 +426,29 @@ export function skapaTelefonGL(canvas, { tel = {}, vy = 'auto', yaw = 0.6, pitch
   let telefon = null;
   s.uppdatera = () => {
     const nyckel = JSON.stringify(s.tel); if (nyckel === s._nyckel) return; s._nyckel = nyckel;
-    if (telefon) { grupp.remove(telefon); telefon.traverse((m) => { if (m.geometry) m.geometry.dispose(); if (m.material) { if (m.material.map) m.material.map.dispose(); m.material.dispose(); } }); }
+    // städa: en del kan ha en lista med material (t.ex. ett lock med egen färg), och Array har själv en .map
+    if (telefon) { grupp.remove(telefon); telefon.traverse((m) => { if (m.geometry) m.geometry.dispose(); for (const mm of [].concat(m.material || [])) { if (mm.map && mm.map.isTexture) mm.map.dispose(); mm.dispose(); } }); }
     telefon = byggEnhet(s.tel); telefon.position.y = 0.03; grupp.add(telefon);
   };
   const passa = () => { const w = canvas.clientWidth || 768, h = canvas.clientHeight || Math.round(w * 9 / 16); if (canvas.width !== Math.round(w * renderer.getPixelRatio()) || canvas.height !== Math.round(h * renderer.getPixelRatio())) { renderer.setSize(w, h, false); camera.aspect = w / h; camera.updateProjectionMatrix(); } };
   s.rita = () => {
     passa(); s.uppdatera();
-    const ud = telefon.userData; ud.satt(s.oppning);
+    const ud = telefon.userData; ud.satt(s.oppning); ud.tick(performance.now() / 1000);
+    // skuggkameran täcker stora prylar också (en hemdator är 4 dm bred)
+    const sk = Math.max(1.5, ud.bredd * 0.75, ud.fot[1] * 0.75);
+    if (sk !== s._sk) { s._sk = sk; Object.assign(key.shadow.camera, { left: -sk, right: sk, top: Math.max(2, ud.hojd + 0.6, sk), bottom: -Math.max(1, sk - 0.5) }); key.shadow.camera.updateProjectionMatrix(); }
     const a = s.vy === 'auto' ? [s._spin, s.pitch] : VYER[s.vy] || [s.yaw, s.pitch];
     grupp.rotation.y = a[0];
     const [fx, fz] = ud.fot, ca = Math.abs(Math.cos(a[0])), sa = Math.abs(Math.sin(a[0]));
     kontakt.scale.set((fx * ca + fz * sa) * 1.45 + 0.5, (fx * sa + fz * ca) * 1.45 + 0.6, 1);
     const H = ud.hojd, storlek = Math.max(H, ud.bredd * 0.85);
-    const dist = (K.dist * (0.6 + storlek / 3.4)) / (s.zoom || 1), cy = H / 2 + 0.03;   // större pryl ⇒ kameran backar lite
+    // större pryl ⇒ kameran backar lite; höga prylar (konsoltornen) måste dessutom få plats i höjdled
+    const tanV = Math.tan(((K.fov / 2) * Math.PI) / 180), hojdKrav = (H * 0.55 + 0.2) / tanV;
+    // breda uppställningar (konsol + handkontroll bredvid) måste få plats i sidled. Diagonalen är densamma
+    // åt alla håll, så kameran står still medan modellen snurrar.
+    const [fx0, fz0] = ud.fot, diag = Math.hypot(fx0, fz0);
+    const breddKrav = (diag * 0.5 + 0.15) / (tanV * camera.aspect) + diag * 0.2;
+    const dist = Math.max(K.dist * (0.6 + storlek / 3.4), hojdKrav, breddKrav) / (s.zoom || 1), cy = H / 2 + 0.03;
     camera.position.set(0, cy + Math.sin(a[1]) * dist, Math.cos(a[1]) * dist); camera.lookAt(0, cy, 0);
     const t1 = performance.now(); renderer.render(scene, camera); s.ms = performance.now() - t1;
   };

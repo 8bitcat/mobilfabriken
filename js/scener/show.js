@@ -1,13 +1,17 @@
 // LANSERINGSSHOWEN – spelets belöningsögonblick (8 sekunder, går att hoppa över).
 // Ridån går upp, telefonen står i strålkastarna, staplarna TEKNIK/DESIGN/PUTS fylls, betyget rullar upp
 // och tre tidningar säger sitt. Betyget visas aldrig innan ridån gått upp.
+// En konsol (konsolspelet) avslöjas i 3D med visaKonsol, speltidningarna (K_TIDNINGAR) recenserar den, spelet
+// i lådan står under namnet, och efter betyget kan man se konsolens reklamfilm (scenen 'reklam').
 import { U, F, W, H, rect, ram, text, textB, knapp, panel, papper, ikon, hit, tw, kapa, matare, stycke, ljusa, mixa, BIG } from '../core/ui.js';
 import { Pix, mix, mul, hash, bayer, glod, disc, ramp, kant, VARM, DJUP } from '../art/kit.js';
 import * as Vy3d from '../telefon/vy3d.js';
+import { visaKonsol } from '../konsol/konsol-vy.js';
 import { konfetti } from '../core/notiser.js';
 import { telAv } from '../sim/design.js';
 import { rimligtPris } from '../sim/marknad.js';
 import { kr, dec, tal } from '../sim/bas.js';
+import { K_TIDNINGAR } from '../data/konsol-varld.js';
 
 let SCEN = null;
 const SX = 116;   // scenens mitt (betygskortet står till höger)
@@ -53,13 +57,28 @@ function citat(p) {
     ['BYTESIZE', p.buggar >= 5 ? 'BUGGIGARE ÄN ETT MYRBO. AJ.' : P < 0.45 ? 'STRESSAT OCH OPUTSAT. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. GEDIGET.'],
   ];
 }
+// speltidningarna om en konsol: den sakliga om tekniken, den designglada om lådan och den elaka om buggar och puts
+// (i den ordning K_TIDNINGAR står: DATORMAGAZINET, SUPERSPEL, GAMERIKA)
+function konsolCitat(p) {
+  const T = p.staplar.teknik, D = p.staplar.design, P = p.staplar.puts, namn = (lynne, fall) => (K_TIDNINGAR.find((x) => x.lynne === lynne) || { namn: fall }).namn;
+  return [
+    // varje citat ryms på en rad i kortet (högst 132 px med citattecknen)
+    [namn('saklig', 'DATORMAGAZINET'), T >= 1 ? 'ETT KRAFTPAKET. SPELEN FLYGER.' : T >= 0.85 ? 'GEDIGET. INGA ÖVERRASKNINGAR.' : T >= 0.65 ? 'HALKAR EFTER RIVALERNA LITE.' : 'TEKNIKEN ÄR FRÅN I FJOL.'],
+    [namn('design', 'SUPERSPEL'), D >= 0.8 ? 'ÅRETS SNYGGASTE KONSOL.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'EN LÅDA SOM VÄNDER HUVUDEN.' : 'SER UT SOM EN BRÖDROST.'],
+    [namn('elak', 'GAMERIKA'), p.buggar >= 5 ? 'KRASCHAR VAR FEMTE MINUT. AJ.' : P < 0.45 ? 'OPUTSAD. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. TYVÄRR.'],
+  ];
+}
 const omdome = (b) => (b < 4 ? 'USEL' : b < 5 ? 'SVAG' : b < 6 ? 'OKEJ' : b < 7 ? 'BRA' : b < 8 ? 'MYCKET BRA' : b < 9 ? 'FANTASTISK' : 'MÄSTERVERK');
 
 export function show(A, o = {}) {
   const G = A.G, p = G.produkter.find((x) => x.id === o.produkt) || G.produkter[G.produkter.length - 1];
   let t = o.t || 0, spin = 0, ljudSteg = o.t ? 9 : 0;
   if (!p) return { tid: false, enter() { A.go('kontor'); }, rita() {} };
-  const C = citat(p), stj = Math.max(1, Math.round(p.betyg / 2)), rim = Math.round(rimligtPris(p.lanseradDag, p.betyg, p.design.enhet) / 10) * 10;
+  const konsol = p.design.linje === 'konsol';
+  const C = konsol ? konsolCitat(p) : citat(p), stj = Math.max(1, Math.round(p.betyg / 2)), rim = Math.round(rimligtPris(p.lanseradDag, p.betyg, p.design.enhet) / 10) * 10;
+  // konsolens reklamfilm (js/scener/reklam.js): { konsol } utan titel/spel ger konsollanseringen, där tv:n visar
+  // spelet i lådan (glimten). En titel skulle göra filmen till en spelreklam. Tiden går igen när den tar slut.
+  const reklam = () => { A.spelaTid(); A.go('reklam', { konsol: p.id, glimt: p.packin?.glimt || null, tillbaka: 'kontor' }); };
   const hoppa = () => { if (t < 8.5) { t = 8.5; ljudSteg = 9; } };
   return {
     tid: false,
@@ -73,8 +92,14 @@ export function show(A, o = {}) {
       // titeln
       text('PRESENTERAR', SX, 20, F.lila2, { just: 'c' });
       textB(kapa(p.namn, 112), SX, 28, F.guld, { just: 'c', k: 2, skugga: 0x8a2a6a });
-      // telefonen på podiet
-      Vy3d.visa({ x: SX - 40, y: 56, w: 80, h: 94 }, telAv(p.design), { vy: 'auto', spin, pitch: 0.1, pixel: G.installningar.telefon === 'pixel', ctx, skugga: false });
+      // telefonen på podiet (en konsol är bredare och låg, och visar spelet i lådan under namnet)
+      if (konsol) {
+        visaKonsol({ x: SX - 58, y: 75, w: 116, h: 76 }, p.design, { vy: 'auto', spin, pitch: 0.28, pixel: G.installningar.telefon === 'pixel', ctx });
+        if (p.packin) {
+          const s = 'MED ' + kapa(p.packin.titel, 80) + ' I LÅDAN', st = t > 5.8 ? '★'.repeat(p.packin.stj || 1) : '', sw = st ? tw(st) + 4 : 0, x0 = Math.round(SX - (tw(s) + sw) / 2);
+          text(s, x0, 46, F.lila2); if (st) text(st, x0 + tw(s) + 4, 46, F.guld);
+        }
+      } else Vy3d.visa({ x: SX - 40, y: 56, w: 80, h: 94 }, telAv(p.design), { vy: 'auto', spin, pitch: 0.1, pixel: G.installningar.telefon === 'pixel', ctx, skugga: false });
       // betygskortet (efter ridån)
       if (t > 2.8) {
         const x = 236, y = 18, w = 144, h = 182;
@@ -105,9 +130,14 @@ export function show(A, o = {}) {
       ridå(ctx, Math.min(1, Math.max(0, (t - 1.4) / 1.2)));
       if (t < 1.6) { textB(G.bolag.namn, W / 2, 90, F.guld, { just: 'c', skugga: 0x3a0810 }); text('PRESENTERAR STOLT …', W / 2, 104, F.text, { just: 'c' }); }
       if (t < 8.5) knapp(W - 64, H - 14, 60, 10, 'HOPPA ÖVER', { stil: 'morkt', klick: hoppa });
-      else {
+      else if (konsol) {
+        // tre knappar ryms till vänster om betygskortet (x 236)
+        knapp(8, H - 16, 70, 12, 'TILL KONTORET', { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
+        knapp(82, H - 16, 70, 12, 'SE KONSOLEN', { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
+        knapp(156, H - 16, 74, 12, 'SE REKLAMFILMEN', { stil: 'lila', klick: reklam, namn: 'show-reklam' });
+      } else {
         knapp(8, H - 16, 100, 12, 'TILL KONTORET', { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
-        knapp(112, H - 16, 100, 12, 'SE TELEFONEN', { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
+        knapp(112, H - 16, 100, 12, p.design?.linje === 'konsol' ? 'SE KONSOLEN' : 'SE TELEFONEN', { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
       }
       rect(0, 0, W, 14, 0x0a0d1a);
       text('LANSERINGEN · ' + G.bolag.namn, 4, 4, F.dim);

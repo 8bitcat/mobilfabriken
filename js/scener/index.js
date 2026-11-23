@@ -12,5 +12,7 @@ import { nyheter } from './nyheter.js';
 import { bolaget } from './bolaget.js';
 import { meny } from './meny.js';
 import { gavor } from './gavor.js';
+import { studios } from './studios.js';
+import { reklam } from './reklam.js';
 
-export const SCENER = { start, kontor, design, personal, bygg, lansering, show, telefoner, forskning, nyheter, bolaget, meny, gavor };
+export const SCENER = { start, kontor, design, personal, bygg, lansering, show, telefoner, forskning, nyheter, bolaget, meny, gavor, studios, reklam };

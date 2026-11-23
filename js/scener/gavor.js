@@ -73,13 +73,15 @@ export function gavor(A) {
       panel(4, 116, 186, 82, { fyll: mixa(F.orange, F.panel, 0.75) });
       text('DAG 5-BONUS', 10, 121, F.orange2);
       textB('+10 % PÅ VARJE FÖRSÄLJNING', 10, 130, F.text);
-      stycke('ÖPPNA FEM GÅVOR SÅ TJÄNAR VARJE SÅLD TELEFON 10 % MER. FÖR ALLTID.', 10, 142, 176, F.dim);
+      const konsol = G.lage === 'konsol';   // konsolspelet: konsolerna (och telefonerna) – designerns steg heter FÄRG & YTA
+      // (konsoltexten är ordnad så att "10 %" aldrig bryts mellan talet och procenttecknet)
+      stycke(!konsol ? 'ÖPPNA FEM GÅVOR SÅ TJÄNAR VARJE SÅLD TELEFON 10 % MER. FÖR ALLTID.' : `ÖPPNA FEM GÅVOR SÅ TJÄNAR DU 10 % MER PÅ VARJE SÅLD ${G.flaggor.mobil ? 'PRYL' : 'KONSOL'}. FÖR ALLTID.`, 10, 142, 176, F.dim);
       text(G.flaggor.saljBonus ? 'AKTIV!' : `${Math.min(5, lage.kort)} AV 5`, 10, 160, G.flaggor.saljBonus ? F.gron2 : F.guld);
       panel(194, 116, 186, 82, { fyll: mixa(F.guld2, F.panel, 0.8) });
       text('LEGENDARISKA YTOR', 200, 121, F.guld);
       textB(`${G.legendariska.length} AV 6 SAMLADE`, 200, 130, F.text);
       LEGENDARISKA.forEach((l, i) => { const x = 200 + i * 29, har = G.legendariska.includes(l.id); rect(x, 144, 26, 14, har ? parseInt(l.farg.slice(1), 16) : F.panel2); ram(x, 144, 26, 14, har ? F.guld : F.dim2); if (!har) ikon('las', x + 10, 147, F.dim2); text(l.namn, x + 13, 161, har ? F.text : F.dim2, { just: 'c' }); });
-      text(oppnat ? 'NY YTA: ' + oppnat + '! VÄLJ DEN I DESIGNERN.' : 'ANVÄNDS I DESIGNERN (FÄRG & MÄRKE).', 200, 172, oppnat ? F.guld : F.dim);
+      text(oppnat ? 'NY YTA: ' + oppnat + '! VÄLJ DEN I DESIGNERN.' : (konsol ? 'ANVÄNDS I DESIGNERN (FÄRG & YTA).' : 'ANVÄNDS I DESIGNERN (FÄRG & MÄRKE).'), 200, 172, oppnat ? F.guld : F.dim);
       hud(A); flikrad(A, 'kontor');
     },
   };

@@ -217,6 +217,13 @@ const VAGG = {
     const t = ['#...#..##..###..#.#....', '##.##.#..#.#..#.#.#....', '#.#.#.#..#.###..#.#....', '#...#.#..#.#..#.#.#....', '#...#..##..###..#.####.'];
     for (let j = 0; j < 5; j++) for (let i = 0; i < 23; i++) if (t[j][i] === '#') { P.px(x + 4 + i * 2, y + 4 + j, 0xffd8f4); P.px(x + 5 + i * 2, y + 4 + j, 0xff40c8); }
   }],
+  // konsolspelets variant (mobelSprite väljer den när neonLage('konsol') är satt): "SPEL" i gröna rör
+  neonskylt_spel: [56, 18, (P, ax, ay) => {
+    const x = ax - 26, y = ay + 2; glod(P, ax, y + 6, 30, 11, 0x40ff90, 0.3, 3);
+    P.rect(x, y, 52, 13, 0x0e1a14); P.box(x, y, 52, 13, 0x40ff90); P.box(x + 1, y + 1, 50, 11, 0x1e6a3e);
+    const t = ['.##.##..###.#..', '#...#.#.#...#..', '.#..##..##..#..', '..#.#...#...#..', '##..#...###.###'];
+    for (let j = 0; j < 5; j++) for (let i = 0; i < 15; i++) if (t[j][i] === '#') { P.px(x + 11 + i * 2, y + 4 + j, 0xd8ffe8); P.px(x + 12 + i * 2, y + 4 + j, 0x40ff90); }
+  }],
   kristallkrona: [34, 26, (P, ax, ay) => {
     P.vl(ax, ay, 6, 0xd8b24a); glod(P, ax, ay + 14, 18, 12, 0xfff0c0, 0.3, 3);
     disc(P, ax, ay + 9, 12, 3, (x, y, t) => P.px(x, y, t > 0.7 ? 0x8a5a10 : 0xe8b230));
@@ -226,7 +233,11 @@ const VAGG = {
 
 const ALLA = { ...GOLV, ...VAGG };
 export const harSprite = (id) => !!ALLA[id];
+// spelläget som kontoret ritas i (kontor-vy.js sätter det): i konsolspelet säger neonskylten SPEL i stället för MOBIL
+let lage = 'telefon';
+export const neonLage = (l) => { lage = l || 'telefon'; };
 export function mobelSprite(id) {
+  if (id === 'neonskylt' && lage === 'konsol') id = 'neonskylt_spel';
   const d = ALLA[id]; if (!d) return null;
   const [w, h, rita] = d, golv = !!GOLV[id];
   // ankare: golv = (mitt, botten), vägg = (mitt, topp)

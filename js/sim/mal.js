@@ -1,9 +1,9 @@
 // De 28 målen (förlagans "GOAL n OF 28" med kontantbelöning). Ett i taget visas i kontoret.
 import { NOD } from '../data/noder.js';
 import { kontorsVarden } from './kontor.js';
-import { tackning, bas } from './marknad.js';
+import { tackning, bas, kBas } from './marknad.js';
 import { modellVinst } from './projekt.js';
-import { intakt, signal, nyhet } from './spel.js';
+import { intakt, signal, nyhet, arKonsolSpel } from './spel.js';
 import { kr } from './bas.js';
 
 const salda = (G) => G.bolag.totaltSalda;
@@ -53,8 +53,46 @@ export const MAL = [
   { nr: 27, text: 'FORSKA FRAM 100 TEKNIKER', belopp: 40_000_000, klart: (G) => G.forskning.klara.length >= 100 },
   { nr: 28, text: 'FLYTTA TILL ETT HUVUDKONTOR', belopp: 100_000_000, klart: (G) => G.kontor.niva === 'hk' },
 ];
-export const nastaMal = (G) => MAL.find((m) => !G.mal.klara.includes(m.nr)) || null;
-export const marknadsandel = andel;
+// Konsolspelets 28 mål (1982 →): samma trappa som telefonernas, med studios, spel och telefonavdelningen.
+const konsoler = (G) => G.produkter.filter((p) => p.design.linje === 'konsol');
+const slappta = (G) => (G.k?.spel || []).filter((s) => s.status === 'ute' || s.status === 'slut');
+const kAndel = (G) => {
+  const s = konsoler(G).reduce((sum, p) => sum + senasteVeckor(G, p, 4).reduce((a, b) => a + b, 0), 0);
+  return s / (16 * kBas(G.dag) * Math.max(0.3, tackning(G)));
+};
+export const K_MAL = [
+  { nr: 1, text: 'STÄLL UT 2 BORD', belopp: 20_000, klart: (G) => G.kontor.bord.filter(Boolean).length >= 2 },
+  { nr: 2, text: 'ANSTÄLL 2 PERSONER', belopp: 30_000, klart: (G) => G.personal.length >= 2 },
+  { nr: 3, text: 'DESIGNA EN SPELKONSOL', belopp: 50_000, klart: (G) => G.projekt.some((p) => p.design.linje === 'konsol') || konsoler(G).length > 0 },
+  { nr: 4, text: 'LANSERA DIN FÖRSTA KONSOL', belopp: 80_000, klart: (G) => konsoler(G).length >= 1 },
+  { nr: 5, text: 'KÖP NYA KONTORSMÖBLER', belopp: 100_000, klart: (G) => !!G.flaggor.kopteNyMobel || harBetaltMobler(G) },
+  { nr: 6, text: 'FORSKA FRAM EN TEKNIK', belopp: 120_000, klart: (G) => G.forskning.klara.length >= 1 },
+  { nr: 7, text: 'SÄLJ 100 KONSOLER', belopp: 150_000, klart: (G) => salda(G) >= 100 },
+  { nr: 8, text: 'SÄG JA TILL EN SPELSTUDIO', belopp: 200_000, klart: (G) => (G.flaggor.avtal || 0) >= 1 },
+  { nr: 9, text: 'TJÄNA IN FABRIKEN', belopp: 250_000, klart: (G) => G.produkter.some((p) => modellVinst(p) >= 0) },
+  { nr: 10, text: 'FÅ MINST 6,5 I BETYG', belopp: 300_000, klart: (G) => G.bolag.bastaBetyg >= 6.5 },
+  { nr: 11, text: 'SLÄPP 3 SPEL TILL DINA KONSOLER', belopp: 300_000, klart: (G) => slappta(G).length >= 3 },
+  { nr: 12, text: 'SÄLJ 1 000 KONSOLER', belopp: 400_000, klart: (G) => salda(G) >= 1000 },
+  { nr: 13, text: 'TRIVSEL ★★', belopp: 500_000, klart: (G) => kontorsVarden(G).trivselStj >= 2 },
+  { nr: 14, text: 'FLYTTA TILL ETT LITET KONTOR', belopp: 800_000, klart: (G) => G.kontor.niva !== 'garage' },
+  { nr: 15, text: 'GÖR ETT EGET SPEL TILL', belopp: 600_000, klart: (G) => (G.flaggor.egetSpel || 0) >= 1 },
+  { nr: 16, text: 'FÅ ETT ★★★★-SPEL', belopp: 1_000_000, klart: (G) => slappta(G).some((s) => s.stj >= 4) },
+  { nr: 17, text: 'BÖRJA SÄLJA I EUROPA', belopp: 1_500_000, klart: (G) => G.marknad.regioner.includes('europa') },
+  { nr: 18, text: 'LANSERA EN FICKKONSOL', belopp: 2_000_000, klart: (G) => G.bolag.enhetstyper.includes('ficka') },
+  { nr: 19, text: 'FÅ ETT ★★★★★-SPEL', belopp: 2_500_000, klart: (G) => slappta(G).some((s) => s.stj >= 5) },
+  { nr: 20, text: 'FORSKA FRAM 25 TEKNIKER', belopp: 3_000_000, klart: (G) => G.forskning.klara.length >= 25 },
+  { nr: 21, text: 'FLYTTA TILL EN KONTORSVÅNING', belopp: 4_000_000, klart: (G) => ['vaning', 'studio', 'hk'].includes(G.kontor.niva) },
+  { nr: 22, text: 'LANSERA EN KONSOL MED CD', belopp: 6_000_000, klart: (G) => konsoler(G).some((p) => ['cd', 'dvd', 'bluray', 'ladda', 'ssd'].includes(p.design.val.media)) },
+  { nr: 23, text: '10 % MARKNADSANDEL', belopp: 8_000_000, klart: (G) => kAndel(G) >= 0.1 },
+  { nr: 24, text: 'FÅ MINST 9,0 I BETYG', belopp: 10_000_000, klart: (G) => G.bolag.bastaBetyg >= 9 },
+  { nr: 25, text: 'FLYTTA TILL EN STUDIO', belopp: 15_000_000, klart: (G) => ['studio', 'hk'].includes(G.kontor.niva) },
+  { nr: 26, text: 'SÄLJ I HELA VÄRLDEN', belopp: 25_000_000, klart: (G) => G.marknad.regioner.length >= 4 },
+  { nr: 27, text: 'ÖPPNA TELEFONAVDELNINGEN', belopp: 40_000_000, klart: (G) => !!G.flaggor.mobil },
+  { nr: 28, text: 'FLYTTA TILL ETT HUVUDKONTOR', belopp: 100_000_000, klart: (G) => G.kontor.niva === 'hk' },
+];
+export const malLista = (G) => (arKonsolSpel(G) ? K_MAL : MAL);
+export const nastaMal = (G) => malLista(G).find((m) => !G.mal.klara.includes(m.nr)) || null;
+export const marknadsandel = (G) => (arKonsolSpel(G) ? kAndel(G) : andel(G));
 
 // mål klaras i ordning (förlagan visar ett i taget) – men flera kan bockas av samma dag
 export function kollaMal(G) {
@@ -66,7 +104,7 @@ export function kollaMal(G) {
     signal(G, 'mal', { nr: m.nr, text: m.text, belopp: m.belopp, konfetti: true, ljud: 'mal' });
   }
 }
-// utmärkelser: kosmetiska bedrifter
+// utmärkelser: kosmetiska bedrifter (konsolspelet har några egna, se K_UTMARKELSER)
 export const UTMARKELSER = [
   { id: 'hej', namn: 'HEJ VÄRLDEN', text: 'LANSERA DIN FÖRSTA TELEFON', klart: (G) => G.bolag.lanseringar >= 1 },
   { id: 'tusen', namn: 'TUSENKLUBBEN', text: 'SÄLJ 1 000 TELEFONER', klart: (G) => G.bolag.totaltSalda >= 1000 },
@@ -78,8 +116,22 @@ export const UTMARKELSER = [
   { id: 'allt', namn: 'ALLT VETANDE', text: 'FORSKA FRAM ALLA 144 TEKNIKER', klart: (G) => G.forskning.klara.length >= 144 },
   { id: 'fem', namn: 'FAMILJEN', text: 'LANSERA FEM OLIKA SORTERS ENHETER', klart: (G) => G.bolag.enhetstyper.length >= 5 },
 ];
+export const K_UTMARKELSER = [
+  { id: 'pang', namn: 'PANG!', text: 'LANSERA DIN FÖRSTA KONSOL', klart: (G) => konsoler(G).length >= 1 },
+  { id: 'tusen', namn: 'TUSENKLUBBEN', text: 'SÄLJ 1 000 KONSOLER', klart: (G) => G.bolag.totaltSalda >= 1000 },
+  { id: 'miljon', namn: 'MILJONEN', text: 'SÄLJ 1 000 000 KONSOLER', klart: (G) => G.bolag.totaltSalda >= 1e6 },
+  { id: 'nia', namn: 'NIOAN', text: 'FÅ 9,0 ELLER MER', klart: (G) => G.bolag.bastaBetyg >= 9 },
+  { id: 'tia', namn: 'PERFEKT TIA', text: 'FÅ 10,0', klart: (G) => G.bolag.bastaBetyg >= 10 },
+  { id: 'flopp', namn: 'TOMATEN', text: 'FLOPPA MED UNDER 5,0', klart: (G) => G.produkter.some((p) => p.betyg < 5) },
+  { id: 'bibliotek', namn: 'BIBLIOTEKARIEN', text: '20 SPEL TILL DINA KONSOLER', klart: (G) => slappta(G).length >= 20 },
+  { id: 'exklusiv', namn: 'BARA HOS OSS', text: 'SLÄPP ETT EXKLUSIVT SPEL', klart: (G) => slappta(G).some((s) => s.exklusiv) },
+  { id: 'labb', namn: 'LABBRÅTTAN', text: 'FORSKA FRAM 50 TEKNIKER', klart: (G) => G.forskning.klara.length >= 50 },
+  { id: 'fem', namn: 'FAMILJEN', text: 'LANSERA FEM OLIKA SORTERS ENHETER', klart: (G) => G.bolag.enhetstyper.length >= 5 },
+  { id: 'gta', namn: 'SISTA SPELET', text: 'FÅ GRAND THEFT AUTOMOBIL VI', klart: (G) => slappta(G).some((s) => s.final) },
+];
+export const utmarkelseLista = (G) => (arKonsolSpel(G) ? K_UTMARKELSER : UTMARKELSER);
 export function kollaUtmarkelser(G) {
-  for (const u of UTMARKELSER) if (!G.mal.utmarkelser.includes(u.id) && u.klart(G)) {
+  for (const u of utmarkelseLista(G)) if (!G.mal.utmarkelser.includes(u.id) && u.klart(G)) {
     G.mal.utmarkelser.push(u.id);
     nyhet(G, 'DU', `${G.bolag.namn} FICK UTMÄRKELSEN "${u.namn}".`);
     signal(G, 'toast', { text: `UTMÄRKELSE: ${u.namn}`, farg: 'guld' });

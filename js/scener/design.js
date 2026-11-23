@@ -1,14 +1,22 @@
 // DESIGNSTUDION – tretton steg runt telefonen (riktig 3D eller pixel). Tiden står still här.
 // Varje val ändrar modellen och tillverkningskostnaden direkt; låsta delar visar vad som krävs.
+// Konsolspelet (docs/KONSOLPLAN.md): en konsoldesign (d.linje 'konsol') får konsolens sexton steg ur
+// design-konsol.js och visas med visaKonsol; när telefonavdelningen är öppen väljer växeln KONSOL / TELEFON
+// överst vilken linje som ritas (den andra linjens utkast väntar i G.utkastAndra).
 import { U, F, W, rect, ram, text, textB, knapp, panel, kort, chip, reglage, matare, ikon, hit, tw, kapa, stycke, radbryt, lista, ljusa, mixa, BIG } from '../core/ui.js';
 import * as Vy3d from '../telefon/vy3d.js';
+import { visaKonsol } from '../konsol/konsol-vy.js';
 import { hud } from './ram.js';
+import { K_STEG, konsolSteg, forberedKonsol, konsolKontroll, fargNamnKonsol } from './design-konsol.js';
 import { GRUPPER, DELAR, KAROSSER, YTOR, FUNKTIONER, ENHETER, LEGENDARISKA, delAv } from '../data/delar.js';
+import { K_KAROSSER, kEnhetAv } from '../data/konsol.js';
+import { linjeAv } from '../data/linjer.js';
 import { NOD } from '../data/noder.js';
 import { nyDesign, telAv, tum, styckkostnad, prisNu, harDel, harKaross, harFunktion, harEnhet, antalLinserTillatna, minRam, minDjup, forvantan, fraschhet, teknik, betyg } from '../sim/design.js';
 import { aktivaEffekter, rimligtPris, prognos, snitt } from '../sim/marknad.js';
 import { kanStarta, startaUtveckling, byggdagar, fabriksPris } from '../sim/projekt.js';
 import { status as nodStatus } from '../sim/forskning.js';
+import { arKonsolSpel } from '../sim/spel.js';
 import { kr, dec, arAv, klamp } from '../sim/bas.js';
 
 const HAL = { x: 100, y: 26, w: 176, h: 174 };
@@ -24,9 +32,9 @@ const fargNamn = (d) => {
   return i >= 0 ? FARGNAMN[i] : LEGENDARISKA.find((l) => l.farg === f)?.namn || 'EGEN FÄRG';
 };
 // funktionsbonusen så som kritikerna räknar den (sim/design.js betyg), och dess tak: med alla funktioner påslagna
-// blir bonusen precis taket. Linser och tunna ramar räknas också som funktioner.
+// blir bonusen precis taket. Linser och tunna ramar räknas också som funktioner (telefonerna).
 const funkBonus = (G, d) => betyg(G, d, arAv(G.dag), 1, 1, 0).funk;
-const funkTak = (G, d) => betyg(G, { ...d, funktioner: FUNKTIONER.map((f) => f.id) }, arAv(G.dag), 1, 1, 0).funk;
+const funkTak = (G, d) => betyg(G, { ...d, funktioner: linjeAv(d).FUNKTIONER.map((f) => f.id) }, arAv(G.dag), 1, 1, 0).funk;
 
 const STEG = [
   { id: 'enhet', rubrik: 'ENHET', hjalp: 'VILKEN SORTS PRYL BYGGER NI?' },
@@ -48,17 +56,27 @@ const GRUPPNAMN = Object.fromEntries(GRUPPER.map((g) => [g.id, g.namn]));
 
 export function design(A, o = {}) {
   const G = A.G;
+  const linje = valjLinje(G, o), konsol = linje === 'konsol';
+  // Konsolspelet har ett utkast per linje: den andra linjens väntar i G.utkastAndra tills linjen väljs igen
+  // (växeln, koncepthyllan) – också när det här utkastet startas. Designern öppnar linjen man senast ritade.
+  if (G.utkast && linjeAv(G.utkast).id !== linje) { const andra = G.utkastAndra; G.utkastAndra = G.utkast; G.utkast = andra && linjeAv(andra).id === linje ? andra : null; }
+  else if (!G.utkast && !o.ny && G.utkastAndra && linjeAv(G.utkastAndra).id === linje) { G.utkast = G.utkastAndra; G.utkastAndra = null; }
+  if (arKonsolSpel(G)) G.designLinje = linje;
   const nytt = o.ny || !G.utkast;
-  if (nytt) G.utkast = o.fran ? nyDesign(G, o.fran) : nyDesign(G, senasteDesign(G));
+  if (nytt) G.utkast = o.fran ? nyDesign(G, o.fran) : nyttUtkast(G, linje);
   const d = G.utkast;
+  if (konsol) forberedKonsol(G, d);
   // Ny forskning följer med till nästa telefon (Mios löfte om GPS) – också till ett utkast eller koncept som
   // gjordes medan forskningen pågick. d.kandaFunk = funktionerna som var forskade när designen senast öppnades;
   // ett gammalt utkast utan listan får inga tillägg (vi vet inte vad barnet själv stängt av).
-  nyaFunktioner(G, d, Array.isArray(d.kandaFunk) ? d.kandaFunk : nytt ? [] : forskadeFunk(G));
-  let steg = o.steg ?? (G.designSteg || 0), vy = 'auto', yaw = 0.6, pitch = 0.2, spin = 0.6, drag = null, fel = '', skroll = { v: 0 }, skroll2 = { v: 0 }, lage = 'design';
+  nyaFunktioner(G, d, Array.isArray(d.kandaFunk) ? d.kandaFunk : nytt ? [] : forskadeFunk(G, linje));
+  const STEGL = konsol ? K_STEG : STEG, SISTA = STEGL.length - 1;   // telefonen 13 steg, konsolen 16
+  let steg = Math.min(SISTA, o.steg ?? (G.designSteg || 0)), vy = 'auto', yaw = 0.6, pitch = 0.2, spin = 0.6, drag = null, fel = '', skroll = { v: 0 }, skroll2 = { v: 0 }, lage = 'design';
   const hyllSkroll = { v: 0 };
   const ar = arAv(G.dag), eff = aktivaEffekter(G);
-  const sattSteg = (s) => { steg = Math.max(0, Math.min(12, s)); G.designSteg = steg; skroll = { v: 0 }; skroll2 = { v: 0 }; fel = ''; };
+  const sattSteg = (s) => { steg = Math.max(0, Math.min(SISTA, s)); G.designSteg = steg; skroll = { v: 0 }; skroll2 = { v: 0 }; fel = ''; };
+  // växeln KONSOL / TELEFON: utkastet byter plats med den andra linjens (eller blir en ny design av den linjen)
+  const bytLinje = (L) => { if (L !== linje) A.go('design', { linje: L, steg: 0 }); };
   const tal = (n) => (n < 0 ? '-' : '') + Math.abs(n) + ' KR';
 
   // ---------- hjälp ----------
@@ -122,7 +140,9 @@ export function design(A, o = {}) {
         if (y > 156) break;
         const ok = harEnhet(G, e.id), vald = d.enhet === e.id;
         kort(RX, y, RW, 16, { vald, av: !ok, klick: ok ? () => sattEnhet(d, e.id) : null });
-        text(e.namn, RX + 4, y + 3, ok ? F.text : F.dim2); text(ok ? kapa(e.info, 92) : (ar < e.ar ? 'KOMMER ' + e.ar : 'KRÄVER FORSKNING'), RX + 4, y + 9, ok ? F.dim : F.orange2);
+        // konsolspelet: telefonen är inte bolagets första enhet (konsolerna kom före)
+        const info = e.id === 'telefon' && G.lage === 'konsol' ? 'MOBILEN I FICKAN' : e.info;
+        text(e.namn, RX + 4, y + 3, ok ? F.text : F.dim2); text(ok ? kapa(info, 92) : (ar < e.ar ? 'KOMMER ' + e.ar : 'KRÄVER FORSKNING'), RX + 4, y + 9, ok ? F.dim : F.orange2);
         if (!ok) ikon('las', RX + RW - 10, y + 4, F.orange); y += 18;
       }
     },
@@ -221,8 +241,11 @@ export function design(A, o = {}) {
       hit(falt.x, falt.y, falt.w, falt.h, { klick: () => A.textfalt(falt, d.namn, (v) => { d.namn = v; }, 18), namn: 'design-namn' });
     },
   };
+  // konsolens steg (design-konsol.js) ritar i samma högerpanel med samma listor och knappar
+  const UI_STEG = konsol ? konsolSteg({ G, d, A, ar, eff, radLista, hoger, tal, skroll: () => skroll, FARGER, fargNamn, forskadeFunk, funkBonus, funkTak, sattEnhet: (id) => sattKonsolEnhet(G, d, id) }) : STEGUI;
 
-  function vinkel() { return vy === 'auto' ? [spin, 0.2] : vy === 'manuell' ? [yaw, pitch] : { fram: [0, 0.22], bak: [Math.PI, 0.22], sida: [Math.PI / 2, 0.22], under: [0.3, -1.1] }[vy]; }
+  // konsolen ses lite mer ovanifrån än telefonen (den står på golvet med handkontrollen bredvid)
+  function vinkel() { return vy === 'auto' ? [spin, konsol ? 0.32 : 0.2] : vy === 'manuell' ? [yaw, pitch] : { fram: [0, 0.22], bak: [Math.PI, 0.22], sida: [Math.PI / 2, 0.22], under: [0.3, -1.1] }[vy]; }
   function studio(ctx) {
     const { x, y, w, h } = HAL, golv = y + 120;
     for (let j = 0; j < h; j++) rect(x, y + j, w, 1, j < 120 ? mixa(0x1c2050, 0x0e1230, j / 120) : mixa(0x23234e, 0x15153a, (j - 120) / 54));
@@ -237,10 +260,19 @@ export function design(A, o = {}) {
     if (!n) stycke('HÄR SPARAS DESIGNER SOM INTE STARTATS. TRYCK SPARA I GRANSKNINGEN.', RX, 42, RW, F.dim);
     // 8 kort ryms (y 39–183, TILLBAKA på 188); fler rullar. Konceptet laddas med sitt id, så det lämnar hyllan när det startas.
     const kw = n * 18 > 144 ? RW - 5 : RW;
+    // konsolspelet: hyllan har båda linjerna – en ikon visar vilken, och konceptet öppnas i sin linjes granskning
+    // (ett utkast av den andra linjen väntar under tiden i G.utkastAndra)
+    const kSpel = arKonsolSpel(G);
     if (n) lista(RX, 39, RW, Math.min(144, n * 18), n, 18, (i, y) => {
-      const c = G.koncept[i];
-      kort(RX, y, kw, 17, { namn: 'koncept-' + i, klick: () => { G.utkast = JSON.parse(JSON.stringify(c)); A.go('design', { steg: 12 }); } });
-      text(kapa(c.namn || 'NAMNLÖS', kw - 8), RX + 4, y + 3, F.text); text(kapa(kr(c.pris) + ' · ' + dec(tum(c), 1) + '"', kw - 8), RX + 4, y + 10, F.dim);
+      const c = G.koncept[i], ck = linjeAv(c).id === 'konsol', iw = kSpel ? 10 : 0;
+      kort(RX, y, kw, 17, { namn: 'koncept-' + i, klick: () => {
+        const cl = linjeAv(c).id;
+        if (G.utkast && linjeAv(G.utkast).id !== cl) G.utkastAndra = G.utkast;
+        G.utkast = JSON.parse(JSON.stringify(c)); A.go('design', { steg: cl === 'konsol' ? K_STEG.length - 1 : 12, ...(kSpel ? { linje: cl } : {}) });
+      } });
+      text(kapa(c.namn || 'NAMNLÖS', kw - 8 - iw), RX + 4, y + 3, F.text);
+      text(kapa(kr(c.pris) + ' · ' + (ck ? kEnhetAv(c.enhet).namn : dec(tum(c), 1) + '"'), kw - 8), RX + 4, y + 10, F.dim);
+      if (kSpel) ikon(ck ? 'kontroll' : 'telefon', RX + kw - 10, y + 2, ck ? F.lila2 : F.bla2);
     }, hyllSkroll);
     knapp(RX, 188, RW, 10, 'TILLBAKA', { stil: 'morkt', klick: () => { lage = 'design'; } });
   }
@@ -255,43 +287,65 @@ export function design(A, o = {}) {
     tangent(e) { if (e.key === 'ArrowRight') { sattSteg(steg + 1); return true; } if (e.key === 'ArrowLeft') { sattSteg(steg - 1); return true; } return false; },
     rita(ctx, dt) {
       if (vy === 'auto') spin += dt * 0.9;
-      const styck = styckkostnad(G, d, eff), st = STEG[steg];
+      const styck = styckkostnad(G, d, eff), st = STEGL[steg];
       rect(0, 14, W, 11, 0x0a0d1a);
+      // konsolspelet med telefonavdelning: växeln KONSOL / TELEFON efter DESIGNSTUDIO (bolagsnamnet får då vika)
+      const vaxel = arKonsolSpel(G) && !!G.flaggor.mobil, hx = vaxel ? 137 : 58;
+      if (vaxel) {
+        knapp(58, 15, 36, 9, 'KONSOL', { stil: 'dim', aktiv: konsol, klick: () => bytLinje('konsol'), namn: 'design-linje-konsol' });
+        knapp(96, 15, 38, 9, 'TELEFON', { stil: 'dim', aktiv: !konsol, klick: () => bytLinje('telefon'), namn: 'design-linje-telefon' });
+      }
       // rubrikraden slutar före KONCEPT-knappen (x W − 146) även med långa bolagsnamn
       const svans = ' · TIDEN STÅR STILL', fore = ar + ' · ';
-      text(fore + kapa(G.bolag.namn, W - 146 - 4 - 58 - tw(fore) - tw(svans)) + svans, 58, 17, F.dim);
+      if (vaxel) text(kapa(ar + svans, W - 146 - 4 - hx), hx, 17, F.dim);
+      else text(fore + kapa(G.bolag.namn, W - 146 - 4 - 58 - tw(fore) - tw(svans)) + svans, 58, 17, F.dim);
       text('DESIGNSTUDIO', 4, 17, F.guld);
       knapp(W - 76, 15, 72, 9, 'TILL KONTORET', { stil: 'orange', klick: () => A.go('kontor'), namn: 'design-kontoret' });
       knapp(W - 146, 15, 66, 9, 'KONCEPT (' + G.koncept.length + ')', { stil: 'morkt', klick: () => { lage = lage === 'koncept' ? 'design' : 'koncept'; } });
       panel(2, 26, 96, 58);
       text('ATT TILLVERKA', 6, 30, F.dim); textB(kr(styck), 6, 37, F.guld);
-      text(kapa(d.namn || 'NAMNLÖS TELEFON', 88), 6, 48, F.text);
-      text(kapa(`${dec(tum(d), 1)}" SKÄRM · ${fargNamn(d)}`, 88), 6, 56, F.dim);
-      text(`${dec(d.form.bredd * 10, 1)} × ${dec(d.form.hojd * 10, 1)} × ${dec(d.form.djup * 10, 1)} CM`, 6, 64, F.dim);
-      text((KAROSSER.find((k) => k.id === d.kaross) || KAROSSER[0]).namn, 6, 72, F.dim2);
+      if (konsol) {
+        // konsolen: formen (den visar också enheten), färgen och spelet i lådan
+        text(kapa(d.namn || 'NAMNLÖS KONSOL', 88), 6, 48, F.text);
+        text(kapa((K_KAROSSER.find((k) => k.id === d.kaross) || K_KAROSSER[0]).namn, 88), 6, 56, F.dim);
+        text(kapa(fargNamnKonsol(d, fargNamn), 88), 6, 64, F.dim);
+        text(kapa(d.packin ? 'I LÅDAN: ' + d.packin.titel : 'INGET SPEL I LÅDAN', 88), 6, 72, F.dim2);
+      } else {
+        text(kapa(d.namn || 'NAMNLÖS TELEFON', 88), 6, 48, F.text);
+        text(kapa(`${dec(tum(d), 1)}" SKÄRM · ${fargNamn(d)}`, 88), 6, 56, F.dim);
+        text(`${dec(d.form.bredd * 10, 1)} × ${dec(d.form.hojd * 10, 1)} × ${dec(d.form.djup * 10, 1)} CM`, 6, 64, F.dim);
+        text((KAROSSER.find((k) => k.id === d.kaross) || KAROSSER[0]).namn, 6, 72, F.dim2);
+      }
+      const sak = konsol ? 'KONSOLEN' : 'TELEFONEN';
       text('VY', 4, 89, F.dim);
       [['auto', 'AUTO'], ['manuell', 'FRI'], ['fram', 'FRAM'], ['bak', 'BAK'], ['sida', 'SIDA'], ['under', 'UNDER']].forEach(([id, t], i) => knapp(4 + (i % 2) * 48, 96 + Math.floor(i / 2) * 13, 44, 10, t, { stil: 'dim', aktiv: vy === id, klick: () => { vy = id; } }));
-      text('TELEFONEN RITAS SOM', 4, 140, F.dim);
+      text(sak + ' RITAS SOM', 4, 140, F.dim);
       const lage3d = G.installningar.telefon !== 'pixel';
       knapp(4, 148, 44, 10, 'RIKTIG 3D', { stil: 'dim', aktiv: lage3d, klick: () => { G.installningar.telefon = '3d'; } });
       knapp(52, 148, 44, 10, 'PIXEL', { stil: 'dim', aktiv: !lage3d, klick: () => { G.installningar.telefon = 'pixel'; } });
-      text('DRA I TELEFONEN', 4, 166, F.dim2); text('FÖR ATT VRIDA DEN', 4, 173, F.dim2);
-      knapp(4, 186, 92, 11, 'BÖRJA OM', { stil: 'dim', klick: () => { G.utkast = null; A.go('design', { ny: true, steg: 0 }); } });
+      text('DRA I ' + sak, 4, 166, F.dim2); text('FÖR ATT VRIDA DEN', 4, 173, F.dim2);
+      knapp(4, 186, 92, 11, 'BÖRJA OM', { stil: 'dim', klick: () => { G.utkast = null; A.go('design', { ny: true, steg: 0, ...(konsol || arKonsolSpel(G) ? { linje } : {}) }); } });
       studio(ctx);
       const a = vinkel();
-      Vy3d.visa(HAL, telAv(d), { vy, spin, yaw: a[0], pitch: a[1], pixel: !lage3d, ctx });
+      if (konsol && (!lage3d || !Vy3d.harGL())) {
+        // pixelkonsolen (40 × 28) tre gånger förstorad, stående på golvet med en skugga under
+        for (let j = -3; j <= 3; j++) { const hw = Math.round(66 * Math.sqrt(1 - (j / 4) ** 2)); ctx.fillStyle = 'rgba(5,6,15,.35)'; ctx.fillRect(HAL.x + 88 - hw, HAL.y + 125 + j, hw * 2, 1); }
+        visaKonsol({ x: HAL.x + 28, y: HAL.y + 43, w: 120, h: 84 }, d, { pixel: true, ctx });
+      } else if (konsol) visaKonsol(HAL, d, { vy, spin, yaw: a[0], pitch: a[1], ctx });
+      else Vy3d.visa(HAL, telAv(d), { vy, spin, yaw: a[0], pitch: a[1], pixel: !lage3d, ctx });
       ram(HAL.x - 1, HAL.y - 1, HAL.w + 2, HAL.h + 2, F.hi);
       panel(RX - 2, 26, RW + 4, 174);
       if (lage === 'koncept') { konceptHylla(); } else {
-        text(`STEG ${steg + 1} AV 13`, RX, 30, F.bla2);
+        text(`STEG ${steg + 1} AV ${STEGL.length}`, RX, 30, F.bla2);
         textB(st.rubrik, RX, 38, F.guld);
         let y = 48; for (const r of radbryt(st.hjalp, RW)) { text(r, RX, y, F.dim); y += 7; }
-        STEGUI[st.id](y + 2);
+        UI_STEG[st.id](y + 2);
         if (fel) text(kapa(fel, RW), RX, 168, F.rod2);
         if (steg > 0) knapp(RX, 176, 46, 10, 'TILLBAKA', { stil: 'morkt', klick: () => sattSteg(steg - 1) });
-        if (steg < 12) { knapp(RX + (steg > 0 ? 52 : 0), 176, steg > 0 ? 48 : RW, 10, 'FORTSÄTT', { stil: 'bla', klick: () => sattSteg(steg + 1), namn: 'design-fortsatt' }); knapp(RX, 188, RW, 10, 'HOPPA TILL GRANSKNING', { stil: 'dim', klick: () => sattSteg(12), namn: 'design-hoppa' }); }
+        if (steg < SISTA) { knapp(RX + (steg > 0 ? 52 : 0), 176, steg > 0 ? 48 : RW, 10, 'FORTSÄTT', { stil: 'bla', klick: () => sattSteg(steg + 1), namn: 'design-fortsatt' }); knapp(RX, 188, RW, 10, 'HOPPA TILL GRANSKNING', { stil: 'dim', klick: () => sattSteg(SISTA), namn: 'design-hoppa' }); }
         else {
-          const k = kanStarta(G, d);
+          // konsolen: ett spel i lådan som konsolen inte klarar (delar bytta efteråt) stoppar också starten
+          let k = kanStarta(G, d); if (k.ok && konsol) k = konsolKontroll(d);
           knapp(RX + 52, 176, 48, 10, 'SPARA', { stil: 'morkt', klick: () => {
             const alla = [JSON.parse(JSON.stringify(d)), ...G.koncept.filter((c) => c.id !== d.id)];
             G.koncept = alla.slice(0, KONCEPT_TAK);
@@ -303,31 +357,56 @@ export function design(A, o = {}) {
           } });
         }
       }
-      STEG.forEach((s, i) => { const px = 4 + i * 29, valt = i === steg, klar = i < steg; rect(px + 1, 205, 27, 9, 0x05060f); rect(px, 204, 27, 9, valt ? F.bla : klar ? mixa(F.gron, F.panel, 0.3) : F.panel2); text(String(i + 1), px + 13, 206, valt || klar ? F.text : F.dim2, { just: 'c' }); hit(px, 204, 27, 9, { klick: () => sattSteg(i), namn: 'design-steg-' + (i + 1) }); });
+      // stegraden: telefonens 13 rutor à 29 px, konsolens 16 à 23 px (centrerade)
+      const pv = STEGL.length > 13 ? 23 : 29, bw = pv - 2, x0 = STEGL.length > 13 ? Math.floor((W - (STEGL.length - 1) * pv - bw) / 2) : 4;
+      STEGL.forEach((s, i) => { const px = x0 + i * pv, valt = i === steg, klar = i < steg; rect(px + 1, 205, bw, 9, 0x05060f); rect(px, 204, bw, 9, valt ? F.bla : klar ? mixa(F.gron, F.panel, 0.3) : F.panel2); text(String(i + 1), px + Math.floor(bw / 2), 206, valt || klar ? F.text : F.dim2, { just: 'c' }); hit(px, 204, bw, 9, { klick: () => sattSteg(i), namn: 'design-steg-' + (i + 1) }); });
       hud(A);
     },
   };
 }
-// Nästa design utgår från den senast startade (bygget som pågår, annars den senast lanserade). Nya funktioner
-// läggs till av nyaFunktioner() när designern öppnas. Delarna byter man själv; granskningens KRAV visar vad som släpar.
-function senasteDesign(G) {
-  const p = G.projekt[G.projekt.length - 1] || G.produkter[G.produkter.length - 1]; if (!p) return null;
+// Vilken linje designern ritar: den begärda (växeln, koncepthyllan), annars utkastets, annars den som senast valdes
+// i växeln. Snabbstarten ritar bara telefoner; konsolspelet telefoner först när telefonavdelningen är öppen.
+function valjLinje(G, o) {
+  const kSpel = arKonsolSpel(G);
+  let L = o.linje || (o.fran && linjeAv(o.fran).id) || (G.utkast && !o.ny && linjeAv(G.utkast).id) || G.designLinje || (kSpel ? 'konsol' : 'telefon');
+  if (L === 'telefon' && kSpel && !G.flaggor.mobil) L = 'konsol';
+  if (L === 'konsol' && !kSpel) L = 'telefon';
+  return L;
+}
+const nyttUtkast = (G, linje) => { const bas = senasteDesign(G, linje); return bas ? nyDesign(G, bas) : nyDesign(G, null, linje); };
+// Nästa design utgår från den senast startade av samma linje (bygget som pågår, annars den senast lanserade). Nya
+// funktioner läggs till av nyaFunktioner() när designern öppnas. Delarna byter man själv; granskningens KRAV visar
+// vad som släpar. Spelet i lådan byts av forberedKonsol() mot nästa lediga.
+function senasteDesign(G, linje = 'telefon') {
+  const av = (p) => linjeAv(p.design).id === linje;
+  const p = G.projekt.filter(av).pop() || G.produkter.filter(av).pop(); if (!p) return null;
   const d = JSON.parse(JSON.stringify(p.design)); d.namn = '';
   return d;
 }
-// forskade funktioner, nyast forskad först
-const forskadeFunk = (G) => FUNKTIONER.filter((f) => harFunktion(G, f.id)).map((f) => f.id)
-  .sort((a, b) => G.forskning.klara.lastIndexOf('funk-' + b) - G.forskning.klara.lastIndexOf('funk-' + a));
+// forskade funktioner, nyast forskad först (linjens funktioner och nodnycklar: funk-gps, kfunk-bakat)
+const forskadeFunk = (G, L = 'telefon') => { const Li = linjeAv(L), k = Li.nyckel.funk + '-'; return Li.FUNKTIONER.filter((f) => harFunktion(G, f.id, L)).map((f) => f.id)
+  .sort((a, b) => G.forskning.klara.lastIndexOf(k + b) - G.forskning.klara.lastIndexOf(k + a)); };
 // Slår på funktioner som är forskade men inte fanns i 'kanda' – nyast först och bara så länge de höjer betyget
 // (bonusen har ett tak). En funktion som redan var känd och är avstängd har barnet valt bort, den rörs inte.
 function nyaFunktioner(G, d, kanda) {
+  const L = linjeAv(d).id;
   d.funktioner ||= [];
-  for (const id of forskadeFunk(G)) {
+  for (const id of forskadeFunk(G, L)) {
     if (kanda.includes(id) || d.funktioner.includes(id)) continue;
     if (funkBonus(G, d) >= funkTak(G, d) - 1e-9) break;
     d.funktioner.push(id);
   }
-  d.kandaFunk = forskadeFunk(G);
+  d.kandaFunk = forskadeFunk(G, L);
+}
+// Konsolens enhet: formen följer med (nyaste forskade formen för enheten) och priset skalas med enhetens prisnivå
+// (en fickkonsol är värd 60 % av en hemkonsol med samma betyg).
+function sattKonsolEnhet(G, d, id) {
+  if (d.enhet === id) return;
+  const fore = kEnhetAv(d.enhet).pris;
+  d.enhet = id;
+  const k = [...K_KAROSSER].reverse().find((x) => x.enhet === id && harKaross(G, x.id, 'konsol'));
+  if (k && (K_KAROSSER.find((x) => x.id === d.kaross)?.enhet !== id)) d.kaross = k.id;
+  d.pris = Math.max(100, Math.round(d.pris * kEnhetAv(id).pris / fore / 10) * 10);
 }
 // Formens gränser per enhet (modellenhet 1 = 10 cm): f = förvalet (bredd, höjd, tjocklek), b/h/d = reglagens
 // [min, max]. LITEN/LAGOM/STOR = förvalet × 0,87 / 1 / 1,13 (telefonen behåller sina egna tre storlekar).

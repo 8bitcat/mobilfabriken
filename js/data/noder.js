@@ -2,6 +2,7 @@
 // en enhetstyp eller en enhetsteknik). Byggs ur tabellerna i delar.js plus enheternas egna tekniker.
 // En nod går att forska när dess år har kommit OCH föregångaren i samma rad är forskad.
 import { GRUPPER, DELAR, KAROSSER, RAMAR, LINSER, FUNKTIONER, ENHETER } from './delar.js';
+import { K_NODER, K_KATEGORIER } from './konsol-noder.js';
 
 // Kategorierna i trädets vänsterspalt (färg = förlagans färgkod)
 export const KATEGORIER = [
@@ -67,12 +68,18 @@ function bygg() {
   return ut;
 }
 
-export const NODER = bygg();
-export const NOD = Object.fromEntries(NODER.map((n) => [n.id, n]));
+// NODER = telefonernas 144 (som förut). Konsolernas ligger i konsol-noder.js; NOD slår upp båda, så att
+// forskad(G, id) fungerar för alla delar oavsett linje.
+export const NODER = bygg().map((n) => ({ ...n, linje: 'telefon' }));
+export const ALLA_NODER = [...NODER, ...K_NODER];
+export const NOD = Object.fromEntries(ALLA_NODER.map((n) => [n.id, n]));
 // raderna i trädet i visningsordning: [{ kat, rad }]
-export const RADER = (() => {
+const raderAv = (kategorier, noder) => {
   const seen = new Set(), ut = [];
-  for (const k of KATEGORIER) for (const n of NODER) if (n.kat === k.id && !seen.has(n.kat + n.rad)) { seen.add(n.kat + n.rad); ut.push({ kat: k.id, rad: n.rad }); }
+  for (const k of kategorier) for (const n of noder) if (n.kat === k.id && !seen.has(n.kat + n.rad)) { seen.add(n.kat + n.rad); ut.push({ kat: k.id, rad: n.rad }); }
   return ut;
-})();
-export const katAv = (id) => KATEGORIER.find((k) => k.id === id);
+};
+export const RADER = raderAv(KATEGORIER, NODER);
+export const K_RADER = raderAv(K_KATEGORIER, K_NODER);
+export const katAv = (id) => KATEGORIER.find((k) => k.id === id) || K_KATEGORIER.find((k) => k.id === id);
+export { K_NODER, K_KATEGORIER };

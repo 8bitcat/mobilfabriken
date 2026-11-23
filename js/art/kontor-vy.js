@@ -4,7 +4,7 @@ import { U, F, W, rect, ram, text, hit, tw, ljusa } from '../core/ui.js';
 import { drawPerson } from '../core/people.js';
 import { Pix } from './kit.js';
 import { rum } from './kontor-art.js';
-import { ritaBord, ritaDator, ritaStol, ritaMobel } from './mobler.js';
+import { ritaBord, ritaDator, ritaStol, ritaMobel, neonLage } from './mobler.js';
 import { ROLLER } from '../data/varld.js';
 
 const BORDSPRITES = new Map();
@@ -26,6 +26,7 @@ function stolSprite(id) { let s = STOLAR.get(id); if (!s) { const P = new Pix(22
 
 export function ritaKontor(ctx, A, o = {}) {
   const G = A.G, k = G.kontor, { bild, L } = rum(k);
+  neonLage(G.lage);   // neonskylten säger SPEL hos ett konsolbolag
   const kx = Math.round(Math.max(0, Math.min(L.bredd - W, o.kamera || 0)));
   const ky = Math.round(Math.max(0, Math.min(L.hojd - 202, o.kameraY || 0)));
   ctx.drawImage(bild, kx, ky, W, 202, 0, 0, W, 202);

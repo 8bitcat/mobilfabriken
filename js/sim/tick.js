@@ -1,8 +1,10 @@
 // Dag-ticken – allt som händer under en speldag, i den här ordningen:
 //  1 dag++ · 2 världshändelser · 3 forskning · 4 FP-inkomst · 5 löner · 6 bygget · 7–9 partier, försäljning, veckoslut
 //  10 rivaler · 11 moral · 12 den 1:a (månadsrapport, kandidater, låneränta) · 13 nyår · 14 mål · 15 nödlån
+//  Konsolspelet: efter försäljningen (9b) rivalkonsoler, spelen, egna spel och studiornas förfrågningar (sim/konsol.js).
 import { arAv, forstaIManaden, nyarsdag, kr, dec, manadText } from './bas.js';
-import { betala, signal, nyhet, lana, NODLAN, SALJ_AR } from './spel.js';
+import { betala, signal, nyhet, lana, NODLAN, SALJ_AR, startDag, startAr, arKonsolSpel } from './spel.js';
+import { konsolDag } from './konsol.js';
 import { handelserDag, rivalerDag, snitt, rimligtPris } from './marknad.js';
 import { dagligForskning } from './forskning.js';
 import { fpPerDag, lonPerManad, dagligMoral, manadsKandidater } from './personal.js';
@@ -21,6 +23,7 @@ export function dagTick(G) {
   if (G.personal.length) betala(G, lonPerManad(G) / 30, 'loner');
   dagligtBygge(G);
   dagligForsaljning(G);
+  if (G.k) konsolDag(G, forstaIManaden(G.dag), nyarsdag(G.dag));
   rivalerDag(G);
   dagligMoral(G);
   if (forstaIManaden(G.dag)) manad(G);
@@ -40,7 +43,8 @@ function nodlan(G) {
   if (forra == null || G.dag - forra >= NODLAN_KORT) {
     G.flaggor.nodlanDag = G.dag;
     const lon = lonPerManad(G);
-    const varfor = lon ? `LÖNERNA ÄR ${kr(lon)} I MÅNADEN. SÄLJ FLER TELEFONER ELLER HA FÄRRE ANSTÄLLDA.` : 'SÄLJ FLER TELEFONER.';
+    const vad = arKonsolSpel(G) ? 'KONSOLER' : 'TELEFONER';
+    const varfor = lon ? `LÖNERNA ÄR ${kr(lon)} I MÅNADEN. SÄLJ FLER ${vad} ELLER HA FÄRRE ANSTÄLLDA.` : `SÄLJ FLER ${vad}.`;
     signal(G, 'stor', { rubrik: 'NÖDLÅN', text: `KASSAN TOG SLUT. BANKEN LÅNADE ER ${kr(belopp)} (10 % RÄNTA OM ÅRET). ${varfor} BETALA TILLBAKA I BOLAGET NÄR DET GÅR BÄTTRE.`, paus: true });
   } else signal(G, 'toast', { text: `NYTT NÖDLÅN +${kr(belopp, true)} · LÅN TOTALT ${kr(G.lan, true)}`, farg: 'rod' });
 }
@@ -81,7 +85,7 @@ function manad(G) {
   const forra = G.stat.manad || { intakt: 0, kostnad: 0 };
   const m = { intakt: s.intakt - (forra.ar === a ? forra.intakt : 0), kostnad: s.kostnad - (forra.ar === a ? forra.kostnad : 0) };
   G.stat.manad = { ar: a, intakt: s.intakt, kostnad: s.kostnad };
-  if (G.dag > 1 && (m.intakt || m.kostnad)) signal(G, 'toast', { text: `${manadText(G.dag - 1)}: ${m.intakt - m.kostnad >= 0 ? '+' : ''}${kr(m.intakt - m.kostnad)}`, farg: m.intakt >= m.kostnad ? 'gron' : 'rod', ljud: 'mynt' });
+  if (G.dag > startDag(G) + 1 && (m.intakt || m.kostnad)) signal(G, 'toast', { text: `${manadText(G.dag - 1)}: ${m.intakt - m.kostnad >= 0 ? '+' : ''}${kr(m.intakt - m.kostnad)}`, farg: m.intakt >= m.kostnad ? 'gron' : 'rod', ljud: 'mynt' });
 }
 
 function nyar(G) {
@@ -89,9 +93,9 @@ function nyar(G) {
   const basta = [...G.produkter].filter((p) => arAv(p.lanseradDag) === a).sort((x, y) => y.betyg - x.betyg)[0];
   // 1 jan 2027 (tills Slutgalan finns): rapporten säger att bolaget nu går att sälja
   const salj = a + 1 === SALJ_AR;
-  G.flaggor.nyarsrapport = { ar: a, intakt: s.intakt, kostnad: s.kostnad, vinst: s.intakt - s.kostnad, basta: basta ? { namn: basta.namn, betyg: basta.betyg } : null, snitt: snitt(G.dag), salj };
-  nyhet(G, 'VÄRLD', `GOTT NYTT ${a + 1}! KRITIKERNA HÖJER KRAVEN – SNITTET ÄR NU ${dec(snitt(G.dag))}.`);
-  if (salj) nyhet(G, 'DU', `${SALJ_AR - 2007} ÅR I BRANSCHEN! NU KAN DU SÄLJA ${G.bolag.namn} (BOLAGET > SÄLJ BOLAGET) ELLER SPELA VIDARE.`);
+  G.flaggor.nyarsrapport = { ar: a, intakt: s.intakt, kostnad: s.kostnad, vinst: s.intakt - s.kostnad, basta: basta ? { namn: basta.namn, betyg: basta.betyg } : null, snitt: snitt(G.dag, arKonsolSpel(G) ? 'konsol' : 'telefon'), salj };
+  nyhet(G, 'VÄRLD', `GOTT NYTT ${a + 1}! KRITIKERNA HÖJER KRAVEN – SNITTET ÄR NU ${dec(snitt(G.dag, arKonsolSpel(G) ? 'konsol' : 'telefon'))}.`);
+  if (salj) nyhet(G, 'DU', `${SALJ_AR - startAr(G)} ÅR I BRANSCHEN! NU KAN DU SÄLJA ${G.bolag.namn} (BOLAGET > SÄLJ BOLAGET) ELLER SPELA VIDARE.`);
   signal(G, 'nyar', { ar: a + 1, paus: true });
 }
 

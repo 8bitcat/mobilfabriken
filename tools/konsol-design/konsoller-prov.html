@@ -1,0 +1,15 @@
+<!doctype html>
+<meta charset="utf-8">
+<style> body { margin: 0; background: #0b0e1c; color: #f1ebe0; font: 12px monospace; padding: 10px; width: 1180px; } canvas { image-rendering: pixelated; display: block; } </style>
+<canvas id="c"></canvas>
+<script type="module">
+  import { KONSOLLER } from '../../js/konsol/konsoller.js';
+  const k = 4, per = 6, c = document.getElementById('c'), rad = Math.ceil(KONSOLLER.length / per);
+  const off = document.createElement('canvas'); off.width = per * 48; off.height = rad * 40; const x = off.getContext('2d');
+  x.fillStyle = '#151b2e'; x.fillRect(0, 0, off.width, off.height);
+  KONSOLLER.forEach((ko, i) => { const X = (i % per) * 48 + 4, Y = Math.floor(i / per) * 40 + 2; x.fillStyle = '#1b2340'; x.fillRect(X - 2, Y, 44, 30); ko.rita(x, X, Y + 1); });
+  c.width = off.width * k; c.height = off.height * k; const y = c.getContext('2d'); y.imageSmoothingEnabled = false; y.drawImage(off, 0, 0, c.width, c.height);
+  y.font = '12px monospace'; y.fillStyle = '#ffd23f';
+  KONSOLLER.forEach((ko, i) => { const X = ((i % per) * 48 + 2) * k, Y = (Math.floor(i / per) * 40 + 33) * k; y.fillText(`${ko.namn} ${ko.ar}`, X, Y + 10); });
+  window.__klar = true;
+</script>

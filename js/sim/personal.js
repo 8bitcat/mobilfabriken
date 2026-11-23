@@ -6,7 +6,7 @@
 import { makeLook } from '../core/people.js';
 import { LON, KRAFT, ROLLER, FORNAMN, kontorAv } from '../data/varld.js';
 import { slump, slumpInt, valj, klamp } from './bas.js';
-import { betala, signal, nyhet } from './spel.js';
+import { betala, signal, nyhet, arKonsolSpel } from './spel.js';
 import { kontorsVarden } from './kontor.js';
 
 // Vera och Lykke från stilprovet ligger överst första gången
@@ -21,8 +21,9 @@ function kandidat(G, roll, stj, namn = null, look = null) {
     lon: Math.round((a + slump(G) * (b - a)) / 50) * 50, alder: slumpInt(G, 18, 58), look: look || makeLook(() => slump(G)),
   };
 }
+// I konsolspelet är Lykke spelutvecklare (hon gör PANG!) och buggfixarna kommer bland de andra kandidaterna.
 export function startKandidater(G) {
-  G.kandidater = [kandidat(G, 'forskare', 1, 'VERA', VERA), kandidat(G, 'buggfixare', 1, 'LYKKE', LYKKE)];
+  G.kandidater = [kandidat(G, 'forskare', 1, 'VERA', VERA), kandidat(G, arKonsolSpel(G) ? 'spelutvecklare' : 'buggfixare', 1, 'LYKKE', LYKKE)];
   G.kandidater[0].lon = 15_000; G.kandidater[1].lon = 16_500; G.kandidater[0].alder = 29; G.kandidater[1].alder = 24;
   for (let i = 0; i < 4; i++) G.kandidater.push(nyKandidat(G));
 }
@@ -30,6 +31,7 @@ export function maxStjarnor(G) { const v = kontorsVarden(G); return Math.max(1, 
 export function nyKandidat(G) {
   const max = maxStjarnor(G);
   let stj = 1; while (stj < max && slump(G) < 0.45) stj++;
+  if (arKonsolSpel(G)) { const r = slump(G); return kandidat(G, r < 0.4 ? 'forskare' : r < 0.7 ? 'spelutvecklare' : 'buggfixare', stj); }
   return kandidat(G, slump(G) < 0.5 ? 'forskare' : 'buggfixare', stj);
 }
 // den 1:a varje månad: 3 nya, max 6 synliga

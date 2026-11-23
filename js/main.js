@@ -77,7 +77,9 @@ fit();
 
 // Helskärm vid första trycket på pekskärmar som kan det (Android, iPad). iPhone kan inte – där ger
 // "Lägg till på hemskärmen" helskärm (manifest.webmanifest + apple-mobile-web-app-capable i index.html).
-const hemskarmsApp = matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true;
+// I App Store-appen (Capacitor) finns window.Capacitor – där är spelet redan i helskärm och tipset om hemskärmen gäller inte.
+const hemskarmsApp = matchMedia('(display-mode: fullscreen), (display-mode: standalone)').matches || navigator.standalone === true
+  || !!window.Capacitor?.isNativePlatform?.();
 let helskarmProvad = false;
 function helskarm() {
   if (helskarmProvad || A.test || !pek() || hemskarmsApp || document.fullscreenElement || document.webkitFullscreenElement) return;
