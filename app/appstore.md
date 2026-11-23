@@ -3,20 +3,27 @@
 Allt nedan klistras in i **App Store Connect → Mobilfabriken**. Längderna är kontrollerade mot Apples gränser.
 Upplägget är samma som Pixelcity (snabbfilen/app/appstore.md): Capacitor-app, Codemagic bygger, TestFlight → App Store.
 
-## Det Carl gör i tur och ordning (ungefär 20 minuter)
+## Vad som är Carls klick och vad som är automatiskt
 
-1. **App Store Connect → My Apps → ＋ → New App.** Platforms iOS · Name `Mobilfabriken` · Primary Language Swedish ·
+Apple har inget API för att skapa själva appen, och Codemagic har inget API för signeringsfiler. Allt annat
+gör `node app/tools/asc-app.mjs` (texterna nedan läses därifrån) och Codemagic-bygget.
+
+1. **Carl – App Store Connect → My Apps → ＋ → New App.** Platforms iOS · Name `Mobilfabriken` · Primary Language Swedish ·
    Bundle ID `io.eightbitcat.mobilfabriken` (ligger redan i listan – registrerat via API 2026-11-23) · SKU `mobilfabriken` ·
-   User Access Full Access. Öppna sedan **App Information** och kopiera **Apple ID** (siffrorna).
-2. **codemagic.yaml:** skriv in siffrorna på raden `APP_STORE_APPLE_ID: 0`, committa och pusha.
-3. **Codemagic → Teams → Personal account → Code signing identities → iOS provisioning profiles → Fetch profiles**
+   User Access Full Access. Säg sedan till Claude (Apple ID hämtas via API:t och skrivs in i codemagic.yaml).
+2. **Carl – Codemagic → Teams → Personal account → Code signing identities → iOS provisioning profiles → Fetch profiles**
    och välj `Mobilfabriken App Store` (profilen finns redan hos Apple, skapad via API 2026-11-23, utgår 2027-10-03).
    Certifikatet är samma Apple Distribution som Pixelcity. Reserv om hämtningen inte hittar den:
    `app/out/Mobilfabriken_App_Store.mobileprovision` (gitignorerad) laddas upp för hand.
-4. **Starta bygget:** Codemagic → mobilfabriken → Start new build → workflow *iOS → TestFlight* → main
-   (eller `node D:\GamesProjects\snabbfilen\app\tools\codemagic.mjs start 6b04bf75fad19c99bc218537 ios-testflight main`).
-   Bygget hamnar i TestFlight efter ~15 minuter; installera TestFlight-appen på iPhonen och provspela.
-5. **App Store-sidan:** fyll i fälten nedan, ladda upp skärmbilderna, välj bygget, **Add for Review**.
+3. **Automatiskt:** `node app/tools/asc-app.mjs allt` fyller App Information (kategorier, rättigheter, åldersgräns 4+,
+   namn, undertitel, integritets-URL), iOS 1.0 (copyright, manuell release, beskrivning, nyckelord, promo, support- och
+   marknads-URL), skärmbilderna, App Review-kontakt och Notes samt pris (gratis, alla länder).
+4. **Automatiskt:** bygget startas med `node D:\GamesProjects\snabbfilen\app\tools\codemagic.mjs start 6b04bf75fad19c99bc218537 ios-testflight main`,
+   hamnar i TestFlight efter ~15 minuter och kopplas till 1.0 med `asc-app.mjs bygge`.
+5. **Carl – TestFlight:** installera TestFlight-appen på iPhonen och provspela (listan längst ner).
+6. **Carl – App Privacy:** App Store Connect → Mobilfabriken → App Privacy → *No, we do not collect data* → Publish
+   (finns inte i API:t).
+7. **Carl säger "skicka in"** → `node app/tools/asc-app.mjs skicka` (Add for Review). Skriptet skickar aldrig på eget initiativ.
 
 ## App Information
 
@@ -71,7 +78,7 @@ Pixelgrafik, guiden Mio som visar vägen, 28 mål, gåvor varje dag – och inga
 
 **Keywords** (högst 100 tecken, kommatecken utan mellanslag)
 ```
-tycoon,spelkonsol,mobiltelefon,bolag,simulering,pixel,strategi,design,forskning,retro,80-tal,imperium
+tycoon,spelkonsol,mobiltelefon,simulering,pixel,strategi,design,forskning,retro,80-tal,imperium
 ```
 
 **Support URL**
@@ -92,7 +99,7 @@ https://8bitcat.github.io/mobilfabriken/
 
 **Copyright**
 ```
-2026 Carl Palsson
+2026 8bitcat Productions
 ```
 
 **Version Release:** *Manually release this version* (så att du väljer dagen själv).
