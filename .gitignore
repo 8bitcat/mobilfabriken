@@ -1,5 +1,9 @@
 node_modules/
 tools/out/
+# appen (Capacitor): byggt innehåll, paket och butiksbilder – källan är spelet självt
+app/www/
+app/out/
+app/store/
 # inventeringen av Roblox-förlagan citerar originalets texter – ligger kvar lokalt, publiceras inte
 docs/FORLAGAN.md
 *.log

@@ -10,6 +10,26 @@ som ritas i riktig 3D med three.js i designern, showen och TELEFONER (kan växla
 
 **Spela:** https://8bitcat.github.io/mobilfabriken/
 
+Sedan 0.2.0 börjar spelet 1982 med spelkonsoler (KONSOLFABRIKEN 1982); telefonerna öppnas av forskningen 2007.
+Mobilbolaget från början finns kvar som SNABBSTART 2007. Planen och besluten: `docs/KONSOLPLAN.md`.
+
+## Appen (iPhone/iPad)
+
+Spelet är också en iOS-app, byggd som Pixelcity (Capacitor i `app/`, Codemagic bygger på en Mac i molnet,
+TestFlight → App Store). Spelet är exakt detsamma som på webben: `app/build.mjs` kopierar det till `app/www`
+och lägger three.js lokalt (`app/vendor/`), så appen går utan internet.
+
+```
+cd app && npm ci
+node build.mjs && npx cap sync ios   # spelet in i Xcode-projektet (fungerar på Windows)
+node tools/appstart-test.mjs         # provstart som i appen: startmenyn, inget nät, inga fel
+node tools/ikon-app.mjs              # appikon 1024 + startbild ur icons/ikon-512.png
+node tools/skarmbilder.mjs           # App Store-bilder (iPhone 6,3" och iPad 13") → app/store/skarmbilder/
+```
+
+Bygget startas i Codemagic (`codemagic.yaml`, workflow *iOS → TestFlight*). Alla texter till App Store Connect
+och stegen för Carl ligger i `app/appstore.md`. Integritetspolicy och support: `integritet.html`, `support.html`.
+
 ## Starta lokalt
 
 Statiska filer, inget byggsteg. Servera mappen och öppna `index.html`:

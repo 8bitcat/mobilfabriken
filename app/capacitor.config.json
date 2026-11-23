@@ -1,0 +1,12 @@
+{
+  "appId": "io.eightbitcat.mobilfabriken",
+  "appName": "Mobilfabriken",
+  "webDir": "www",
+  "backgroundColor": "#070912",
+  "ios": {
+    "contentInset": "never",
+    "scrollEnabled": false,
+    "allowsLinkPreview": false,
+    "preferredContentMode": "mobile"
+  }
+}
