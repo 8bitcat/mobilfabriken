@@ -600,9 +600,9 @@ function valparna(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'galentaxi', titel: 'GALEN TAXI', forebild: 'Crazy Taxi', ar: 1999, studio: 'SEGO', w: 160, h: 120, rita: galenTaxi },
-  { id: 'haloo', titel: 'HALOO', forebild: 'Halo: Combat Evolved', ar: 2001, studio: 'BUNGO', w: 160, h: 90, rita: haloo },
-  { id: 'marcosolsken', titel: 'SUPER MARCO SOLSKEN', forebild: 'Super Mario Sunshine', ar: 2002, studio: 'SVAMPSTUDION', w: 160, h: 90, rita: marcoSolsken },
-  { id: 'gtasa', titel: 'GRAND THEFT AUTOMOBIL: SAN ANDREAS', forebild: 'GTA San Andreas', ar: 2004, studio: 'ROCKSTJÄRNA', w: 160, h: 90, rita: sanAndreas },
+  { id: 'galentaxi', titel: 'TURBOTAXI', forebild: 'Crazy Taxi', ar: 1999, studio: 'TORA', w: 160, h: 120, rita: galenTaxi },
+  { id: 'haloo', titel: 'GLORIA', forebild: 'Halo: Combat Evolved', ar: 2001, studio: 'ORBITAL', w: 160, h: 90, rita: haloo },
+  { id: 'marcosolsken', titel: 'PIPO SOLSKEN', forebild: 'Super Mario Sunshine', ar: 2002, studio: 'SVAMPSTUDION', w: 160, h: 90, rita: marcoSolsken },
+  { id: 'gtasa', titel: 'BILTJUVEN: SOLKUSTEN', forebild: 'GTA San Andreas', ar: 2004, studio: 'ASFALT', w: 160, h: 90, rita: sanAndreas },
   { id: 'valparna', titel: 'VALPARNA', forebild: 'Nintendogs', ar: 2005, studio: 'SVAMPSTUDION', w: 128, h: 96, rita: valparna },
 ];

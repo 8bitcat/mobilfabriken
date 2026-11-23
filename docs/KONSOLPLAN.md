@@ -11,8 +11,9 @@ Designunderlag: tools/konsol-design/innehall.mjs (artefakten "Konsolfabriken", u
 | GTA VI | GRAND THEFT AUTOMOBIL VI, släpps 19 nov 2026 |
 | Våldsamma spel | Med, men glimtarna visar bara lugna scener |
 | Start | 1 januari 1982. PANG! (Pong) är bolagets första egna spel |
-| Rivaler | Parodinamn: NINTENTO, SONNI PLAY STATIO, SEGO, MIKROMJUK X-LÅDA … |
-| Tillverkarnas egna serier | Fristående studios (SVAMPSTUDION, BUNGO, SPELFREAK …) |
+| Rivaler | Påhittade namn utan å, ä, ö (Carl 2026-11-24, inför App Store): TENKO, HOSHI NOVA, TORA, AXIOM X, ORBITEK, DATATRON, LUMA, PANORAMA VR, FORGE GO. Fältet `forebild` i datan säger vad varje sak är inspirerad av. |
+| Tillverkarnas egna serier | Fristående studios med påhittade namn (SVAMPSTUDION, ORBITAL, CRITTER LAB, ASFALT, BLOCKSMITH …) |
+| Spel och telefonrivaler | Samma regel: SUPER PIPO, BLOCKFALL, BILTJUVEN VI, BLOCKRIKET, BATTLE ISLAND …; telefonerna LUMEN, HOSHI, BRAMBLE, KOKOS, KVITTEN, SAMBA, NORDIA, HIKO, VEKTOR. Spelarens standardnamn PIXELFON n / PIXELBOX n. |
 | Slutet | Slutgala december 2026, fri fortsättning; nästa generations teknik från hösten 2026 |
 | 3D | Konsolerna i 3D; karosserna = de 30 modellerna i js/konsol/ |
 | Telefoner | Noden TELEFONAVDELNINGEN 2007 (kräver fickkonsol + pekskärm + trådlöst nät) |

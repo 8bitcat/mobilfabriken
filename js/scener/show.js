@@ -53,7 +53,7 @@ function citat(p) {
   const T = p.staplar.teknik, D = p.staplar.design, P = p.staplar.puts;
   return [
     ['MOBILTIDNINGEN', T >= 1 ? 'TOPPMODERN TEKNIK RAKT IGENOM.' : T >= 0.85 ? 'GEDIGEN TEKNIK, INGA ÖVERRASKNINGAR.' : T >= 0.65 ? 'HALKAR EFTER PÅ NÅGRA DELAR.' : 'TEKNIKEN ÄR FRÅN I FJOL.'],
-    ['SKÄRM & SIGNAL', D >= 0.8 ? 'ÅRETS VACKRASTE TELEFON.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'DEN NYA KROPPEN VÄNDER HUVUDEN.' : 'SER UT SOM EN TEGELSTEN.'],
+    ['SIGNALEN', D >= 0.8 ? 'ÅRETS VACKRASTE TELEFON.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'DEN NYA KROPPEN VÄNDER HUVUDEN.' : 'SER UT SOM EN TEGELSTEN.'],
     ['BYTESIZE', p.buggar >= 5 ? 'BUGGIGARE ÄN ETT MYRBO. AJ.' : P < 0.45 ? 'STRESSAT OCH OPUTSAT. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. GEDIGET.'],
   ];
 }
@@ -63,9 +63,9 @@ function konsolCitat(p) {
   const T = p.staplar.teknik, D = p.staplar.design, P = p.staplar.puts, namn = (lynne, fall) => (K_TIDNINGAR.find((x) => x.lynne === lynne) || { namn: fall }).namn;
   return [
     // varje citat ryms på en rad i kortet (högst 132 px med citattecknen)
-    [namn('saklig', 'DATORMAGAZINET'), T >= 1 ? 'ETT KRAFTPAKET. SPELEN FLYGER.' : T >= 0.85 ? 'GEDIGET. INGA ÖVERRASKNINGAR.' : T >= 0.65 ? 'HALKAR EFTER RIVALERNA LITE.' : 'TEKNIKEN ÄR FRÅN I FJOL.'],
-    [namn('design', 'SUPERSPEL'), D >= 0.8 ? 'ÅRETS SNYGGASTE KONSOL.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'EN LÅDA SOM VÄNDER HUVUDEN.' : 'SER UT SOM EN BRÖDROST.'],
-    [namn('elak', 'GAMERIKA'), p.buggar >= 5 ? 'KRASCHAR VAR FEMTE MINUT. AJ.' : P < 0.45 ? 'OPUTSAD. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. TYVÄRR.'],
+    [namn('saklig', 'DATAPRESSEN'), T >= 1 ? 'ETT KRAFTPAKET. SPELEN FLYGER.' : T >= 0.85 ? 'GEDIGET. INGA ÖVERRASKNINGAR.' : T >= 0.65 ? 'HALKAR EFTER RIVALERNA LITE.' : 'TEKNIKEN ÄR FRÅN I FJOL.'],
+    [namn('design', 'PIXELPRESS'), D >= 0.8 ? 'ÅRETS SNYGGASTE KONSOL.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'EN LÅDA SOM VÄNDER HUVUDEN.' : 'SER UT SOM EN BRÖDROST.'],
+    [namn('elak', 'SPELKRITIKERN'), p.buggar >= 5 ? 'KRASCHAR VAR FEMTE MINUT. AJ.' : P < 0.45 ? 'OPUTSAD. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. TYVÄRR.'],
   ];
 }
 const omdome = (b) => (b < 4 ? 'USEL' : b < 5 ? 'SVAG' : b < 6 ? 'OKEJ' : b < 7 ? 'BRA' : b < 8 ? 'MYCKET BRA' : b < 9 ? 'FANTASTISK' : 'MÄSTERVERK');

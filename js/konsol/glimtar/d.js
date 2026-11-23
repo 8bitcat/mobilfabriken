@@ -395,7 +395,7 @@ function spindel(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'lillastora', titel: 'LILLA STORA PLANETEN', forebild: 'LittleBigPlanet', ar: 2008, studio: 'MEDIA MOLEKYL', w: LBP_W, h: LBP_H, rita: lillaStora },
-  { id: 'blackklatt', titel: 'BLÄCKKLATT', forebild: 'Splatoon', ar: 2015, studio: 'SVAMPSTUDION', w: BK_W, h: BK_H, rita: blackklatt },
-  { id: 'spindel', titel: 'SPINDELMANNEN', forebild: "Marvel's Spider-Man", ar: 2018, studio: 'INSOMNIAK', w: SP_W, h: SP_H, rita: spindel },
+  { id: 'lillastora', titel: 'TYGDOCKAN', forebild: 'LittleBigPlanet', ar: 2008, studio: 'DOODLE', w: LBP_W, h: LBP_H, rita: lillaStora },
+  { id: 'blackklatt', titel: 'KLADDKRIGET', forebild: 'Splatoon', ar: 2015, studio: 'SVAMPSTUDION', w: BK_W, h: BK_H, rita: blackklatt },
+  { id: 'spindel', titel: 'SPINDELKUNGEN', forebild: "Marvel's Spider-Man", ar: 2018, studio: 'NIGHT OWL', w: SP_W, h: SP_H, rita: spindel },
 ];

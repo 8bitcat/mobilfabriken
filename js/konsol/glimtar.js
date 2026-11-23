@@ -144,8 +144,8 @@ function marco(x, t) {
   if (fasJ > 128 && fasJ < 132) hopp = Math.min(hopp, 30);
   const my = MARK - 16 - Math.round(hopp), ben = hopp > 1 ? 1 : Math.floor(t * 9) % 2;
   spr(x, MARCO, 32, my, MARCO_PAL); spr(x, MARCO_BEN[ben], 32, my + 13, MARCO_PAL);
-  T(x, 'MARCO', 4, 4, '#000000'); T(x, 'MARCO', 3, 3, '#fcfcfc');
-  T(x, 'VÄRLD 1-1', W - 4 - TW('VÄRLD 1-1') + 1, 4, '#000000'); T(x, 'VÄRLD 1-1', W - 4 - TW('VÄRLD 1-1'), 3, '#fcfcfc');
+  T(x, 'PIPO', 4, 4, '#000000'); T(x, 'PIPO', 3, 3, '#fcfcfc');
+  T(x, 'BANA 1-1', W - 4 - TW('BANA 1-1') + 1, 4, '#000000'); T(x, 'BANA 1-1', W - 4 - TW('BANA 1-1'), 3, '#fcfcfc');
 }
 
 // ---------- 1989 TETRIX på fickkonsolen (Tetris på Game Boy) ----------
@@ -173,7 +173,7 @@ function tetrix(x, t) {
   T(x, 'RADER', PX + 3, 26, GB[0]); T(x, rensad ? '4' : '0', PX + 3, 34, GB[0]);
   T(x, 'NÄSTA', PX + 3, 44, GB[0]); R(x, PX + 4, 51, 18, 13, GB[3]);
   for (const [k, r] of [[0, 0], [1, 0], [1, 1], [2, 1]]) { const X = PX + 6 + k * 4, Y = 54 + r * 4; R(x, X, Y, 4, 4, GB[0]); R(x, X + 1, Y + 1, 2, 2, GB[1]); }
-  if (fas > 3.7 && fas < 4.8) { R(x, FX + 2, 26, 36, 11, GB[0]); T(x, 'TETRIX!', FX + 6, 29, GB[3]); }
+  if (fas > 3.7 && fas < 4.8) { R(x, FX + 2, 26, 36, 11, GB[0]); T(x, 'BLOCKFALL!', FX + 6, 29, GB[3]); }
 }
 
 // ---------- 1991 SONNY THE HEDGEHOG (Sonic the Hedgehog) ----------
@@ -405,8 +405,8 @@ function gta6(x, t) {
   disc(x, cx + 26, cy - 1, 2, '#3a2018'); R(x, cx + 25, cy - 4, 3, 1, '#3a2018');
   for (const hx of [cx + 9, cx + 31]) { disc(x, hx, cy + 9, 3, '#101010'); P(x, hx + (hjul ? 1 : -1), cy + 9 + (hjul ? -1 : 1), '#a0a0a0'); P(x, hx, cy + 9, '#c0c0c0'); }
   // logotypen: GRAND THEFT AUTOMOBIL och ett stort VI i rosa till orange
-  T(x, 'GRAND THEFT', 7, 8, '#120a20'); T(x, 'GRAND THEFT', 6, 7, '#ffffff');
-  T(x, 'AUTOMOBIL', 7, 15, '#120a20'); T(x, 'AUTOMOBIL', 6, 14, '#ffffff');
+  T(x, 'BILTJUVEN', 7, 8, '#120a20'); T(x, 'BILTJUVEN', 6, 7, '#ffffff');
+  T(x, 'DEL VI', 7, 15, '#120a20'); T(x, 'DEL VI', 6, 14, '#ffffff');
   const VI = ['##.......##.####', '##.......##.####', '.##.....##...##.', '.##.....##...##.', '..##...##....##.', '..##...##....##.', '...##.##.....##.', '...##.##.....##.', '....###.....####', '....###.....####'];
   const grad = ['#ff4fa0', '#ff4fa0', '#ff5a90', '#ff6a80', '#ff7a6a', '#ff8a58', '#ff9a48', '#ffb048', '#ffc850', '#ffd860'];
   for (let j = 0; j < VI.length; j++) for (let i = 0; i < VI[j].length; i++) if (VI[j][i] === '#') { for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1], [1, 1]]) R(x, 6 + i * 2 + dx, 22 + j * 2 + dy, 2, 2, '#120a20'); }
@@ -415,14 +415,14 @@ function gta6(x, t) {
 
 const BAS = [
   { id: 'pang', titel: 'PANG!', forebild: 'Pong', ar: 1982, studio: 'ERT EGET', w: 64, h: 48, rita: pang },
-  { id: 'pac', titel: 'PAC-MUNCH', forebild: 'Pac-Man', ar: 1982, studio: 'NAMKO', w: 96, h: 72, rita: pacMunch },
-  { id: 'marco', titel: 'SUPER MARCO BROS.', forebild: 'Super Mario Bros.', ar: 1985, studio: 'SVAMPSTUDION', w: 128, h: 96, rita: marco },
-  { id: 'tetrix', titel: 'TETRIX', forebild: 'Tetris (Game Boy)', ar: 1989, studio: 'ELORGA', w: 80, h: 72, rita: tetrix },
-  { id: 'sonny', titel: 'SONNY THE HEDGEHOG', forebild: 'Sonic the Hedgehog', ar: 1991, studio: 'SONNY TEAM', w: 128, h: 90, rita: sonny },
-  { id: 'visport', titel: 'VI SPORT', forebild: 'Wii Sports', ar: 2006, studio: 'SVAMPSTUDION', w: 160, h: 90, rita: viSport },
-  { id: 'gruvkraft', titel: 'GRUVKRAFT', forebild: 'Minecraft', ar: 2011, studio: 'MOJÄNG', w: 160, h: 90, rita: gruvkraft },
-  { id: 'fortnajt', titel: 'FORTNAJT', forebild: 'Fortnite', ar: 2017, studio: 'EPISKA SPEL', w: 160, h: 90, rita: fortnajt },
-  { id: 'gta6', titel: 'GRAND THEFT AUTOMOBIL VI', forebild: 'GTA VI', ar: 2026, studio: 'ROCKSTJÄRNA', w: 192, h: 108, rita: gta6 },
+  { id: 'pac', titel: 'GLUFS', forebild: 'Pac-Man', ar: 1982, studio: 'MIRAI', w: 96, h: 72, rita: pacMunch },
+  { id: 'marco', titel: 'SUPER PIPO', forebild: 'Super Mario Bros.', ar: 1985, studio: 'SVAMPSTUDION', w: 128, h: 96, rita: marco },
+  { id: 'tetrix', titel: 'BLOCKFALL', forebild: 'Tetris (Game Boy)', ar: 1989, studio: 'SOYUZ SOFT', w: 80, h: 72, rita: tetrix },
+  { id: 'sonny', titel: 'ZIPPY IGELKOTTEN', forebild: 'Sonic the Hedgehog', ar: 1991, studio: 'BLUE DASH', w: 128, h: 90, rita: sonny },
+  { id: 'visport', titel: 'VIVA SPORT', forebild: 'Wii Sports', ar: 2006, studio: 'SVAMPSTUDION', w: 160, h: 90, rita: viSport },
+  { id: 'gruvkraft', titel: 'BLOCKRIKET', forebild: 'Minecraft', ar: 2011, studio: 'BLOCKSMITH', w: 160, h: 90, rita: gruvkraft },
+  { id: 'fortnajt', titel: 'BATTLE ISLAND', forebild: 'Fortnite', ar: 2017, studio: 'TITAN', w: 160, h: 90, rita: fortnajt },
+  { id: 'gta6', titel: 'BILTJUVEN VI', forebild: 'GTA VI', ar: 2026, studio: 'ASFALT', w: 192, h: 108, rita: gta6 },
 ];
 export const GLIMTAR = [...BAS, ...G_A, ...G_B, ...G_C, ...G_D, ...G_E, ...G_F, ...G_MOBIL];
 export const GLIMT = Object.fromEntries(GLIMTAR.map((g) => [g.id, g]));

@@ -371,7 +371,7 @@ function forsa(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'tjuvarnashav', titel: 'TJUVARNAS HAV', forebild: 'Sea of Thieves', ar: 2018, studio: 'SÄLLSYNT', w: 192, h: 108, rita: tjuvarnasHav },
-  { id: 'taktsabel', titel: 'TAKTSABEL', forebild: 'Beat Saber', ar: 2019, studio: 'TAKTSPELEN', w: 192, h: 108, rita: taktsabel },
-  { id: 'forsa', titel: 'FORSA HORISONT 5', forebild: 'Forza Horizon 5', ar: 2021, studio: 'LEKPLATSEN', w: 192, h: 108, rita: forsa },
+  { id: 'tjuvarnashav', titel: 'PIRATHAVET', forebild: 'Sea of Thieves', ar: 2018, studio: 'ULTRA', w: 192, h: 108, rita: tjuvarnasHav },
+  { id: 'taktsabel', titel: 'LASERTAKT', forebild: 'Beat Saber', ar: 2019, studio: 'RHYTHM BOX', w: 192, h: 108, rita: taktsabel },
+  { id: 'forsa', titel: 'TURBO TOUR 5', forebild: 'Forza Horizon 5', ar: 2021, studio: 'OPEN ROAD', w: 192, h: 108, rita: forsa },
 ];

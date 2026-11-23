@@ -170,7 +170,7 @@ function tunnelbana(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'argafaglar', titel: 'ARGA FÅGLAR', forebild: 'Angry Birds', ar: 2009, studio: 'ROVJO', w: 192, h: 108, rita: argaFaglar },
-  { id: 'godiskross', titel: 'GODISKROSS', forebild: 'Candy Crush Saga', ar: 2012, studio: 'KUNGEN', w: 90, h: 160, rita: godiskross },
-  { id: 'tunnelbana', titel: 'TUNNELBANESURFARNA', forebild: 'Subway Surfers', ar: 2012, studio: 'SAJBO', w: 90, h: 160, rita: tunnelbana },
+  { id: 'argafaglar', titel: 'KATAPULTKRIGET', forebild: 'Angry Birds', ar: 2009, studio: 'FEATHER', w: 192, h: 108, rita: argaFaglar },
+  { id: 'godiskross', titel: 'SOCKERSTORMEN', forebild: 'Candy Crush Saga', ar: 2012, studio: 'SUGARLAB', w: 90, h: 160, rita: godiskross },
+  { id: 'tunnelbana', titel: 'TUNNELRUSH', forebild: 'Subway Surfers', ar: 2012, studio: 'RAILHEAD', w: 90, h: 160, rita: tunnelbana },
 ];

@@ -3,15 +3,15 @@
 // Förlagans nio rivaler (parodierna behålls). offset = hur mycket bättre/sämre än marknadssnittet de brukar
 // vara, prisF = pris jämfört med rimligt pris, dag = ungefärlig lanseringsdag på året (0 = 1 jan).
 export const RIVALER = [
-  { id: 'lj', bolag: 'LJ', modell: 'OPTIMIST', offset: -0.3, prisF: 1.0, dag: 86, farg: 0xc9323a, ikon: 'lj', karaktar: 'LANSERAR TIDIGT PÅ VÅREN' },
-  { id: 'sonee', bolag: 'SONEE ERICKSEN', modell: 'WALKMEN', offset: -1.7, prisF: 0.55, dag: 169, farg: 0x2aa39a, ikon: 'sonee', karaktar: 'MUSIK FÖRE ALLT' },
-  { id: 'blueberry', bolag: 'BLUEBERRY', modell: 'SWERVE', offset: -0.2, prisF: 0.93, dag: 220, farg: 0x5a4ad0, ikon: 'blueberry', karaktar: 'TANGENTBORD, ÄLSKAD AV CHEFER' },
-  { id: 'palmtree', bolag: 'PALMTREE', modell: 'PREE', offset: 0.8, prisF: 1.33, dag: 227, farg: 0xe8b230, ikon: 'palmtree', karaktar: 'SMART MEN DYR' },
-  { id: 'pear', bolag: 'PEAR', modell: 'PPHONE MAX', offset: 0, prisF: 1.14, dag: 233, farg: 0xd8dce4, ikon: 'pear', karaktar: 'SNYGG, DYR OCH SKRYTER' },
-  { id: 'samsong', bolag: 'SAMSONG', modell: 'UNIVERSE A', offset: 0.7, prisF: 1.13, dag: 237, farg: 0x3a7bd5, ikon: 'samsong', karaktar: 'KOPIERAR DIG ÅRET EFTER' },
-  { id: 'nokio', bolag: 'NOKIO', modell: 'COMMUNICADO', offset: 0.8, prisF: 1.13, dag: 250, farg: 0x2a6ad0, ikon: 'nokio', karaktar: 'TÅLIG OCH TRÅKIG' },
-  { id: 'htk', bolag: 'HTK', modell: 'DESIRABLE', offset: -0.3, prisF: 1.02, dag: 274, farg: 0x45b964, ikon: 'htk', karaktar: 'MITTEMELLAN' },
-  { id: 'motorolla', bolag: 'MOTOROLLA', modell: 'RAZER', offset: 0, prisF: 0.92, dag: 308, farg: 0xe8484e, ikon: 'motorolla', karaktar: 'TUNN OCH BILLIG – PRISPRESSAREN' },
+  { id: 'lj', bolag: 'LUMEN', modell: 'OPTIMA', offset: -0.3, prisF: 1.0, dag: 86, farg: 0xc9323a, ikon: 'lj', karaktar: 'LANSERAR TIDIGT PÅ VÅREN' },
+  { id: 'sonee', bolag: 'HOSHI', modell: 'MELODI', offset: -1.7, prisF: 0.55, dag: 169, farg: 0x2aa39a, ikon: 'sonee', karaktar: 'MUSIK FÖRE ALLT' },
+  { id: 'blueberry', bolag: 'BRAMBLE', modell: 'TANGENT PRO', offset: -0.2, prisF: 0.93, dag: 220, farg: 0x5a4ad0, ikon: 'blueberry', karaktar: 'TANGENTBORD, ÄLSKAD AV CHEFER' },
+  { id: 'palmtree', bolag: 'KOKOS', modell: 'KARMA', offset: 0.8, prisF: 1.33, dag: 227, farg: 0xe8b230, ikon: 'palmtree', karaktar: 'SMART MEN DYR' },
+  { id: 'pear', bolag: 'KVITTEN', modell: 'KVITTEN ONE', offset: 0, prisF: 1.14, dag: 233, farg: 0xd8dce4, ikon: 'pear', karaktar: 'SNYGG, DYR OCH SKRYTER' },
+  { id: 'samsong', bolag: 'SAMBA', modell: 'COSMOS A', offset: 0.7, prisF: 1.13, dag: 237, farg: 0x3a7bd5, ikon: 'samsong', karaktar: 'KOPIERAR DIG ÅRET EFTER' },
+  { id: 'nokio', bolag: 'NORDIA', modell: 'ROBUST', offset: 0.8, prisF: 1.13, dag: 250, farg: 0x2a6ad0, ikon: 'nokio', karaktar: 'TÅLIG OCH TRÅKIG' },
+  { id: 'htk', bolag: 'HIKO', modell: 'WISH', offset: -0.3, prisF: 1.02, dag: 274, farg: 0x45b964, ikon: 'htk', karaktar: 'MITTEMELLAN' },
+  { id: 'motorolla', bolag: 'VEKTOR', modell: 'SLIM X', offset: 0, prisF: 0.92, dag: 308, farg: 0xe8484e, ikon: 'motorolla', karaktar: 'TUNN OCH BILLIG – PRISPRESSAREN' },
 ];
 
 // Reklamkampanjer på lanseringsdagen. hype = extra tidig efterfrågan som klingar av 10 % per vecka.
@@ -70,6 +70,6 @@ export const HANDELSER = [
 // Tidningarna som recenserar (lanseringsshowen)
 export const TIDNINGAR = [
   { id: 'mobiltidningen', namn: 'MOBILTIDNINGEN', lynne: 'saklig' },
-  { id: 'skarm', namn: 'SKÄRM & SIGNAL', lynne: 'design' },
+  { id: 'skarm', namn: 'SIGNALEN', lynne: 'design' },
   { id: 'bytesize', namn: 'BYTESIZE', lynne: 'elak' },
 ];

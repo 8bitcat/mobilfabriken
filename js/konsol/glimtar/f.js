@@ -409,7 +409,7 @@ function astroBotten(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'blandoss', titel: 'BLAND OSS', forebild: 'Among Us', ar: 2018, studio: 'INNERSLOTT', w: 192, h: 108, rita: blandOss },
-  { id: 'astrobotten', titel: 'ASTROBOTTEN', forebild: 'Astro Bot', ar: 2024, studio: 'LEKTEAMET', w: 192, h: 108, rita: astroBotten },
-  { id: 'marcokartvarld', titel: 'MARCO KART VÄRLD', forebild: 'Mario Kart World', ar: 2025, studio: 'SVAMPSTUDION', w: 192, h: 108, rita: marcoKart },
+  { id: 'blandoss', titel: 'RYMDSABOTAGE', forebild: 'Among Us', ar: 2018, studio: 'LITTLE SHIP', w: 192, h: 108, rita: blandOss },
+  { id: 'astrobotten', titel: 'RYMDROBOTEN', forebild: 'Astro Bot', ar: 2024, studio: 'TOYBOX', w: 192, h: 108, rita: astroBotten },
+  { id: 'marcokartvarld', titel: 'PIPO KART JORDEN RUNT', forebild: 'Mario Kart World', ar: 2025, studio: 'SVAMPSTUDION', w: 192, h: 108, rita: marcoKart },
 ];

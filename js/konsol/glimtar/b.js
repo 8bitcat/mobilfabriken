@@ -639,24 +639,24 @@ function fickmonster(x, t) {
   disc(x, rx, 52, 3, '#d8d8c8'); R(x, rx - 22, 50, 44, 4, '#d8d8c8');
   skala(x, sprDuk('fm-rattis', FM_RATTIS, FM_STRID_PAL), rx, 52 + (Math.floor(t * 3) % 2), 2);
   const T1 = 0.7, T2 = 2.4, T3 = 3.3, T4 = 4.6, T5 = 5.4;
-  if (k > T1) { T(x, 'RATTIS', 8, 4, '#181818', BIG); T(x, ':L3', 40, 13, '#181818'); fmHP(x, 16, 20, 1); R(x, 8, 27, 1, 6, '#181818'); R(x, 8, 32, 64, 1, '#181818'); P(x, 72, 31, '#181818'); }
+  if (k > T1) { T(x, 'MUSKEN', 8, 4, '#181818', BIG); T(x, ':L3', 40, 13, '#181818'); fmHP(x, 16, 20, 1); R(x, 8, 27, 1, 6, '#181818'); R(x, 8, 32, 64, 1, '#181818'); P(x, 72, 31, '#181818'); }
   R(x, 8, 90, 60, 4, '#d8d8c8');
   if (k < T2) { const tx = Math.round(38 + (1 - in1) * 130 - Math.max(0, k - T2 + 0.4) * 120); skala(x, sprDuk('fm-tranare', FM_TRANARE.upp[0], FM_PAL), tx, 94, 2.5); }
   if (k >= T2) {
     const up = Math.min(1, (k - T2) / 0.3);
     x.save(); x.beginPath(); x.rect(0, 0, W, 94); x.clip();
     skala(x, sprDuk('fm-pikabak', FM_PIKA_BAK, FM_STRID_PAL), 38, Math.round(94 + (1 - up) * 40), 2.2); x.restore();
-    T(x, 'PIKATJU', 86, 52, '#181818', BIG); T(x, ':L6', 120, 61, '#181818'); fmHP(x, 88, 68, 1); T(x, '20/ 20', 112, 76, '#181818', BIG);
+    T(x, 'VOLTIS', 86, 52, '#181818', BIG); T(x, ':L6', 120, 61, '#181818'); fmHP(x, 88, 68, 1); T(x, '20/ 20', 112, 76, '#181818', BIG);
     R(x, 151, 66, 1, 18, '#181818'); R(x, 82, 84, 70, 1, '#181818'); P(x, 82, 83, '#181818');
   }
   // textrutan: vilt fickmonster, ut med PIKATJU, menyn, och sedan smiter vi
   const skriv = (t0, rader) => fmText(x, rader, Math.floor((k - t0) * 28));
   if (k < T1) fmRuta(x, 0, 96, 160, 48);
-  else if (k < T2) skriv(T1, ['EN VILD RATTIS', 'DÖK UPP!']);
-  else if (k < T3) skriv(T2, ['KÖR, PIKATJU!']);
+  else if (k < T2) skriv(T1, ['EN VILD MUSKEN', 'DÖK UPP!']);
+  else if (k < T3) skriv(T2, ['KÖR, VOLTIS!']);
   else if (k < T4) {
     fmRuta(x, 0, 96, 160, 48); fmRuta(x, 64, 96, 96, 48);
-    const val = [['KAMP', 80, 108], ['FICKM', 122, 108], ['VÄSKA', 80, 124], ['FLY', 122, 124]];
+    const val = [['KAMP', 80, 108], ['MONST', 122, 108], ['VÄSKA', 80, 124], ['FLY', 122, 124]];
     for (const [s, X, Y] of val) T(x, s, X, Y, '#181818', BIG);
     const i = k - T3 < 0.45 ? 0 : k - T3 < 0.8 ? 1 : 3, [, cx, cy] = val[i];
     for (let j = 0; j < 4; j++) R(x, cx - 7, cy + j, j < 2 ? j + 1 : 4 - j, 1, '#181818');
@@ -666,9 +666,9 @@ function fickmonster(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'marcokart', titel: 'SUPER MARCO KART', forebild: 'Super Mario Kart', ar: 1992, studio: 'SVAMPSTUDION', w: MK.W, h: MK.H, rita: marcoKart },
-  { id: 'segorally', titel: 'SEGO RALLY', forebild: 'Sega Rally Championship', ar: 1995, studio: 'SEGO AM3', w: SR.W, h: SR.H, rita: segoRally },
-  { id: 'crash', titel: 'CRASH BANDIKUT', forebild: 'Crash Bandicoot', ar: 1996, studio: 'STYGGA HUNDEN', w: CB.W, h: CB.H, rita: crashBandikut },
-  { id: 'marco64', titel: 'SUPER MARCO 64', forebild: 'Super Mario 64', ar: 1996, studio: 'SVAMPSTUDION', w: 160, h: 120, rita: marco64 },
-  { id: 'fickmonster', titel: 'FICKMONSTER GUL', forebild: 'Pokémon Yellow', ar: 1998, studio: 'SPELFREAKEN', w: FM.W, h: FM.H, rita: fickmonster },
+  { id: 'marcokart', titel: 'PIPO KART', forebild: 'Super Mario Kart', ar: 1992, studio: 'SVAMPSTUDION', w: MK.W, h: MK.H, rita: marcoKart },
+  { id: 'segorally', titel: 'TORA RALLY', forebild: 'Sega Rally Championship', ar: 1995, studio: 'TORA RACING', w: SR.W, h: SR.H, rita: segoRally },
+  { id: 'crash', titel: 'KRASCH KOALA', forebild: 'Crash Bandicoot', ar: 1996, studio: 'GRAY WOLF', w: CB.W, h: CB.H, rita: crashBandikut },
+  { id: 'marco64', titel: 'PIPO 64', forebild: 'Super Mario 64', ar: 1996, studio: 'SVAMPSTUDION', w: 160, h: 120, rita: marco64 },
+  { id: 'fickmonster', titel: 'MONSTERKOMPIS GUL', forebild: 'Pokémon Yellow', ar: 1998, studio: 'CRITTER LAB', w: FM.W, h: FM.H, rita: fickmonster },
 ];

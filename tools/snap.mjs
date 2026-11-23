@@ -39,7 +39,7 @@ const resultat = await page.evaluate(async (kod) => {
   const vanta = (ms) => new Promise((r) => setTimeout(r, ms));
   const nyttTestspel = (o = {}) => { const G = sim.nyttSpel({ namn: o.namn || (o.lage === 'konsol' ? 'PIXELBOX AB' : 'MIKROVÅG MOBIL'), seed: o.seed ?? 7, lage: o.lage || 'telefon' }); pers.startKandidater(G); A.G = G; G.installningar.autopaus = false; if (!o.handledning) G.handledning.av = true; if (o.bord !== false) { kont.placera(G, { typ: 'bord', i: 0 }, 'fallbord'); kont.placera(G, { typ: 'bord', i: 1 }, 'fallbord'); } if (o.anstall !== false) { pers.anstall(G, G.kandidater[0].id); pers.anstall(G, G.kandidater[0].id); } return G; };
   const dagar = (n) => { for (let i = 0; i < n; i++) tick.dagTick(A.G); };
-  const forstaTelefonen = () => { const d = des.nyDesign(A.G); d.namn = 'PIXEL PHONE 1'; proj.startaUtveckling(A.G, d); };
+  const forstaTelefonen = () => { const d = des.nyDesign(A.G); d.namn = 'PIXELFON 1'; proj.startaUtveckling(A.G, d); };
   // konsolspelet: första konsolen (med PANG! i lådan) och lanseringen när den är klar
   const forstaKonsolen = () => { const d = des.nyDesign(A.G, null, 'konsol'); d.namn = 'PIXELBOX 1'; proj.startaUtveckling(A.G, d); };
   const lanseraKonsolen = (kamp = 'ingen') => { let n = 0; while (A.G.projekt[0] && A.G.projekt[0].status !== 'klar' && n++ < 300) tick.dagTick(A.G); return proj.lansera(A.G, A.G.projekt[0].id, kamp); };

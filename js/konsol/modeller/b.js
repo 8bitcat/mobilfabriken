@@ -108,7 +108,7 @@ function snes(tel) {
   for (const [nx, ord] of [[-0.55, 'POWER'], [0.55, 'RESET']]) ligg(textSkylt(ord, ['#4a4a50'], 0.05, SMALL), g, nx, TOP + 0.025, 0.17);
   // fyrfärgsloggan och namnet framme till vänster
   for (const [i, f] of [0xd82828, 0xe8b818, 0x28a048, 0x3a50c8].entries()) rund(g, 0.04, 0.012, lyser(f, 0.3), -0.8 + i * 0.1, TOP + 0.005, 0.56, 16);
-  ligg(textSkylt('SUPER NINTENTO', ['#55555c'], 0.065), g, -0.2, TOP + 0.005, 0.7);
+  ligg(textSkylt('SUPER TENKO', ['#55555c'], 0.065), g, -0.2, TOP + 0.005, 0.7);
   // framsidan: två handkontrollsportar och strömlampan
   for (const px of [-0.42, 0.0]) { staende(g, 0.3, 0.16, 0.04, mork, px, 0.1, D / 2 - 0.005, 0.04, 0.01); kloss(g, 0.2, 0.06, 0.02, svart, px, 0.18, D / 2 + 0.012); }
   kloss(g, 0.05, 0.03, 0.02, lyser(0xff2020, 2), 0.7, 0.3, D / 2 - 0.005);
@@ -149,7 +149,7 @@ function saturnusKontroll(g, x, z, rot) {
   for (let i = 0; i < 3; i++) ligg(textSkylt('ABC'[i], ['#b0b0b8'], 0.05, SMALL), k, 0.2 + i * 0.16, H + 0.005, 0.22 - i * 0.07);
   // START i mitten nertill och märket ovanför
   platta(k, 0.11, 0.07, 0.03, gra, 0, H - 0.005, 0.12, 0.03, 0.01);
-  ligg(textSkylt('SATURNUS', ['#6a8ad0'], 0.04, SMALL), k, 0, H + 0.003, -0.1);
+  ligg(textSkylt('ORBIT', ['#6a8ad0'], 0.04, SMALL), k, 0, H + 0.003, -0.1);
   return k;
 }
 function saturnus(tel) {
@@ -174,7 +174,7 @@ function saturnus(tel) {
   // luckans topp: en upphöjd rund platta med en ljus ring och skivsymbolen
   for (const [r, tj] of [[0.5, 0.025], [0.38, 0.015]]) { const ring = new T.Mesh(new T.TorusGeometry(r, tj, 10, 64), r > 0.4 ? kant : mat(0x45454e)); ring.rotation.x = -Math.PI / 2; ring.scale.set(1, (RZ / RX) * (r > 0.4 ? 1 : 1.05), 1); ring.position.set(0, 0.07, RZ); lucka.add(ring); }
   ligg(textSkylt('COMPACT DISC', ['#9a9aa6'], 0.05, SMALL), lucka, 0, 0.064, RZ + 0.22);
-  ligg(textSkylt('SEGO', ['#9ab0e8'], 0.07), lucka, 0, 0.064, RZ - 0.05);
+  ligg(textSkylt('TORA', ['#9ab0e8'], 0.07), lucka, 0, 0.064, RZ - 0.05);
   // knapparna till höger: OPEN (oval), RESET och POWER, två lampor
   const knapp = (rx, rz, f, x, z) => liggForm(g, oval(rx, rz), 0.06, f, x, H - 0.01, z, 0.02);
   knapp(0.16, 0.11, gra, 0.78, -0.35); knapp(0.07, 0.07, gra, 0.66, 0.32); knapp(0.11, 0.11, gra, 0.98, 0.32);
@@ -183,7 +183,7 @@ function saturnus(tel) {
   kloss(g, 0.07, 0.025, 0.05, lyser(0x40ff60, 3), 0.62, H + 0.005, -0.72); kloss(g, 0.07, 0.025, 0.05, lyser(0xff9a20, 2), 0.76, H + 0.005, -0.72);
   // kassettfacket bak (för minneskort) och namnet framme
   kloss(g, 1.3, 0.02, 0.14, svart, 0.0, H + 0.005, -D / 2 + 0.16); kloss(g, 1.36, 0.012, 0.03, gra, 0.0, H + 0.008, -D / 2 + 0.24);
-  ligg(textSkylt('SEGO SATURNUS', ['#9ab0e8'], 0.085), g, -0.38, H + 0.003, 0.65);
+  ligg(textSkylt('TORA ORBIT', ['#9ab0e8'], 0.085), g, -0.38, H + 0.003, 0.65);
   // planeten med ring bredvid namnet
   const pl = new T.Mesh(new T.SphereGeometry(0.05, 16, 12), lyser(0x6a8ad0, 0.4)); pl.position.set(0.25, H + 0.01, 0.72); g.add(pl);
   const pr = new T.Mesh(new T.TorusGeometry(0.08, 0.008, 6, 32), lyser(0x8aa4e0, 0.4)); pr.rotation.x = -Math.PI / 2 + 0.25; pr.position.copy(pl.position); g.add(pr);
@@ -200,8 +200,8 @@ function saturnus(tel) {
 const NKUB = ['BBB.......RRR', 'BBBB......RRR', 'BBBGG.....RRR', 'BBB.GG....RRR', 'BBB..GG...RRR', 'BBB...GG..RRR', 'BBB....GG.RRR', 'BBB.....GGRRR', 'BBB......GRRR', 'BBB.......RRR', 'YYYYYYYYYYYYY', '.YYYYYYYYYYYY'];
 const NKUB_PAL = { B: '#2a5ad8', G: '#20a848', R: '#e02828', Y: '#f0c018' };
 function n64Logga(hojd, medText = true) {
-  const w = medText ? 15 + TW('NINTENTO 64', SMALL) + 2 : 15, h = 14;
-  return skylt(w, h, (x) => { spr(x, NKUB, 1, 1, NKUB_PAL); if (medText) text(x, 'NINTENTO 64', 16, 5, '#c8c8d0', SMALL); }, hojd);
+  const w = medText ? 15 + TW('TENKO 64', SMALL) + 2 : 15, h = 14;
+  return skylt(w, h, (x) => { spr(x, NKUB, 1, 1, NKUB_PAL); if (medText) text(x, 'TENKO 64', 16, 5, '#c8c8d0', SMALL); }, hojd);
 }
 function n64Kontroll(g, x, z, rot) {
   const T = TH(), k = new T.Group(); k.position.set(x, 0, z); k.rotation.y = rot; g.add(k);
@@ -291,9 +291,9 @@ function gbc(tel) {
   staende(g, 0.64, 0.56, 0.02, mat(0x2a2a34, { roughness: 0.3 }), 0, 0.7, fram + 0.002, 0.05, 0.006, [0.05, 0.05, 0.05, 0.05]);
   const sk = glimtSkarm('fickmonster', 0.46, 0.414); sk.me.position.set(0.02, 1.03, fram + 0.014); g.add(sk.me);
   kloss(g, 0.025, 0.025, 0.01, lyser(0xff3030, 2), -0.27, 1.1, fram + 0.014);
-  const logga = textSkylt('GAME BOJ COLOR', ['#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#ff4040', '#ffd020', '#40d060', '#40a0ff', '#c060ff'], 0.04, SMALL);
+  const logga = textSkylt('TENKO POCKET COLOR', ['#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#e8e8f0', '#ff4040', '#ffd020', '#40d060', '#40a0ff', '#c060ff'], 0.04, SMALL);
   sta(logga, g, 0.02, 0.77, fram + 0.014);
-  sta(textSkylt('NINTENTO', ['#4a2a80'], 0.045, SMALL), g, 0, 0.6, fram + 0.004);
+  sta(textSkylt('TENKO', ['#4a2a80'], 0.045, SMALL), g, 0, 0.6, fram + 0.004);
   // styrkors, A och B, SELECT och START
   styrkors(g, 0.22, mat(0x18181c), -0.2, 0.4, fram + 0.03); g.children.slice(-2).forEach((k) => (k.rotation.x = Math.PI / 2));
   for (const [bx, by] of [[0.12, 0.36], [0.27, 0.44]]) { const b = rund(g, 0.06, 0.05, glans(0x7a7a8a), bx, by, fram + 0.02); b.rotation.x = Math.PI / 2; }
@@ -330,16 +330,16 @@ function gbcPixel(x, X, Y) {
 }
 
 export const KONSOLER = [
-  { id: 'konsol-snes', namn: 'SUPER NINTENTO', forebild: 'Super Nintendo (Super Famicom)', ar: 1992, glimt: 'marcokart', bygg: snes, oppna: ['KASSETTEN', 0],
+  { id: 'konsol-snes', namn: 'SUPER TENKO', forebild: 'Super Nintendo (Super Famicom)', ar: 1992, glimt: 'marcokart', bygg: snes, oppna: ['KASSETTEN', 0],
     info: 'Ljusgrå och rundad med fyrfärgsloggan. Kassetten trycks ner i facket och handkontrollen har fyra färgade knappar och axelknappar.',
     pixel: (x, X, Y) => PIX.snes.rita(x, X, Y) },
-  { id: 'konsol-saturnus', namn: 'SEGO SATURNUS', forebild: 'Sega Saturn', ar: 1995, glimt: 'segorally', bygg: saturnus, oppna: ['SKIVLUCKAN', 0],
+  { id: 'konsol-saturnus', namn: 'TORA ORBIT', forebild: 'Sega Saturn', ar: 1995, glimt: 'segorally', bygg: saturnus, oppna: ['SKIVLUCKAN', 0],
     info: 'Svart låda med en oval skivlucka ovanpå. Handkontrollen har sex knappar i två bågar.',
     pixel: saturnusPixel },
-  { id: 'konsol-n64', namn: 'NINTENTO 64', forebild: 'Nintendo 64', ar: 1997, glimt: 'marco64', bygg: n64, oppna: ['KASSETTEN', 0],
+  { id: 'konsol-n64', namn: 'TENKO 64', forebild: 'Nintendo 64', ar: 1997, glimt: 'marco64', bygg: n64, oppna: ['KASSETTEN', 0],
     info: 'Mörkgrå med kassettfack i mitten och fyra portar fram. Handkontrollen har tre handtag och en analog spak i mitten.',
     pixel: (x, X, Y) => PIX.n64.rita(x, X, Y) },
-  { id: 'konsol-gbc', namn: 'GAME BOJ COLOR', forebild: 'Game Boy Color', ar: 1998, glimt: 'fickmonster', bygg: gbc, oppna: null,
+  { id: 'konsol-gbc', namn: 'TENKO POCKET COLOR', forebild: 'Game Boy Color', ar: 1998, glimt: 'fickmonster', bygg: gbc, oppna: null,
     info: 'Mindre än Game Boj och i genomskinlig lila plast. Nu med färgskärm, där spelet syns live.',
     pixel: gbcPixel },
 ];

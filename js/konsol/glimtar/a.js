@@ -320,7 +320,7 @@ function alexKidz(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'invaders', titel: 'SPACE INVADÖRS', forebild: 'Space Invaders', ar: 1980, studio: 'TAITOO', w: 128, h: 128, rita: invaders },
-  { id: 'donkey', titel: 'DONKEY KONGO', forebild: 'Donkey Kong', ar: 1981, studio: 'SVAMPSTUDION', w: 128, h: 124, rita: donkey },
-  { id: 'alexkidz', titel: 'ALEX KIDZ I MIRAKELVÄRLDEN', forebild: 'Alex Kidd in Miracle World', ar: 1986, studio: 'SEGO', w: 128, h: 96, rita: alexKidz },
+  { id: 'invaders', titel: 'RYMDANFALL', forebild: 'Space Invaders', ar: 1980, studio: 'ARCADIA', w: 128, h: 128, rita: invaders },
+  { id: 'donkey', titel: 'APTORNET', forebild: 'Donkey Kong', ar: 1981, studio: 'SVAMPSTUDION', w: 128, h: 124, rita: donkey },
+  { id: 'alexkidz', titel: 'KID KOSMO I MIRAKELLANDET', forebild: 'Alex Kidd in Miracle World', ar: 1986, studio: 'TORA', w: 128, h: 96, rita: alexKidz },
 ];

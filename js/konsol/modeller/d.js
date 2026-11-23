@@ -115,7 +115,7 @@ function x360(tel) {
   for (let i = 0; i < 4; i++) { const b = new T.Mesh(new T.TorusGeometry(0.15, 0.017, 8, 16, Math.PI / 2 - 0.2), lyser(0x46ff46, i === 1 ? 2.6 : 1.2)); b.rotation.z = i * (Math.PI / 2) + 0.1; b.position.set(rx, ry, fram + 0.018); g.add(b); }
   // minneskortsluckan nere till vänster och märket
   kloss(g, 1.25, 0.012, 0.012, mat(0xb8b8bc), -0.72, 0.36, fram + 0.002); kloss(g, 0.012, 0.2, 0.012, mat(0xb8b8bc), -0.1, 0.26, fram + 0.002);
-  const mark = textYta('X-LÅDA 360', 0.62, 0.09, '#8a8c92'); mark.position.set(-1.0, 0.24, fram + 0.006); g.add(mark);
+  const mark = textYta('AXIOM X2', 0.62, 0.09, '#8a8c92'); mark.position.set(-1.0, 0.24, fram + 0.006); g.add(mark);
   for (const sx of [-0.58, -0.4]) kloss(g, 0.12, 0.05, 0.012, mat(0xd0d0d4), sx, 0.24, fram + 0.004);
   // baksidan: två stora fläktgaller och portar
   for (const sx of [-0.85, 0.15]) staende(g, 0.85, 0.5, 0.02, gallerMat('#a8acb2', '#30323a', 9), sx, 0.15, -D / 2 - 0.003, 0.08, 0.006);
@@ -147,7 +147,7 @@ function ps3(tel) {
   for (const bx of [1.12, 1.34]) { knappZ(g, 0.04, 0.012, silver, bx, 0.68, fram); }
   kloss(g, 0.03, 0.015, 0.01, lyser(0x40ff60, 1.6), 1.12, 0.6, fram);
   // märket på ovansidan till vänster (följer välvningen)
-  const mx = -0.85, lutning = Math.atan(0.16 * -mx / (b * b)), mark = textYta('PLAY STATIO 3', 1.2, 0.14, '#d8dce4', 'normal', { metalness: 0.2, roughness: 0.3, emissive: 0x30323a });
+  const mx = -0.85, lutning = Math.atan(0.16 * -mx / (b * b)), mark = textYta('HOSHI NOVA 3', 1.2, 0.14, '#d8dce4', 'normal', { metalness: 0.2, roughness: 0.3, emissive: 0x30323a });
   mark.rotation.order = 'ZYX'; mark.rotation.set(-Math.PI / 2, 0, lutning); mark.position.set(mx, yTopp(mx) + 0.008, 0.55); g.add(mark);
   // ventiler på sidorna och baksidan
   for (const sx of [-1, 1]) for (let i = 0; i < 9; i++) kloss(g, 0.02, 0.025, 1.6, mat(0x26262c), sx * ((W - 0.18) / 2 + 0.004), 0.12 + i * 0.035, -0.1);
@@ -265,12 +265,12 @@ function pixelViu(x, X, Y) {
 }
 
 export const KONSOLER = [
-  { id: 'konsol-x360', namn: 'X-LÅDA 360', forebild: 'Xbox 360', ar: 2005, glimt: 'gruvkraft', oppna: ['SKIVLÅDAN', 0], bygg: x360, pixel: pixelX360,
+  { id: 'konsol-x360', namn: 'AXIOM X2', forebild: 'Xbox 360', ar: 2005, glimt: 'gruvkraft', oppna: ['SKIVLÅDAN', 0], bygg: x360, pixel: pixelX360,
     info: 'Vit och lätt insvängd, som om den andas in. Ljusringen lyser grön runt strömknappen och skivlådan glider ut.' },
-  { id: 'konsol-ps3', namn: 'PLAY STATIO 3', forebild: 'PlayStation 3', ar: 2007, glimt: 'lillastora', oppna: ['SKIVAN', 0], bygg: ps3, pixel: (x, X, Y) => KONSOL.ps3.rita(x, X, Y),
+  { id: 'konsol-ps3', namn: 'HOSHI NOVA 3', forebild: 'PlayStation 3', ar: 2007, glimt: 'lillastora', oppna: ['SKIVAN', 0], bygg: ps3, pixel: (x, X, Y) => KONSOL.ps3.rita(x, X, Y),
     info: 'Blanksvart med välvt lock och silverlist. Blu-ray-skivan sugs in genom en springa, och handkontrollen känner när man lutar den.' },
-  { id: 'konsol-viu', namn: 'NINTENTO VI U', forebild: 'Wii U', ar: 2012, glimt: 'blackklatt', oppna: null, bygg: viu, pixel: pixelViu,
+  { id: 'konsol-viu', namn: 'TENKO VIVA U', forebild: 'Wii U', ar: 2012, glimt: 'blackklatt', oppna: null, bygg: viu, pixel: pixelViu,
     info: 'En smal vit låda och en handkontroll med egen pekskärm. Man kan spela på skärmen i handen medan någon annan tittar på TV:n.' },
-  { id: 'konsol-ps4', namn: 'PLAY STATIO 4', forebild: 'PlayStation 4', ar: 2013, glimt: 'spindel', oppna: ['SKIVAN', 0], bygg: ps4, pixel: (x, X, Y) => KONSOL.ps4.rita(x, X, Y),
+  { id: 'konsol-ps4', namn: 'HOSHI NOVA 4', forebild: 'PlayStation 4', ar: 2013, glimt: 'spindel', oppna: ['SKIVAN', 0], bygg: ps4, pixel: (x, X, Y) => KONSOL.ps4.rita(x, X, Y),
     info: 'Ett lutande parallellogram med en blank och en matt halva och en blå ljuslist. Handkontrollen har pekyta och lyser.' },
 ];

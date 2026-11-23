@@ -34,7 +34,7 @@ function skivEtikett(id) {
   x.imageSmoothingEnabled = false;
   const s = Math.min(src.width, src.height); x.drawImage(src, (src.width - s) / 2, (src.height - s) / 2, s, s, 0, 0, 256, 256);
   x.fillStyle = '#107c10'; x.fillRect(0, 0, 256, 62);
-  x.fillStyle = '#ffffff'; x.font = 'bold 30px system-ui, sans-serif'; x.textAlign = 'center'; x.fillText('X-LÅDA', 128, 46);
+  x.fillStyle = '#ffffff'; x.font = 'bold 30px system-ui, sans-serif'; x.textAlign = 'center'; x.fillText('AXIOM X', 128, 46);
   const t = new T.CanvasTexture(c); t.colorSpace = T.SRGBColorSpace; t.magFilter = T.NearestFilter; return t;
 }
 // skivan: regnbågsglänsande undersida, etikett uppåt, nav och hål i mitten
@@ -292,10 +292,10 @@ function pixelSeriex(x, X, Y) {
 }
 
 export const KONSOLER = [
-  { id: 'konsol-xladaett', namn: 'X-LÅDA ETT', forebild: 'Xbox One', ar: 2013, glimt: 'tjuvarnashav', bygg: xladaett, oppna: ['SKIVAN', 0], pixel: pixelXladaett,
+  { id: 'konsol-xladaett', namn: 'AXIOM X3', forebild: 'Xbox One', ar: 2013, glimt: 'tjuvarnashav', bygg: xladaett, oppna: ['SKIVAN', 0], pixel: pixelXladaett,
     info: 'Lång svart låda: halva ovansidan är ventilgaller, andra halvan blank. Skivan matas in i springan fram och märket lyser vitt.' },
-  { id: 'konsol-kvest', namn: 'META KVEST', forebild: 'Meta Quest 2', ar: 2019, glimt: 'taktsabel', bygg: kvest, oppna: ['VÄND GLASÖGONEN', 0], pixel: pixelKvest,
+  { id: 'konsol-kvest', namn: 'PANORAMA VR', forebild: 'Meta Quest 2', ar: 2019, glimt: 'taktsabel', bygg: kvest, oppna: ['VÄND GLASÖGONEN', 0], pixel: pixelKvest,
     info: 'VR-glasögon utan sladd: fyra kameror ser rummet och två ringkontroller följer händerna. Spelet syns live i linserna.' },
-  { id: 'konsol-seriex', namn: 'X-LÅDA SERIE X', forebild: 'Xbox Series X', ar: 2020, glimt: 'forsa', bygg: seriex, oppna: ['SKIVAN', 0], pixel: pixelSeriex,
+  { id: 'konsol-seriex', namn: 'AXIOM X4', forebild: 'Xbox Series X', ar: 2020, glimt: 'forsa', bygg: seriex, oppna: ['SKIVAN', 0], pixel: pixelSeriex,
     info: 'Matt svart pelare med gröna ventilhål ovanpå. Snabb SSD som laddar spel på några sekunder.' },
 ];

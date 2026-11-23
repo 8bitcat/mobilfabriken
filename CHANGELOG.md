@@ -15,6 +15,9 @@
 - Konsolmarknaden: installerad bas, spelbiblioteket avgör, spelkraschen 1983, cd-revolutionen, piratkopieringen,
   chipbristen och julhandeln. Priser och kontor växer från 1982 års nivå till 2007 års.
 - Mios handledning för 1982, kontorets två byggfaser (hårdvara, sedan mjukvara) och nya kort för studios och spelsläpp.
+- Alla rivaler, konsoler, studios, spel, telefoner och tidningar har fått helt påhittade namn utan å, ä, ö:
+  TENKO, HOSHI NOVA, TORA, AXIOM X, ORBITEK, SUPER PIPO, BLOCKFALL, BILTJUVEN VI, BLOCKRIKET, KVITTEN, SAMBA …
+  Din egen telefon heter PIXELFON i stället för PIXEL PHONE.
 - Appen: spelet finns som iOS-app (mappen app/, Capacitor), byggd i Codemagic och på väg till App Store.
   I appen ligger three.js lokalt, så spelet går utan internet. Tipset om hemskärmen visas inte i appen.
 

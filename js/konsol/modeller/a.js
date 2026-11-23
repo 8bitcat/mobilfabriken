@@ -97,7 +97,7 @@ function ataro(tel) {
   // upphöjt kassettfack i mitten bak
   platta(g, 1.18, 1.0, 0.12, m, 0, TOPP - 0.01, -0.45, 0.06, 0.02);
   kloss(g, 0.96, 0.02, 0.26, mat(0x060608), 0, TOPP + 0.112, -0.45);
-  dekal(g, textDuk(512, 64, [['ATARO', 20, 32, 'bold 44px sans-serif', '#d8d8d8'], ['VIDEO SPELSYSTEM', 200, 34, 'bold 26px sans-serif', '#a8a8a8']]), 1.1, 0.14, -1.0, 0.15, 1.172, false);   // på den svarta framkanten
+  dekal(g, textDuk(512, 64, [['ORBITEK', 20, 32, 'bold 44px sans-serif', '#d8d8d8'], ['VIDEO SPELSYSTEM', 200, 34, 'bold 26px sans-serif', '#a8a8a8']]), 1.1, 0.14, -1.0, 0.15, 1.172, false);   // på den svarta framkanten
   // baksidan: två handkontrollsportar, kanalväljare, strömuttag
   for (const px of [-1.1, 1.1]) port(g, px, 0.3, -1.19, false);
   kloss(g, 0.16, 0.08, 0.04, metall(), 0.3, 0.32, -1.19); kloss(g, 0.1, 0.1, 0.04, mat(0x0a0a0c), -0.25, 0.32, -1.19);
@@ -146,7 +146,7 @@ function koleko(tel) {
   kloss(g, 0.01, vh, BZ1 - BZ0, matt, BX0 + 0.006, vy, (BZ0 + BZ1) / 2); kloss(g, 0.01, vh, BZ1 - BZ0, matt, BX1 - 0.006, vy, (BZ0 + BZ1) / 2);
   // framsidan: aluminiumränder och namnet
   for (let i = 0; i < 4; i++) kloss(g, W - 1.3, 0.035, 0.012, metall(0xc8ccd4, { roughness: 0.35 }), -0.6, 0.14 + i * 0.09, D / 2 + 0.004);
-  dekal(g, textDuk(512, 96, [['KOLEKO', 10, 48, 'bold italic 56px sans-serif', '#f0f0f0'], ['VISION', 250, 50, 'italic 50px sans-serif', '#d84040']]), 1.0, 0.19, 1.15, 0.33, D / 2 + 0.004, false);
+  dekal(g, textDuk(512, 96, [['LUMA', 10, 48, 'bold italic 56px sans-serif', '#f0f0f0'], ['VISION', 250, 50, 'italic 50px sans-serif', '#d84040']]), 1.0, 0.19, 1.15, 0.33, D / 2 + 0.004, false);
   // högra däcket: strömbrytare, RESET, kassettfacket
   kloss(g, 0.3, 0.02, 0.1, mat(0x08080a), 1.1, H + 0.005, 0.6); kloss(g, 0.1, 0.06, 0.08, metall(), 1.02, H + 0.03, 0.6);
   rund(g, 0.07, 0.04, glans(0x2a2a2e), 1.5, H + 0.02, 0.6, 20);
@@ -184,7 +184,7 @@ function segoKontroll(g, x, z, rot, glimt = null) {
   rund(kors, 0.03, 0.04, mat(0x2a2a30), 0, 0.06, 0, 12);
   for (const [i, bx] of [0.27, 0.48].entries()) { rund(k, 0.085, 0.06, glans(0x101012), bx, 0.23, 0.08, 24); rund(k, 0.1, 0.012, mat(0x3a3a40), bx, 0.205, 0.08, 24); }
   dekal(k, textDuk(256, 64, [['1', 64, 30, 'bold 34px sans-serif', '#e8e8e8', 'center'], ['2', 188, 30, 'bold 34px sans-serif', '#e8e8e8', 'center']]), 0.42, 0.105, 0.375, 0.205, 0.22);
-  dekal(k, textDuk(256, 64, [['SEGO', 128, 32, 'bold italic 44px sans-serif', '#e8e8f0', 'center']]), 0.32, 0.08, 0.06, 0.205, -0.19);
+  dekal(k, textDuk(256, 64, [['TORA', 128, 32, 'bold italic 44px sans-serif', '#e8e8f0', 'center']]), 0.32, 0.08, 0.06, 0.205, -0.19);
   return k;
 }
 function mastersystem(tel) {
@@ -197,9 +197,9 @@ function mastersystem(tel) {
   kloss(g, W - 0.08, 0.02, 0.025, glans(0xd81818), 0, 0.62, 0.11);
   // framsidan: namnet, kortplatsen och kontrollportarna
   const fram = new T.Group(); fram.position.set(0, 0.26, 0.73 + 0.012); fram.rotation.x = -(Math.PI / 2 - a); g.add(fram);
-  dekal(fram, textDuk(512, 64, [['MASTER SYSTEM', 8, 32, 'bold 46px sans-serif', '#f0f0f0']]), 1.3, 0.16, -1.05, 0, 0, false);
+  dekal(fram, textDuk(512, 64, [['SYSTEM 8', 8, 32, 'bold 46px sans-serif', '#f0f0f0']]), 1.3, 0.16, -1.05, 0, 0, false);
   kloss(fram, 0.9, 0.05, 0.03, mat(0x050506), 0.55, 0.02, 0); kloss(fram, 0.96, 0.012, 0.035, mat(0x2a2a30), 0.55, 0.06, 0);
-  dekal(fram, textDuk(256, 32, [['SEGO KORT', 128, 16, 'bold 22px sans-serif', '#b0b0b8', 'center']]), 0.5, 0.06, 0.55, -0.09, 0.005, false);
+  dekal(fram, textDuk(256, 32, [['TORA KORT', 128, 16, 'bold 22px sans-serif', '#b0b0b8', 'center']]), 0.5, 0.06, 0.55, -0.09, 0.005, false);
   for (const px of [1.25, 1.6]) { kloss(fram, 0.26, 0.12, 0.03, mat(0x0a0a0c), px, 0, 0); kloss(fram, 0.3, 0.02, 0.035, metall(), px, 0.07, 0); }
   // däcket: röd PAUS-knapp och RESET
   platta(g, 0.3, 0.12, 0.05, glans(0xd81818), 1.15, 0.41, 0.4, 0.03, 0.01);
@@ -212,13 +212,13 @@ function mastersystem(tel) {
   for (let i = 0; i < 5; i++) { const r = kloss(g, 0.03, 0.025, 0.7, mat(0x0c0c0e, { roughness: 0.6 }), -1.6 + i * 0.13, 0.62, -0.38); r.rotation.y = -0.55; }
   kloss(g, 0.34, 0.02, 0.12, mat(0x050506), 1.45, 0.645, 0.0); kloss(g, 0.12, 0.06, 0.1, glans(0xd81818), 1.38, 0.67, 0.0);
   dekal(g, textDuk(128, 32, [['STRÖM', 64, 16, 'bold 24px sans-serif', '#ff4040', 'center']]), 0.3, 0.075, 1.45, 0.647, -0.13);
-  dekal(g, textDuk(256, 64, [['SEGO', 128, 32, 'bold italic 56px sans-serif', '#3a7ae8', 'center']]), 0.5, 0.125, -1.35, 0.65, -0.5);
+  dekal(g, textDuk(256, 64, [['TORA', 128, 32, 'bold italic 56px sans-serif', '#3a7ae8', 'center']]), 0.5, 0.125, -1.35, 0.65, -0.5);
   // baksidan: strömintag, AV-uttag och antennkontakt
   kloss(g, 0.2, 0.12, 0.04, mat(0x0a0a0c), 1.2, 0.3, -0.86); kloss(g, 0.3, 0.12, 0.04, mat(0x0a0a0c), 0.5, 0.3, -0.86);
   for (let i = 0; i < 4; i++) rund(g, 0.012, 0.02, metall(0xc8a040), 0.4 + i * 0.065, 0.3, -0.875, 8).rotation.x = Math.PI / 2;
   rund(g, 0.05, 0.05, metall(), -0.2, 0.3, -0.87, 16).rotation.x = Math.PI / 2;
   // kassetten med den vita rutnätsetiketten
-  const kass = kassett(g, 0.9, 0.86, 0.2, 0x141416, 'alexkidz', 0.58, rutnatEtikett('ALEX KIDZ'));
+  const kass = kassett(g, 0.9, 0.86, 0.2, 0x141416, 'alexkidz', 0.58, rutnatEtikett('KID KOSMO'));
   segoKontroll(g, 0.95, 1.55, -0.18);
   kabel(g, [[0.98, 0.1, 1.24], [1.1, 0.03, 1.05], [1.35, 0.03, 0.98], [1.4, 0.2, 0.86]], mat(0x101012), 0.02);
   g.userData.satt = (o = 0) => {
@@ -271,7 +271,7 @@ function megaKontroll(g, x, z, rot) {
   dekal(k, textDuk(512, 128, [
     ['START', 256, 104, 'bold 22px sans-serif', '#b0b0b8', 'center'],
     ...ABC.map(([bx, bz], i) => ['ABC'[i], 256 + bx * 512 / 1.8, 64 + (bz + 0.17) * 512 / 1.8, 'bold 30px sans-serif', '#e02828', 'center']),
-    ['SEGO', 256, 26, 'bold italic 34px sans-serif', '#e8e8f0', 'center']]), 1.8, 0.45, 0, Y + 0.0025, -0.05);
+    ['TORA', 256, 26, 'bold italic 34px sans-serif', '#e8e8f0', 'center']]), 1.8, 0.45, 0, Y + 0.0025, -0.05);
   return k;
 }
 function megadrive(tel) {
@@ -293,7 +293,7 @@ function megadrive(tel) {
   // räfflor bak
   for (let i = 0; i < 5; i++) for (const s of [-1, 1]) kloss(g, 0.42, 0.02, 0.03, mat(0x0c0c0e), s * 1.05, H + 0.008, -0.45 - i * 0.12);
   // namnet fram till vänster, volymreglaget och hörlursuttaget till höger, två portar fram
-  dekal(g, textDuk(512, 96, [['MEGA DRIVE', 8, 50, 'bold italic 64px sans-serif', '#e8e8e8']]), 1.0, 0.19, -0.8, H + 0.003, 0.68);
+  dekal(g, textDuk(512, 96, [['MEGA 16', 8, 50, 'bold italic 64px sans-serif', '#e8e8e8']]), 1.0, 0.19, -0.8, H + 0.003, 0.68);
   kloss(g, 0.5, 0.05, 0.03, mat(0x050506), 0.85, 0.16, D / 2 + 0.003); kloss(g, 0.08, 0.09, 0.05, mat(0x3a3a40), 0.95, 0.16, D / 2 + 0.01);
   const jack = rund(g, 0.045, 0.03, metall(), 1.22, 0.16, D / 2 + 0.005, 16); jack.rotation.x = Math.PI / 2;
   dekal(g, textDuk(256, 32, [['VOLYM', 128, 16, 'bold 22px sans-serif', '#a0a0a8', 'center']]), 0.4, 0.05, 0.85, 0.235, D / 2 + 0.004, false);
@@ -340,12 +340,12 @@ function mastersystemPixel(x, X, Y) {
 }
 
 export const KONSOLER = [
-  { id: 'konsol-ataro', namn: 'ATARO 2600', forebild: 'Atari 2600', ar: 1977, glimt: 'invaders', bygg: ataro, oppna: ['KASSETTEN', 0],
+  { id: 'konsol-ataro', namn: 'ORBITEK 2800', forebild: 'Atari 2600', ar: 1977, glimt: 'invaders', bygg: ataro, oppna: ['KASSETTEN', 0],
     info: 'Svart med träpanel fram och sex silverreglage. Spelen kommer på kassett och joysticken har en röd knapp.', pixel: (x, X, Y) => KONSOL.ataro?.rita(x, X, Y) },
-  { id: 'konsol-koleko', namn: 'KOLEKO VISION', forebild: 'ColecoVision', ar: 1982, glimt: 'donkey', bygg: koleko, oppna: ['HANDKONTROLLEN', 1],
+  { id: 'konsol-koleko', namn: 'LUMA VISION', forebild: 'ColecoVision', ar: 1982, glimt: 'donkey', bygg: koleko, oppna: ['HANDKONTROLLEN', 1],
     info: 'Svart låda med aluminiumränder. Handkontrollerna har sifferknappar och vilar i en brunn ovanpå konsolen.', pixel: kolekoPixel },
-  { id: 'konsol-mastersystem', namn: 'SEGO MASTER SYSTEM', forebild: 'Sega Master System', ar: 1987, glimt: 'alexkidz', bygg: mastersystem, oppna: ['KASSETTEN', 0],
+  { id: 'konsol-mastersystem', namn: 'TORA SYSTEM 8', forebild: 'Sega Master System', ar: 1987, glimt: 'alexkidz', bygg: mastersystem, oppna: ['KASSETTEN', 0],
     info: 'Kantig och svart med röda detaljer. Fyrkantig handkontroll med knapparna 1 och 2.', pixel: mastersystemPixel },
-  { id: 'konsol-megadrive', namn: 'SEGO MEGA DRIVE', forebild: 'Sega Mega Drive', ar: 1990, glimt: 'sonny', bygg: megadrive, oppna: ['KASSETTEN', 0],
+  { id: 'konsol-megadrive', namn: 'TORA MEGA 16', forebild: 'Sega Mega Drive', ar: 1990, glimt: 'sonny', bygg: megadrive, oppna: ['KASSETTEN', 0],
     info: 'Svart med en rund upphöjd skiva och 16-BIT i guld. Halvmåneformad handkontroll med knapparna A, B och C.', pixel: (x, X, Y) => KONSOL.megadrive?.rita(x, X, Y) },
 ];

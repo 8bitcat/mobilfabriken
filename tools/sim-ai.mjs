@@ -32,7 +32,7 @@ function basta(G) {
   if (ny && G.produkter.filter((p) => p.aktiv).length >= 1 && rnd() < 0.5) d.enhet = ny.id;
   const b = betygAv(G, d, ar, 9, 13, 1).betyg;
   d.pris = Math.round(rimligtPris(G.dag, b, d.enhet) * 1.05 / 10) * 10;   // rimligt pris för enheten (en laptop är värd mer)
-  d.namn = (d.enhet === 'telefon' ? 'PIXEL PHONE ' : d.enhet.toUpperCase() + ' ') + (G.bolag.lanseringar + 1);
+  d.namn = (d.enhet === 'telefon' ? 'PIXELFON ' : d.enhet.toUpperCase() + ' ') + (G.bolag.lanseringar + 1);
   return d;
 }
 function moblera(G) {

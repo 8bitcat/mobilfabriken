@@ -48,7 +48,7 @@ function bastaTelefon(G) {
   d.yta = ar >= 2012 ? 'borstad' : 'matt';
   const b = betygAv(G, d, ar, 9, 13, 1).betyg;
   d.pris = Math.round(rimligtPris(G.dag, b, d.enhet) * 1.05 / 10) * 10;
-  d.namn = 'PIXEL PHONE ' + (G.produkter.filter((p) => p.design.linje !== 'konsol').length + 1);
+  d.namn = 'PIXELFON ' + (G.produkter.filter((p) => p.design.linje !== 'konsol').length + 1);
   return d;
 }
 function moblera(G) {
