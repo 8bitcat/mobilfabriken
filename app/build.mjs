@@ -43,9 +43,10 @@ html = html.replace(cdn, '<script src="vendor/three.min.js" defer></script>');
 if (/https?:\/\//.test(html.replace(/<!--[\s\S]*?-->/g, ''))) throw new Error('index.html har kvar externa adresser');
 fs.writeFileSync(idx, html);
 
-// inget i spelet får hämta något utifrån (localStorage + lokala filer är allt appen behöver)
+// inget i spelet får hämta något utifrån (localStorage + lokala filer är allt appen behöver) – utom
+// självuppdateringen (js/core/appuppdatering.js), som hämtar nya spelversioner från GitHub
 const yttre = [];
-(function gå(dir) { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const p = path.join(dir, e.name); if (e.isDirectory()) gå(p); else if (/\.(js|css|html)$/.test(e.name) && !p.includes('vendor')) { const t = fs.readFileSync(p, 'utf8'); for (const m of t.matchAll(/https?:\/\/[^\s'")]+/g)) if (!/^\s*\/\//.test(t.slice(t.lastIndexOf('\n', m.index) + 1, m.index))) yttre.push(`${path.relative(WWW, p)}: ${m[0]}`); } } })(WWW);
+(function gå(dir) { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const p = path.join(dir, e.name); if (e.isDirectory()) gå(p); else if (/\.(js|css|html)$/.test(e.name) && !p.includes('vendor') && e.name !== 'appuppdatering.js') { const t = fs.readFileSync(p, 'utf8'); for (const m of t.matchAll(/https?:\/\/[^\s'")]+/g)) if (!/^\s*\/\//.test(t.slice(t.lastIndexOf('\n', m.index) + 1, m.index))) yttre.push(`${path.relative(WWW, p)}: ${m[0]}`); } } })(WWW);
 if (yttre.length) throw new Error('externa adresser i spelet:\n' + yttre.join('\n'));
 
 const antal = (function räkna(dir) { let k = 0; for (const e of fs.readdirSync(dir, { withFileTypes: true })) k += e.isDirectory() ? räkna(path.join(dir, e.name)) : 1; return k; })(WWW);

@@ -44,24 +44,28 @@ async function alla(p) { const out = []; let next = p; while (next) { const j = 
 const tyst404 = (pr) => pr.catch((e) => { if (e.status === 404) return null; throw e; });
 const rel = (type, id) => ({ data: { type, id } });
 
-// ---------- texterna ur app/appstore.md ----------
-const MD = fs.readFileSync(path.join(APP, 'appstore.md'), 'utf8');
-const block = (rubrik) => { const m = MD.match(new RegExp(`\\*\\*${rubrik}\\*\\*[^\\n]*\\n\`\`\`\\n([\\s\\S]*?)\\n\`\`\``)); if (!m) throw new Error(`hittar inte kodblocket efter **${rubrik}** i appstore.md`); return m[1].trim(); };
-const TEXT = {
-  namn: 'Mobilfabriken',
-  undertitel: (MD.match(/\*\*Subtitle\*\*[^`]*`([^`]+)`/) || [])[1] || 'Konsoler, mobiler, imperium',
-  integritet: 'https://8bitcat.github.io/mobilfabriken/integritet.html',
-  promo: block('Promotional Text'), beskrivning: block('Description'), nyckelord: block('Keywords'),
-  support: block('Support URL'), marknad: block('Marketing URL'), copyright: block('Copyright'), noter: block('Notes'),
-};
+// ---------- texterna: app/appstore-en.md (en-US, huvudspråk) och app/appstore.md (sv) ----------
+function lasTexter(fil) {
+  const MD = fs.readFileSync(path.join(APP, fil), 'utf8');
+  const block = (rubrik, maste = true) => { const m = MD.match(new RegExp(`\\*\\*${rubrik}\\*\\*[^\\n]*\\n\`\`\`\\n([\\s\\S]*?)\\n\`\`\``)); if (!m && maste) throw new Error(`hittar inte kodblocket efter **${rubrik}** i ${fil}`); return m ? m[1].trim() : null; };
+  return {
+    namn: block('Name', false), undertitel: block('Subtitle', false) || (MD.match(/\*\*Subtitle\*\*[^`]*`([^`]+)`/) || [])[1],
+    promo: block('Promotional Text'), beskrivning: block('Description'), nyckelord: block('Keywords'),
+    support: block('Support URL'), marknad: block('Marketing URL'), noter: block('Notes', false), copyright: block('Copyright', false),
+  };
+}
+const SPRAK = { 'en-US': lasTexter('appstore-en.md'), sv: lasTexter('appstore.md') };
+SPRAK.sv.namn ||= 'Mobilfabriken';
+const TEXT = { integritet: 'https://8bitcat.github.io/mobilfabriken/integritet.html', copyright: SPRAK.sv.copyright || '2026 8bitcat Productions', noter: SPRAK['en-US'].noter };
 const granser = [['namn', 30], ['undertitel', 30], ['promo', 170], ['beskrivning', 4000], ['nyckelord', 100], ['noter', 4000]];
-for (const [k, max] of granser) if (TEXT[k].length > max) throw new Error(`${k} är ${TEXT[k].length} tecken (högst ${max})`);
+for (const [loc, T] of Object.entries(SPRAK)) for (const [k, max] of granser) if (T[k] && T[k].length > max) throw new Error(`${loc} ${k} är ${T[k].length} tecken (högst ${max})`);
+const lokal = (lista, loc) => lista.find((l) => l.attributes.locale === loc) || lista.find((l) => l.attributes.locale.split('-')[0] === loc.split('-')[0]);
 
 // ---------- appen, info, version ----------
 async function appen() {
   const j = await call('GET', `/v1/apps?filter[bundleId]=${BUNDLE}`);
   const a = (j.data || []).find((d) => d.attributes.bundleId === BUNDLE);
-  if (!a) throw new Error(`Ingen app med bundle-id ${BUNDLE} i App Store Connect än – Carl: My Apps → ＋ → New App (namn Mobilfabriken, svenska, ${BUNDLE}, SKU mobilfabriken)`);
+  if (!a) throw new Error(`Ingen app med bundle-id ${BUNDLE} i App Store Connect än – Carl: My Apps → ＋ → New App (namn Smartphone Empire, Primary Language English (U.S.), ${BUNDLE}, SKU mobilfabriken)`);
   return a;
 }
 async function infoAv(app) {
@@ -116,10 +120,13 @@ async function info() {
   await call('PATCH', `/v1/appInfos/${i.id}`, { data: { type: 'appInfos', id: i.id, relationships: { primaryCategory: rel('appCategories', 'GAMES'), primarySubcategoryOne: rel('appCategories', 'GAMES_SIMULATION'), primarySubcategoryTwo: rel('appCategories', 'GAMES_STRATEGY') } } });
   console.log('✓ kategori: Games → Simulation, Strategy');
   const lok = await alla(`/v1/appInfos/${i.id}/appInfoLocalizations`);
-  let sv = svLokal(lok);
-  const attr = { name: TEXT.namn, subtitle: TEXT.undertitel, privacyPolicyUrl: TEXT.integritet };
-  if (sv) { await call('PATCH', `/v1/appInfoLocalizations/${sv.id}`, { data: { type: 'appInfoLocalizations', id: sv.id, attributes: attr } }); console.log(`✓ ${sv.attributes.locale}: namn, undertitel, integritets-URL`); }
-  else { sv = (await call('POST', '/v1/appInfoLocalizations', { data: { type: 'appInfoLocalizations', attributes: { locale: 'sv', ...attr }, relationships: { appInfo: rel('appInfos', i.id) } } })).data; console.log('✓ sv skapad: namn, undertitel, integritets-URL'); }
+  for (const [loc, T] of Object.entries(SPRAK)) {
+    const finns = lokal(lok, loc);
+    const attr = { name: T.namn, subtitle: T.undertitel, privacyPolicyUrl: TEXT.integritet };
+    if (finns) await call('PATCH', `/v1/appInfoLocalizations/${finns.id}`, { data: { type: 'appInfoLocalizations', id: finns.id, attributes: attr } });
+    else await call('POST', '/v1/appInfoLocalizations', { data: { type: 'appInfoLocalizations', attributes: { locale: loc, ...attr }, relationships: { appInfo: rel('appInfos', i.id) } } });
+    console.log(`✓ ${loc}: "${T.namn}" / "${T.undertitel}", integritets-URL`);
+  }
   // åldersgräns: allt NONE/false → 4+. Fälten läses först, så att nya fält i Apples schema också nollas.
   const ald = await call('GET', `/v1/appInfos/${i.id}/ageRatingDeclaration`);
   const a = ald.data.attributes, ny = {};
@@ -136,11 +143,13 @@ async function version() {
   await call('PATCH', `/v1/appStoreVersions/${v.id}`, { data: { type: 'appStoreVersions', id: v.id, attributes: { copyright: TEXT.copyright, releaseType: 'MANUAL' } } });
   console.log(`✓ ${v.attributes.versionString}: copyright, manuell release`);
   const lok = await alla(`/v1/appStoreVersions/${v.id}/appStoreVersionLocalizations`);
-  let sv = svLokal(lok);
-  const attr = { description: TEXT.beskrivning, keywords: TEXT.nyckelord, promotionalText: TEXT.promo, supportUrl: TEXT.support, marketingUrl: TEXT.marknad };
-  if (sv) await call('PATCH', `/v1/appStoreVersionLocalizations/${sv.id}`, { data: { type: 'appStoreVersionLocalizations', id: sv.id, attributes: attr } });
-  else sv = (await call('POST', '/v1/appStoreVersionLocalizations', { data: { type: 'appStoreVersionLocalizations', attributes: { locale: 'sv', ...attr }, relationships: { appStoreVersion: rel('appStoreVersions', v.id) } } })).data;
-  console.log(`✓ ${sv.attributes.locale}: beskrivning (${TEXT.beskrivning.length}), nyckelord (${TEXT.nyckelord.length}), promo (${TEXT.promo.length}), support- och marknads-URL`);
+  for (const [loc, T] of Object.entries(SPRAK)) {
+    const finns = lokal(lok, loc);
+    const attr = { description: T.beskrivning, keywords: T.nyckelord, promotionalText: T.promo, supportUrl: T.support, marketingUrl: T.marknad };
+    if (finns) await call('PATCH', `/v1/appStoreVersionLocalizations/${finns.id}`, { data: { type: 'appStoreVersionLocalizations', id: finns.id, attributes: attr } });
+    else await call('POST', '/v1/appStoreVersionLocalizations', { data: { type: 'appStoreVersionLocalizations', attributes: { locale: loc, ...attr }, relationships: { appStoreVersion: rel('appStoreVersions', v.id) } } });
+    console.log(`✓ ${loc}: beskrivning (${T.beskrivning.length}), nyckelord (${T.nyckelord.length}), promo (${T.promo.length}), support- och marknads-URL`);
+  }
 }
 
 // ---------- skärmbilder ----------
@@ -167,9 +176,18 @@ async function laddaUppBild(setId, fil) {
 }
 async function bilder() {
   const app = await appen(), v = await versionAv(app);
-  const sv = svLokal(await alla(`/v1/appStoreVersions/${v.id}/appStoreVersionLocalizations`));
-  if (!sv) throw new Error('ingen lokalisering – kör version först');
-  const mapp = path.join(APP, 'store', 'skarmbilder');
+  const lok = await alla(`/v1/appStoreVersions/${v.id}/appStoreVersionLocalizations`);
+  // engelska bilder i app/store/skarmbilder/en/, svenska i app/store/skarmbilder/
+  for (const [loc, under] of [['en-US', 'en'], ['sv', '']]) {
+    const l = lokal(lok, loc);
+    if (!l) { console.log(`✗ ingen lokalisering ${loc} – kör version först`); continue; }
+    const mapp = path.join(APP, 'store', 'skarmbilder', under);
+    if (!fs.existsSync(mapp)) { console.log(`✗ ${mapp} saknas – kör node app/tools/skarmbilder.mjs${under ? ' --lang ' + under : ''}`); continue; }
+    console.log(`${loc}:`);
+    await bilderFor(l, mapp);
+  }
+}
+async function bilderFor(sv, mapp) {
   const sets = await alla(`/v1/appStoreVersionLocalizations/${sv.id}/appScreenshotSets`);
   for (const B of BILDSET) {
     const filer = fs.readdirSync(mapp).filter((f) => f.startsWith(B.prefix) && f.endsWith('.png')).sort((a, b) => +a.split('-')[1] - +b.split('-')[1]).slice(0, 10);

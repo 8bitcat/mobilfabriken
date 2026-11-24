@@ -1,7 +1,7 @@
 // Appikonen och startbilden till Xcode-projektet, ur spelets egen ikon (icons/ikon-512.png = pixeltelefonen
 // 32×32 förstorad ×16, ritad av tools/ikon.mjs):
 //   - AppIcon-512@2x.png  1024×1024, RGB utan alfakanal (Apple nekar ikoner med alfa), ×2 utan utjämning
-//   - splash-2732x2732*.png  spelets mörka botten, ikonen (512 px) mitt i och MOBILFABRIKEN i Pixelstad under.
+//   - splash-2732x2732*.png  spelets mörka botten och ikonen (512 px) mitt i – utan namn (två språk, två namn).
 //     Telefonen visar mittbandet av den kvadratiska bilden i liggande läge, så allt ligger nära mitten.
 //   node app/tools/ikon-app.mjs           (PIL via python – samma väg som Pixelcity)
 import path from 'path';
@@ -36,7 +36,8 @@ d.text((tx + k, 11 * k), text, font=font, fill=255)
 mask = mask.point(lambda v: 255 if v >= 128 else 0)   # skarpa kanter, inga halvpixlar
 skugga = Image.new('RGBA', mask.size, '#0d1128'); guld = Image.new('RGBA', mask.size, '#ffd23f')
 ty = y + w + 3 * k
-bild.paste(skugga, (k, ty + k), mask); bild.paste(guld, (0, ty), mask)
+# ingen text på startbilden: appen heter olika på svenska och engelska (Mobilfabriken / Smartphone Empire)
+if False: bild.paste(skugga, (k, ty + k), mask); bild.paste(guld, (0, ty), mask)
 rgb = bild.convert('RGB')
 for f in ['splash-2732x2732.png', 'splash-2732x2732-1.png', 'splash-2732x2732-2.png']:
     rgb.save(xc + '/Splash.imageset/' + f, optimize=True)

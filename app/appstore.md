@@ -8,7 +8,10 @@ Upplägget är samma som Pixelcity (snabbfilen/app/appstore.md): Capacitor-app, 
 Apple har inget API för att skapa själva appen, och Codemagic har inget API för signeringsfiler. Allt annat
 gör `node app/tools/asc-app.mjs` (texterna nedan läses därifrån) och Codemagic-bygget.
 
-1. **Carl – App Store Connect → My Apps → ＋ → New App.** Platforms iOS · Name `Mobilfabriken` · Primary Language Swedish ·
+Den engelska sidan (huvudspråk, namnet **Smartphone Empire**, Carl 2026-11-24) står i `app/appstore-en.md`.
+Den här filen är den svenska sidan (namnet **Mobilfabriken**). Verktyget fyller i båda.
+
+1. **Carl – App Store Connect → My Apps → ＋ → New App.** Platforms iOS · Name `Smartphone Empire` · Primary Language **English (U.S.)** ·
    Bundle ID `io.eightbitcat.mobilfabriken` (ligger redan i listan – registrerat via API 2026-11-23) · SKU `mobilfabriken` ·
    User Access Full Access. Säg sedan till Claude (Apple ID hämtas via API:t och skrivs in i codemagic.yaml).
 2. **Carl – Codemagic → Teams → Personal account → Code signing identities → iOS provisioning profiles → Fetch profiles**
@@ -27,7 +30,7 @@ gör `node app/tools/asc-app.mjs` (texterna nedan läses därifrån) och Codemag
 
 ## App Information
 
-- **Name:** `Mobilfabriken` (högst 30 tecken)
+- **Name** (svenska): `Mobilfabriken` (högst 30 tecken) · engelska: `Smartphone Empire`
 - **Subtitle** (högst 30): `Konsoler, mobiler, imperium` (27 tecken)
 - **Primary Category:** Games → **Simulation** · **Secondary:** Games → **Strategy**
 - **Content Rights:** innehåller inte tredjepartsinnehåll (kryssa *No*).
@@ -116,7 +119,7 @@ Mobilfabriken ("The Phone Factory") is a single-player pixel-art tycoon game in 
 
 How to play: tap NYTT SPEL (New game), choose KONSOLFABRIKEN 1982 (the full game) or SNABBSTART 2007 (phones only), type a company name and follow the in-game guide Mio (13 steps). Landscape only.
 
-The app has no accounts, no login, no in-app purchases, no ads, no analytics and no network access: the game saves to local storage on the device and runs fully offline (three.js is bundled). All rival companies, consoles, games and studios in the game are fictional parody names invented for the game; no real logos or artwork are used.
+The app has no accounts, no login, no in-app purchases, no ads and no analytics. The game saves to local storage on the device and runs fully offline (three.js is bundled). The only network use is an optional check for new game content on GitHub Pages; no personal data is sent. All rival companies, consoles, games and studios in the game are fictional parody names invented for the game; no real logos or artwork are used.
 
 Contact: hello@8bitcat.io
 ```

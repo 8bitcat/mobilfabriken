@@ -5,13 +5,14 @@
   <key>CAPACITOR_DEBUG</key>
 	<string>$(CAPACITOR_DEBUG)</string>
 	<key>CFBundleDevelopmentRegion</key>
-	<string>sv</string>
+	<string>en</string>
 	<key>CFBundleLocalizations</key>
 	<array>
+		<string>en</string>
 		<string>sv</string>
 	</array>
 	<key>CFBundleDisplayName</key>
-        <string>Mobilfabriken</string>
+        <string>Smartphone Empire</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>

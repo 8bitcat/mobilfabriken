@@ -3,7 +3,7 @@
 //   iphone  6,3" liggande 2622×1206 (874×402 @3x) – "iPhone with Dynamic Island (medium display)", den enda
 //           iPhone-storleken App Store Connect kräver (okt 2026)
 //   ipad    13"  liggande 2752×2064 (1376×1032 @2x)
-//   node app/tools/skarmbilder.mjs [iphone|ipad|alla] [--bara id,id] [--vanta ms]
+//   node app/tools/skarmbilder.mjs [iphone|ipad|alla] [--bara id,id] [--vanta ms] [--lang en]
 //     → app/store/skarmbilder/<enhet>-<nr>-<id>.png
 // Scenerna sätts upp med samma hjälpare som tools/snap.mjs (nyttTestspel, forstaKonsolen, lanseraKonsolen …).
 // three.js renderas med SwiftShader (ingen GPU i Playwright) – därför väntetiden innan bilden tas.
@@ -15,9 +15,10 @@ import { fileURLToPath } from 'node:url';
 
 const APP = path.resolve(path.dirname(fileURLToPath(import.meta.url)), '..');
 const ROOT = path.resolve(APP, '..');
-const OUT = path.join(APP, 'store', 'skarmbilder');
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf('--' + n); return i >= 0 ? args[i + 1] : d; };
+const LANG = opt('lang', 'sv');   // --lang en → engelska bilder i app/store/skarmbilder/en/
+const OUT = path.join(APP, 'store', 'skarmbilder', ...(LANG === 'sv' ? [] : [LANG]));
 const enhetVal = args.find((a) => !a.startsWith('--') && !['iphone', 'ipad', 'alla'].includes(a) === false) || 'alla';
 const bara = opt('bara', '') ? opt('bara', '').split(',') : null;
 const VANTA = +opt('vanta', 1800);
@@ -67,7 +68,7 @@ for (const [enhet, E] of Object.entries(ENHETER)) {
     const pagefel = [];
     page.on('pageerror', (e) => pagefel.push(String(e.message || e)));
     page.on('console', (m) => { if (m.type() === 'error' && !/deprecated with r150/.test(m.text())) pagefel.push(m.text()); });
-    await page.goto(`${bas}/index.html?test`);
+    await page.goto(`${bas}/index.html?test${LANG === 'sv' ? '' : '&lang=' + LANG}`);
     await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 15000 });
     await page.waitForTimeout(400);
     const r = await page.evaluate(async (kod) => {
