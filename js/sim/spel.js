@@ -4,6 +4,7 @@
 import { RIVALER, KONTOR } from '../data/varld.js';
 import { K_RIVALER } from '../data/konsol-varld.js';
 import { arAv, dagForAr, datumText, slump, klamp, kr } from './bas.js';
+import { $t } from '../core/i18n.js';
 
 export const SPAR_VERSION = 1;
 // Slutgalan (SPELDESIGN §2.12): bolaget går att sälja från 1 januari detta år (BOLAGET → SÄLJ BOLAGET)
@@ -16,8 +17,8 @@ export const PLATSER = { garage: { golv: 4, vagg: 3 }, litet: { golv: 8, vagg: 4
 // lage 'telefon' = SNABBSTART 2007 (dagens spel, oförändrat). lage 'konsol' = spelkonsoler från 1 januari 1982,
 // telefonerna forskas fram 2007 (docs/KONSOLPLAN.md). Konsolspelets egna fält ligger i G.k (sim/konsol.js).
 export const KONSOL_START = 1982;
-export function nyttSpel({ namn = 'MIKROVÅG MOBIL', initial = null, seed = null, arv = null, lage = 'telefon' } = {}) {
-  namn = String(namn || 'MITT BOLAG').toUpperCase().slice(0, 22);
+export function nyttSpel({ namn = $t('MIKROVÅG MOBIL'), initial = null, seed = null, arv = null, lage = 'telefon' } = {}) {
+  namn = String(namn || $t('MITT BOLAG')).toUpperCase().slice(0, 22);
   const konsol = lage === 'konsol', start = konsol ? dagForAr(KONSOL_START) : 0;
   const G = {
     version: SPAR_VERSION, id: 'b' + Date.now().toString(36), skapad: Date.now(),
@@ -57,8 +58,8 @@ export function nyttSpel({ namn = 'MIKROVÅG MOBIL', initial = null, seed = null
   // rivalerna börjar med fjolårets modell (generation 1, lanserad 2006). I konsolspelet kommer telefonrivalerna
   // först när telefonavdelningen öppnar (telefonRivaler nedan, anropas från sim/konsol.js).
   if (!konsol) telefonRivaler(G, arv);
-  nyhet(G, 'DU', konsol ? `DU GRUNDADE ${G.bolag.namn} I ETT GARAGE 1982. DAGS ATT RITA DIN FÖRSTA SPELKONSOL!`
-    : `DU GRUNDADE ${G.bolag.namn} I ETT GARAGE. DAGS ATT RITA DIN FÖRSTA TELEFON!`);
+  nyhet(G, 'DU', konsol ? $t`DU GRUNDADE ${G.bolag.namn} I ETT GARAGE 1982. DAGS ATT RITA DIN FÖRSTA SPELKONSOL!`
+    : $t`DU GRUNDADE ${G.bolag.namn} I ETT GARAGE. DAGS ATT RITA DIN FÖRSTA TELEFON!`);
   return G;
 }
 // Förlagans nio telefonrivaler (+ dina sålda bolag ur arvet). Från 2007: första modellen kom året innan.
@@ -82,7 +83,7 @@ export function arvRivaler(arv, nyttNamn = '') {
   return [...unika.values()].slice(-5).map((b, i) => {
     const bolag = String(b.namn).toUpperCase().slice(0, 22);
     return { bolag, modell: (bolag.split(' ')[0] || 'GARAGE').slice(0, 12) + ' PHONE', offset: Math.round(klamp((+b.betyg || 6.2) - 6.5, -1, 1) * 10) / 10,
-      prisF: 1, dag: 140 + i * 30, farg: ARV_FARGER[i % ARV_FARGER.length], karaktar: 'DITT GAMLA BOLAG' };
+      prisF: 1, dag: 140 + i * 30, farg: ARV_FARGER[i % ARV_FARGER.length], karaktar: $t('DITT GAMLA BOLAG') };
   });
 }
 
@@ -103,7 +104,7 @@ export const NODLAN = 500_000;
 export function lana(G, belopp = NODLAN, text = null) {
   belopp = Math.round(belopp); if (!(belopp > 0)) return { ok: false };
   G.lan += belopp; G.bolag.kassa += belopp;
-  nyhet(G, 'DU', text || `BANKEN LÅNAR ${G.bolag.namn} ${kr(belopp)}. RÄNTAN ÄR 10 % OM ÅRET.`);
+  nyhet(G, 'DU', text || $t`BANKEN LÅNAR ${G.bolag.namn} ${kr(belopp)}. RÄNTAN ÄR 10 % OM ÅRET.`);
   return { ok: true, belopp };
 }
 

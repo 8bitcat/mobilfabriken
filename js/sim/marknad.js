@@ -15,6 +15,7 @@ import { kEnhetAv, kNivaAv } from '../data/konsol.js';
 import { arKonsolEnhet } from '../data/linjer.js';
 import { arsdel, arAv, dagForAr, dagIAret, slump, slumpInt, klamp, kr, dec, datumAv } from './bas.js';
 import { nyhet, signal, arKonsolSpel, prisniva } from './spel.js';
+import { $t } from '../core/i18n.js';
 
 const tSnitt = (dag) => 6.2 + klamp((arsdel(dag) - 2007) / 13, 0, 1) * 1.0;
 export const kSnitt = (dag) => 6.2 + klamp((arsdel(dag) - 1982) / 30, 0, 1) * 1.2;
@@ -133,7 +134,7 @@ export function prognos(G, design, betyg, pris, hype = 0) {
 // Förlagans nio står i RIVALER; ett sålt bolag från arvet bär sin egen definition i r.egen (se nyttSpel).
 // En rival som inte finns någonstans (gammal eller trasig sparning) blir en vanlig medelrival i stället för att krascha.
 const rivalDef = (r) => RIVALER.find((x) => x.id === r.id) || r.egen
-  || { bolag: String(r.id || 'RIVALEN').toUpperCase().slice(0, 22), modell: 'MODELL', offset: 0, prisF: 1, dag: 180, farg: 0x8c93b4 };
+  || { bolag: String(r.id || $t('RIVALEN')).toUpperCase().slice(0, 22), modell: $t('MODELL'), offset: 0, prisF: 1, dag: 180, farg: 0x8c93b4 };
 export function rivalerDag(G) {
   for (const r of G.marknad.rivaler) {
     if (G.dag < r.nastaDag) continue;
@@ -144,8 +145,9 @@ export function rivalerDag(G) {
     r.pris = Math.round(rimligtPris(G.dag, r.betyg) * R.prisF / 10) * 10;
     r.lanseradDag = G.dag;
     r.nastaDag = dagForAr(arAv(G.dag) + 1) + R.dag + slumpInt(G, -12, 12);
-    nyhet(G, 'RIVAL', `${R.bolag} SLÄPPER ${R.modell} ${r.gen}. KRITIKERNA GER DEN ${dec(r.betyg)}/10.`);
-    signal(G, 'ticker', { text: `${R.bolag} SLÄPPER ${R.modell} ${r.gen} – ${dec(r.betyg)}/10` });
+    const bolag = R.bolag, modell = R.modell;
+    nyhet(G, 'RIVAL', $t`${bolag} SLÄPPER ${modell} ${r.gen}. KRITIKERNA GER DEN ${dec(r.betyg)}/10.`);
+    signal(G, 'ticker', { text: $t`${bolag} SLÄPPER ${modell} ${r.gen} – ${dec(r.betyg)}/10` });
   }
 }
 export const rivalModell = (r) => { const R = rivalDef(r); return { ...R, ...r, namn: `${R.modell} ${r.gen}` }; };
@@ -156,14 +158,15 @@ export function handelserDag(G) {
   // slut
   for (const h of [...G.marknad.handelser]) if (G.dag >= h.slutDag) {
     G.marknad.handelser = G.marknad.handelser.filter((x) => x !== h);
-    const H = handelseAv(h.id); if (H && !H.jul) nyhet(G, 'VÄRLD', `${H.namn} ÄR ÖVER.`);
+    const H = handelseAv(h.id); if (H && !H.jul) nyhet(G, 'VÄRLD', $t`${H.namn} ÄR ÖVER.`);
   }
   const starta = (H) => {
     if (G.marknad.handelser.some((x) => x.id === H.id)) return;
     G.marknad.handelser.push({ id: H.id, startDag: G.dag, slutDag: G.dag + H.langd });
-    nyhet(G, 'VÄRLD', H.text);
-    signal(G, 'ticker', { text: H.namn + ': ' + H.text });
-    if (!H.jul) signal(G, 'banner', { text: 'VÄRLDSHÄNDELSE: ' + H.namn, farg: 'lila' });
+    const namn = H.namn, text = H.text;
+    nyhet(G, 'VÄRLD', text);
+    signal(G, 'ticker', { text: namn + ': ' + text });
+    if (!H.jul) signal(G, 'banner', { text: $t`VÄRLDSHÄNDELSE: ${namn}`, farg: 'lila' });
   };
   // slumphändelserna börjar året efter starten (telefonerna 2008, konsolerna 1983)
   const slumpFran = arKonsolSpel(G) ? 1983 : 2008;

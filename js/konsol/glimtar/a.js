@@ -1,5 +1,6 @@
 // Spelglimtar, grupp A. Samma format som BAS i ../glimtar.js. Verktygen finns i ../pix.js.
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // ---------- 1980 SPACE INVADÖRS (Space Invaders) ----------
 // Arkadens färgfilm: röd remsa upptill (tefatet), vita invaderare i mitten, grönt nertill (bunkrar och kanonen).
@@ -41,9 +42,9 @@ function invaders(x, t) {
     // marklinjen och reservkanonerna
     R(y, 0, H - 9, W, 1, INV_GRON);
     for (const kx of [14, 30]) spr(y, KANON, kx, H - 7, { '#': INV_GRON });
-    T(y, '3', 5, H - 6, INV_VIT); T(y, 'KREDIT 00', W - 4 - TW('KREDIT 00'), H - 6, INV_VIT);
-    T(y, 'POÄNG<1>', 4, 2, INV_VIT); T(y, 'REKORD', 52, 2, INV_VIT); T(y, 'POÄNG<2>', W - 4 - TW('POÄNG<2>'), 2, INV_VIT);
-    T(y, '0000', W - 4 - TW('POÄNG<2>') + 8, 10, INV_VIT);
+    T(y, '3', 5, H - 6, INV_VIT); T(y, $t('KREDIT 00'), W - 4 - TW($t('KREDIT 00')), H - 6, INV_VIT);
+    T(y, $t('POÄNG<1>'), 4, 2, INV_VIT); T(y, $t('REKORD'), 52, 2, INV_VIT); T(y, $t('POÄNG<2>'), W - 4 - TW($t('POÄNG<2>')), 2, INV_VIT);
+    T(y, '0000', W - 4 - TW($t('POÄNG<2>')) + 8, 10, INV_VIT);
   });
   x.drawImage(bak, 0, 0);
   const f = invForm(tt);
@@ -168,19 +169,19 @@ function donkey(x, t) {
     for (const [sx, sy] of [[1, 30], [7, 30], [1, 38], [7, 38]]) dkTunnaStaende(y, sx, sy);
     // oljefatet nere till vänster
     R(y, 2, 104, 13, 12, '#2848f0'); R(y, 2, 105, 13, 1, '#a0b0ff'); R(y, 2, 114, 13, 1, '#a0b0ff'); R(y, 1, 104, 15, 1, '#a0b0ff');
-    T(y, 'OIL', 3, 107, '#ffffff');
+    T(y, $t('OIL'), 3, 107, '#ffffff');
     // poängraden, bonusrutan
-    T(y, '1UP', 6, 1, '#ff3030'); T(y, '000300', 2, 7, '#ffffff');
-    T(y, 'REKORD', 42, 1, '#ff3030'); T(y, '007650', 42, 7, '#ffffff');
+    T(y, $t('1UP'), 6, 1, '#ff3030'); T(y, '000300', 2, 7, '#ffffff');
+    T(y, $t('REKORD'), 42, 1, '#ff3030'); T(y, '007650', 42, 7, '#ffffff');
     T(y, 'L=01', 104, 1, '#4060ff');
-    R(y, 98, 8, 28, 14, '#4060ff'); R(y, 99, 9, 26, 12, '#000000'); T(y, 'BONUS', 101, 10, '#ff58b8');
+    R(y, 98, 8, 28, 14, '#4060ff'); R(y, 99, 9, 26, 12, '#000000'); T(y, $t('BONUS'), 101, 10, '#ff58b8');
   });
   x.drawImage(bak, 0, 0);
   T(x, String(5000 - Math.floor(mod(t, P10) / 2.5) * 100), 104, 16, '#40d8f0');
   // damen på toppen: vinkar och ropar HJÄLP!
   const vink = Math.floor(t * 4) % 2;
   spr(x, DAM, 64, 13, DAM_PAL); if (vink) { R(x, 70, 15, 2, 1, '#ffc8a0'); P(x, 72, 14, '#ffc8a0'); } else R(x, 70, 19, 2, 1, '#ffc8a0');
-  if (mod(t, 3) < 1.8) T(x, 'HJÄLP!', 75, 15, '#ffffff');
+  if (mod(t, 3) < 1.8) T(x, $t('HJÄLP!'), 75, 15, '#ffffff');
   // oljefatets eld – flammar upp när en tunna rullar in
   const flamma = mod(t - 1.2 - 9.45, 2.5) < 0.5;
   for (let i = 0; i < 11; i++) {
@@ -320,7 +321,7 @@ function alexKidz(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'invaders', titel: 'RYMDANFALL', forebild: 'Space Invaders', ar: 1980, studio: 'ARCADIA', w: 128, h: 128, rita: invaders },
-  { id: 'donkey', titel: 'APTORNET', forebild: 'Donkey Kong', ar: 1981, studio: 'SVAMPSTUDION', w: 128, h: 124, rita: donkey },
-  { id: 'alexkidz', titel: 'KID KOSMO I MIRAKELLANDET', forebild: 'Alex Kidd in Miracle World', ar: 1986, studio: 'TORA', w: 128, h: 96, rita: alexKidz },
+  { id: 'invaders', titel: $t('RYMDANFALL'), forebild: 'Space Invaders', ar: 1980, studio: $t('ARCADIA'), w: 128, h: 128, rita: invaders },
+  { id: 'donkey', titel: $t('APTORNET'), forebild: 'Donkey Kong', ar: 1981, studio: $t('SVAMPSTUDION'), w: 128, h: 124, rita: donkey },
+  { id: 'alexkidz', titel: $t('KID KOSMO I MIRAKELLANDET'), forebild: 'Alex Kidd in Miracle World', ar: 1986, studio: $t('TORA'), w: 128, h: 96, rita: alexKidz },
 ];

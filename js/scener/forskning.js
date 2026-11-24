@@ -12,6 +12,7 @@ import { fpPerDag } from '../sim/personal.js';
 import { arKonsolSpel } from '../sim/spel.js';
 import { ritaKonsol2D } from '../konsol/konsol-vy.js';
 import { arsdel, arAv, dec, kr } from '../sim/bas.js';
+import { $t } from '../core/i18n.js';
 
 const AR1 = 2026, KOLW = 50, RADH = 17, VX = 188, VY = 38, VW = W - VX - 2, VH = 202 - VY - 2;
 const KX = 122;   // kategorikolumnen
@@ -63,36 +64,36 @@ export function forskning(A, o = {}) {
     tangent(e) { if (e.key === 'ArrowRight') { kx += KOLW; klampa(); return true; } if (e.key === 'ArrowLeft') { kx -= KOLW; klampa(); return true; } return false; },
     rita(ctx) {
       rect(0, 14, W, 11, 0x0a0d1a);
-      if (!konsolSpel) { textB('FORSKNING', 4, 16, F.guld); text('LÅS UPP NY TEKNIK, ETT ÅR I TAGET · TIDEN STÅR STILL', 66, 18, F.dim); }
+      if (!konsolSpel) { textB($t('FORSKNING'), 4, 16, F.guld); text($t('LÅS UPP NY TEKNIK, ETT ÅR I TAGET · TIDEN STÅR STILL'), 66, 18, F.dim); }
       else {
         // flikarna: KONSOL och MOBIL (låset tills telefonavdelningen är forskad)
-        textB('FORSKNING', 4, 16, F.guld); text('LÅS UPP NY TEKNIK · TIDEN STÅR STILL', 66, 18, F.dim);
-        knapp(W - 128, 15, 60, 9, 'KONSOL', { stil: 'dim', ikon: 'kontroll', aktiv: flik === 'konsol', klick: () => byt('konsol'), namn: 'forskning-konsol' });
-        knapp(W - 64, 15, 60, 9, 'MOBIL', { stil: 'dim', ikon: G.flaggor.mobil ? 'telefon' : 'las', aktiv: flik === 'telefon', klick: () => byt('telefon'), namn: 'forskning-mobil' });
+        textB($t('FORSKNING'), 4, 16, F.guld); text($t('LÅS UPP NY TEKNIK · TIDEN STÅR STILL'), 66, 18, F.dim);
+        knapp(W - 128, 15, 60, 9, $t('KONSOL'), { stil: 'dim', ikon: 'kontroll', aktiv: flik === 'konsol', klick: () => byt('konsol'), namn: 'forskning-konsol' });
+        knapp(W - 64, 15, 60, 9, $t('MOBIL'), { stil: 'dim', ikon: G.flaggor.mobil ? 'telefon' : 'las', aktiv: flik === 'telefon', klick: () => byt('telefon'), namn: 'forskning-mobil' });
       }
       // vänster panel
       panel(2, 27, 118, 173);
-      text('FORSKNINGSPOÄNG', 6, 31, F.dim);
+      text($t('FORSKNINGSPOÄNG'), 6, 31, F.dim);
       textB(String(Math.floor(G.bolag.fp)), 6, 38, F.bla2, { k: 2 });
-      text(`+${dec(fpPerDag(G), 1)} PER DAG`, 6, 54, F.text);
+      text($t`+${dec(fpPerDag(G), 1)} PER DAG`, 6, 54, F.text);
       const alla = synligaNoder(G).length;
-      text(`${G.forskning.klara.length} AV ${alla} TEKNIKER`, 6, 62, F.dim);
+      text($t`${G.forskning.klara.length} AV ${alla} TEKNIKER`, 6, 62, F.dim);
       matare(6, 69, 110, 3, G.forskning.klara.length / alla, F.bla);
       let y = 76;
       const pagar = G.forskning.pagar;
-      if (!pagar.length) { rect(6, y, 110, 20, mixa(F.orange, F.panel, 0.75)); ram(6, y, 110, 20, F.orange); text('LABBET ÄR LEDIGT', 10, y + 4, F.orange2); text('VÄLJ NEDAN ELLER I TRÄDET', 10, y + 12, F.dim); y += 24; }
-      else for (const p of pagar) { const n = NOD[p.nod]; rect(6, y, 110, 20, F.panel2); ram(6, y, 110, 20, F.orange); text(kapa(n.namn, 100), 10, y + 3, F.text); text(`${p.dagarKvar} DAGAR KVAR`, 10, y + 10, F.orange2); matare(10, y + 16, 102, 2, 1 - p.dagarKvar / p.totalt, F.orange); y += 22; }
-      if (labbspar(G) > pagar.length && pagar.length) { text(`${labbspar(G) - pagar.length} LEDIGT LABBSPÅR`, 6, y, F.orange2); y += 8; }
+      if (!pagar.length) { rect(6, y, 110, 20, mixa(F.orange, F.panel, 0.75)); ram(6, y, 110, 20, F.orange); text($t('LABBET ÄR LEDIGT'), 10, y + 4, F.orange2); text($t('VÄLJ NEDAN ELLER I TRÄDET'), 10, y + 12, F.dim); y += 24; }
+      else for (const p of pagar) { const n = NOD[p.nod]; rect(6, y, 110, 20, F.panel2); ram(6, y, 110, 20, F.orange); text(kapa($t(n.namn), 100), 10, y + 3, F.text); text($t`${p.dagarKvar} DAGAR KVAR`, 10, y + 10, F.orange2); matare(10, y + 16, 102, 2, 1 - p.dagarKvar / p.totalt, F.orange); y += 22; }
+      if (labbspar(G) > pagar.length && pagar.length) { text($t`${labbspar(G) - pagar.length} LEDIGT LABBSPÅR`, 6, y, F.orange2); y += 8; }
       const r = redo(G).sort((a, b) => fpPris(G, a) - fpPris(G, b));
       if (konsolSpel) r.sort((a, b) => (b.id === MOBIL) - (a.id === MOBIL));   // det stora beslutet står först
-      text(`REDO ATT FORSKA · ${r.length}`, 6, y + 1, F.text); y += 8;
+      text($t`REDO ATT FORSKA · ${r.length}`, 6, y + 1, F.text); y += 8;
       lista(4, y, 114, 198 - y, r.length, 16, (i, yy) => {
         const n = r[i], kat = katAv(n.kat), pris = fpPris(G, n), har = G.bolag.fp >= pris, kronor = krPris(G, n);
         kort(6, yy, 108, 14, { vald: vald === n.id, kant: vald === n.id ? kat.farg : kronor ? F.rosa : null, klick: () => { vald = n.id; fokus(n); }, namn: 'redo-' + n.id });
         rect(8, yy + 2, 3, 10, kat.farg);
-        text(kapa(n.namn, 64), 14, yy + 2, F.text); text(kat.namn, 14, yy + 8, kat.farg);
-        if (!kronor) text(pris + ' FP', 110, yy + 5, har ? F.bla2 : F.dim2, { just: 'h' });
-        else { text(pris + ' FP', 110, yy + 2, har ? F.bla2 : F.dim2, { just: 'h' }); text(kr(kronor, true), 110, yy + 8, G.bolag.kassa >= kronor ? F.gron2 : F.dim2, { just: 'h' }); }
+        text(kapa($t(n.namn), 64), 14, yy + 2, F.text); text($t(kat.namn), 14, yy + 8, kat.farg);
+        if (!kronor) text($t`${pris} FP`, 110, yy + 5, har ? F.bla2 : F.dim2, { just: 'h' });
+        else { text($t`${pris} FP`, 110, yy + 2, har ? F.bla2 : F.dim2, { just: 'h' }); text(kr(kronor, true), 110, yy + 8, G.bolag.kassa >= kronor ? F.gron2 : F.dim2, { just: 'h' }); }
       }, skR);
       // tidslinjen
       rect(KX, 27, W - KX - 2, 175, 0x090b16);
@@ -118,18 +119,19 @@ export function forskning(A, o = {}) {
         rect(KX, ry, VX - KX, RADH, 0x0a0d1a);
         rect(KX + 1, ry + 3, 2, RADH - 6, kat.farg);
         if (!konsolSpel) {
-          if (rad.kat !== forraKat) text(kat.namn, KX + 5, ry + 2, kat.farg); forraKat = rad.kat;
-          text(kapa(rad.rad, VX - KX - 8), KX + 5, ry + 9, F.dim);
+          if (rad.kat !== forraKat) text($t(kat.namn), KX + 5, ry + 2, kat.farg); forraKat = rad.kat;
+          text(kapa($t(rad.rad), VX - KX - 8), KX + 5, ry + 9, F.dim);
           return;
         }
         // konsolspelet: långa namn (MEDIA & SPARNING, KAROSSER FICKKONSOL) får plats – kategorin kortas till
         // första ordet och en rad utan kategorirubrik delas på två rader
         const forst = rad.kat !== forraKat; forraKat = rad.kat;
-        if (forst && rad.rad === kat.namn) { text(kat.namn, KX + 5, ry + 6, kat.farg); return; }   // GRAFIK / GRAFIK: en gång räcker
-        if (forst) text(tw(kat.namn) <= KW ? kat.namn : kat.namn.split(' ')[0], KX + 5, ry + 2, kat.farg);
-        const delar = radbryt(rad.rad, KW);
+        const kn = $t(kat.namn);
+        if (forst && rad.rad === kat.namn) { text(kn, KX + 5, ry + 6, kat.farg); return; }   // GRAFIK / GRAFIK: en gång räcker
+        if (forst) text(tw(kn) <= KW ? kn : kn.split(' ')[0], KX + 5, ry + 2, kat.farg);
+        const delar = radbryt($t(rad.rad), KW);
         if (!forst && delar.length === 2) { text(kapa(delar[0], KW), KX + 5, ry + 2, F.dim); text(kapa(delar[1], KW), KX + 5, ry + 9, F.dim); }
-        else text(kapa(rad.rad, KW), KX + 5, ry + 9, F.dim);
+        else text(kapa($t(rad.rad), KW), KX + 5, ry + 9, F.dim);
       });
       ctx.restore();
       ctx.save(); ctx.beginPath(); ctx.rect(VX, VY, VW, VH); ctx.clip();
@@ -151,8 +153,8 @@ export function forskning(A, o = {}) {
         const kant = arVald ? F.guld : st === 'klar' ? F.gron : st === 'pagar' ? F.orange : st === 'redo' ? kat.farg : 0x262c44;
         ram(x, y, 44, 13, kant);
         if (st === 'redo' && Math.floor(A.t * 2) % 2) ram(x - 1, y - 1, 46, 15, morka(kat.farg, 0.4));
-        text(kapa(n.namn, 40), x + 2, y + 1, st === 'last' || st === 'uppfinns' ? F.dim : F.text);
-        const rad2 = st === 'klar' ? 'FORSKAD' : st === 'pagar' ? (G.forskning.pagar.find((q) => q.nod === n.id)?.dagarKvar + ' D KVAR') : st === 'redo' ? fpPris(G, n) + ' FP' : st === 'uppfinns' ? 'ÅR ' + n.ar : fpPris(G, n) + ' FP · LÅST';
+        text(kapa($t(n.namn), 40), x + 2, y + 1, st === 'last' || st === 'uppfinns' ? F.dim : F.text);
+        const rad2 = st === 'klar' ? $t('FORSKAD') : st === 'pagar' ? $t`${G.forskning.pagar.find((q) => q.nod === n.id)?.dagarKvar} D KVAR` : st === 'redo' ? $t`${fpPris(G, n)} FP` : st === 'uppfinns' ? $t`ÅR ${n.ar}` : $t`${fpPris(G, n)} FP · LÅST`;
         text(kapa(rad2, 40), x + 2, y + 7, st === 'klar' ? F.gron2 : st === 'pagar' ? F.orange2 : st === 'redo' ? kat.farg : F.dim2);
         hit(x, y, 44, 13, { klick: () => { if (!drag?.rorde) vald = n.id; }, namn: 'nod-' + n.id });
       }
@@ -161,7 +163,7 @@ export function forskning(A, o = {}) {
       rect(Math.round(nx), VY, 1, VH, F.guld2);
       ctx.restore();
       hit(KX, VY, W - KX - 2, VH, { hjul: (dy) => { ky += dy; klampa(); }, block: true });
-      knapp(W - 46, 190, 42, 10, 'I DAG', { stil: 'morkt', klick: () => { kx = iDag(); klampa(); } });
+      knapp(W - 46, 190, 42, 10, $t('I DAG'), { stil: 'morkt', klick: () => { kx = iDag(); klampa(); } });
       // vald nod (eller varför MOBIL är låst)
       if (vald) detalj(NOD[vald]);
       else if (lastInfo()) lastRuta();
@@ -178,16 +180,16 @@ export function forskning(A, o = {}) {
     ram(x, y, w, 13, vald === n.id ? F.guld : klar ? F.gron : pagar ? F.orange : F.rosa);
     if (!klar && !pagar && Math.floor(A.t * 2) % 2) ram(x - 1, y - 1, w + 2, 15, morka(F.rosa, st === 'redo' ? 0.2 : 0.5));
     ikon('telefon', x + 2, y + 3, klar ? F.gron2 : pagar ? F.orange2 : ljusa(F.rosa, 0.3));
-    text(kapa(n.namn, w - 13), x + 11, y + 1, F.text);
-    const rad2 = klar ? 'FORSKAD' : pagar ? (G.forskning.pagar.find((q) => q.nod === n.id)?.dagarKvar + ' D KVAR') : `${fpPris(G, n)} FP + ${kr(krPris(G, n), true)}`;
+    text(kapa($t(n.namn), w - 13), x + 11, y + 1, F.text);
+    const rad2 = klar ? $t('FORSKAD') : pagar ? $t`${G.forskning.pagar.find((q) => q.nod === n.id)?.dagarKvar} D KVAR` : $t`${fpPris(G, n)} FP + ${kr(krPris(G, n), true)}`;
     text(kapa(rad2, w - 13), x + 11, y + 7, klar ? F.gron2 : pagar ? F.orange2 : ljusa(F.rosa, 0.45));
     hit(x, y, w, 13, { klick: () => { if (!drag?.rorde) vald = n.id; }, namn: 'nod-' + n.id });
   }
   // MOBIL-fliken innan telefonavdelningen: noden med ett hänglås, priset den får när avdelningen finns
   function lastNod(n, x, y) {
     rect(x, y, 44, 13, 0x151a2c); ram(x, y, 44, 13, vald === n.id ? F.guld : 0x262c44);
-    text(kapa(n.namn, 31), x + 2, y + 1, F.dim);
-    text(kapa(fpPris(G, n) + ' FP', 31), x + 2, y + 7, F.dim2);
+    text(kapa($t(n.namn), 31), x + 2, y + 1, F.dim);
+    text(kapa($t`${fpPris(G, n)} FP`, 31), x + 2, y + 7, F.dim2);
     ikon('las', x + 35, y + 3, vald === n.id ? F.rosa : F.dim2);
     hit(x, y, 44, 13, { klick: () => { if (!drag?.rorde) vald = n.id; }, namn: 'nod-' + n.id });
   }
@@ -202,34 +204,34 @@ export function forskning(A, o = {}) {
     const st = status(G, n), kat = katAv(n.kat), x = KX + 4, y = 148, w = W - KX - 10, h = 50;
     const spar = sparrad(n), kronor = krPris(G, n);
     panel(x, y, w, h, { fyll: F.panel, kant: spar ? F.rosa : kat.farg });
-    text(`${kat.namn} · ${spar ? 'KRÄVER TELEFONAVDELNINGEN' : { klar: 'FORSKAD', pagar: 'PÅGÅR', redo: 'REDO', uppfinns: 'UPPFINNS ' + n.ar, last: 'LÅST' }[st]}`, x + 5, y + 4, spar ? F.rosa : kat.farg);
-    textB(kapa(n.namn, 150), x + 5, y + 11, F.text);
+    text(`${$t(kat.namn)} · ${spar ? $t('KRÄVER TELEFONAVDELNINGEN') : { klar: $t('FORSKAD'), pagar: $t('PÅGÅR'), redo: $t('REDO'), uppfinns: $t`UPPFINNS ${n.ar}`, last: $t('LÅST') }[st]}`, x + 5, y + 4, spar ? F.rosa : kat.farg);
+    textB(kapa($t(n.namn), 150), x + 5, y + 11, F.text);
     const pris = fpPris(G, n), t = dagar(G, n), bild = konsolSpel ? bildAv(n) : null;
     // kostnaden slutar före bilden till höger (TELEFONAVDELNINGEN: utan årtalet, det står ovanför)
-    const kost = `KOSTNAD ${pris} FP${kronor ? ' + ' + kr(kronor, true) : ''} · TID ${t} DAGAR`;
-    text(tw(kost + ' · UPPFINNS ' + n.ar) <= (bild || kronor ? w - 70 : w - 10) ? `${kost} · UPPFINNS ${n.ar}` : kost, x + 5, y + 21, F.dim);
-    text('LÅSER UPP: ' + vadLasesUpp(n), x + 5, y + 28, F.gron2);
+    const kost = $t`KOSTNAD ${pris} FP${kronor ? ' + ' + kr(kronor, true) : ''} · TID ${t} DAGAR`, kostAr = $t`${kost} · UPPFINNS ${n.ar}`;
+    text(tw(kostAr) <= (bild || kronor ? w - 70 : w - 10) ? kostAr : kost, x + 5, y + 21, F.dim);
+    text($t`LÅSER UPP: ${vadLasesUpp(n)}`, x + 5, y + 28, F.gron2);
     const ledd = leddTill(n);
-    if (ledd.length) text('LEDER TILL: ' + kapa(ledd.map((l) => l.namn).join(', '), w - 70), x + 5, y + 35, F.dim);
+    if (ledd.length) text($t`LEDER TILL: ${kapa(ledd.map((l) => $t(l.namn)).join(', '), w - 70)}`, x + 5, y + 35, F.dim);
     // konsolernas former syns i rutan (och karossens kännetecken när raden är ledig)
     if (bild) {
       for (let j = 0; j < 28; j++) rect(x + w - 64, y + 2 + j, 42, 1, mixa(0x1c2050, 0x0e1230, j / 28));
       ritaKonsol2D(U.ctx, x + w - 63, y + 2, bild.modell);
       const info = n.lasUpp.typ === 'kenhet' ? K_ENHETER.find((e) => e.id === n.lasUpp.id)?.info : bild.info;
-      if (info && !ledd.length) text(kapa(info, w - 80), x + 5, y + 35, F.dim);
+      if (info && !ledd.length) text(kapa($t(info), w - 80), x + 5, y + 35, F.dim);
     } else if (n.id === MOBIL) { rect(x + w - 44, y + 3, 24, 24, mixa(F.rosa, F.panel, 0.75)); ikon('telefon', x + w - 42, y + 5, F.rosa, 3); }
     if (spar) {
-      text('FORSKA FRAM DEN UNDER KONSOL FÖRST.', x + 5, y + 42, F.rosa);
-      knapp(x + w - 74, y + 36, 70, 11, 'VISA DEN', { stil: 'rosa', namn: 'detalj-telefonavdelningen', klick: visaMobil });
+      text($t('FORSKA FRAM DEN UNDER KONSOL FÖRST.'), x + 5, y + 42, F.rosa);
+      knapp(x + w - 74, y + 36, 70, 11, $t('VISA DEN'), { stil: 'rosa', namn: 'detalj-telefonavdelningen', klick: visaMobil });
     } else if (st === 'last') {
       // konsolspelet: bara det som saknas (TELEFONAVDELNINGEN kräver tre konsoltekniker)
-      if (konsolSpel) text(kapa('FORSKA FÖRST: ' + n.foreg.filter((f) => !G.forskning.klara.includes(f)).map((f) => NOD[f]?.namn || f).join(', '), w - 10), x + 5, y + 42, F.orange2);
-      else text('FORSKA FÖREGÅNGAREN FÖRST: ' + n.foreg.map((f) => NOD[f]?.namn || f).join(', '), x + 5, y + 42, F.orange2);
-    } else if (st === 'uppfinns') text('NY TEKNIK ÄR DYR I BÖRJAN OCH BLIR BILLIGARE VARJE ÅR.', x + 5, y + 42, F.dim2);
+      if (konsolSpel) text(kapa($t`FORSKA FÖRST: ${n.foreg.filter((f) => !G.forskning.klara.includes(f)).map((f) => (NOD[f] ? $t(NOD[f].namn) : f)).join(', ')}`, w - 10), x + 5, y + 42, F.orange2);
+      else text($t`FORSKA FÖREGÅNGAREN FÖRST: ${n.foreg.map((f) => (NOD[f] ? $t(NOD[f].namn) : f)).join(', ')}`, x + 5, y + 42, F.orange2);
+    } else if (st === 'uppfinns') text($t('NY TEKNIK ÄR DYR I BÖRJAN OCH BLIR BILLIGARE VARJE ÅR.'), x + 5, y + 42, F.dim2);
     knapp(x + w - 18, y + 3, 14, 9, 'X', { stil: 'morkt', klick: () => { vald = null; } });
     // TELEFONAVDELNINGEN kostar både FP och kronor: bredare knapp
     const kw = kronor ? 112 : 92, by = kronor ? 34 : 30, bh = kronor ? 12 : 16;
-    if (st === 'redo') knapp(x + w - kw - 4, y + by, kw, bh, 'STARTA · ' + pris + ' FP' + (kronor ? ' + ' + kr(kronor, true) : ''), { stil: 'rosa', av: G.bolag.fp < pris || (kronor > 0 && G.bolag.kassa < kronor), namn: 'starta-forskning', klick: () => {
+    if (st === 'redo') knapp(x + w - kw - 4, y + by, kw, bh, $t`STARTA · ${pris} FP${kronor ? ' + ' + kr(kronor, true) : ''}`, { stil: 'rosa', av: G.bolag.fp < pris || (kronor > 0 && G.bolag.kassa < kronor), namn: 'starta-forskning', klick: () => {
       const r = starta(G, n.id); if (!r.ok) { fel = r.fel; A.ljud('fel'); return; } fel = ''; A.ljud('forskning'); vald = null;
     } });
   }
@@ -239,13 +241,13 @@ export function forskning(A, o = {}) {
     const n = NOD[MOBIL], x = KX + 4, y = 148, w = W - KX - 10, h = 50, kronor = krPris(G, n);
     panel(x, y, w, h, { fyll: F.panel, kant: F.rosa });
     rect(x + w - 30, y + 4, 24, 24, mixa(F.rosa, F.panel, 0.75)); ikon('telefon', x + w - 28, y + 6, F.rosa, 3);
-    text('MOBIL · LÅST', x + 5, y + 4, F.rosa);
-    textB('KRÄVER TELEFONAVDELNINGEN', x + 5, y + 11, F.text);
-    text(`FORSKA FRAM DEN UNDER KONSOL: ${fpPris(G, n)} FP + ${kr(kronor, true)}.`, x + 5, y + 22, F.dim);
-    const saknas = n.foreg.filter((f) => !G.forskning.klara.includes(f)).map((f) => NOD[f]?.namn || f);
-    if (saknas.length) text(kapa('KRÄVER ' + saknas.join(', ').replace(/, ([^,]*)$/, ' OCH $1') + '.', w - 40), x + 5, y + 29, F.orange2);
-    else text(arAv(G.dag) < n.ar ? `ALLT SOM KRÄVS ÄR KLART – NODEN KOMMER ${n.ar}.` : 'ALLT SOM KRÄVS ÄR KLART – REDO ATT FORSKA!', x + 5, y + 29, F.gron2);
-    text('TELEFONERNA OCH PRYLARNA KOMMER ' + n.ar + '.', x + 5, y + 40, F.dim2);
-    knapp(x + w - 74, y + 36, 70, 11, 'VISA NODEN', { stil: 'rosa', namn: 'visa-telefonavdelningen', klick: visaMobil });
+    text($t('MOBIL · LÅST'), x + 5, y + 4, F.rosa);
+    textB($t('KRÄVER TELEFONAVDELNINGEN'), x + 5, y + 11, F.text);
+    text($t`FORSKA FRAM DEN UNDER KONSOL: ${fpPris(G, n)} FP + ${kr(kronor, true)}.`, x + 5, y + 22, F.dim);
+    const saknas = n.foreg.filter((f) => !G.forskning.klara.includes(f)).map((f) => (NOD[f] ? $t(NOD[f].namn) : f)), och = $t('OCH');
+    if (saknas.length) text(kapa($t`KRÄVER ${saknas.join(', ').replace(/, ([^,]*)$/, ` ${och} $1`)}.`, w - 40), x + 5, y + 29, F.orange2);
+    else text(arAv(G.dag) < n.ar ? $t`ALLT SOM KRÄVS ÄR KLART – NODEN KOMMER ${n.ar}.` : $t('ALLT SOM KRÄVS ÄR KLART – REDO ATT FORSKA!'), x + 5, y + 29, F.gron2);
+    text($t`TELEFONERNA OCH PRYLARNA KOMMER ${n.ar}.`, x + 5, y + 40, F.dim2);
+    knapp(x + w - 74, y + 36, 70, 11, $t('VISA NODEN'), { stil: 'rosa', namn: 'visa-telefonavdelningen', klick: visaMobil });
   }
 }

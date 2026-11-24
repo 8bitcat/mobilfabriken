@@ -1,6 +1,7 @@
 // Spelglimtar, grupp B. Samma format som BAS i ../glimtar.js. Verktygen finns i ../pix.js.
 // SUPER MARCO KART (1992), SEGO RALLY (1995), CRASH BANDIKUT (1996), SUPER MARCO 64 (1996), FICKMONSTER GUL (1998).
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // ---------- gemensamma småverktyg ----------
 // fyller en polygon rad för rad med skarpa pixelkanter (platta, "lågpolygon"-ytor)
@@ -158,7 +159,7 @@ function marcoKart(x, t) {
   const tid = fas * 3.4, sek = Math.floor(tid), hund = Math.floor((tid - sek) * 100);
   const tidS = `0'${String(sek).padStart(2, '0')}"${String(hund).padStart(2, '0')}`;
   TK(x, tidS, W - 4 - TW(tidS, SMALL), 3, '#f8f8f8', '#101010', SMALL);
-  TK(x, 'VARV 3/5', 4, 3, '#f8f8f8', '#101010', SMALL);
+  TK(x, $t('VARV 3/5'), 4, 3, '#f8f8f8', '#101010', SMALL);
   const BX = W / 2 - 11, BY = 2;
   R(x, BX, BY, 22, 18, '#f8f8f8'); R(x, BX + 1, BY + 1, 20, 16, '#3048a8'); R(x, BX + 2, BY + 2, 18, 14, '#101018');
   let sak = null;
@@ -248,7 +249,7 @@ function segoRally(x, t) {
     const p = 1 / zc, gy = HOR + p * (H - HOR), c = cxs(p), b = hw(p) * 1.25, topp = gy - p * 70;
     ritas.push({ z: zc, rita: () => {
       for (const sida of [-1, 1]) R(x, c + sida * b - Math.max(1, p * 3) / 2, topp, Math.max(1, p * 3), gy - topp, '#d8d8d8');
-      const ban = fast('b-sr-ban', 72, 13, (y) => { R(y, 0, 0, 72, 13, '#d81818'); R(y, 0, 0, 72, 1, '#ff6060'); R(y, 0, 12, 72, 1, '#900808'); T(y, 'CHECK POINT', 3, 3, '#ffffff', BIG); });
+      const ban = fast('b-sr-ban', 72, 13, (y) => { R(y, 0, 0, 72, 13, '#d81818'); R(y, 0, 0, 72, 1, '#ff6060'); R(y, 0, 12, 72, 1, '#900808'); T(y, $t('CHECK POINT'), 3, 3, '#ffffff', BIG); });
       x.drawImage(ban, Math.round(c - b), Math.round(topp), Math.max(2, Math.round(b * 2)), Math.max(1, Math.round(p * 16)));
     } });
   }
@@ -264,19 +265,19 @@ function segoRally(x, t) {
   rallyBil(x, bx, by, vinkel);
   // HUD: TIME mitt upptill, position, varvräknare och fartmätare
   const tid = Math.ceil(40 - fas + (fas > 4 ? 8 : 0));
-  TS(x, 'TIME', W / 2 - TW('TIME') / 2, 2, '#f8f8f8');
+  TS(x, $t('TIME'), W / 2 - TW($t('TIME')) / 2, 2, '#f8f8f8');
   const ts = String(tid), tw = TW(ts, BIG, 2);
   TK(x, ts, W / 2 - tw / 2, 9, '#f8d000', '#401800', BIG, 2);
-  TS(x, 'POS', 4, 3, '#f8f8f8'); TK(x, '3', 18, 3, '#f8d000', '#401800', BIG);
+  TS(x, $t('POS'), 4, 3, '#f8f8f8'); TK(x, '3', 18, 3, '#f8d000', '#401800', BIG);
   TS(x, '/15', 25, 5, '#f8f8f8');
-  TS(x, 'LAP 1/3', W - 4 - TW('LAP 1/3'), 3, '#f8f8f8');
-  if (fas > 4 && fas < 5.3 && Math.floor(fas * 6) % 2 === 0) { const c = 'CHECK POINT!', cw = TW(c, BIG); TK(x, c, W / 2 - cw / 2, 40, '#f8f8f8', '#c01010', BIG); TS(x, 'EXTENDED TIME', W / 2 - TW('EXTENDED TIME') / 2, 50, '#f8d000'); }
+  TS(x, $t('LAP 1/3'), W - 4 - TW($t('LAP 1/3')), 3, '#f8f8f8');
+  if (fas > 4 && fas < 5.3 && Math.floor(fas * 6) % 2 === 0) { const c = $t('CHECK POINT!'), cw = TW(c, BIG); TK(x, c, W / 2 - cw / 2, 40, '#f8f8f8', '#c01010', BIG); TS(x, $t('EXTENDED TIME'), W / 2 - TW($t('EXTENDED TIME')) / 2, 50, '#f8d000'); }
   // fartmätaren: halvcirkel med visare och siffror
   const MX = W - 20, MY = H - 4, varv = 0.55 + Math.sin(t * 2.3) * 0.2 + Math.abs(sladd) * 0.15;
   for (let a = 0; a <= 20; a++) { const v = Math.PI + (a / 20) * Math.PI; P(x, MX + Math.cos(v) * 15, MY + Math.sin(v) * 15, a > 16 ? '#f03030' : '#f8f8f8'); if (a % 5 === 0) P(x, MX + Math.cos(v) * 13, MY + Math.sin(v) * 13, '#f8f8f8'); }
   const nv = Math.PI + varv * Math.PI; for (let i = 0; i < 13; i++) P(x, MX + Math.cos(nv) * i, MY + Math.sin(nv) * i, '#f8a000');
   const fart = String(118 + Math.round(Math.sin(t * 1.7) * 14 + Math.abs(bend) * 10));
-  TS(x, fart, MX - 30 - TW(fart), H - 12, '#f8f8f8'); TS(x, 'KM/H', MX - 30 - TW('KM/H'), H - 6, '#a8c8f8');
+  TS(x, fart, MX - 30 - TW(fart), H - 12, '#f8f8f8'); TS(x, $t('KM/H'), MX - 30 - TW($t('KM/H')), H - 6, '#a8c8f8');
 }
 
 // ======================================================================
@@ -507,7 +508,7 @@ function marco64(x, t) {
     const duk = sprDuk('m64-hopp', M64_MARCO.hopp, M64_MARCO.pal);
     x.save(); x.translate(Math.round(mx), my - 9); x.rotate(flip * Math.PI * 2); x.drawImage(duk, -8, -9); x.restore();
   } else spr(x, rader, Math.round(mx) - 8, my - rader.length, M64_MARCO.pal);
-  if (flip > 0.25 && flip < 0.75) { TK(x, 'YAHOO!', Math.round(mx) - 14, my - 34, '#f8f8f8', '#c01818', SMALL); }
+  if (flip > 0.25 && flip < 0.75) { TK(x, $t('YAHOO!'), Math.round(mx) - 14, my - 34, '#f8f8f8', '#c01818', SMALL); }
   // HUD: liv, mynt och stjärnor
   disc(x, 9, 8, 4, '#f8b888'); R(x, 5, 3, 9, 3, '#e02020'); R(x, 7, 9, 5, 1, '#202020');
   TK(x, '×4', 16, 4, '#f8f8f8', '#202020', BIG);
@@ -592,7 +593,7 @@ const FM_PIKA_BAK = ['..K............K..', '.KK............KK.', '.KYK..........
 const FM_STRID_PAL = { K: '#181818', L: '#9a5ac8', P: '#f0a0c0', W: '#f8f8f8', C: '#f0e0b0', Y: '#f8d830', O: '#a07818' };
 function fmRuta(x, X, Y, w, h) { R(x, X, Y, w, h, '#f8f8f8'); R(x, X + 1, Y + 1, w - 2, h - 2, '#181818'); R(x, X + 2, Y + 2, w - 4, h - 4, '#f8f8f8'); R(x, X + 3, Y + 3, w - 6, h - 6, '#181818'); R(x, X + 4, Y + 4, w - 8, h - 8, '#f8f8f8'); }
 function fmHP(x, X, Y, andel) {
-  T(x, 'HP:', X, Y, '#181818');
+  T(x, $t('HP:'), X, Y, '#181818');
   R(x, X + 13, Y, 50, 5, '#181818'); R(x, X + 14, Y + 1, 48, 3, '#f8f8f8');
   R(x, X + 14, Y + 1, Math.round(48 * andel), 3, andel > 0.5 ? '#30b848' : andel > 0.2 ? '#f8c018' : '#e83030');
 }
@@ -639,36 +640,36 @@ function fickmonster(x, t) {
   disc(x, rx, 52, 3, '#d8d8c8'); R(x, rx - 22, 50, 44, 4, '#d8d8c8');
   skala(x, sprDuk('fm-rattis', FM_RATTIS, FM_STRID_PAL), rx, 52 + (Math.floor(t * 3) % 2), 2);
   const T1 = 0.7, T2 = 2.4, T3 = 3.3, T4 = 4.6, T5 = 5.4;
-  if (k > T1) { T(x, 'MUSKEN', 8, 4, '#181818', BIG); T(x, ':L3', 40, 13, '#181818'); fmHP(x, 16, 20, 1); R(x, 8, 27, 1, 6, '#181818'); R(x, 8, 32, 64, 1, '#181818'); P(x, 72, 31, '#181818'); }
+  if (k > T1) { T(x, $t('MUSKEN'), 8, 4, '#181818', BIG); T(x, ':L3', 40, 13, '#181818'); fmHP(x, 16, 20, 1); R(x, 8, 27, 1, 6, '#181818'); R(x, 8, 32, 64, 1, '#181818'); P(x, 72, 31, '#181818'); }
   R(x, 8, 90, 60, 4, '#d8d8c8');
   if (k < T2) { const tx = Math.round(38 + (1 - in1) * 130 - Math.max(0, k - T2 + 0.4) * 120); skala(x, sprDuk('fm-tranare', FM_TRANARE.upp[0], FM_PAL), tx, 94, 2.5); }
   if (k >= T2) {
     const up = Math.min(1, (k - T2) / 0.3);
     x.save(); x.beginPath(); x.rect(0, 0, W, 94); x.clip();
     skala(x, sprDuk('fm-pikabak', FM_PIKA_BAK, FM_STRID_PAL), 38, Math.round(94 + (1 - up) * 40), 2.2); x.restore();
-    T(x, 'VOLTIS', 86, 52, '#181818', BIG); T(x, ':L6', 120, 61, '#181818'); fmHP(x, 88, 68, 1); T(x, '20/ 20', 112, 76, '#181818', BIG);
+    T(x, $t('VOLTIS'), 86, 52, '#181818', BIG); T(x, ':L6', 120, 61, '#181818'); fmHP(x, 88, 68, 1); T(x, '20/ 20', 112, 76, '#181818', BIG);
     R(x, 151, 66, 1, 18, '#181818'); R(x, 82, 84, 70, 1, '#181818'); P(x, 82, 83, '#181818');
   }
   // textrutan: vilt fickmonster, ut med PIKATJU, menyn, och sedan smiter vi
   const skriv = (t0, rader) => fmText(x, rader, Math.floor((k - t0) * 28));
   if (k < T1) fmRuta(x, 0, 96, 160, 48);
-  else if (k < T2) skriv(T1, ['EN VILD MUSKEN', 'DÖK UPP!']);
-  else if (k < T3) skriv(T2, ['KÖR, VOLTIS!']);
+  else if (k < T2) skriv(T1, [$t('EN VILD MUSKEN'), $t('DÖK UPP!')]);
+  else if (k < T3) skriv(T2, [$t('KÖR, VOLTIS!')]);
   else if (k < T4) {
     fmRuta(x, 0, 96, 160, 48); fmRuta(x, 64, 96, 96, 48);
-    const val = [['KAMP', 80, 108], ['MONST', 122, 108], ['VÄSKA', 80, 124], ['FLY', 122, 124]];
+    const val = [[$t('KAMP'), 80, 108], [$t('MONST'), 122, 108], [$t('VÄSKA'), 80, 124], [$t('FLY'), 122, 124]];
     for (const [s, X, Y] of val) T(x, s, X, Y, '#181818', BIG);
     const i = k - T3 < 0.45 ? 0 : k - T3 < 0.8 ? 1 : 3, [, cx, cy] = val[i];
     for (let j = 0; j < 4; j++) R(x, cx - 7, cy + j, j < 2 ? j + 1 : 4 - j, 1, '#181818');
     R(x, cx - 7, cy + 4, 1, 3, '#181818'); P(x, cx - 6, cy + 4, '#181818'); P(x, cx - 6, cy + 5, '#181818');
-  } else skriv(T4, ['DU KOM UNDAN!']);
+  } else skriv(T4, [$t('DU KOM UNDAN!')]);
   if (k > T5) R(x, 0, 0, W, H, `rgba(248,248,248,${Math.min(1, (k - T5) / Math.max(0.1, PER - b0 - T5)).toFixed(2)})`);
 }
 
 export const GLIMTAR = [
-  { id: 'marcokart', titel: 'PIPO KART', forebild: 'Super Mario Kart', ar: 1992, studio: 'SVAMPSTUDION', w: MK.W, h: MK.H, rita: marcoKart },
-  { id: 'segorally', titel: 'TORA RALLY', forebild: 'Sega Rally Championship', ar: 1995, studio: 'TORA RACING', w: SR.W, h: SR.H, rita: segoRally },
-  { id: 'crash', titel: 'KRASCH KOALA', forebild: 'Crash Bandicoot', ar: 1996, studio: 'GRAY WOLF', w: CB.W, h: CB.H, rita: crashBandikut },
-  { id: 'marco64', titel: 'PIPO 64', forebild: 'Super Mario 64', ar: 1996, studio: 'SVAMPSTUDION', w: 160, h: 120, rita: marco64 },
-  { id: 'fickmonster', titel: 'MONSTERKOMPIS GUL', forebild: 'Pokémon Yellow', ar: 1998, studio: 'CRITTER LAB', w: FM.W, h: FM.H, rita: fickmonster },
+  { id: 'marcokart', titel: $t('PIPO KART'), forebild: 'Super Mario Kart', ar: 1992, studio: $t('SVAMPSTUDION'), w: MK.W, h: MK.H, rita: marcoKart },
+  { id: 'segorally', titel: $t('TORA RALLY'), forebild: 'Sega Rally Championship', ar: 1995, studio: $t('TORA RACING'), w: SR.W, h: SR.H, rita: segoRally },
+  { id: 'crash', titel: $t('KRASCH KOALA'), forebild: 'Crash Bandicoot', ar: 1996, studio: $t('GRAY WOLF'), w: CB.W, h: CB.H, rita: crashBandikut },
+  { id: 'marco64', titel: $t('PIPO 64'), forebild: 'Super Mario 64', ar: 1996, studio: $t('SVAMPSTUDION'), w: 160, h: 120, rita: marco64 },
+  { id: 'fickmonster', titel: $t('MONSTERKOMPIS GUL'), forebild: 'Pokémon Yellow', ar: 1998, studio: $t('CRITTER LAB'), w: FM.W, h: FM.H, rita: fickmonster },
 ];

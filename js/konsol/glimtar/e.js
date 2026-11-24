@@ -2,6 +2,7 @@
 // Samma format som BAS i ../glimtar.js. Verktygen finns i ../pix.js. Alla slingar räknar med f = 0..1 genom slingan,
 // och allt som rör sig går ett helt antal varv per slinga så att den börjar om sömlöst.
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // rak linje pixel för pixel
 const linje = (x, x0, y0, x1, y1, f) => { const n = Math.max(1, Math.round(Math.max(Math.abs(x1 - x0), Math.abs(y1 - y0)))); for (let i = 0; i <= n; i++) P(x, x0 + ((x1 - x0) * i) / n, y0 + ((y1 - y0) * i) / n, f); };
@@ -219,11 +220,13 @@ function taktsabel(x, t) {
   // loggan längst bort: TAKT i rött och SABEL i blått neon, E:et flimrar som i originalet
   const LOGO = [{ mork: '#3a0614', glod: '#c8183a' }, { mork: '#0a1a50', glod: '#2a64d8' }];
   const neon = (s, X, Y, c, k = 2) => { for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1]]) T(x, s, X + dx, Y + dy, c.mork, BIG, k); T(x, s, X, Y, c.glod, BIG, k); };
-  const tw = TW('TAKT', BIG, 2), sw = TW('SABEL', BIG, 2);
-  neon('TAKT', VX - tw / 2, 3, LOGO[0]);
-  const sx0 = VX - sw / 2, ex = sx0 + TW('SAB', BIG, 2) + 2, flimmer = mod(tt, 2) > 1.55 && Math.floor(tt * 20) % 2;
-  neon('SAB', sx0, 20, LOGO[1]); neon('L', ex + TW('E', BIG, 2) + 2, 20, LOGO[1]);
-  if (!flimmer) neon('E', ex, 20, LOGO[1]); else T(x, 'E', ex, 20, '#101838', BIG, 2);
+  // andra ordet delas i början, den flimrande näst sista bokstaven och den sista (SAB·E·L)
+  const ord1 = $t('TAKT'), ord2 = $t('SABEL'), bo = ord2.slice(0, -2), bf = ord2.slice(-2, -1), bs = ord2.slice(-1);
+  const tw = TW(ord1, BIG, 2), sw = TW(ord2, BIG, 2);
+  neon(ord1, VX - tw / 2, 3, LOGO[0]);
+  const sx0 = VX - sw / 2, ex = sx0 + TW(bo, BIG, 2) + 2, flimmer = mod(tt, 2) > 1.55 && Math.floor(tt * 20) % 2;
+  neon(bo, sx0, 20, LOGO[1]); neon(bs, ex + TW(bf, BIG, 2) + 2, 20, LOGO[1]);
+  if (!flimmer) neon(bf, ex, 20, LOGO[1]); else T(x, bf, ex, 20, '#101838', BIG, 2);
   // klossarna: närmar sig, huggs itu och flyger isär
   const lista = TS_NOTER.map(([tid, lane, rad, fg, rikt]) => ({ tau: mod(tt - tid + PER / 2, PER) - PER / 2, lane, rad, c: TS_FARG[fg], fg, rikt }));
   const z = (n) => (n.tau < 0 ? ZH - n.tau * FART : ZH - n.tau * 1.5);
@@ -256,7 +259,7 @@ function taktsabel(x, t) {
   }
   // HUD: kombo till vänster, poäng och multiplikator till höger, energi nertill
   const blixt = lista.some((n) => n.tau >= 0 && n.tau < 0.12);
-  T(x, 'KOMBO', 10, 64, '#8a90c0'); T(x, '128', 10, 71, blixt ? '#ffffff' : '#c8ccf0', BIG);
+  T(x, $t('KOMBO'), 10, 64, '#8a90c0'); T(x, '128', 10, 71, blixt ? '#ffffff' : '#c8ccf0', BIG);
   const po = '41 290', pw = TW(po, BIG); T(x, po, W - 10 - pw, 64, '#ffffff', BIG);
   const mx = W - 22, my = 86;
   for (let a = 0; a < 40; a++) { const vv = -Math.PI / 2 + (a / 40) * Math.PI * 2; P(x, mx + Math.cos(vv) * 8, my + Math.sin(vv) * 8, a / 40 < 0.3 + 0.6 * (tt / PER) ? '#ffffff' : '#3a3a58'); }
@@ -293,7 +296,7 @@ function fhBage(x, cx, Y, half, sc) {
   for (const px of [lx - pw, rx]) { R(x, px, Y - ah, pw, ah, '#d81e78'); if (pw > 2) R(x, px, Y - ah, 1, ah, '#ff7ab8'); }
   R(x, lx - pw, Y - ah - bt, rx - lx + pw * 2, bt, '#ff2e8e'); R(x, lx - pw, Y - ah - bt, rx - lx + pw * 2, Math.max(1, Math.round(bt / 4)), '#ff9a2e');
   R(x, lx - pw, Y - ah - 1, rx - lx + pw * 2, 1, '#8a0c48');
-  if (bt >= 7) { const s = 'HORISONT', w = TW(s); T(x, s, cx - w / 2, Y - ah - bt + Math.round(bt / 2) - 1, '#ffffff'); }
+  if (bt >= 7) { const s = $t('HORISONT'), w = TW(s); T(x, s, cx - w / 2, Y - ah - bt + Math.round(bt / 2) - 1, '#ffffff'); }
   if (bt >= 3) for (let i = lx; i < rx; i += Math.max(3, bt)) P(x, i, Y - ah - 1, '#fff0a0');
 }
 function forsa(x, t) {
@@ -359,7 +362,7 @@ function forsa(x, t) {
   const hx = 171, hy = 89, varv = 0.72 + Math.sin(v * 4) * 0.08, fart = 214 + Math.round(Math.sin(v * 2) * 4);
   disc(x, hx, hy, 16, 'rgba(12,10,24,0.6)');
   for (let a = 0; a <= 60; a++) { const p = a / 60, vv = Math.PI * 0.75 + p * Math.PI * 1.5; if (p <= varv) { P(x, hx + Math.cos(vv) * 13, hy + Math.sin(vv) * 13, p > 0.82 ? '#ff3a3a' : '#ff8a1e'); P(x, hx + Math.cos(vv) * 12, hy + Math.sin(vv) * 12, p > 0.82 ? '#ff3a3a' : '#ff8a1e'); } if (a % 6 === 0) P(x, hx + Math.cos(vv) * 15, hy + Math.sin(vv) * 15, p > 0.8 ? '#ff5050' : '#ffffff'); }
-  const fs = String(fart); T(x, fs, hx - TW(fs, BIG) / 2, hy - 4, '#ffffff', BIG); T(x, 'KM/H', hx - TW('KM/H') / 2, hy + 5, '#c8c8d8'); T(x, '6', hx - 1, hy - 11, '#ff9a2e');
+  const fs = String(fart); T(x, fs, hx - TW(fs, BIG) / 2, hy - 4, '#ffffff', BIG); T(x, $t('KM/H'), hx - TW($t('KM/H')) / 2, hy + 5, '#c8c8d8'); T(x, '6', hx - 1, hy - 11, '#ff9a2e');
   // kartan nere till vänster: vägen och den rosa färdvägen
   const kx = 22, ky = 89;
   disc(x, kx, ky, 15, 'rgba(14,18,30,0.62)');
@@ -367,11 +370,11 @@ function forsa(x, t) {
   for (let i = -12; i <= 12; i++) P(x, kx + i, ky + 6 - Math.round(Math.abs(i) * 0.3), '#8a8aa0');
   R(x, kx, ky - 2, 1, 1, '#ffffff'); R(x, kx - 1, ky - 1, 3, 1, '#ffffff'); R(x, kx - 2, ky, 5, 1, '#ffffff');
   // skicklighetskedjan när bilen driftar i kurvan
-  if (f > 0.12 && f < 0.6) { const s = 'DRIFT!', w = TW(s, BIG); TK(x, s, 96 - w / 2, 6, '#ffd040', '#b0186a', BIG); const p2 = '+' + (300 + Math.floor((f - 0.12) * 2000)) * 5; T(x, p2, 96 - TW(p2) / 2, 16, '#ffffff'); }
+  if (f > 0.12 && f < 0.6) { const s = $t('DRIFT!'), w = TW(s, BIG); TK(x, s, 96 - w / 2, 6, '#ffd040', '#b0186a', BIG); const p2 = '+' + (300 + Math.floor((f - 0.12) * 2000)) * 5; T(x, p2, 96 - TW(p2) / 2, 16, '#ffffff'); }
 }
 
 export const GLIMTAR = [
-  { id: 'tjuvarnashav', titel: 'PIRATHAVET', forebild: 'Sea of Thieves', ar: 2018, studio: 'ULTRA', w: 192, h: 108, rita: tjuvarnasHav },
-  { id: 'taktsabel', titel: 'LASERTAKT', forebild: 'Beat Saber', ar: 2019, studio: 'RHYTHM BOX', w: 192, h: 108, rita: taktsabel },
-  { id: 'forsa', titel: 'TURBO TOUR 5', forebild: 'Forza Horizon 5', ar: 2021, studio: 'OPEN ROAD', w: 192, h: 108, rita: forsa },
+  { id: 'tjuvarnashav', titel: $t('PIRATHAVET'), forebild: 'Sea of Thieves', ar: 2018, studio: $t('ULTRA'), w: 192, h: 108, rita: tjuvarnasHav },
+  { id: 'taktsabel', titel: $t('LASERTAKT'), forebild: 'Beat Saber', ar: 2019, studio: $t('RHYTHM BOX'), w: 192, h: 108, rita: taktsabel },
+  { id: 'forsa', titel: $t('TURBO TOUR 5'), forebild: 'Forza Horizon 5', ar: 2021, studio: $t('OPEN ROAD'), w: 192, h: 108, rita: forsa },
 ];

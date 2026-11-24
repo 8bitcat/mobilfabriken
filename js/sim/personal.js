@@ -8,6 +8,7 @@ import { LON, KRAFT, ROLLER, FORNAMN, kontorAv } from '../data/varld.js';
 import { slump, slumpInt, valj, klamp } from './bas.js';
 import { betala, signal, nyhet, arKonsolSpel } from './spel.js';
 import { kontorsVarden } from './kontor.js';
+import { $t } from '../core/i18n.js';
 
 // Vera och Lykke från stilprovet ligger överst första gången
 const VERA = { skin: '#f6d7bf', hair: '#b7392b', style: 'bun', top: 'sweater', shirt: '#3a7bd5', accent: '#e8e3d6', bottom: 'pants', pants: '#7a2e3e', shoes: '#1c1c1c', glasses: 'round', build: 5, blush: true };
@@ -41,19 +42,19 @@ export function manadsKandidater(G) {
 }
 export const omrullPris = (G) => (G.dag - G.omrullDag >= 30 ? 0 : 10_000);
 export function omrull(G) {
-  const pris = omrullPris(G); if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  const pris = omrullPris(G); if (G.bolag.kassa < pris) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   if (pris) betala(G, pris, 'personal'); else G.omrullDag = G.dag;
   G.kandidater = []; for (let i = 0; i < 6; i++) G.kandidater.push(nyKandidat(G));
   return { ok: true };
 }
 export const ledigaBord = (G) => G.kontor.bord.map((b, i) => (b && !G.personal.some((p) => p.bord === i) ? i : -1)).filter((i) => i >= 0);
 export function anstall(G, id) {
-  const k = G.kandidater.find((x) => x.id === id); if (!k) return { ok: false, fel: 'FINNS INTE' };
+  const k = G.kandidater.find((x) => x.id === id); if (!k) return { ok: false, fel: $t('FINNS INTE') };
   const lediga = ledigaBord(G);
-  if (!lediga.length) return { ok: false, fel: G.kontor.bord.some(Boolean) ? 'ALLA BORD ÄR UPPTAGNA – STÄLL UT FLER I BYGG' : 'STÄLL UT ETT BORD FÖRST (BYGG)' };
+  if (!lediga.length) return { ok: false, fel: G.kontor.bord.some(Boolean) ? $t('ALLA BORD ÄR UPPTAGNA – STÄLL UT FLER I BYGG') : $t('STÄLL UT ETT BORD FÖRST (BYGG)') };
   G.kandidater = G.kandidater.filter((x) => x !== k);
   G.personal.push({ ...k, bord: lediga[0], anstalldDag: G.dag, erfarenhet: 0 });
-  nyhet(G, 'DU', `${k.namn} BÖRJAR SOM ${ROLLER[k.roll].namn} HOS ${G.bolag.namn}.`);
+  nyhet(G, 'DU', $t`${k.namn} BÖRJAR SOM ${ROLLER[k.roll].namn} HOS ${G.bolag.namn}.`);
   return { ok: true };
 }
 export function sparka(G, id) {
@@ -64,19 +65,19 @@ export function sparka(G, id) {
 }
 export const festPris = (G) => 5_000 * G.personal.length;
 export function teamfest(G) {
-  const pris = festPris(G); if (!G.personal.length) return { ok: false, fel: 'INGEN ATT FIRA MED' };
-  if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  const pris = festPris(G); if (!G.personal.length) return { ok: false, fel: $t('INGEN ATT FIRA MED') };
+  if (G.bolag.kassa < pris) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   betala(G, pris, 'personal'); G.fest = 25; G.flaggor.fest = G.dag;
-  signal(G, 'toast', { text: 'TEAMFEST! MORALEN STIGER.', farg: 'lila' });
+  signal(G, 'toast', { text: $t('TEAMFEST! MORALEN STIGER.'), farg: 'lila' });
   return { ok: true };
 }
 // nivå upp efter ett år i en lokal som tillåter nästa stjärna: kostar en månadslön
 export function kanTrana(G, p) { return p.stjarnor < kontorAv(G.kontor.niva).tak && G.dag - (p.tranadDag ?? p.anstalldDag) >= 365; }
 export function trana(G, id) {
-  const p = G.personal.find((x) => x.id === id); if (!p || !kanTrana(G, p)) return { ok: false, fel: 'INTE ÄN' };
-  if (G.bolag.kassa < p.lon) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  const p = G.personal.find((x) => x.id === id); if (!p || !kanTrana(G, p)) return { ok: false, fel: $t('INTE ÄN') };
+  if (G.bolag.kassa < p.lon) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   betala(G, p.lon, 'personal'); p.stjarnor++; p.kraft = KRAFT[p.stjarnor]; p.lon = Math.round(LON[p.stjarnor][0] / 50) * 50; p.tranadDag = G.dag;
-  signal(G, 'toast', { text: `${p.namn} ÄR NU ${'★'.repeat(p.stjarnor)}!`, farg: 'guld' });
+  signal(G, 'toast', { text: $t`${p.namn} ÄR NU ${'★'.repeat(p.stjarnor)}!`, farg: 'guld' });
   return { ok: true };
 }
 
@@ -99,7 +100,7 @@ export function fpPerDag(G) {
 export function onskemal(G) {
   if (G.moral >= 45) return null;
   const v = kontorsVarden(G);
-  if (v.trivsel < 3) return 'KAN VI FÅ EN SOFFA?';
-  if (!G.flaggor.fest || G.dag - G.flaggor.fest > 120) return 'NÄR HAR VI FEST NÄST?';
-  return 'DET ÄR TRÅNGT HÄR...';
+  if (v.trivsel < 3) return $t('KAN VI FÅ EN SOFFA?');
+  if (!G.flaggor.fest || G.dag - G.flaggor.fest > 120) return $t('NÄR HAR VI FEST NÄST?');
+  return $t('DET ÄR TRÅNGT HÄR...');
 }

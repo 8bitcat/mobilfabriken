@@ -3,7 +3,7 @@
 //   node tools/snap.mjs kontor "nyttTestspel(); A.go('kontor')"
 // Hjälpfunktioner i sidan: nyttTestspel({ lage: 'konsol' }), dagar(n), vanta(ms), forstaTelefonen(), forstaKonsolen(),
 // lanseraKonsolen() och modulerna sim, pers, kont, tick, des, proj, forsk, kons (js/sim/konsol.js) – se nedan. Skriver tools/out/<namn>.png (3×)
-// och rapporterar konsolfel. --skala 1|2|3, --w/--h fönsterstorlek.
+// och rapporterar konsolfel. --skala 1|2|3, --w/--h fönsterstorlek, --lang en (engelska).
 import { createRequire } from 'node:module';
 import http from 'node:http';
 import fs from 'node:fs';
@@ -30,7 +30,7 @@ const page = await browser.newPage({ viewport: { width: vw, height: vh }, device
 const fel = [];
 page.on('pageerror', (e) => fel.push(String(e.stack || e)));
 page.on('console', (m) => { if ((m.type() === 'error' || m.type() === 'warning') && !/deprecated with r150/.test(m.text())) fel.push(m.type() + ': ' + m.text()); });
-await page.goto(`http://127.0.0.1:${srv.address().port}/index.html?test`);
+await page.goto(`http://127.0.0.1:${srv.address().port}/index.html?test${opt('lang', '') ? '&lang=' + opt('lang', '') : ''}`);
 await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 15000 });
 await page.waitForTimeout(400);
 const resultat = await page.evaluate(async (kod) => {

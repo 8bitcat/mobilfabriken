@@ -1,5 +1,6 @@
 // Spelglimtar, grupp D. Samma format som BAS i ../glimtar.js. Verktygen finns i ../pix.js.
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // tjock linje av små rutor (armar, ben, nätet)
 const linje = (x, ax, ay, bx, by, w, f) => {
@@ -395,7 +396,7 @@ function spindel(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'lillastora', titel: 'TYGDOCKAN', forebild: 'LittleBigPlanet', ar: 2008, studio: 'DOODLE', w: LBP_W, h: LBP_H, rita: lillaStora },
-  { id: 'blackklatt', titel: 'KLADDKRIGET', forebild: 'Splatoon', ar: 2015, studio: 'SVAMPSTUDION', w: BK_W, h: BK_H, rita: blackklatt },
-  { id: 'spindel', titel: 'SPINDELKUNGEN', forebild: "Marvel's Spider-Man", ar: 2018, studio: 'NIGHT OWL', w: SP_W, h: SP_H, rita: spindel },
+  { id: 'lillastora', titel: $t('TYGDOCKAN'), forebild: 'LittleBigPlanet', ar: 2008, studio: $t('DOODLE'), w: LBP_W, h: LBP_H, rita: lillaStora },
+  { id: 'blackklatt', titel: $t('KLADDKRIGET'), forebild: 'Splatoon', ar: 2015, studio: $t('SVAMPSTUDION'), w: BK_W, h: BK_H, rita: blackklatt },
+  { id: 'spindel', titel: $t('SPINDELKUNGEN'), forebild: "Marvel's Spider-Man", ar: 2018, studio: $t('NIGHT OWL'), w: SP_W, h: SP_H, rita: spindel },
 ];

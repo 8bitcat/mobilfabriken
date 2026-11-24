@@ -1,4 +1,5 @@
 // Konsoler i 3D, grupp F. Samma format som KONSOLFORMER i ../konsol-gl.js. Verktygen finns i ../gl-verktyg.js.
+import { $t } from '../../core/i18n.js';
 import * as V from '../gl-verktyg.js';
 
 const { TH, mat, glans, lyser, skugg, platta, staende, kloss, rund, kabel, styrkors, glimtSkarm, kropp, klamp01 } = V;
@@ -96,7 +97,7 @@ function angdack(tel) {
   }
   // ÅNGA-knappen och tre-punkts-knappen under plattorna
   staende(rig, 0.17, 0.07, 0.025, knappM, -0.98, 0.045, fram + 0.004, 0.02, 0.006);
-  etikett(rig, textTextur([['FORGE', 22]], 64, 28, '#9a9aa4'), 0.13, 0.055, -0.98, 0.08, fram + 0.019);
+  etikett(rig, textTextur([[$t('FORGE'), 22]], 64, 28, '#9a9aa4'), 0.13, 0.055, -0.98, 0.08, fram + 0.019);
   staende(rig, 0.1, 0.07, 0.025, knappM, 0.98, 0.045, fram + 0.004, 0.02, 0.006);
   for (let i = -1; i <= 1; i++) framRund(rig, 0.006, 0.004, mat(0x9a9aa4), 0.98 + i * 0.022, 0.08, fram + 0.018, 8);
   // högtalargaller längs underkanten av glaset
@@ -120,7 +121,7 @@ function svitsch2(tel) {
   for (let i = 0; i < 10; i++) kloss(rig, 0.05, 0.01, 0.03, mat(0x0a0a0c), -0.2 - i * 0.0 + (i - 4.5) * 0.065 - 0.05, H + 0.001, -0.03);
   // baksidan: stort ventilationsgaller och logotypen
   for (let i = 0; i < 22; i++) kloss(rig, 0.03, 0.1, 0.006, mat(0x18181c), -0.7 + i * 0.066, H - 0.12, -d / 2 - 0.002);
-  etikett(rig, textTextur([['TENKO SNAP 2', 30]], 512, 64, '#7a7a84'), 0.9, 0.11, 0, 0.6, -d / 2 - 0.003, true);
+  etikett(rig, textTextur([[$t('TENKO SNAP 2'), 30]], 512, 64, '#7a7a84'), 0.9, 0.11, 0, 0.6, -d / 2 - 0.003, true);
   // det breda U-formade stödet bak, utfällt mot bordet
   rig.updateMatrixWorld(true);
   const led = rig.localToWorld(new T.Vector3(0, 0.84, -d / 2 - 0.005)), ut = 0.34, L = Math.hypot(led.y, ut);
@@ -168,7 +169,7 @@ function svitsch2(tel) {
 }
 
 export const KONSOLER = [
-  { id: 'konsol-angdack', namn: 'FORGE GO', forebild: 'Steam Deck', ar: 2022, glimt: 'blandoss', bygg: angdack, oppna: null,
+  { id: 'konsol-angdack', namn: $t('FORGE GO'), forebild: 'Steam Deck', ar: 2022, glimt: 'blandoss', bygg: angdack, oppna: null,
     info: 'En hel speldator i handen: stor skärm, två spakar och två fyrkantiga styrplattor. I dockan blir den en vanlig konsol vid TV:n.',
     pixel(x, X, Y) {
       skugga(x, X + 1, Y + 25, 38);
@@ -186,7 +187,7 @@ export const KONSOLER = [
       R(x, X + 30, Y + 11, 3, 3, '#0e0e12'); P(x, X + 31, Y + 12, '#4a4a54');
       R(x, X + 31, Y + 16, 5, 5, '#34343c'); R(x, X + 31, Y + 16, 5, 1, '#4a4a52');
     } },
-  { id: 'konsol-svitsch2', namn: 'TENKO SNAP 2', forebild: 'Nintendo Switch 2', ar: 2025, glimt: 'marcokartvarld', bygg: svitsch2, oppna: ['SIDOKONTROLLERNA', 0],
+  { id: 'konsol-svitsch2', namn: $t('TENKO SNAP 2'), forebild: 'Nintendo Switch 2', ar: 2025, glimt: 'marcokartvarld', bygg: svitsch2, oppna: [$t('SIDOKONTROLLERNA'), 0],
     info: 'Större skärm och mattsvarta sidokontroller som sitter fast med magneter, med en blå och en röd rand mot skärmen. Brett stöd bak.',
     pixel(x, X, Y) {
       skugga(x, X + 1, Y + 25, 38);

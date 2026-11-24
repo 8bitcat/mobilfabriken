@@ -10,6 +10,7 @@ import { dagligForskning } from './forskning.js';
 import { fpPerDag, lonPerManad, dagligMoral, manadsKandidater } from './personal.js';
 import { dagligtBygge, dagligForsaljning } from './projekt.js';
 import { kollaMal, kollaUtmarkelser } from './mal.js';
+import { $t } from '../core/i18n.js';
 
 export { NODLAN };
 const NODLAN_KORT = 30;   // NÖDLÅN-kortet (helskärm + paus) högst var 30:e dag – däremellan räcker en toast
@@ -43,10 +44,11 @@ function nodlan(G) {
   if (forra == null || G.dag - forra >= NODLAN_KORT) {
     G.flaggor.nodlanDag = G.dag;
     const lon = lonPerManad(G);
-    const vad = arKonsolSpel(G) ? 'KONSOLER' : 'TELEFONER';
-    const varfor = lon ? `LÖNERNA ÄR ${kr(lon)} I MÅNADEN. SÄLJ FLER ${vad} ELLER HA FÄRRE ANSTÄLLDA.` : `SÄLJ FLER ${vad}.`;
-    signal(G, 'stor', { rubrik: 'NÖDLÅN', text: `KASSAN TOG SLUT. BANKEN LÅNADE ER ${kr(belopp)} (10 % RÄNTA OM ÅRET). ${varfor} BETALA TILLBAKA I BOLAGET NÄR DET GÅR BÄTTRE.`, paus: true });
-  } else signal(G, 'toast', { text: `NYTT NÖDLÅN +${kr(belopp, true)} · LÅN TOTALT ${kr(G.lan, true)}`, farg: 'rod' });
+    const konsol = arKonsolSpel(G);
+    const varfor = lon ? (konsol ? $t`LÖNERNA ÄR ${kr(lon)} I MÅNADEN. SÄLJ FLER KONSOLER ELLER HA FÄRRE ANSTÄLLDA.` : $t`LÖNERNA ÄR ${kr(lon)} I MÅNADEN. SÄLJ FLER TELEFONER ELLER HA FÄRRE ANSTÄLLDA.`)
+      : (konsol ? $t('SÄLJ FLER KONSOLER.') : $t('SÄLJ FLER TELEFONER.'));
+    signal(G, 'stor', { rubrik: $t('NÖDLÅN'), text: $t`KASSAN TOG SLUT. BANKEN LÅNADE ER ${kr(belopp)} (10 % RÄNTA OM ÅRET). ${varfor} BETALA TILLBAKA I BOLAGET NÄR DET GÅR BÄTTRE.`, paus: true });
+  } else signal(G, 'toast', { text: $t`NYTT NÖDLÅN +${kr(belopp, true)} · LÅN TOTALT ${kr(G.lan, true)}`, farg: 'rod' });
 }
 
 // Lagar sparningar från 0.1.x där ett negativt rimligt pris gav NaN (JSON sparar NaN som null) i lager,
@@ -94,8 +96,8 @@ function nyar(G) {
   // 1 jan 2027 (tills Slutgalan finns): rapporten säger att bolaget nu går att sälja
   const salj = a + 1 === SALJ_AR;
   G.flaggor.nyarsrapport = { ar: a, intakt: s.intakt, kostnad: s.kostnad, vinst: s.intakt - s.kostnad, basta: basta ? { namn: basta.namn, betyg: basta.betyg } : null, snitt: snitt(G.dag, arKonsolSpel(G) ? 'konsol' : 'telefon'), salj };
-  nyhet(G, 'VÄRLD', `GOTT NYTT ${a + 1}! KRITIKERNA HÖJER KRAVEN – SNITTET ÄR NU ${dec(snitt(G.dag, arKonsolSpel(G) ? 'konsol' : 'telefon'))}.`);
-  if (salj) nyhet(G, 'DU', `${SALJ_AR - startAr(G)} ÅR I BRANSCHEN! NU KAN DU SÄLJA ${G.bolag.namn} (BOLAGET > SÄLJ BOLAGET) ELLER SPELA VIDARE.`);
+  nyhet(G, 'VÄRLD', $t`GOTT NYTT ${a + 1}! KRITIKERNA HÖJER KRAVEN – SNITTET ÄR NU ${dec(snitt(G.dag, arKonsolSpel(G) ? 'konsol' : 'telefon'))}.`);
+  if (salj) nyhet(G, 'DU', $t`${SALJ_AR - startAr(G)} ÅR I BRANSCHEN! NU KAN DU SÄLJA ${G.bolag.namn} (BOLAGET > SÄLJ BOLAGET) ELLER SPELA VIDARE.`);
   signal(G, 'nyar', { ar: a + 1, paus: true });
 }
 

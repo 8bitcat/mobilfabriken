@@ -11,23 +11,24 @@ import { startKandidater } from '../sim/personal.js';
 import { kr, datumText } from '../sim/bas.js';
 import { sattLjud } from '../core/ljud.js';
 import { VERSION } from '../version.js';
+import { $t } from '../core/i18n.js';
 
 const HJALTE = { bredd: 0.74, hojd: 1.58, djup: 0.08, radie: 0.15, ram: 0.015, haka: 0.015, kameraStorlek: 0.3, kameror: 3, selfie: true, kropp: '#d8ccf4', glas: '#10142a', kamera: '#3a6bc2', marke: 'M', yta: 'klassisk' };
-const FORSLAG = ['MIKROVÅG MOBIL', 'PIXELFON AB', 'LUREN & CO', 'GARAGEGENIET', 'TELEFONKUNGEN', 'SMARTBOLAGET', 'APPELKNAPP', 'SIGNALEN'];
+const FORSLAG = [$t('MIKROVÅG MOBIL'), $t('PIXELFON AB'), $t('LUREN & CO'), $t('GARAGEGENIET'), $t('TELEFONKUNGEN'), $t('SMARTBOLAGET'), $t('APPELKNAPP'), $t('SIGNALEN')];
 // konsolbolagens namnförslag (de fyra första visas som knappar i namnsteget – korta, så att alla får plats)
-const K_FORSLAG = ['PIXELBOX AB', 'BLIPP & BLOPP', 'TV-SPEL AB', 'JOYSTICKEN', 'KASSETTKUNGEN', 'GARAGEGENIET', 'SPELMASKINEN', 'KONTROLLKUNGEN'];
+const K_FORSLAG = [$t('PIXELBOX AB'), $t('BLIPP & BLOPP'), $t('TV-SPEL AB'), $t('JOYSTICKEN'), $t('KASSETTKUNGEN'), $t('GARAGEGENIET'), $t('SPELMASKINEN'), $t('KONTROLLKUNGEN')];
 const forslagFor = (l) => (l === 'konsol' ? K_FORSLAG : FORSLAG);
 const ALLA_FORSLAG = [...FORSLAG, ...K_FORSLAG];
 // den första konsolen i designern har TRÄPANELEN – samma 3D-form snurrar på startskärmen
 const KONSOL_3D = 'konsol-ataro';
 // startvalets två kort. ar = tidslinjen i kortet (1982 → 2026, i proportion), hoppar = sträckan snabbstarten hoppar över
 const SPELVAL = [
-  { lage: 'konsol', titel: 'KONSOLFABRIKEN', under: 'STARTA 1 JANUARI 1982', farg: F.lila2, ikon: 'kontroll', rek: true,
-    text: 'BYGG SPELKONSOLER OCH LÅT STUDIOS GÖRA SPEL TILL DEM. TELEFONERNA KOMMER 2007.',
-    knapp: 'STARTA 1982', stil: 'gron', namn: 'start-konsol', ar: [[1982, 'kontroll'], [2007, 'telefon'], [2026, 'stjarna']] },
-  { lage: 'telefon', titel: 'SNABBSTART 2007', under: 'TELEFONERNA SOM FÖRUT', farg: F.bla2, ikon: 'telefon',
-    text: 'HOPPA RAKT TILL 2007 OCH DESIGNA TELEFONER, PLATTOR OCH KLOCKOR.',
-    knapp: 'STARTA 2007', stil: 'bla', namn: 'start-snabb', ar: [[2007, 'telefon'], [2026, 'stjarna']], hoppar: true },
+  { lage: 'konsol', titel: $t('KONSOLFABRIKEN'), under: $t('STARTA 1 JANUARI 1982'), farg: F.lila2, ikon: 'kontroll', rek: true,
+    text: $t('BYGG SPELKONSOLER OCH LÅT STUDIOS GÖRA SPEL TILL DEM. TELEFONERNA KOMMER 2007.'),
+    knapp: $t('STARTA 1982'), stil: 'gron', namn: 'start-konsol', ar: [[1982, 'kontroll'], [2007, 'telefon'], [2026, 'stjarna']] },
+  { lage: 'telefon', titel: $t('SNABBSTART 2007'), under: $t('TELEFONERNA SOM FÖRUT'), farg: F.bla2, ikon: 'telefon',
+    text: $t('HOPPA RAKT TILL 2007 OCH DESIGNA TELEFONER, PLATTOR OCH KLOCKOR.'),
+    knapp: $t('STARTA 2007'), stil: 'bla', namn: 'start-snabb', ar: [[2007, 'telefon'], [2026, 'stjarna']], hoppar: true },
 ];
 const AR0 = 1982, AR1 = 2026;
 
@@ -37,16 +38,16 @@ function pil(x, y, c) { rect(x, y + 2, 5, 1, c); rect(x + 3, y, 1, 1, c); rect(x
 export function start(A, o = {}) {
   let lage = 'meny', spelLage = 'konsol', namn = FORSLAG[Math.floor(Math.random() * FORSLAG.length)], egetNamn = false, spin = 0.5, fel = '', radera = null;
   // kvittot efter SÄLJ BOLAGET (bolaget.js skickar namn och värde)
-  const kvitto = o.salt ? `${o.salt.namn} ÄR SÅLT FÖR ${kr(o.salt.varde)}. ARVET VÄNTAR I NÄSTA BOLAG.` : '';
+  const kvitto = o.salt ? $t`${o.salt.namn} ÄR SÅLT FÖR ${kr(o.salt.varde)}. ARVET VÄNTAR I NÄSTA BOLAG.` : '';
   const skL = { v: 0 };
   Spara.stada();   // sålda bolag bort, tappade bolag tillbaka i listan (sparningar från 0.1.0)
   const lista = () => Spara.bolagsLista();
   const fortsatt = () => { const id = Spara.senaste() || lista()[0]?.id; if (!id) return; oppna(id); };
   const fullt = () => lista().length >= Spara.MAX_BOLAG;
-  const FULLT = `HÖGST ${Spara.MAX_BOLAG} BOLAG. RADERA ETT FÖRST.`;
+  const FULLT = $t`HÖGST ${Spara.MAX_BOLAG} BOLAG. RADERA ETT FÖRST.`;
   function oppna(id) {
-    const G = Spara.ladda(id); if (!G) { fel = 'SPARNINGEN GICK INTE ATT LÄSA'; return; }
-    if (G.salt) { Spara.radera(id); fel = 'BOLAGET ÄR SÅLT OCH FINNS I ARVET'; return; }   // ett sålt bolag öppnas aldrig igen
+    const G = Spara.ladda(id); if (!G) { fel = $t('SPARNINGEN GICK INTE ATT LÄSA'); return; }
+    if (G.salt) { Spara.radera(id); fel = $t('BOLAGET ÄR SÅLT OCH FINNS I ARVET'); return; }   // ett sålt bolag öppnas aldrig igen
     A.G = G; sattLjud(G.installningar.ljud !== false); A.go('kontor');
   }
   // startvalet: läget bestämmer namnförslagen (ett namn barnet skrivit själv behålls)
@@ -56,7 +57,7 @@ export function start(A, o = {}) {
     lage = 'nytt';
   }
   function skapa() {
-    const n = namn.trim(); if (n.length < 2) { fel = 'SKRIV ETT NAMN PÅ BOLAGET'; return; }
+    const n = namn.trim(); if (n.length < 2) { fel = $t('SKRIV ETT NAMN PÅ BOLAGET'); return; }
     if (fullt()) { lage = 'lista'; fel = FULLT; return; }
     const G = nyttSpel({ namn: n, arv: Spara.arv(), lage: spelLage }); startKandidater(G);
     G.gavor = { senast: null, kort: 0 };   // gåvoserien är bolagets egen (gavor.js)
@@ -78,53 +79,54 @@ export function start(A, o = {}) {
       rect(0, 148, W, 1, 0x2a3a6a); rect(0, 149, W, 67, 0x0a0d1e);
       // titel
       const tx = 18;
-      textB('MOBILFABRIKEN', tx + 1, 30 + 1, 0x8a2a6a, { k: 3 });
-      textB('MOBILFABRIKEN', tx, 30, F.guld, { k: 3 });
-      text('EN MOBILTYCOON I PIXELSTAD · FRÅN GARAGE TILL HUVUDKONTOR', tx, 58, F.dim);
+      const titel = $t('MOBILFABRIKEN');
+      textB(titel, tx + 1, 30 + 1, 0x8a2a6a, { k: 3 });
+      textB(titel, tx, 30, F.guld, { k: 3 });
+      text($t('EN MOBILTYCOON I PIXELSTAD · FRÅN GARAGE TILL HUVUDKONTOR'), tx, 58, F.dim);
       // KONSOLER 1982 → MOBILER 2007. BYGG ETT IMPERIUM.
-      let ux = tx + text('KONSOLER 1982', tx, 66, F.cyan) + 3; pil(ux, 66, F.cyan); ux += 9;
-      text('MOBILER 2007. BYGG ETT IMPERIUM.', ux, 66, F.cyan);
+      let ux = tx + text($t('KONSOLER 1982'), tx, 66, F.cyan) + 3; pil(ux, 66, F.cyan); ux += 9;
+      text($t('MOBILER 2007. BYGG ETT IMPERIUM.'), ux, 66, F.cyan);
       // prylen till höger: startvalets kort (det man pekar på, annars det valda) eller hjältetelefonen
       const hov = lage === 'val' ? SPELVAL.find((v, i) => inne(kortX(i), KY, KW, KH)) : null;
       const visas = lage === 'val' ? (hov ? hov.lage : spelLage) : lage === 'nytt' ? spelLage : 'telefon';
       if (visas === 'konsol') visaKonsol({ x: 258, y: 44, w: 126, h: 112 }, KONSOL_3D, { vy: 'auto', spin, pitch: 0.32, ctx });
       else Vy3d.visa({ x: 262, y: 20, w: 120, h: 180 }, HJALTE, { vy: 'auto', spin, pitch: 0.12, ctx });
       // bildtext under prylen (konsolen står högre upp än telefonen)
-      if (lage === 'val' || lage === 'nytt') text(visas === 'konsol' ? 'DIN FÖRSTA KONSOL · 1982' : 'DIN FÖRSTA TELEFON · 2007', 322, visas === 'konsol' ? 154 : 196, F.dim2, { just: 'c' });
+      if (lage === 'val' || lage === 'nytt') text(visas === 'konsol' ? $t('DIN FÖRSTA KONSOL · 1982') : $t('DIN FÖRSTA TELEFON · 2007'), 322, visas === 'konsol' ? 154 : 196, F.dim2, { just: 'c' });
       const L = lista();
       if (lage === 'meny') {
         let y = 86;
         if (L.length) {
           const s = L.find((b) => b.id === Spara.senaste()) || L[0];
-          knapp(tx, y, 150, 16, 'FORTSÄTT', { stil: 'vit', F: BIG, klick: fortsatt, namn: 'start-fortsatt' });
+          knapp(tx, y, 150, 16, $t('FORTSÄTT'), { stil: 'vit', F: BIG, klick: fortsatt, namn: 'start-fortsatt' });
           let sx = tx + 156;
           if (Spara.lageAv(s) === 'konsol') { ikon('kontroll', sx, y + 5, F.lila2); sx += 10; }
           text(`${kapa(s.namn, 100)} · ${datumText(s.dag)}`, sx, y + 6, F.dim);
           y += 22;
         }
-        knapp(tx, y, 150, 14, 'NYTT BOLAG', { stil: L.length ? 'morkt' : 'gron', klick: () => { if (fullt()) { lage = 'lista'; fel = FULLT; } else { lage = 'val'; fel = ''; } }, namn: 'start-nytt' }); y += 18;
-        if (L.length) { knapp(tx, y, 150, 14, 'DINA BOLAG (' + L.length + ')', { stil: 'morkt', klick: () => { lage = 'lista'; fel = ''; radera = null; }, namn: 'start-lista' }); y += 18; }
+        knapp(tx, y, 150, 14, $t('NYTT BOLAG'), { stil: L.length ? 'morkt' : 'gron', klick: () => { if (fullt()) { lage = 'lista'; fel = FULLT; } else { lage = 'val'; fel = ''; } }, namn: 'start-nytt' }); y += 18;
+        if (L.length) { knapp(tx, y, 150, 14, $t`DINA BOLAG (${L.length})`, { stil: 'morkt', klick: () => { lage = 'lista'; fel = ''; radera = null; }, namn: 'start-lista' }); y += 18; }
         const n = arvAntal();
         y += 6;   // under horisontlinjen (y 148) när alla tre knapparna syns
         if (kvitto) { text(kapa(kvitto, 240), tx, y, F.gron2); y += 10; }
-        if (n) { text(`ARV: ${n} ${n === 1 ? 'SÅLT' : 'SÅLDA'} BOLAG · +${n * 10} % STARTKASSA OCH FORSKNING`, tx, y, F.guld); y += 10; }
+        if (n) { text(n === 1 ? $t`ARV: ${n} SÅLT BOLAG · +${n * 10} % STARTKASSA OCH FORSKNING` : $t`ARV: ${n} SÅLDA BOLAG · +${n * 10} % STARTKASSA OCH FORSKNING`, tx, y, F.guld); y += 10; }
         if (fel) text(fel, tx, y, F.rod2);
       } else if (lage === 'val') {
         SPELVAL.forEach((v, i) => spelkort(ctx, v, kortX(i)));
-        knapp(tx, 192, 60, 12, 'TILLBAKA', { stil: 'morkt', klick: () => { lage = 'meny'; fel = ''; }, namn: 'start-val-tillbaka' });
-        text('VÄLJ SPEL', tx + 66, 196, F.dim2);
+        knapp(tx, 192, 60, 12, $t('TILLBAKA'), { stil: 'morkt', klick: () => { lage = 'meny'; fel = ''; }, namn: 'start-val-tillbaka' });
+        text($t('VÄLJ SPEL'), tx + 66, 196, F.dim2);
       } else if (lage === 'nytt') {
         const konsol = spelLage === 'konsol';
         panel(tx - 6, 80, 216, 96);
-        text('DÖP DITT BOLAG', tx, 86, F.guld);
+        text($t('DÖP DITT BOLAG'), tx, 86, F.guld);
         // vilket spel som startar (uppe till höger i rutan)
-        const etikett = konsol ? 'KONSOLFABRIKEN' : 'SNABBSTART';
+        const etikett = konsol ? $t('KONSOLFABRIKEN') : $t('SNABBSTART');
         text(etikett, tx + 204, 86, konsol ? F.lila2 : F.bla2, { just: 'h' });
         ikon(konsol ? 'kontroll' : 'telefon', tx + 204 - tw(etikett) - 10, 85, konsol ? F.lila2 : F.bla2);
         const n = arvAntal(), kassa = Math.round(START_KASSA * (1 + 0.1 * n));
-        text(`DU STARTAR I ETT GARAGE 1 JANUARI ${konsol ? 1982 : 2007}.`, tx, 94, F.dim);
-        const sw = text('STARTKASSA ' + kr(kassa), tx, 101, F.dim);
-        if (n) text(` · ARV +${n * 10} %`, tx + sw, 101, F.guld);
+        text($t`DU STARTAR I ETT GARAGE 1 JANUARI ${konsol ? 1982 : 2007}.`, tx, 94, F.dim);
+        const sw = text($t`STARTKASSA ${kr(kassa)}`, tx, 101, F.dim);
+        if (n) text($t` · ARV +${n * 10} %`, tx + sw, 101, F.guld);
         const falt = { x: tx, y: 109, w: 200, h: 16 };
         rect(falt.x, falt.y, falt.w, falt.h, F.lo); ram(falt.x, falt.y, falt.w, falt.h, F.bla2);
         if (!A._falt) textB(namn || ' ', falt.x + 5, falt.y + 5, F.text);
@@ -133,29 +135,29 @@ export function start(A, o = {}) {
         let fx = tx;
         for (const f of forslagFor(spelLage).slice(0, 4)) { const w = tw(f) + 6; if (fx + w > tx + 204) break; knapp(fx, 129, w, 9, f, { stil: 'dim', klick: () => { namn = f; egetNamn = false; } }); fx += w + 3; }
         if (fel) text(fel, tx, 142, F.rod2);
-        knapp(tx, 154, 60, 14, 'TILLBAKA', { stil: 'morkt', klick: () => { lage = 'val'; fel = ''; }, namn: 'start-nytt-tillbaka' });
-        knapp(tx + 66, 154, 134, 14, 'STARTA I GARAGET', { stil: 'gron', klick: skapa, namn: 'start-skapa' });
+        knapp(tx, 154, 60, 14, $t('TILLBAKA'), { stil: 'morkt', klick: () => { lage = 'val'; fel = ''; }, namn: 'start-nytt-tillbaka' });
+        knapp(tx + 66, 154, 134, 14, $t('STARTA I GARAGET'), { stil: 'gron', klick: skapa, namn: 'start-skapa' });
       } else if (lage === 'lista') {
         // alla bolag (högst MAX_BOLAG) i en rullbar lista; X raderar efter en fråga i raden.
         // Ett konsolbolag (startade 1982) har en handkontroll framför namnet.
         panel(tx - 6, 80, 216, 116);
-        text('DINA BOLAG', tx, 86, F.guld); text(`${L.length} AV ${Spara.MAX_BOLAG}`, tx + 204, 86, F.dim2, { just: 'h' });
+        text($t('DINA BOLAG'), tx, 86, F.guld); text($t`${L.length} AV ${Spara.MAX_BOLAG}`, tx + 204, 86, F.dim2, { just: 'h' });
         rullLista(tx - 2, 94, 210, 88, L.length, 11, (i, y) => {
           const b = L[i], konsol = Spara.lageAv(b) === 'konsol';
           if (radera === b.id) {
             rect(tx - 2, y, 206, 10, mixa(F.rod, F.panel, 0.7));
-            text(kapa('RADERA ' + b.namn + '?', 120), tx, y + 3, F.text);
-            knapp(tx + 126, y, 36, 9, 'JA', { stil: 'rod', namn: 'start-radera-ja', klick: () => { Spara.radera(b.id); radera = null; fel = ''; if (!lista().length) lage = 'meny'; } });
-            knapp(tx + 166, y, 36, 9, 'NEJ', { stil: 'morkt', namn: 'start-radera-nej', klick: () => { radera = null; } });
+            text(kapa($t`RADERA ${b.namn}?`, 120), tx, y + 3, F.text);
+            knapp(tx + 126, y, 36, 9, $t('JA'), { stil: 'rod', namn: 'start-radera-ja', klick: () => { Spara.radera(b.id); radera = null; fel = ''; if (!lista().length) lage = 'meny'; } });
+            knapp(tx + 166, y, 36, 9, $t('NEJ'), { stil: 'morkt', namn: 'start-radera-nej', klick: () => { radera = null; } });
             return;
           }
           knapp(tx, y, 136, 9, kapa(b.namn, konsol ? 118 : 128), { stil: 'morkt', ikon: konsol ? 'kontroll' : null, klick: () => oppna(b.id), namn: 'start-bolag-' + i });
           text(datumText(b.dag), tx + 140, y + 2, F.dim);
           knapp(tx + 190, y, 12, 9, 'X', { stil: 'dim', klick: () => { radera = b.id; }, namn: 'start-radera-' + i });
         }, skL);
-        knapp(tx, 184, 60, 9, 'TILLBAKA', { stil: 'morkt', klick: () => { lage = 'meny'; fel = ''; radera = null; } });
+        knapp(tx, 184, 60, 9, $t('TILLBAKA'), { stil: 'morkt', klick: () => { lage = 'meny'; fel = ''; radera = null; } });
         if (fel) text(kapa(fel, 138), tx + 66, 186, F.rod2);
-        else if (L.some((b) => Spara.lageAv(b) === 'konsol')) { ikon('kontroll', tx + 66, 185, F.dim); text('= KONSOLBOLAG FRÅN 1982', tx + 76, 186, F.dim2); }
+        else if (L.some((b) => Spara.lageAv(b) === 'konsol')) { ikon('kontroll', tx + 66, 185, F.dim); text($t('= KONSOLBOLAG FRÅN 1982'), tx + 76, 186, F.dim2); }
       }
       text('V' + VERSION, W - 4, H - 8, F.dim2, { just: 'h' });
     },
@@ -176,9 +178,9 @@ export function start(A, o = {}) {
     rect(x + 5, y + 5, 18, 18, F.lo); ram(x + 5, y + 5, 18, 18, vald ? v.farg : F.hi);
     ikon(v.ikon, x + 7, y + 7, v.farg, 2);
     if (v.rek) {
-      const bw = tw('REKOMMENDERAT') + 6;
+      const rek = $t('REKOMMENDERAT'), bw = tw(rek) + 6;
       rect(x + w - 5 - bw, y + 6, bw, 9, F.guld2); rect(x + w - 5 - bw, y + 6, bw, 1, ljusa(F.guld2, 0.4));
-      text('REKOMMENDERAT', x + w - 5 - bw + 3, y + 8, F.blak);
+      text(rek, x + w - 5 - bw + 3, y + 8, F.blak);
     }
     textB(v.titel, x + 6, y + 28, vald ? F.text : ljusa(F.dim, 0.3));
     text(v.under, x + 6, y + 38, v.rek ? F.guld : F.dim);

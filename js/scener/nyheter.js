@@ -10,11 +10,12 @@ import { aktivaHandelser, snitt } from '../sim/marknad.js';
 import { arKonsolSpel } from '../sim/spel.js';
 import { aktivaRivalKonsoler } from '../sim/konsol.js';
 import { datumText, arAv, dec } from '../sim/bas.js';
+import { $t } from '../core/i18n.js';
 
 // typ → [färg, etikett, ikon]
-const TAGG = { DU: [F.gron, 'DU'], RIVAL: [F.orange, 'RIVAL'], 'VÄRLD': [F.bla, 'VÄRLD'], STUDIO: [F.lila, 'STUDIO', 'kassett'] };
+const TAGG = { DU: [F.gron, $t('DU')], RIVAL: [F.orange, $t('RIVAL')], 'VÄRLD': [F.bla, $t('VÄRLD')], STUDIO: [F.lila, $t('STUDIO'), 'kassett'] };
 // konsolspelets filter över rubrikerna
-const FILTER = [['alla', 'ALLA'], ['STUDIO', 'STUDIO'], ['RIVAL', 'RIVAL'], ['DU', 'DU']];
+const FILTER = [['alla', $t('ALLA')], ['STUDIO', $t('STUDIO')], ['RIVAL', $t('RIVAL')], ['DU', $t('DU')]];
 // typsnittet saknar minustecknet (−40 % i händelsetexterna): ritas som ett vanligt bindestreck
 const ren = (s) => String(s).replace(/−/g, '-');
 
@@ -25,15 +26,15 @@ export function nyheter(A) {
     tid: true,
     rita() {
       rect(0, 14, W, 11, 0x0a0d1a);
-      textB('NYHETER', 4, 16, F.guld); text('VÄRLDSHÄNDELSER, RIVALERNAS LANSERINGAR OCH TRENDER', 52, 18, F.dim);
+      textB($t('NYHETER'), 4, 16, F.guld); text($t('VÄRLDSHÄNDELSER, RIVALERNAS LANSERINGAR OCH TRENDER'), 52, 18, F.dim);
       // vänster
       panel(2, 27, 236, 173);
-      text('PÅGÅENDE VÄRLDSHÄNDELSER', 7, 31, F.text); rect(4, 31, 2, 6, F.bla);
+      text($t('PÅGÅENDE VÄRLDSHÄNDELSER'), 7, 31, F.text); rect(4, 31, 2, 6, F.bla);
       const h = aktivaHandelser(G);
       let y = 39;
-      if (!h.length) { text('INGET SÄRSKILT HÄNDER JUST NU.', 7, y, F.dim); y += 9; }
-      for (const e of h.slice(0, 2)) { text(`${e.namn} · TILL ${datumText(e.slutDag)}`, 7, y, F.lila2); y += 7; y += stycke(ren(e.text), 7, y, 226, F.dim, { rad: 6 }) + 2; }
-      text('RUBRIKER', 7, y + 2, F.text); rect(4, y + 2, 2, 6, F.bla);
+      if (!h.length) { text($t('INGET SÄRSKILT HÄNDER JUST NU.'), 7, y, F.dim); y += 9; }
+      for (const e of h.slice(0, 2)) { text($t`${e.namn} · TILL ${datumText(e.slutDag)}`, 7, y, F.lila2); y += 7; y += stycke(ren(e.text), 7, y, 226, F.dim, { rad: 6 }) + 2; }
+      text($t('RUBRIKER'), 7, y + 2, F.text); rect(4, y + 2, 2, 6, F.bla);
       // konsolspelet: filterknapparna till höger på rubrikraden (studiornas rubriker blir många)
       if (konsol) {
         let fx = 232;
@@ -45,7 +46,7 @@ export function nyheter(A) {
       }
       y += 10;
       const rubriker = filter === 'alla' ? G.nyheter : G.nyheter.filter((n) => n.typ === filter);
-      if (!rubriker.length) text('INGA SÅDANA RUBRIKER ÄN.', 7, y + 2, F.dim);
+      if (!rubriker.length) text($t('INGA SÅDANA RUBRIKER ÄN.'), 7, y + 2, F.dim);
       // fast radhöjd: etikett + datum, sedan upp till två textrader
       lista(4, y, 232, 198 - y, rubriker.length, 25, (i, yy) => {
         const n = rubriker[i], [c, t, ik] = TAGG[n.typ] || TAGG['VÄRLD'], iw = ik ? 9 : 0;
@@ -62,15 +63,15 @@ export function nyheter(A) {
       // höger: kritikernas förväntningar (konsolerna eller telefonerna)
       const ar = arAv(G.dag), linje = konsol && !(G.flaggor.mobil && hoger === 'telefon') ? 'konsol' : 'telefon', Li = linjeAv(linje);
       panel(242, 27, 138, 173);
-      text(`KRITIKERNA VÄNTAR SIG ${ar}`, 247, 31, F.text); rect(244, 31, 2, 6, F.bla);
+      text($t`KRITIKERNA VÄNTAR SIG ${ar}`, 247, 31, F.text); rect(244, 31, 2, 6, F.bla);
       if (konsol && G.flaggor.mobil) {
         // telefonavdelningen är öppen: välj vilken linje listan gäller
-        knapp(247, 37, 62, 8, 'KONSOLER', { stil: 'dim', aktiv: linje === 'konsol', klick: () => { hoger = 'konsol'; }, namn: 'nyheter-krit-konsol' });
-        knapp(312, 37, 62, 8, 'TELEFONER', { stil: 'dim', aktiv: linje === 'telefon', klick: () => { hoger = 'telefon'; }, namn: 'nyheter-krit-telefon' });
-      } else text(linje === 'konsol' ? 'KAROSS, FÄRG OCH YTA ÄR DITT VAL.' : 'FORM, STORLEK OCH FÄRG ÄR DITT VAL.', 247, 39, F.gron2);
-      text(`SNITTET I ÅR: ${dec(snitt(G.dag, linje), 1)}/10`, 247, 46, F.guld);
-      if (konsol) { text('BÄSTA TEKNIK NU', 247, 55, F.dim); ikon('kolv', 334, 54, F.orange2); text('FORSKA', 343, 55, F.orange2); }
-      else text('BÄSTA TEKNIK SOM FINNS NU', 247, 55, F.dim);
+        knapp(247, 37, 62, 8, $t('KONSOLER'), { stil: 'dim', aktiv: linje === 'konsol', klick: () => { hoger = 'konsol'; }, namn: 'nyheter-krit-konsol' });
+        knapp(312, 37, 62, 8, $t('TELEFONER'), { stil: 'dim', aktiv: linje === 'telefon', klick: () => { hoger = 'telefon'; }, namn: 'nyheter-krit-telefon' });
+      } else text(linje === 'konsol' ? $t('KAROSS, FÄRG OCH YTA ÄR DITT VAL.') : $t('FORM, STORLEK OCH FÄRG ÄR DITT VAL.'), 247, 39, F.gron2);
+      text($t`SNITTET I ÅR: ${dec(snitt(G.dag, linje), 1)}/10`, 247, 46, F.guld);
+      if (konsol) { text($t('BÄSTA TEKNIK NU'), 247, 55, F.dim); ikon('kolv', 334, 54, F.orange2); text($t('FORSKA'), 343, 55, F.orange2); }
+      else text($t('BÄSTA TEKNIK SOM FINNS NU'), 247, 55, F.dim);
       Li.GRUPPER.forEach((g, i) => {
         const e = forvantan(g.id, ar, linje), del = Li.DELAR[g.id][e], har = harDel(G, g.id, del.id, linje), y2 = 63 + i * 10;
         text(kapa(g.namn, 52), 247, y2 + 2, F.text);
@@ -81,7 +82,8 @@ export function nyheter(A) {
           text(kapa(del.namn, w - 14), x + (w - 10) / 2, y2 + 2, har ? F.gron2 : F.orange2, { just: 'c' });
           ikon(har ? 'bock' : 'kolv', x + w - 9, y2 + 1, har ? F.gron2 : F.orange2);
         } else {
-          text(kapa(del.namn, 50) + (har ? '' : ' (FORSKA)'), x + w / 2, y2 + 2, har ? F.gron2 : F.orange2, { just: 'c' });
+          const dn = kapa(del.namn, 50);
+          text(har ? dn : $t`${dn} (FORSKA)`, x + w / 2, y2 + 2, har ? F.gron2 : F.orange2, { just: 'c' });
           if (har) ikon('bock', x + w - 9, y2 + 1, F.gron2);
         }
       });
@@ -91,9 +93,9 @@ export function nyheter(A) {
     },
   };
   function rivaler(y) {
-    text('RIVALKONSOLER I BUTIKERNA', 247, y, F.text); rect(244, y, 2, 6, F.orange);
+    text($t('RIVALKONSOLER I BUTIKERNA'), 247, y, F.text); rect(244, y, 2, 6, F.orange);
     const R = aktivaRivalKonsoler(G).sort((a, b) => b.betyg - a.betyg), plats = Math.max(0, Math.floor((198 - (y + 8)) / 8));
-    if (!R.length) { text('INGA ÄN.', 247, y + 9, F.dim); return; }
+    if (!R.length) { text($t('INGA ÄN.'), 247, y + 9, F.dim); return; }
     R.slice(0, plats).forEach((r, i) => {
       const yy = y + 9 + i * 8, b = dec(r.betyg, 1);
       text(kapa(r.namn, 120 - tw(b) - 4), 247, yy, F.dim);

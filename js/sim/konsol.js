@@ -19,6 +19,7 @@ import { betala, intakt, signal, nyhet, telefonRivaler, KONSOL_START } from './s
 import { kSnitt, kMarknadspris, aktivaEffekter } from './marknad.js';
 import { kontorsVarden } from './kontor.js';
 import { moralFaktor } from './personal.js';
+import { $t } from '../core/i18n.js';
 
 export const LICENS = 0.12;
 export const LICENS_MAX = 0.25;
@@ -103,19 +104,20 @@ export function manadsForfragningar(G) {
     // relation ger större chans. Säger studion nej går spelet till rivalen direkt.
     if (s.stj >= 4) {
       const chans = valChans(G, s, m);
-      if (slump(G) > chans) { tillRival(G, s, 'VALDE RIVALEN'); signal(G, 'toast', { text: `${studioAv(s.studio).namn} VALDE ${rivalNamn(G, s)} FÖR ${s.titel}`, farg: 'rod' }); continue; }
+      if (slump(G) > chans) { tillRival(G, s, 'VALDE RIVALEN'); signal(G, 'toast', { text: $t`${studioAv(s.studio).namn} VALDE ${rivalNamn(G, s)} FÖR ${s.titel}`, farg: 'rod' }); continue; }
     }
     const f = { id: 'f' + (++G.k.lopnr), spel: s.id, studio: s.studio, konsol: m.id, dag: G.dag, slutDag: G.dag + 45, devkit: devkitPris(G), licens: LICENS, lanseringsspel: !!m.bygge };
     G.k.forfragningar.push(f); n++;
-    nyhet(G, 'STUDIO', `${studioAv(s.studio).namn} VILL GÖRA ${s.titel} TILL ${m.namn || 'DIN NYA KONSOL'}!`);
-    signal(G, 'studio', { forfragan: f.id, rubrik: `${studioAv(s.studio).namn} KNACKAR PÅ!`, text: `DE VILL GÖRA ${s.titel} (${'★'.repeat(s.stj)}) TILL ${m.namn || 'DIN NYA KONSOL'}.`, paus: true, ljud: 'mal' });
+    const stNamn = studioAv(s.studio).namn, titel = s.titel, till = m.namn || $t('DIN NYA KONSOL');
+    nyhet(G, 'STUDIO', $t`${stNamn} VILL GÖRA ${titel} TILL ${till}!`);
+    signal(G, 'studio', { forfragan: f.id, rubrik: $t`${stNamn} KNACKAR PÅ!`, text: $t`DE VILL GÖRA ${titel} (${'★'.repeat(s.stj)}) TILL ${till}.`, paus: true, ljud: 'mal' });
   }
 }
 // FÖRHANDLA: chansen att studion säger ja till en högre andel (12 % → säkert, 25 % → 30 %), bättre med god relation
 export const jaChans = (G, f, licens) => klamp(1 - (licens - LICENS) / (LICENS_MAX - LICENS) * 0.7 + 0.1 * relation(G, f.studio), 0.05, 1);
 // svar: 'ja' | 'forhandla' | 'exklusivt' | 'nej'
 export function svara(G, fId, svar, { licens = LICENS } = {}) {
-  const f = G.k.forfragningar.find((x) => x.id === fId); if (!f) return { ok: false, fel: 'FINNS INTE' };
+  const f = G.k.forfragningar.find((x) => x.id === fId); if (!f) return { ok: false, fel: $t('FINNS INTE') };
   const s = spelAv(f.spel), st = studioAv(f.studio);
   const kvar = () => { G.k.forfragningar = G.k.forfragningar.filter((x) => x !== f); };
   if (svar === 'nej') {
@@ -128,13 +130,13 @@ export function svara(G, fId, svar, { licens = LICENS } = {}) {
     licens = klamp(Math.round(licens * 100) / 100, LICENS, LICENS_MAX);
     if (slump(G) > jaChans(G, f, licens)) {
       kvar(); andraRelation(G, f.studio, -1); tillRival(G, s, 'GICK TILL EN RIVAL');
-      signal(G, 'toast', { text: `${st.namn} TYCKTE ATT DU VAR FÖR GIRIG!`, farg: 'rod' });
+      signal(G, 'toast', { text: $t`${st.namn} TYCKTE ATT DU VAR FÖR GIRIG!`, farg: 'rod' });
       return { ok: true, nej: true };
     }
   } else licens = LICENS;
   if (svar === 'exklusivt') {
     const pris = exklusivPris(G, s.stj);
-    if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
+    if (G.bolag.kassa < pris) return { ok: false, fel: $t('FÖR LITE PENGAR') };
     betala(G, pris, 'spel'); exklusiv = true; andraRelation(G, f.studio, 1);
   }
   kvar();
@@ -146,7 +148,9 @@ export function svara(G, fId, svar, { licens = LICENS } = {}) {
     salda: 0, intakt: 0, veckaNu: 0, veckor: [], glimt: s.id, final: !!s.final,
   });
   G.flaggor.avtal = (G.flaggor.avtal || 0) + 1;
-  nyhet(G, 'STUDIO', `AVTAL! ${st.namn} BÖRJAR GÖRA ${s.titel}${exklusiv ? ' – BARA TILL DINA KONSOLER' : ''}. DE KÖPER ETT UTVECKLINGSKIT FÖR ${kr(f.devkit)}.`);
+  const stNamn = st.namn, titel = s.titel, kit = kr(f.devkit);
+  nyhet(G, 'STUDIO', exklusiv ? $t`AVTAL! ${stNamn} BÖRJAR GÖRA ${titel} – BARA TILL DINA KONSOLER. DE KÖPER ETT UTVECKLINGSKIT FÖR ${kit}.`
+    : $t`AVTAL! ${stNamn} BÖRJAR GÖRA ${titel}. DE KÖPER ETT UTVECKLINGSKIT FÖR ${kit}.`);
   return { ok: true };
 }
 const konsolDesign = (G, id) => (G.produkter.find((p) => p.id === id) || G.projekt.find((p) => p.id === id))?.design || null;
@@ -158,7 +162,7 @@ const rivalNamn = (G, s) => {
 function tillRival(G, s, varfor = '') {
   if (!s || G.k.tagna.includes(s.id)) return;
   G.k.tagna.push(s.id);
-  nyhet(G, 'RIVAL', `${studioAv(s.studio).namn} SLÄPPER ${s.titel} TILL ${rivalNamn(G, s)}.`);
+  nyhet(G, 'RIVAL', $t`${studioAv(s.studio).namn} SLÄPPER ${s.titel} TILL ${rivalNamn(G, s)}.`);
 }
 // nyår: spel som ingen tagit när året efter deras år är slut går till rivalerna
 function spelTillRivaler(G) {
@@ -187,8 +191,9 @@ function slapp(G, s, medKonsolen = false) {
   if (s.stj <= 2 && !s.egen && spelPa(G, s.konsol).filter((x) => x.status === 'ute').length > 3) G.bolag.rykte = Math.round(klamp(G.bolag.rykte - 0.02, 0.25, 3) * 100) / 100;
   if (s.stj >= 4 && !s.egen) andraRelation(G, s.studio, 1);   // en hit gör studion glad
   const vem = s.egen ? 'DU' : 'STUDIO';
-  nyhet(G, vem, `${s.titel} SLÄPPS TILL ${p ? p.namn : 'DIN KONSOL'}${medKonsolen ? ' SAMMA DAG SOM KONSOLEN' : ''}!`);
-  signal(G, 'spelslapp', { spel: s.id, glimt: s.glimt, titel: s.titel, konsol: p?.id, rubrik: `${s.titel} ÄR UTE!`, paus: true, ljud: 'klar' });
+  const titel = s.titel, till = p ? p.namn : $t('DIN KONSOL');
+  nyhet(G, vem, medKonsolen ? $t`${titel} SLÄPPS TILL ${till} SAMMA DAG SOM KONSOLEN!` : $t`${titel} SLÄPPS TILL ${till}!`);
+  signal(G, 'spelslapp', { spel: s.id, glimt: s.glimt, titel: s.titel, konsol: p?.id, rubrik: $t`${titel} ÄR UTE!`, paus: true, ljud: 'klar' });
 }
 export function dagligaSpel(G) {
   const eff = aktivaEffekter(G), pris = spelPris(G);
@@ -230,16 +235,16 @@ export function spelDagar(G) {
   return Math.max(6, Math.ceil((12 + spelMal(G) / 3) / ((kraft / 2) * (1 + v.arbetsfart))));
 }
 export function startaEgetSpel(G, egetId, konsolId) {
-  const E = egetSpelAv(egetId); if (!E) return { ok: false, fel: 'FINNS INTE' };
-  if (!spelutvecklare(G).length) return { ok: false, fel: 'ANSTÄLL EN SPELUTVECKLARE FÖRST' };
-  if (egetPagar(G)) return { ok: false, fel: 'TEAMET GÖR REDAN ETT SPEL' };
+  const E = egetSpelAv(egetId); if (!E) return { ok: false, fel: $t('FINNS INTE') };
+  if (!spelutvecklare(G).length) return { ok: false, fel: $t('ANSTÄLL EN SPELUTVECKLARE FÖRST') };
+  if (egetPagar(G)) return { ok: false, fel: $t('TEAMET GÖR REDAN ETT SPEL') };
   const p = G.produkter.find((x) => x.id === konsolId && x.aktiv && x.design.linje === 'konsol');
-  if (!p) return { ok: false, fel: 'VÄLJ EN KONSOL SOM SÄLJS' };
-  if (!klararKrav(p.design, E.kraver)) return { ok: false, fel: 'KONSOLEN KLARAR INTE SPELET' };
+  if (!p) return { ok: false, fel: $t('VÄLJ EN KONSOL SOM SÄLJS') };
+  if (!klararKrav(p.design, E.kraver)) return { ok: false, fel: $t('KONSOLEN KLARAR INTE SPELET') };
   const dagar = spelDagar(G);
   G.k.spel.push({ id: 'egen-' + (++G.k.lopnr), egetId: E.id, titel: E.titel, studio: 'egen', egen: true, stj: 1, konsol: p.id, status: 'utvecklas',
     startDag: G.dag, dagar, dagNu: 0, kval: 0, mal: spelMal(G), licens: 0, salda: 0, intakt: 0, veckaNu: 0, veckor: [], glimt: E.glimt || null });
-  nyhet(G, 'DU', `SPELUTVECKLARNA BÖRJAR GÖRA ${E.titel}. BERÄKNAD TID: ${dagar} DAGAR.`);
+  nyhet(G, 'DU', $t`SPELUTVECKLARNA BÖRJAR GÖRA ${E.titel}. BERÄKNAD TID: ${dagar} DAGAR.`);
   return { ok: true };
 }
 export const egnaStjarnor = (G, kval, mal_) => {
@@ -284,15 +289,15 @@ export const kanLana = (G, studio) => relation(G, studio) >= 0 && G.k.spel.some(
 export const lanbaraStudios = (G) => STUDIOS.filter((s) => kanLana(G, s.id));
 export function lanaUtvecklare(G, prId, studio) {
   const pr = G.projekt.find((p) => p.id === prId && p.design.linje === 'konsol' && p.status === 'bygger');
-  if (!pr) return { ok: false, fel: 'INGET KONSOLBYGGE' };
-  if (pr.lanad) return { ok: false, fel: 'BYGGET HAR REDAN EN LÅNAD' };
-  if (!kanLana(G, studio)) return { ok: false, fel: 'STUDION KÄNNER INTE ER ÄN' };
-  const pris = lanePris(G); if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  if (!pr) return { ok: false, fel: $t('INGET KONSOLBYGGE') };
+  if (pr.lanad) return { ok: false, fel: $t('BYGGET HAR REDAN EN LÅNAD') };
+  if (!kanLana(G, studio)) return { ok: false, fel: $t('STUDION KÄNNER INTE ER ÄN') };
+  const pris = lanePris(G); if (G.bolag.kassa < pris) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   betala(G, pris, 'personal');
   pr.lanad = { studio, kraft: 2.4, namn: studioAv(studio).namn };
   if (pr.fas !== 'mjukvara') pr.dagar = pr.dagNu + Math.ceil((pr.dagar - pr.dagNu) * 0.75);
   else pr.spelDagar = pr.spelDagNu + Math.ceil((pr.spelDagar - pr.spelDagNu) * 0.75);
-  nyhet(G, 'STUDIO', `${studioAv(studio).namn} LÅNAR UT EN UTVECKLARE TILL ${pr.design.namn}.`);
+  nyhet(G, 'STUDIO', $t`${studioAv(studio).namn} LÅNAR UT EN UTVECKLARE TILL ${pr.design.namn}.`);
   return { ok: true };
 }
 
@@ -307,7 +312,7 @@ function rivalLanserar(G, R, tyst = false) {
   const pris = Math.round(kMarknadspris(dag) * Math.max(0.15, 1 + 0.25 * (betyg - kSnitt(dag))) * kEnhetAv(R.enhet).pris * R.prisF / 10) * 10;
   G.k.rivaler.push({ id: R.id, lanseradDag: dag, betyg, pris, slutDag: dag + R.liv * 365, slut: false });
   if (!tyst) {
-    nyhet(G, 'RIVAL', `${R.bolag} SLÄPPER ${R.namn}. KRITIKERNA GER DEN ${dec(betyg)}/10.`);
+    nyhet(G, 'RIVAL', $t`${R.bolag} SLÄPPER ${R.namn}. KRITIKERNA GER DEN ${dec(betyg)}/10.`);
     signal(G, 'ticker', { text: `${R.namn} – ${dec(betyg)}/10` });
   }
 }
@@ -324,8 +329,8 @@ export function oppnaMobil(G) {
   if (!G.k || G.flaggor.mobil) return;
   G.flaggor.mobil = true; G.flaggor.mobilDag = G.dag;
   if (!G.marknad.rivaler.length) telefonRivaler(G);
-  nyhet(G, 'DU', `${G.bolag.namn} ÖPPNAR EN TELEFONAVDELNING! NU KAN NI DESIGNA TELEFONER OCH ANDRA PRYLAR.`);
-  signal(G, 'stor', { rubrik: 'TELEFONAVDELNINGEN!', text: 'NU FINNS TELEFONERNA I FORSKNINGEN OCH I DESIGNERN. KONSOLERNA SÄLJER VIDARE SOM VANLIGT.', paus: true, konfetti: true });
+  nyhet(G, 'DU', $t`${G.bolag.namn} ÖPPNAR EN TELEFONAVDELNING! NU KAN NI DESIGNA TELEFONER OCH ANDRA PRYLAR.`);
+  signal(G, 'stor', { rubrik: $t('TELEFONAVDELNINGEN!'), text: $t('NU FINNS TELEFONERNA I FORSKNINGEN OCH I DESIGNERN. KONSOLERNA SÄLJER VIDARE SOM VANLIGT.'), paus: true, konfetti: true });
 }
 
 // ---------- varje dag ----------

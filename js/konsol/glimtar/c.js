@@ -1,5 +1,6 @@
 // Spelglimtar, grupp C. Samma format som BAS i ../glimtar.js. Verktygen finns i ../pix.js.
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // ---------- egna ritverktyg ----------
 const klamp = (v, a = 0, b = 1) => Math.max(a, Math.min(b, v));
@@ -101,7 +102,7 @@ function gtTaxi(x, cx, by, d, t) {
   disc(x, cx - 9, by - 25, 4, '#2a1a12'); R(x, cx - 13, by - 26, 9, 2, '#e8302a');      // föraren med pannband
   disc(x, cx + 9, by - 24, 4, '#f0c050'); P(x, cx + 7, by - 26, '#fff0a0');               // kunden i passagerarsätet
   R(x, cx - 16, by - 22, 13, 5, '#8a2a20'); R(x, cx + 3, by - 22, 13, 5, '#8a2a20'); R(x, cx - 16, by - 22, 13, 1, '#b04a3a'); R(x, cx + 3, by - 22, 13, 1, '#b04a3a');
-  R(x, cx - 10, by - 41, 21, 9, '#141414'); R(x, cx - 9, by - 40, 19, 7, '#f8e040'); T(x, 'TAXI', cx - 7, by - 39, '#141414');
+  R(x, cx - 10, by - 41, 21, 9, '#141414'); R(x, cx - 9, by - 40, 19, 7, '#f8e040'); T(x, $t('TAXI'), cx - 7, by - 39, '#141414');
   R(x, cx - 1, by - 32, 3, 1, '#141414');
   // bakpartiet: gult med rutband, baklyktor, kromad stötfångare
   R(x, cx - 22, by - 18, 44, 11, '#f8c818'); R(x, cx - 21, by - 18, 42, 1, '#fff27a'); R(x, cx - 22, by - 17, 44, 1, '#ffe048');
@@ -208,7 +209,7 @@ function galenTaxi(x, t) {
   TK(x, tid, 5, 5, '#ffe838', '#7a2400', BIG, 2);
   dollarK(x, W - 52, 5, '#5cff5c', '#0a4a0a'); TK(x, '1286.40', W - 44, 5, '#5cff5c', '#0a4a0a', BIG);
   if (d > 0.55) {
-    const s = 'GALEN DRIFT!', w = TW(s, BIG); TK(x, s, 74 - w / 2, 54, '#ffe030', '#b81808', BIG);
+    const s = $t('GALEN DRIFT!'), w = TW(s, BIG); TK(x, s, 74 - w / 2, 54, '#ffe030', '#b81808', BIG);
     TK(x, '×' + (1 + (Math.floor(fas * 1.5) % 4)), 74 + w / 2 + 4, 54, '#ffffff', '#b81808', BIG);
   }
 }
@@ -326,7 +327,7 @@ function haloo(x, t) {
   disc(x, MX, MY, 12, 'rgba(14,34,80,0.55)'); ring(x, MX, MY, 11.5, 12.5, '#5ab8f0'); R(x, MX - 11, MY, 23, 1, 'rgba(90,184,240,0.5)'); R(x, MX, MY - 11, 1, 23, 'rgba(90,184,240,0.5)');
   const pr = mod(t, 1.6) / 1.6 * 12; ring(x, MX, MY, pr - 0.6, pr + 0.4, `rgba(140,220,255,${(0.8 * (1 - pr / 12)).toFixed(2)})`);
   R(x, MX - 1, MY - 1, 3, 3, '#ffe040'); R(x, MX + 5, MY - 4, 2, 2, '#ffe040');
-  if (fas > 4 && fas < 6.6) { const s = 'KONTROLLPUNKT... KLAR', w = TW(s); R(x, 4, 40, w + 6, 9, 'rgba(8,20,48,0.6)'); T(x, s, 7, 42, '#9ae2ff'); }
+  if (fas > 4 && fas < 6.6) { const s = $t('KONTROLLPUNKT... KLAR'), w = TW(s); R(x, 4, 40, w + 6, 9, 'rgba(8,20,48,0.6)'); T(x, s, 7, 42, '#9ae2ff'); }
 }
 
 // ---------- 2002 SUPER MARCO SOLSKEN (Super Mario Sunshine) ----------
@@ -446,7 +447,7 @@ function saBak(y) {
   for (let k = 0; bx < 74; k++) { const bw = 6 + Math.floor(hash(k, 31) * 8), bh = 10 + Math.floor(hash(k, 32) * 22); R(y, bx, 56 - bh, bw, bh, k % 2 ? '#b8826c' : '#c8907a'); for (let wy = 58 - bh; wy < 54; wy += 3) for (let wx = bx + 1; wx < bx + bw - 1; wx += 2) if (hash(wx, wy) > 0.7) P(y, wx, wy, '#e8b090'); bx += bw + 1; }
   // Vinewood-bergen med skylten
   for (let i = 70; i < W; i++) { const h = Math.round(16 + Math.sin((i - 70) / 22) * 8 + Math.sin(i / 7) * 1.5); R(y, i, 56 - h, 1, h, '#8c7048'); P(y, i, 56 - h, '#a88a5c'); if (hash(i, 3) > 0.7) R(y, i, 57 - h, 1, 3, '#7a6040'); }
-  T(y, 'VINEWOOD', 104, 37, '#5a4630'); T(y, 'VINEWOOD', 103, 36, '#f8f0e0');
+  T(y, $t('VINEWOOD'), 104, 37, '#5a4630'); T(y, $t('VINEWOOD'), 103, 36, '#f8f0e0');
   R(y, 0, 55, W, 2, '#c8a07c');
 }
 // knäet: hittar leden mellan höft och fot (benlängder a och b), knäet framåt
@@ -528,7 +529,7 @@ function sanAndreas(x, t) {
   const pengar = '00001250', pw = TW(pengar, BIG);
   TK(x, pengar, W - 5 - pw, 22, '#4a9a3a', '#101010', BIG); dollarK(x, W - 12 - pw, 22, '#4a9a3a', '#101010');
   // stadsdelens namn
-  if (fas > 1 && fas < 4.6) { const z = 'GANTON', zw = TW(z, BIG); TK(x, z, W - 6 - zw, H - 13, '#f4f0e8', '#101010', BIG); }
+  if (fas > 1 && fas < 4.6) { const z = $t('GANTON'), zw = TW(z, BIG); TK(x, z, W - 6 - zw, H - 13, '#f4f0e8', '#101010', BIG); }
 }
 
 // ---------- 2005 VALPARNA (Nintendogs) ----------
@@ -595,14 +596,14 @@ function valparna(x, t) {
   for (let k = 0; k < 4; k++) { const a = mod(t * 1.3 + k * 0.25, 1), sx = HX - 22 + ((k * 13) % 44), sy = HY - 14 + ((k * 17) % 30); if (a < 0.5) { const r = a < 0.25 ? 1 : 2; R(x, sx - r, sy, r * 2 + 1, 1, '#ffffff'); R(x, sx, sy - r, 1, r * 2 + 1, '#ffffff'); } }
   // överst: klocka och valpens namn i en vit bubbla
   R(x, 3, 3, 46, 11, '#ffffff'); R(x, 4, 2, 44, 13, '#ffffff'); R(x, 3, 13, 46, 1, '#d8c8b8');
-  hjarta(x, 6, 5, '#ff4070', '#ffc0d0'); T(x, 'BUSTER', 15, 6, '#6a4a3a');
+  hjarta(x, 6, 5, '#ff4070', '#ffc0d0'); T(x, $t('BUSTER'), 15, 6, '#6a4a3a');
   R(x, W - 30, 3, 27, 11, '#ffffff'); R(x, W - 31, 4, 29, 9, '#ffffff'); T(x, '12:30', W - 27, 6, '#6a4a3a');
 }
 
 export const GLIMTAR = [
-  { id: 'galentaxi', titel: 'TURBOTAXI', forebild: 'Crazy Taxi', ar: 1999, studio: 'TORA', w: 160, h: 120, rita: galenTaxi },
-  { id: 'haloo', titel: 'GLORIA', forebild: 'Halo: Combat Evolved', ar: 2001, studio: 'ORBITAL', w: 160, h: 90, rita: haloo },
-  { id: 'marcosolsken', titel: 'PIPO SOLSKEN', forebild: 'Super Mario Sunshine', ar: 2002, studio: 'SVAMPSTUDION', w: 160, h: 90, rita: marcoSolsken },
-  { id: 'gtasa', titel: 'BILTJUVEN: SOLKUSTEN', forebild: 'GTA San Andreas', ar: 2004, studio: 'ASFALT', w: 160, h: 90, rita: sanAndreas },
-  { id: 'valparna', titel: 'VALPARNA', forebild: 'Nintendogs', ar: 2005, studio: 'SVAMPSTUDION', w: 128, h: 96, rita: valparna },
+  { id: 'galentaxi', titel: $t('TURBOTAXI'), forebild: 'Crazy Taxi', ar: 1999, studio: $t('TORA'), w: 160, h: 120, rita: galenTaxi },
+  { id: 'haloo', titel: $t('GLORIA'), forebild: 'Halo: Combat Evolved', ar: 2001, studio: $t('ORBITAL'), w: 160, h: 90, rita: haloo },
+  { id: 'marcosolsken', titel: $t('PIPO SOLSKEN'), forebild: 'Super Mario Sunshine', ar: 2002, studio: $t('SVAMPSTUDION'), w: 160, h: 90, rita: marcoSolsken },
+  { id: 'gtasa', titel: $t('BILTJUVEN: SOLKUSTEN'), forebild: 'GTA San Andreas', ar: 2004, studio: $t('ASFALT'), w: 160, h: 90, rita: sanAndreas },
+  { id: 'valparna', titel: $t('VALPARNA'), forebild: 'Nintendogs', ar: 2005, studio: $t('SVAMPSTUDION'), w: 128, h: 96, rita: valparna },
 ];

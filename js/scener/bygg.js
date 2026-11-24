@@ -9,7 +9,8 @@ import { hud, flikrad } from './ram.js';
 import { KATEGORIER, KATALOG, MOBEL } from '../data/katalog.js';
 import { kontorAv } from '../data/varld.js';
 import { kontorsVarden, placera, taBort, lastOk } from '../sim/kontor.js';
-import { kr, dec } from '../sim/bas.js';
+import { kr, dec, proc } from '../sim/bas.js';
+import { $t } from '../core/i18n.js';
 
 const TUMMAR = new Map();
 function tumnagel(m) {
@@ -32,17 +33,17 @@ function tumnagel(m) {
   TUMMAR.set(m.id, c); return c;
 }
 const slotTyp = (m) => (m.plats === 'dator' || m.plats === 'stol' ? 'bord' : m.plats);
-const bonusText = (m) => m.bonus.arbetsfart != null ? `FART +${Math.round(m.bonus.arbetsfart * 100)} %` : m.bonus.forskning != null ? `FORSKNING +${Math.round(m.bonus.forskning * 100)} %` : m.bonus.buggfix ? `BUGGFIX +${Math.round(m.bonus.buggfix * 100)} %` : m.bonus.trivsel ? `TRIVSEL +${m.bonus.trivsel}` : m.plats === 'golvtyp' ? 'GOLV' : m.plats === 'vaggtyp' ? 'VÄGG' : 'DEKOR';
+const bonusText = (m) => m.bonus.arbetsfart != null ? $t`FART +${proc(m.bonus.arbetsfart)}` : m.bonus.forskning != null ? $t`FORSKNING +${proc(m.bonus.forskning)}` : m.bonus.buggfix ? $t`BUGGFIX +${proc(m.bonus.buggfix)}` : m.bonus.trivsel ? $t`TRIVSEL +${m.bonus.trivsel}` : m.plats === 'golvtyp' ? $t('GOLV') : m.plats === 'vaggtyp' ? $t('VÄGG') : $t('DEKOR');
 
 export function bygg(A, o = {}) {
   const G = A.G;
   let kat = o.kategori || 'bord', vald = null, valdPlats = o.plats || null, sk = 0, fel = '', kamera = 0, kameraY = 0, drag = null;
   if (o.plats && o.plats.typ === 'bord') kat = 'bord';
-  const gjort = (r) => { if (!r || !r.ok) { fel = r?.fel || 'GICK INTE'; A.ljud('fel'); return false; } fel = ''; A.ljud('mynt'); return true; };
+  const gjort = (r) => { if (!r || !r.ok) { fel = r?.fel || $t('GICK INTE'); A.ljud('fel'); return false; } fel = ''; A.ljud('mynt'); return true; };
   function platsKlick(p) {
     if (vald) {
       const m = MOBEL[vald];
-      if (slotTyp(m) !== p.typ) { fel = 'PASSAR INTE HÄR'; A.ljud('fel'); return; }
+      if (slotTyp(m) !== p.typ) { fel = $t('PASSAR INTE HÄR'); A.ljud('fel'); return; }
       if (gjort(placera(G, p, vald)) && !G.kontor.forrad.includes(vald) && m.plats !== 'bord') { /* behåll valet för fler */ }
       return;
     }
@@ -67,32 +68,32 @@ export function bygg(A, o = {}) {
       if (L.hojd > 202 || L.bredd > W) hit(0, 25, W, 110, { hjul: (dy) => { kameraY += dy; }, block: false });
       // statusrad
       rect(0, 14, W, 11, 0x0a0d1a);
-      const st = [['KONTOR', v.kontorStj], ['TRIVSEL', v.trivselStj], ['PRODUKTIVITET', v.prodStj]];
+      const st = [[$t('KONTOR'), v.kontorStj], [$t('TRIVSEL'), v.trivselStj], [$t('PRODUKTIVITET'), v.prodStj]];
       let x = 4;
       for (const [n, s] of st) { text(n, x, 17, F.dim); x += tw(n) + 3; ikon('stjarna', x, 16, F.guld); x += 8; text(dec(s, 1), x, 17, F.text); x += 18; }
-      text(`BORD ${G.kontor.bord.filter(Boolean).length}/${G.kontor.bord.length}`, x, 17, F.text); x += 46;
-      text(`FORSKNING ×${dec(v.forskning, 2)}`, x, 17, F.bla2); x += 70;
-      text(`BUGGFIX ×${dec(v.buggfix, 2)}`, x, 17, F.rod2);
+      text($t`BORD ${G.kontor.bord.filter(Boolean).length}/${G.kontor.bord.length}`, x, 17, F.text); x += 46;
+      text($t`FORSKNING ×${dec(v.forskning, 2)}`, x, 17, F.bla2); x += 70;
+      text($t`BUGGFIX ×${dec(v.buggfix, 2)}`, x, 17, F.rod2);
       // vald plats: ta bort
       if (valdPlats && !vald) {
         const k = G.kontor, id = valdPlats.typ === 'bord' ? k.bord[valdPlats.i]?.bord : k[valdPlats.typ][valdPlats.i];
         if (id) {
           const m = MOBEL[id], pris = valdPlats.typ === 'bord' ? ['bord', 'dator', 'stol'].reduce((s, d) => s + (MOBEL[k.bord[valdPlats.i][d]]?.pris || 0), 0) : m.pris;
           panel(120, 28, 144, 34);
-          text(valdPlats.typ === 'bord' ? 'ARBETSPLATS' : m.namn, 126, 32, F.guld);
-          knapp(126, 40, 64, 9, 'SÄLJ +' + kr(pris / 2, true), { stil: 'rod', klick: () => { if (gjort(taBort(G, valdPlats, true))) valdPlats = null; } });
-          knapp(194, 40, 64, 9, 'TILL FÖRRÅDET', { stil: 'morkt', klick: () => { if (gjort(taBort(G, valdPlats, false))) valdPlats = null; } });
-          text('ELLER VÄLJ EN NY MÖBEL NEDAN', 126, 52, F.dim);
+          text(valdPlats.typ === 'bord' ? $t('ARBETSPLATS') : $t(m.namn), 126, 32, F.guld);
+          knapp(126, 40, 64, 9, $t`SÄLJ +${kr(pris / 2, true)}`, { stil: 'rod', klick: () => { if (gjort(taBort(G, valdPlats, true))) valdPlats = null; } });
+          knapp(194, 40, 64, 9, $t('TILL FÖRRÅDET'), { stil: 'morkt', klick: () => { if (gjort(taBort(G, valdPlats, false))) valdPlats = null; } });
+          text($t('ELLER VÄLJ EN NY MÖBEL NEDAN'), 126, 52, F.dim);
         }
       }
       // paletten
       const py = 148;
       rect(0, py, W, 54, 0x0a0d1a); rect(0, py, W, 1, F.orange);
       // förrådet har en egen knapp längst till vänster (i kategoriraden fick den aldrig plats)
-      knapp(1, py + 2, 49, 9, 'FÖRRÅD ' + G.kontor.forrad.length, { stil: 'orange', aktiv: kat === 'forrad', klick: () => { kat = 'forrad'; sk = 0; vald = null; }, namn: 'bygg-forrad' });
+      knapp(1, py + 2, 49, 9, $t`FÖRRÅD ${G.kontor.forrad.length}`, { stil: 'orange', aktiv: kat === 'forrad', klick: () => { kat = 'forrad'; sk = 0; vald = null; }, namn: 'bygg-forrad' });
       let cx = 54;
-      for (const c of KATEGORIER) { const w = tw(c.namn) + 6; if (cx + w > W - 30) break; knapp(cx, py + 2, w, 9, c.namn, { stil: 'dim', aktiv: kat === c.id, klick: () => { kat = c.id; sk = 0; vald = null; }, namn: 'bygg-kat-' + c.id }); cx += w + 2; }
-      knapp(W - 28, py + 2, 26, 9, 'KLAR', { stil: 'gron', klick: () => A.go('kontor'), namn: 'bygg-klar' });
+      for (const c of KATEGORIER) { const cn = $t(c.namn), w = tw(cn) + 6; if (cx + w > W - 30) break; knapp(cx, py + 2, w, 9, cn, { stil: 'dim', aktiv: kat === c.id, klick: () => { kat = c.id; sk = 0; vald = null; }, namn: 'bygg-kat-' + c.id }); cx += w + 2; }
+      knapp(W - 28, py + 2, 26, 9, $t('KLAR'), { stil: 'gron', klick: () => A.go('kontor'), namn: 'bygg-klar' });
       const varor = kat === 'forrad' ? [...new Set(G.kontor.forrad)].map((id) => MOBEL[id]).filter(Boolean) : KATALOG.filter((m) => m.kat === kat);
       const kw = 48, maxSk = Math.max(0, varor.length * kw - (W - 8));
       sk = Math.max(0, Math.min(maxSk, sk));
@@ -109,16 +110,16 @@ export function bygg(A, o = {}) {
         }, namn: 'mobel-' + m.id });
         ctx.save(); ctx.beginPath(); ctx.rect(x + 1, y + 1, kw - 5, 18); ctx.clip(); ctx.drawImage(tumnagel(m), x + 1, y - 3); ctx.restore();
         if (m.stj) stjarnor(x + 2, y + 1, m.stj, m.stj, F.guld);
-        text(kapa(m.namn, kw - 6), x + 2, y + 20, las ? F.dim2 : F.text);
+        text(kapa($t(m.namn), kw - 6), x + 2, y + 20, las ? F.dim2 : F.text);
         text(kapa(bonusText(m), kw - 6), x + 2, y + 27, F.gron2);
-        if (las) { ikon('las', x + 2, y + 32, F.orange); text(kapa(kontorAv(m.las).namn, kw - 14), x + 11, y + 34, F.orange2); }
-        else text(iForrad ? 'I FÖRRÅDET' : m.pris ? kr(m.pris, true) : 'GRATIS', x + 2, y + 34, iForrad ? F.bla2 : !m.pris ? F.gron2 : rad ? F.text : F.rod2);
+        if (las) { ikon('las', x + 2, y + 32, F.orange); text(kapa($t(kontorAv(m.las).namn), kw - 14), x + 11, y + 34, F.orange2); }
+        else text(iForrad ? $t('I FÖRRÅDET') : m.pris ? kr(m.pris, true) : $t('GRATIS'), x + 2, y + 34, iForrad ? F.bla2 : !m.pris ? F.gron2 : rad ? F.text : F.rod2);
       });
       ctx.restore();
-      if (kat === 'forrad' && !varor.length) stycke('FÖRRÅDET ÄR TOMT. HIT HAMNAR MÖBLER SOM DU LÄGGER UNDAN ELLER SOM INTE FÅR PLATS VID EN FLYTT.', 8, py + 22, W - 16, F.dim);
+      if (kat === 'forrad' && !varor.length) stycke($t('FÖRRÅDET ÄR TOMT. HIT HAMNAR MÖBLER SOM DU LÄGGER UNDAN ELLER SOM INTE FÅR PLATS VID EN FLYTT.'), 8, py + 22, W - 16, F.dim);
       if (maxSk > 0) hit(4, py + 13, W - 8, 40, { hjul: (dy) => { sk += dy * 2; }, block: false });
       if (maxSk > 0) { knapp(0, py + 22, 6, 18, '<', { klick: () => { sk -= kw * 3; } }); knapp(W - 6, py + 22, 6, 18, '>', { klick: () => { sk += kw * 3; } }); }
-      if (vald) { const m = MOBEL[vald]; const t = { bord: 'TRYCK PÅ EN GRÖN ARBETSPLATS', dator: 'TRYCK PÅ ETT BORD FÖR NY DATOR', stol: 'TRYCK PÅ ETT BORD FÖR NY STOL', golv: 'TRYCK PÅ EN GRÖN GOLVPLATS', vagg: 'TRYCK PÅ EN GRÖN PLATS PÅ VÄGGEN' }[m.plats]; rect(0, 136, W, 10, F.gron); text(t + ' · ' + m.namn + ' · ' + (m.pris ? kr(m.pris) : 'GRATIS'), W / 2, 138, F.text, { just: 'c' }); }
+      if (vald) { const m = MOBEL[vald]; const t = { bord: $t('TRYCK PÅ EN GRÖN ARBETSPLATS'), dator: $t('TRYCK PÅ ETT BORD FÖR NY DATOR'), stol: $t('TRYCK PÅ ETT BORD FÖR NY STOL'), golv: $t('TRYCK PÅ EN GRÖN GOLVPLATS'), vagg: $t('TRYCK PÅ EN GRÖN PLATS PÅ VÄGGEN') }[m.plats]; rect(0, 136, W, 10, F.gron); text(t + ' · ' + $t(m.namn) + ' · ' + (m.pris ? kr(m.pris) : $t('GRATIS')), W / 2, 138, F.text, { just: 'c' }); }
       if (fel) { rect(0, 126, W, 10, F.rod); text(fel, W / 2, 128, F.text, { just: 'c' }); }
       hud(A); flikrad(A, 'bygg');
     },

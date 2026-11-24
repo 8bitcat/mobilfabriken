@@ -1,6 +1,7 @@
 // Spelglimtar för telefonerna (app-butiken). Samma format som BAS i ../glimtar.js. Godiskross och
 // Tunnelbanesurfarna är stående, som på en telefon; Arga fåglar ligger.
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // ---------- 2009 ARGA FÅGLAR (Angry Birds) ----------
 const FAGEL = [
@@ -111,11 +112,11 @@ function godiskross(x, t) {
   // gnistor där raden försvann
   if (fas > 1.3 && fas < 2.2) for (let k = 0; k < 10; k++) { const a = k * 0.63, r = (fas - 1.3) * 26; P(x, BX + 3.5 * C + Math.cos(a) * r, BY + 3.5 * C + Math.sin(a) * r, k % 2 ? '#ffffff' : '#ffe060'); }
   // överst: drag, poäng och mål
-  T(x, 'DRAG', 8, 8, '#d8c0ff'); TK(x, fas > 1.3 ? '22' : '23', 8, 16, '#ffffff', '#3a1a6a', BIG);
-  T(x, 'MÅL 20 000', W - 8 - TW('MÅL 20 000'), 8, '#d8c0ff');
+  T(x, $t('DRAG'), 8, 8, '#d8c0ff'); TK(x, fas > 1.3 ? '22' : '23', 8, 16, '#ffffff', '#3a1a6a', BIG);
+  T(x, $t('MÅL 20 000'), W - 8 - TW($t('MÅL 20 000')), 8, '#d8c0ff');
   const p = fas > 1.3 ? 14820 : 14700; T(x, String(p), W - 8 - TW(String(p)), 16, '#ffffff');
   R(x, 30, 26, 52, 4, '#20103a'); R(x, 30, 26, Math.round(52 * p / 20000), 4, '#f0c020');
-  if (fas > 1.5 && fas < 3.6) { const s = 'LJUVLIGT!', w = TW(s, BIG); TK(x, s, W / 2 - w / 2, 124, '#ffe040', '#a02070', BIG); }
+  if (fas > 1.5 && fas < 3.6) { const s = $t('LJUVLIGT!'), w = TW(s, BIG); TK(x, s, W / 2 - w / 2, 124, '#ffe040', '#a02070', BIG); }
   // förstärkare längst ner
   for (let i = 0; i < 4; i++) { const X = 10 + i * 19; R(x, X, 140, 15, 13, '#3a1a6a'); R(x, X + 1, 141, 13, 11, '#5a2a9a'); GODIS[(i + 2) % 6](x, X + 4, 143); }
 }
@@ -170,7 +171,7 @@ function tunnelbana(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'argafaglar', titel: 'KATAPULTKRIGET', forebild: 'Angry Birds', ar: 2009, studio: 'FEATHER', w: 192, h: 108, rita: argaFaglar },
-  { id: 'godiskross', titel: 'SOCKERSTORMEN', forebild: 'Candy Crush Saga', ar: 2012, studio: 'SUGARLAB', w: 90, h: 160, rita: godiskross },
-  { id: 'tunnelbana', titel: 'TUNNELRUSH', forebild: 'Subway Surfers', ar: 2012, studio: 'RAILHEAD', w: 90, h: 160, rita: tunnelbana },
+  { id: 'argafaglar', titel: $t('KATAPULTKRIGET'), forebild: 'Angry Birds', ar: 2009, studio: $t('FEATHER'), w: 192, h: 108, rita: argaFaglar },
+  { id: 'godiskross', titel: $t('SOCKERSTORMEN'), forebild: 'Candy Crush Saga', ar: 2012, studio: $t('SUGARLAB'), w: 90, h: 160, rita: godiskross },
+  { id: 'tunnelbana', titel: $t('TUNNELRUSH'), forebild: 'Subway Surfers', ar: 2012, studio: $t('RAILHEAD'), w: 90, h: 160, rita: tunnelbana },
 ];

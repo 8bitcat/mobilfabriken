@@ -1,0 +1,1292 @@
+[
+ {
+  "i": 0,
+  "k": "FART +{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 1,
+  "k": "FORSKNING +{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 2,
+  "k": "BUGGFIX +{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 3,
+  "k": "TRIVSEL +{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 4,
+  "k": "VÄGG",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 5,
+  "k": "PASSAR INTE HÄR",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 6,
+  "k": "PRODUKTIVITET",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 7,
+  "k": "BORD {0}/{1}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 8,
+  "k": "FORSKNING ×{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 9,
+  "k": "BUGGFIX ×{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 10,
+  "k": "ARBETSPLATS",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 11,
+  "k": "SÄLJ +{0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 12,
+  "k": "TILL FÖRRÅDET",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 13,
+  "k": "ELLER VÄLJ EN NY MÖBEL NEDAN",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 14,
+  "k": "FÖRRÅD {0}",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 15,
+  "k": "KLAR",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 16,
+  "k": "I FÖRRÅDET",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 17,
+  "k": "GRATIS",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 18,
+  "k": "FÖRRÅDET ÄR TOMT. HIT HAMNAR MÖBLER SOM DU LÄGGER UNDAN ELLER SOM INTE FÅR PLATS VID EN FLYTT.",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 19,
+  "k": "TRYCK PÅ EN GRÖN ARBETSPLATS",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 20,
+  "k": "TRYCK PÅ ETT BORD FÖR NY DATOR",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 21,
+  "k": "TRYCK PÅ ETT BORD FÖR NY STOL",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 22,
+  "k": "TRYCK PÅ EN GRÖN GOLVPLATS",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 23,
+  "k": "TRYCK PÅ EN GRÖN PLATS PÅ VÄGGEN",
+  "f": "js/scener/bygg.js"
+ },
+ {
+  "i": 24,
+  "k": "FORSKNING",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 25,
+  "k": "LÅS UPP NY TEKNIK, ETT ÅR I TAGET · TIDEN STÅR STILL",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 26,
+  "k": "LÅS UPP NY TEKNIK · TIDEN STÅR STILL",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 27,
+  "k": "FORSKNINGSPOÄNG",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 28,
+  "k": "+{0} PER DAG",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 29,
+  "k": "{0} AV {1} TEKNIKER",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 30,
+  "k": "LABBET ÄR LEDIGT",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 31,
+  "k": "VÄLJ NEDAN ELLER I TRÄDET",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 32,
+  "k": "{0} DAGAR KVAR",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 33,
+  "k": "{0} LEDIGT LABBSPÅR",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 34,
+  "k": "REDO ATT FORSKA · {0}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 35,
+  "k": "{0} FP",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 36,
+  "k": "FORSKAD",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 37,
+  "k": "{0} D KVAR",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 38,
+  "k": "{0} FP · LÅST",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 39,
+  "k": "I DAG",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 40,
+  "k": "{0} FP + {1}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 41,
+  "k": "KRÄVER TELEFONAVDELNINGEN",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 42,
+  "k": "PÅGÅR",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 43,
+  "k": "REDO",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 44,
+  "k": "UPPFINNS {0}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 45,
+  "k": "LÅST",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 46,
+  "k": "KOSTNAD {0} FP{1} · TID {2} DAGAR",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 47,
+  "k": "{0} · UPPFINNS {1}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 48,
+  "k": "LÅSER UPP: {0}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 49,
+  "k": "LEDER TILL: {0}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 50,
+  "k": "FORSKA FRAM DEN UNDER KONSOL FÖRST.",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 51,
+  "k": "VISA DEN",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 52,
+  "k": "FORSKA FÖRST: {0}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 53,
+  "k": "FORSKA FÖREGÅNGAREN FÖRST: {0}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 54,
+  "k": "NY TEKNIK ÄR DYR I BÖRJAN OCH BLIR BILLIGARE VARJE ÅR.",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 55,
+  "k": "STARTA · {0} FP{1}",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 56,
+  "k": "MOBIL · LÅST",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 57,
+  "k": "FORSKA FRAM DEN UNDER KONSOL: {0} FP + {1}.",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 58,
+  "k": "OCH",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 59,
+  "k": "KRÄVER {0}.",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 60,
+  "k": "ALLT SOM KRÄVS ÄR KLART – NODEN KOMMER {0}.",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 61,
+  "k": "ALLT SOM KRÄVS ÄR KLART – REDO ATT FORSKA!",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 62,
+  "k": "TELEFONERNA OCH PRYLARNA KOMMER {0}.",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 63,
+  "k": "VISA NODEN",
+  "f": "js/scener/forskning.js"
+ },
+ {
+  "i": 64,
+  "k": "DRA FÖR MER",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 65,
+  "k": "DRA ÅT SIDAN",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 66,
+  "k": "NYTT",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 67,
+  "k": "{0} STUDIO VILL GÖRA SPEL",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 68,
+  "k": "{0} STUDIOS VILL GÖRA SPEL",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 69,
+  "k": "LÅNA UTVECKLARE · {0}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 70,
+  "k": "BYGGER {0}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 71,
+  "k": "KLAR {0} · {1}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 72,
+  "k": "BUGGFIXARNA PUTSAR VIDARE",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 73,
+  "k": "LANSERA NÄR DU VILL",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 74,
+  "k": "DAG {0} AV {1} · {2} % KLART · {3}/DAG",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 75,
+  "k": "DAG {0} AV {1} · {2}/DAG",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 76,
+  "k": "SPELET I LÅDAN:",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 77,
+  "k": "HÅRDVARA",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 78,
+  "k": "TRYCK X IGEN FÖR ATT AVBRYTA",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 79,
+  "k": "DIREKTBYGGE ({0} KVAR)",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 80,
+  "k": "LÅNAD FRÅN {0}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 81,
+  "k": "GRÖN PRICK = SPELETS KVALITET",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 82,
+  "k": "BLÅ PRICK = KVALITET · RÖD = BUGG",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 83,
+  "k": "LANSERA NÄR KLAR",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 84,
+  "k": "LANSERA (FÖR LITE PENGAR)",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 85,
+  "k": "KVALITET",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 86,
+  "k": "BUGGAR",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 87,
+  "k": "LAGA {0}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 88,
+  "k": "MÅL {0}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 89,
+  "k": "MÅL {0} AV {1}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 90,
+  "k": "BELÖNING {0}",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 91,
+  "k": "LABBET",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 92,
+  "k": "LEDIGT – VÄLJ NY TEKNIK",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 93,
+  "k": "DESIGNA TELEFON",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 94,
+  "k": "NY DESIGN",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 95,
+  "k": "DESIGNA KONSOL",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 96,
+  "k": "STÄLL UT BORD",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 97,
+  "k": "ANSTÄLL ETT TEAM",
+  "f": "js/scener/kontor.js"
+ },
+ {
+  "i": 98,
+  "k": "FÖRFRÅGNINGAR",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 99,
+  "k": "BIBLIOTEK",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 100,
+  "k": "EGNA SPEL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 101,
+  "k": "LÅNA UTVECKLARE",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 102,
+  "k": "RIVALER",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 103,
+  "k": "BÄSTA VÄNNER",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 104,
+  "k": "GODA VÄNNER",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 105,
+  "k": "NEUTRALA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 106,
+  "k": "LITE SURA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 107,
+  "k": "ARGA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 108,
+  "k": "{0} M",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 109,
+  "k": "{0} T",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 110,
+  "k": "FINNS BARA I KONSOLSPELET",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 111,
+  "k": "SPELSTUDIORNA VILL GÖRA SPEL TILL DINA KONSOLER",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 112,
+  "k": "{0} HAR DINA KONSOLER HEMMA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 113,
+  "k": "NÄR KNACKAR NÄSTA STUDIO PÅ?",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 114,
+  "k": "LANSERINGSSPEL TILL {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 115,
+  "k": "TILL {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 116,
+  "k": "STANDARDAVTAL: {0} AV VARJE SÅLT SPEL TILL DIG.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 117,
+  "k": "SPELET GÅR TILL EN RIVAL. STUDION BLIR SUR.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 118,
+  "k": "SPELET GÅR TILL EN RIVAL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 119,
+  "k": "STÖRRE ANDEL – MEN ÄR DU FÖR GIRIG GÅR STUDION TILL EN RIVAL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 120,
+  "k": "DU BETALAR. SPELET KOMMER BARA TILL DIG OCH DRAR 50 % MER.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 121,
+  "k": "TAR CA {0} MÅNADER ATT GÖRA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 122,
+  "k": "SYSTEMSÄLJARE! SÄLJER KONSOLER",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 123,
+  "k": "RELATION",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 124,
+  "k": "JA · {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 125,
+  "k": "AVTAL! {0} KOMMER OM CA {1} MÅNADER.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 126,
+  "k": "{0} GÅR TILL EN RIVAL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 127,
+  "k": "LICENS",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 128,
+  "k": "{0} CHANS ATT DE SÄGER JA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 129,
+  "k": "FÖRHANDLA · {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 130,
+  "k": "{0} SA NEJ – {1} GÅR TILL EN RIVAL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 131,
+  "k": "AVTAL PÅ {0}! {1} KOMMER OM CA {2} MÅNADER.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 132,
+  "k": "EXKLUSIVT · {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 133,
+  "k": "EXKLUSIVT! {0} KOMMER BARA TILL DINA KONSOLER.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 134,
+  "k": "INGA FÖRFRÅGNINGAR JUST NU",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 135,
+  "k": "STUDIOS HÖR AV SIG DEN 1:A VARJE MÅNAD NÄR DIN KONSOL ÄR BRA NOG. ÄVEN ETT KONSOLBYGGE LOCKAR – DÅ BLIR SPELET ETT LANSERINGSSPEL. SÄGER DU NEJ ELLER SVARAR FÖR SENT GÅR SPELET TILL EN RIVAL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 136,
+  "k": "DE STORA SPELEN KRÄVER",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 137,
+  "k": "HEMMA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 138,
+  "k": "ALLTID",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 139,
+  "k": "DIN BÄSTA: {0} · BETYG {1} (GISSNING) · {2} HEMMA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 140,
+  "k": "DIN BÄSTA: {0} · BETYG {1} · {2} HEMMA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 141,
+  "k": "INGEN KONSOL ÄN – BÖRJA BYGGA EN I DESIGN",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 142,
+  "k": "NÄSTA KNACK: {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 143,
+  "k": "SPELKRASCHEN: STUDIORNA ÄR FÖRSIKTIGA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 144,
+  "k": "INGA SPEL ÄN",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 145,
+  "k": "LANSERA DIN FÖRSTA KONSOL – SPELET I LÅDAN HAMNAR HÄR, OCH SEDAN BÖRJAR STUDIORNA KNACKA PÅ MED SINA SPEL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 146,
+  "k": "{0} SPEL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 147,
+  "k": "BYGGS NU",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 148,
+  "k": "{0} HEMMA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 149,
+  "k": "UTGÅNGEN",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 150,
+  "k": "LANSERINGSSPELEN SLÄPPS SAMMA DAG SOM KONSOLEN",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 151,
+  "k": "{0} SPEL · BIBLIOTEKET LOCKAR ×{1} KÖPARE",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 152,
+  "k": "INGA SPEL TILL DEN HÄR KONSOLEN ÄN. SÄG JA NÄR EN STUDIO KNACKAR PÅ, ELLER GÖR ETT EGET SPEL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 153,
+  "k": "EXKLUSIVT",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 154,
+  "k": "SYSTEMSÄLJARE",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 155,
+  "k": "LANSERING",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 156,
+  "k": "KOMMER OM {0} DAGAR",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 157,
+  "k": "SPELUTVECKLARNA GÖR DET",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 158,
+  "k": "STUDION GÖR SPELET",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 159,
+  "k": "SLÄPPS SAMMA DAG",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 160,
+  "k": "SOM KONSOLEN",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 161,
+  "k": "FÖLJER MED",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 162,
+  "k": "VARJE KONSOL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 163,
+  "k": "{0} SÅLDA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 164,
+  "k": "INTÄKT +{0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 165,
+  "k": "LICENS +{0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 166,
+  "k": "REKLAMFILM (GAMMAL)",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 167,
+  "k": "SPELUTVECKLARNA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 168,
+  "k": "DAG {0} AV {1}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 169,
+  "k": "BLIR CA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 170,
+  "k": "PUTS {0} AV {1}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 171,
+  "k": "{0} SPELUTVECKLARE · {1}/DAG",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 172,
+  "k": "HELA INTÄKTEN ÄR DIN, MINUS 30 % TILL TILLVERKNINGEN.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 173,
+  "k": "INGEN SPELUTVECKLARE ÄN. ANSTÄLL EN I PERSONAL – DE GÖR EGNA SPEL SOM GER HELA INTÄKTEN, OCH SPELET I LÅDAN TILL NÄSTA KONSOL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 174,
+  "k": "LEDIGA",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 175,
+  "k": "VÄLJ ETT SPEL TILL HÖGER OCH TRYCK STARTA.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 176,
+  "k": "+{0} TILL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 177,
+  "k": "NÄSTA EGNA SPEL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 178,
+  "k": "ALLA EGNA SPEL SOM GÅR ATT GÖRA ÄN ÄR GJORDA (ELLER LIGGER I LÅDAN TILL ETT BYGGE).",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 179,
+  "k": "NÄSTA IDÉ: {0} ({1}).",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 180,
+  "k": "TILL KONSOL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 181,
+  "k": "INGEN KONSOL SÄLJS – LANSERA EN FÖRST",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 182,
+  "k": "KONSOLEN SAKNAR: {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 183,
+  "k": "KRÄVER: {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 184,
+  "k": "KRÄVER INGET SÄRSKILT",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 185,
+  "k": "TID CA {0} DAGAR · {1}/DAG",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 186,
+  "k": "ANSTÄLL EN SPELUTVECKLARE FÖRST",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 187,
+  "k": "TEAMET GÖR REDAN ETT SPEL",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 188,
+  "k": "INGEN SPELUTVECKLARE",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 189,
+  "k": "INGEN KONSOL SÄLJS",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 190,
+  "k": "KONSOLEN KLARAR INTE SPELET",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 191,
+  "k": "STARTA {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 192,
+  "k": "SPELUTVECKLARNA BÖRJAR GÖRA {0}!",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 193,
+  "k": "KONSOLBYGGET",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 194,
+  "k": "INGET KONSOLBYGGE PÅGÅR. DESIGNA EN NY KONSOL – UNDER BYGGET KAN EN STUDIO LÅNA UT EN UTVECKLARE SÅ ATT DET GÅR FORTARE.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 195,
+  "k": "BYGGET GÅR 25 % FORTARE OCH DEN LÅNADE LÄGGER EGNA PRICKAR.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 196,
+  "k": "INGEN LÅNAD UTVECKLARE ÄN. VÄLJ EN STUDIO TILL HÖGER.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 197,
+  "k": "STUDIOS SOM KAN LÅNA UT",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 198,
+  "k": "EN STUDIO SOM GÖR SPEL TILL DIG LÅNAR UT EN ★★★-UTVECKLARE TILL BYGGET FÖR {0}.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 199,
+  "k": "INGEN STUDIO KÄNNER ER ÄN. SÄG JA TILL EN FÖRFRÅGAN – SEDAN KAN DE LÅNA UT FOLK.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 200,
+  "k": "LÅNAD",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 201,
+  "k": "LÅNA · {0}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 202,
+  "k": "{0} LÅNAR UT EN UTVECKLARE TILL {1}!",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 203,
+  "k": "RIVALKONSOLERNA PÅ MARKNADEN",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 204,
+  "k": "DIN BÄSTA: {0} · {1}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 205,
+  "k": "INGA RIVALER SÄLJER JUST NU.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 206,
+  "k": "{0} · SÄLJS TILL {1}",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 207,
+  "k": "SPEL HOS RIVALERNA ({0})",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 208,
+  "k": "INGA ÄN. SPEL SOM DU SÄGER NEJ TILL, INTE HINNER SVARA PÅ ELLER SOM INGEN TAR GÅR TILL EN RIVAL.",
+  "f": "js/scener/studios.js"
+ },
+ {
+  "i": 209,
+  "k": "{0} MILJ.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 210,
+  "k": "{0}M",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 211,
+  "k": "{0}T",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 212,
+  "k": "DINA ENHETER TILL SALU OCH HUR DE STÅR SIG",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 213,
+  "k": "DINA KONSOLER TILL SALU OCH HUR DE STÅR SIG",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 214,
+  "k": "TILL SALU",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 215,
+  "k": "MUSEET ({0})",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 216,
+  "k": "DINA ENHETER",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 217,
+  "k": "DESIGNA DIN FÖRSTA TELEFON OCH LANSERA DEN!",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 218,
+  "k": "INGA TELEFONER TILL SALU ÄN. DESIGNA DIN FÖRSTA OCH LANSERA DEN!",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 219,
+  "k": "{0} I LAGER · {1} SÅLDA",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 220,
+  "k": "UTGÅNGEN · {0} SÅLDA",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 221,
+  "k": "KONKURRENTER PÅ MARKNADEN",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 222,
+  "k": "INGEN TELEFON ÄN",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 223,
+  "k": "DESIGNA EN TELEFON",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 224,
+  "k": "KOSTAR",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 225,
+  "k": "SÅLDA",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 226,
+  "k": "INTÄKT",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 227,
+  "k": "VINST",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 228,
+  "k": "I LAGER",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 229,
+  "k": "FÖRRA V.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 230,
+  "k": "MISSADE",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 231,
+  "k": "NYTT PRIS",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 232,
+  "k": "UPPDATERA PRIS",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 233,
+  "k": "SÄKER? REA 50 %",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 234,
+  "k": "LÄGG NER",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 235,
+  "k": "AUTOMATISK PRODUKTION ÄR PÅ",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 236,
+  "k": "BLI VIRAL · {0} FP",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 237,
+  "k": "UPPDATERING 1.1 ({0} FP)",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 238,
+  "k": "MED BETYG {0} ÄR DEN VÄRD UNGEFÄR {1} IDAG.\nNU ~{2} KÖPARE/VECKA · BUZZ {3}.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 239,
+  "k": "UTGÅNGEN {0} · SÅLDES I {1} VECKOR",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 240,
+  "k": "SÅLDA PER VECKA",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 241,
+  "k": "DINA KONSOLER",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 242,
+  "k": "{0} BYGGS PÅ KONTORET. LANSERA DEN SÅ HAMNAR DEN HÄR!",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 243,
+  "k": "DESIGNA DIN FÖRSTA KONSOL OCH LANSERA DEN!",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 244,
+  "k": "RIVALKONSOLER PÅ MARKNADEN",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 245,
+  "k": "INGA RIVALER JUST NU",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 246,
+  "k": "{0} · SEDAN {1}",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 247,
+  "k": "INGEN KONSOL ÄN",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 248,
+  "k": "DESIGNA EN KONSOL",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 249,
+  "k": "I HEMMEN",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 250,
+  "k": "FÅ SPEL: BIBLIOTEKET GER BARA ×{0} KÖPARE.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 251,
+  "k": "SPELBIBLIOTEKET GER ×{0} SÅ MÅNGA KÖPARE.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 252,
+  "k": "MED BETYG {0} ÄR DEN VÄRD UNGEFÄR {1} IDAG.\nNU ~{2} KÖPARE/VECKA · FÖRRA V. {3} · BUZZ {4}.\n{5}",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 253,
+  "k": "{0} HAR DEN HEMMA – SPELEN TILL DEN SÄLJER VIDARE.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 254,
+  "k": "MUSEET – ALLA KONSOLER DU HAR GJORT",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 255,
+  "k": "HÄR SAMLAS VARJE KONSOL DU LANSERAR, MED BETYG OCH HUR MÅNGA SOM SÅLDES.",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 256,
+  "k": "MUSEET – ALLA TELEFONER DU HAR GJORT",
+  "f": "js/scener/telefoner.js"
+ },
+ {
+  "i": 257,
+  "k": "HÄR SAMLAS VARJE TELEFON DU LANSERAR, MED BETYG OCH HUR MÅNGA SOM SÅLDES.",
+  "f": "js/scener/telefoner.js"
+ }
+]

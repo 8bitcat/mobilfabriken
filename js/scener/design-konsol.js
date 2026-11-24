@@ -14,32 +14,33 @@ import { rimligtPris, veckoEfterfragan, snitt } from '../sim/marknad.js';
 import { byggdagar, fabriksPris, nastaNamn } from '../sim/projekt.js';
 import { klararKrav, packinDagar } from '../sim/konsol.js';
 import { status as nodStatus } from '../sim/forskning.js';
-import { kr, dec } from '../sim/bas.js';
+import { kr, dec, proc } from '../sim/bas.js';
+import { $t } from '../core/i18n.js';
 
 const L = 'konsol';
 const RX = 280, RW = 100, RAD = 12;
 const GRUPPNAMN = Object.fromEntries(K_GRUPPER.map((g) => [g.id, g.namn]));
 // hjälptexten under rubriken: högst tre rader (100 px)
 const HJALP = {
-  cpu: 'HJÄRNAN I LÅDAN. EN SNABBARE PROCESSOR KLARAR STÖRRE SPEL.',
-  grafik: 'HUR SPELEN SER UT PÅ TV:N. BLÅ KANT = VAD KRITIKERNA VÄNTAR SIG I ÅR.',
-  ljud: 'FRÅN PIP TILL MELODIER, CD-LJUD OCH SURROUND.',
-  minne: 'MER MINNE GER STÖRRE SPELVÄRLDAR.',
-  media: 'SPELEN SÄLJS PÅ MODUL, DISKETT ELLER SKIVA.',
-  kontroll: 'DET SPELARNA HÅLLER I. MÅNGA SPEL KRÄVER RÄTT KONTROLL.',
-  nat: 'SPELA MED KOMPISAR – FÖRST MED SLADD, SEDAN ÖVER NÄTET.',
-  spar: 'HUR SPELARNA SPARAR. UTAN SPARNING BLIR DET LÖSENORD.',
-  material: 'LÅDANS MATERIAL. FINARE MATERIAL GER BÄTTRE DESIGNBETYG.',
+  cpu: $t('HJÄRNAN I LÅDAN. EN SNABBARE PROCESSOR KLARAR STÖRRE SPEL.'),
+  grafik: $t('HUR SPELEN SER UT PÅ TV:N. BLÅ KANT = VAD KRITIKERNA VÄNTAR SIG I ÅR.'),
+  ljud: $t('FRÅN PIP TILL MELODIER, CD-LJUD OCH SURROUND.'),
+  minne: $t('MER MINNE GER STÖRRE SPELVÄRLDAR.'),
+  media: $t('SPELEN SÄLJS PÅ MODUL, DISKETT ELLER SKIVA.'),
+  kontroll: $t('DET SPELARNA HÅLLER I. MÅNGA SPEL KRÄVER RÄTT KONTROLL.'),
+  nat: $t('SPELA MED KOMPISAR – FÖRST MED SLADD, SEDAN ÖVER NÄTET.'),
+  spar: $t('HUR SPELARNA SPARAR. UTAN SPARNING BLIR DET LÖSENORD.'),
+  material: $t('LÅDANS MATERIAL. FINARE MATERIAL GER BÄTTRE DESIGNBETYG.'),
 };
 export const K_STEG = [
-  { id: 'enhet', rubrik: 'ENHET', hjalp: 'VILKEN SORTS KONSOL BYGGER NI?' },
-  { id: 'form', rubrik: 'FORM', hjalp: 'KRITIKERNA ÄLSKAR NYA FORMER. FRÄSCHHETEN SJUNKER 12 % PER ÅR.' },
+  { id: 'enhet', rubrik: $t('ENHET'), hjalp: $t('VILKEN SORTS KONSOL BYGGER NI?') },
+  { id: 'form', rubrik: $t('FORM'), hjalp: $t('KRITIKERNA ÄLSKAR NYA FORMER. FRÄSCHHETEN SJUNKER 12 % PER ÅR.') },
   ...K_GRUPPER.map((g) => ({ id: g.id, rubrik: g.namn, hjalp: HJALP[g.id] })),
-  { id: 'funk', rubrik: 'FUNKTIONER', hjalp: 'EXTRA FINESSER SOM KRITIKERNA GILLAR.' },
-  { id: 'farg', rubrik: 'FÄRG & YTA', hjalp: 'VÄLJ FÄRG OCH YTA. YTAN GER DESIGNPOÄNG.' },
-  { id: 'packin', rubrik: 'SPELET I LÅDAN', hjalp: 'SPELUTVECKLARNA GÖR DET EFTER HÅRDVARAN – OCH KONSOLEN SÄLJER MER.' },
-  { id: 'pris', rubrik: 'PRIS & NAMN', hjalp: 'RIMLIGT PRIS FÖLJER BETYGET. DÖP KONSOLEN!' },
-  { id: 'granska', rubrik: 'GRANSKNING', hjalp: 'SER ALLT BRA UT? STARTA UTVECKLINGEN.' },
+  { id: 'funk', rubrik: $t('FUNKTIONER'), hjalp: $t('EXTRA FINESSER SOM KRITIKERNA GILLAR.') },
+  { id: 'farg', rubrik: $t('FÄRG & YTA'), hjalp: $t('VÄLJ FÄRG OCH YTA. YTAN GER DESIGNPOÄNG.') },
+  { id: 'packin', rubrik: $t('SPELET I LÅDAN'), hjalp: $t('SPELUTVECKLARNA GÖR DET EFTER HÅRDVARAN – OCH KONSOLEN SÄLJER MER.') },
+  { id: 'pris', rubrik: $t('PRIS & NAMN'), hjalp: $t('RIMLIGT PRIS FÖLJER BETYGET. DÖP KONSOLEN!') },
+  { id: 'granska', rubrik: $t('GRANSKNING'), hjalp: $t('SER ALLT BRA UT? STARTA UTVECKLINGEN.') },
 ];
 
 // ---------- utkastet ----------
@@ -59,12 +60,12 @@ export function forberedKonsol(G, d) {
 }
 // delarna konsolen saknar för ett spels krav, som delarnas namn ('STYRKORS')
 export const saknadeDelar = (d, krav = {}) => Object.entries(krav).filter(([g, id]) => kNivaAv(g, d.val[g]) < kNivaAv(g, id)).map(([g, id]) => kDelAv(g, id)?.namn || id.toUpperCase());
-export const fargNamnKonsol = (d, fargNamn) => (d.farg ? fargNamn(d) : 'ORIGINALFÄRGER');
+export const fargNamnKonsol = (d, fargNamn) => (d.farg ? fargNamn(d) : $t('ORIGINALFÄRGER'));
 const kravFor = (id) => egetSpelAv(id)?.kraver || {};
 // Granskningsknappen: ett spel i lådan som konsolen inte längre klarar (delar bytta efteråt) stoppar starten
 export function konsolKontroll(d) {
   const brist = d.packin ? saknadeDelar(d, kravFor(d.packin.id)) : [];
-  return brist.length ? { ok: false, fel: 'SPELET KRÄVER ' + brist[0] } : { ok: true };
+  return brist.length ? { ok: false, fel: $t`SPELET KRÄVER ${brist[0]}` } : { ok: true };
 }
 
 // ---------- stegen ----------
@@ -77,7 +78,7 @@ export function konsolSteg(api) {
     const n = NOD[`kdel-${g}-${del.id}`]; if (!n) return 'ok';
     const s = nodStatus(G, n); return s === 'uppfinns' ? 'ar' : s === 'pagar' ? 'pagar' : 'forska';
   };
-  const nodText = (nodId, nodAr) => { const n = NOD[nodId], s = n ? nodStatus(G, n) : 'redo'; return s === 'uppfinns' ? 'ÅR ' + nodAr : s === 'pagar' ? 'FORSKAS NU' : 'FORSKA'; };
+  const nodText = (nodId, nodAr) => { const n = NOD[nodId], s = n ? nodStatus(G, n) : 'redo'; return s === 'uppfinns' ? $t`ÅR ${nodAr}` : s === 'pagar' ? $t('FORSKAS NU') : $t('FORSKA'); };
   // kritikernas gissning: designens teknik och form som de är, halvputsat och tre buggar (som ett första bygge med
   // en forskare: PIXELBOX 1 gissas till 6,8 och landar på 6,3–7,5)
   const gissning = () => { const m = kvalitetsMal(d, ar); return betyg(G, d, ar, Math.round(m / 2), m, 3, eff); };
@@ -106,7 +107,7 @@ export function konsolSteg(api) {
     if (i === e) rect(RX + kw - 3, y + 1, 2, 9, F.bla2);
     let hw;
     if (st === 'ok') { if (!arVald) hw = hoger((diff >= 0 ? '+' : '') + tal(diff), RX + kw - 6, y + 3, diff <= 0 ? F.gron2 : F.guld); else { ikon('bock', RX + kw - 13, y + 2, F.bla2); hw = 7; } }
-    else hw = hoger(st === 'ar' ? 'ÅR ' + del.ar : st === 'pagar' ? 'FORSKAS NU' : 'FORSKA', RX + kw - 6, y + 3, F.orange2);
+    else hw = hoger(st === 'ar' ? $t`ÅR ${del.ar}` : st === 'pagar' ? $t('FORSKAS NU') : $t('FORSKA'), RX + kw - 6, y + 3, F.orange2);
     text(kapa(del.namn, kw - 14 - hw), RX + 4, y + 3, st === 'ok' ? F.text : F.dim2);
   }
   // Studiornas spel (i fjol till två år fram, ingen har tagit dem) som kräver mer i gruppen än konsolen har – de
@@ -118,7 +119,7 @@ export function konsolSteg(api) {
     if (!vill.length) return [];
     const niva = Math.min(...vill.map((s) => kNivaAv(g, s.kraver[g]))), del = K_DELAR[g][niva];
     const spel = vill.filter((s) => kNivaAv(g, s.kraver[g]) === niva).sort((a, b) => b.stj - a.stj || a.ar - b.ar).slice(0, 2);
-    return [{ rubrik: 'SPELEN VILL HA' }, { text: del.namn, farg: F.lila2 }, ...spel.map((s) => ({ rita: (y, kw) => {
+    return [{ rubrik: $t('SPELEN VILL HA') }, { text: del.namn, farg: F.lila2 }, ...spel.map((s) => ({ rita: (y, kw) => {
       ikon('kassett', RX, y + 2, F.lila);
       text(kapa(s.titel, kw - 10), RX + 10, y + 3, F.dim);
     } }))];
@@ -130,7 +131,7 @@ export function konsolSteg(api) {
         const ok = harEnhet(G, e.id, L), vald = d.enhet === e.id;
         kort(RX, y, RW, 16, { vald, av: !ok, namn: 'kenhet-' + e.id, klick: ok ? () => api.sattEnhet(e.id) : null });
         text(e.namn, RX + 4, y + 3, ok ? F.text : F.dim2);
-        text(ok ? kapa(e.info, 92) : (ar < e.ar ? 'KOMMER ' + e.ar : nodText('kenhet-' + e.id, e.ar) === 'FORSKAS NU' ? 'FORSKAS NU' : 'KRÄVER FORSKNING'), RX + 4, y + 9, ok ? F.dim : F.orange2);
+        text(ok ? kapa(e.info, 92) : (ar < e.ar ? $t`KOMMER ${e.ar}` : nodText('kenhet-' + e.id, e.ar) === $t('FORSKAS NU') ? $t('FORSKAS NU') : $t('KRÄVER FORSKNING')), RX + 4, y + 9, ok ? F.dim : F.orange2);
         if (!ok) ikon('las', RX + RW - 10, y + 4, F.orange); y += 18;
       }
     },
@@ -144,8 +145,8 @@ export function konsolSteg(api) {
         const k = visa[i], ok = harKaross(G, k.id, L), vald = d.kaross === k.id, fr = Math.round(fraschhet({ linje: L, kaross: k.id }, ar) * 100);
         kort(RX, yy, kw, 20, { vald, av: !ok, namn: 'kkaross-' + k.id, klick: ok ? () => { d.kaross = k.id; } : null });
         text(kapa(k.namn, kw - 8), RX + 4, yy + 3, ok ? F.text : F.dim2);
-        text(ok ? kapa(k.info, kw - 8) : (ar < k.ar ? 'KOMMER ' + k.ar : nodText('kkaross-' + k.id, k.ar) === 'FORSKAS NU' ? 'FORSKAS NU' : 'KRÄVER FORSKNING'), RX + 4, yy + 9, ok ? F.dim : F.orange2);
-        if (ok) { text('FRÄSCH ' + fr + ' %', RX + 4, yy + 15, fr > 60 ? F.gron2 : fr > 30 ? F.guld : F.rod2); text(Math.round(prisNu(k, ar) * enhetF()) + ' KR', RX + kw - 5, yy + 15, F.dim, { just: 'h' }); }
+        text(ok ? kapa(k.info, kw - 8) : (ar < k.ar ? $t`KOMMER ${k.ar}` : nodText('kkaross-' + k.id, k.ar) === $t('FORSKAS NU') ? $t('FORSKAS NU') : $t('KRÄVER FORSKNING')), RX + 4, yy + 9, ok ? F.dim : F.orange2);
+        if (ok) { text($t`FRÄSCH ${fr} %`, RX + 4, yy + 15, fr > 60 ? F.gron2 : fr > 30 ? F.guld : F.rod2); text(kr(Math.round(prisNu(k, ar) * enhetF())), RX + kw - 5, yy + 15, F.dim, { just: 'h' }); }
         else ikon('las', RX + kw - 10, yy + 3, F.orange);
       }, api.skroll());
     },
@@ -153,9 +154,9 @@ export function konsolSteg(api) {
       // forskade funktioner (nyast först) och den första som inte är forskad, låst – så att man ser vad som kommer
       const funk = api.forskadeFunk(G, L).map((id) => K_FUNKTIONER.find((f) => f.id === id)), nu = api.funkBonus(G, d), tak = api.funkTak(G, d), fullt = nu >= tak - 1e-9;
       const nasta = K_FUNKTIONER.filter((f) => !harFunktion(G, f.id, L)).sort((a, b) => a.ar - b.ar)[0];
-      const rader = [{ rubrik: 'FUNKTIONER', hoger: '+' + dec(nu, 1) + ' AV +' + dec(tak, 1), hogerFarg: fullt && funk.length ? F.guld : F.dim }];
-      if (funk.length) rader.push({ text: '+0,1 VAR I BETYGET' });
-      else for (const r of radbryt('FUNKTIONERNA KOMMER MED FORSKNINGEN.', RW - 5)) rader.push({ text: r });
+      const rader = [{ rubrik: $t('FUNKTIONER'), hoger: $t`+${dec(nu, 1)} AV +${dec(tak, 1)}`, hogerFarg: fullt && funk.length ? F.guld : F.dim }];
+      if (funk.length) rader.push({ text: $t('+0,1 VAR I BETYGET') });
+      else for (const r of radbryt($t('FUNKTIONERNA KOMMER MED FORSKNINGEN.'), RW - 5)) rader.push({ text: r });
       for (const f of funk) rader.push({ rita: (yy, kw) => {
         const pa = d.funktioner.includes(f.id);
         kort(RX, yy, kw, 11, { vald: pa, namn: 'kfunk-' + f.id, klick: () => { d.funktioner = pa ? d.funktioner.filter((x) => x !== f.id) : [...d.funktioner, f.id]; } });
@@ -171,8 +172,8 @@ export function konsolSteg(api) {
     },
     // FÄRG: formens originalfärger (farg null) eller en av tolv; YTA som telefonerna (de legendariska sist)
     farg(y) {
-      text('FÄRG', RX, y + 2, F.dim);
-      knapp(RX + 22, y, RW - 22, 10, 'ORIGINALFÄRGER', { stil: 'dim', aktiv: !d.farg, namn: 'kfarg-original', klick: () => { d.farg = null; } });
+      text($t('FÄRG'), RX, y + 2, F.dim);
+      knapp(RX + 22, y, RW - 22, 10, $t('ORIGINALFÄRGER'), { stil: 'dim', aktiv: !d.farg, namn: 'kfarg-original', klick: () => { d.farg = null; } });
       y += 13;
       FARGER.forEach((c, i) => {
         const x = RX + (i % 6) * 17, yy = y + Math.floor(i / 6) * 13, vald = !!d.farg && d.farg.toLowerCase() === c, cc = parseInt(c.slice(1), 16);
@@ -180,11 +181,11 @@ export function konsolSteg(api) {
         if (vald) ram(x - 1, yy - 1, 16, 12, F.guld);
         hit(x, yy, 14, 10, { klick: () => { d.farg = c; }, namn: 'kfarg-' + i });
       });
-      y += 28; text('YTA', RX, y, F.dim); y += 7;
+      y += 28; text($t('YTA'), RX, y, F.dim); y += 7;
       const ytor = [...YTOR, ...LEGENDARISKA.filter((l) => G.legendariska.includes(l.id)).map((l) => ({ id: 'leg-' + l.id, namn: l.namn, kostnad: 0, farg: l.farg }))];
       radLista(y, ytor.map((yt) => ({ rita: (yy, kw) => {
         kort(RX, yy, kw, 11, { vald: d.yta === yt.id, namn: 'yta-' + yt.id, klick: () => { d.yta = yt.id; if (yt.farg) d.farg = yt.farg; } });
-        const kost = Math.round(yt.kostnad * enhetF()), hw = kost ? hoger('+' + kost + ' KR', RX + kw - 6, yy + 3, F.guld) : 0;
+        const kost = Math.round(yt.kostnad * enhetF()), hw = kost ? hoger('+' + kr(kost), RX + kw - 6, yy + 3, F.guld) : 0;
         text(kapa(yt.namn, kw - 14 - hw), RX + 4, yy + 3, yt.farg ? F.guld : F.text);
       } })), Math.max(y + RAD, 170));
     },
@@ -198,7 +199,7 @@ export function konsolSteg(api) {
         const vald = !d.packin;
         kort(RX, yy, kw, 11, { vald, namn: 'packin-inget', klick: () => { d.packin = null; } });
         if (vald) ikon('bock', RX + kw - 13, yy + 2, F.bla2);
-        text('INGET SPEL', RX + 4, yy + 3, F.text);
+        text($t('INGET SPEL'), RX + 4, yy + 3, F.text);
       } }, ...lediga.map((e) => ({ rita: (yy, kw) => {
         const brist = saknadeDelar(d, e.kraver), ok = !brist.length, vald = d.packin?.id === e.id;
         kort(RX, yy, kw, 11, { vald, av: !ok && !vald, kant: vald && !ok ? F.rod2 : null, namn: 'packin-' + e.id, klick: ok ? () => { d.packin = packinAv(e); } : null });
@@ -210,39 +211,39 @@ export function konsolSteg(api) {
       // vad spelet gör för försäljningen: köpare per vecka med och utan spelet (utan valt spel: med det första lediga)
       const b = gissning().betyg, utan = Math.round(kopare(b, d.pris, null));
       const ex = d.packin || lediga.filter((e) => klararKrav(d, e.kraver)).map(packinAv)[0], med = ex ? Math.round(kopare(b, d.pris, ex)) : null;
-      text(kapa(med == null ? `KÖPARE/V ~${utan}` : d.packin ? `KÖPARE/V ~${med} (UTAN ~${utan})` : `KÖPARE/V ~${utan} (MED SPEL ~${med})`, RW), RX, Math.min(yy, 168), F.dim2);
+      text(kapa(med == null ? $t`KÖPARE/V ~${utan}` : d.packin ? $t`KÖPARE/V ~${med} (UTAN ~${utan})` : $t`KÖPARE/V ~${utan} (MED SPEL ~${med})`, RW), RX, Math.min(yy, 168), F.dim2);
     },
     pris(y) {
       const styck = styckkostnad(G, d, eff), b = gissning().betyg, rim = rimligt(b), marg = Math.round((1 - styck / d.pris) * 100);
-      y = radV(y, 'ATT TILLVERKA', kr(styck));
-      y = radV(y, ['VÄNTAT BETYG', 'BETYG'], '~' + dec(b, 1), betygFarg(b));
-      y = radV(y, 'RIMLIGT PRIS', '~' + kr(rim), F.dim);
-      text('PRIS', RX, y + 1, F.dim); textB(kr(d.pris), RX + RW, y, F.text, { just: 'h' }); y += 9;
+      y = radV(y, $t('ATT TILLVERKA'), kr(styck));
+      y = radV(y, [$t('VÄNTAT BETYG'), $t('BETYG')], '~' + dec(b, 1), betygFarg(b));
+      y = radV(y, $t('RIMLIGT PRIS'), '~' + kr(rim), F.dim);
+      text($t('PRIS'), RX, y + 1, F.dim); textB(kr(d.pris), RX + RW, y, F.text, { just: 'h' }); y += 9;
       const pmin = Math.max(100, Math.round(styck * 1.05 / 10) * 10), pmax = Math.max(pmin + 100, Math.round(rim * 2.4 / 10) * 10);
       reglage(RX, y + 1, RW, d.pris, pmin, pmax, (v) => { d.pris = Math.round(v / 10) * 10; }, { namn: 'design-pris' }); y += 10;
-      y = radV(y, 'MARGINAL', marg + ' %', marg < 30 ? F.rod2 : marg < 55 ? F.guld : F.gron2);
-      y = radV(y, 'KÖPARE/VECKA', '~' + Math.round(kopare(b, d.pris)), F.text);
-      y += 2; text('NAMN', RX, y + 1, F.dim); y += 8;
+      y = radV(y, $t('MARGINAL'), proc(marg / 100), marg < 30 ? F.rod2 : marg < 55 ? F.guld : F.gron2);
+      y = radV(y, $t('KÖPARE/VECKA'), '~' + Math.round(kopare(b, d.pris)), F.text);
+      y += 2; text($t('NAMN'), RX, y + 1, F.dim); y += 8;
       namnFalt(y); y += 15;
       const forslag = nastaNamn(G, d);
-      knapp(RX, y, RW, 10, kapa('FÖRSLAG: ' + forslag, RW - 6), { stil: 'dim', aktiv: d.namn === forslag, namn: 'design-namnforslag', klick: () => { d.namn = forslag; } });
+      knapp(RX, y, RW, 10, kapa($t`FÖRSLAG: ${forslag}`, RW - 6), { stil: 'dim', aktiv: d.namn === forslag, namn: 'design-namnforslag', klick: () => { d.namn = forslag; } });
     },
     granska(y) {
       const styck = styckkostnad(G, d, eff), gb = gissning(), b = gb.betyg, marg = Math.round((1 - styck / d.pris) * 100);
       const tk = teknik(d, ar, eff), inom = tk.per.filter((p) => p.poang >= 1).length, n = K_GRUPPER.length;
-      y = radV(y, ['KRITIKERNAS GISSNING', 'VÄNTAT BETYG', 'BETYG'], '~' + dec(b, 1) + '/10', betygFarg(b));
-      y = radV(y, 'KRAV', `${inom} AV ${n} DELAR I NIVÅ`, inom >= n - 1 ? F.gron2 : inom >= n - 3 ? F.guld : F.rod2);
-      y = radV(y, 'ATT TILLVERKA', kr(styck));
-      y = radV(y, ['FABRIK (ENGÅNG)', 'FABRIK'], kr(fabriksPris(G, d)));
-      y = radV(y, 'KASSA', kr(G.bolag.kassa), G.bolag.kassa >= 0 ? F.gron2 : F.rod2);
-      y = radV(y, 'PRIS', kr(d.pris));
-      y = radV(y, 'MARGINAL', marg + ' %', marg < 30 ? F.rod2 : marg < 55 ? F.guld : F.gron2);
-      y = radV(y, 'KÖPARE/VECKA', '~' + Math.round(kopare(b, d.pris)));
+      y = radV(y, [$t('KRITIKERNAS GISSNING'), $t('VÄNTAT BETYG'), $t('BETYG')], '~' + dec(b, 1) + '/10', betygFarg(b));
+      y = radV(y, $t('KRAV'), $t`${inom} AV ${n} DELAR I NIVÅ`, inom >= n - 1 ? F.gron2 : inom >= n - 3 ? F.guld : F.rod2);
+      y = radV(y, $t('ATT TILLVERKA'), kr(styck));
+      y = radV(y, [$t('FABRIK (ENGÅNG)'), $t('FABRIK')], kr(fabriksPris(G, d)));
+      y = radV(y, $t('KASSA'), kr(G.bolag.kassa), G.bolag.kassa >= 0 ? F.gron2 : F.rod2);
+      y = radV(y, $t('PRIS'), kr(d.pris));
+      y = radV(y, $t('MARGINAL'), proc(marg / 100), marg < 30 ? F.rod2 : marg < 55 ? F.guld : F.gron2);
+      y = radV(y, $t('KÖPARE/VECKA'), '~' + Math.round(kopare(b, d.pris)));
       const hw = byggdagar(G, d), sp = d.packin ? packinDagar(G) : 0;
-      y = radV(y, 'BYGGTID', !isFinite(hw) ? '-' : d.packin && isFinite(sp) ? `${hw} + ${sp} DAGAR` : hw + ' DAGAR');
+      y = radV(y, $t('BYGGTID'), !isFinite(hw) ? '-' : d.packin && isFinite(sp) ? $t`${hw} + ${sp} DAGAR` : $t`${hw} DAGAR`);
       const brist = d.packin ? saknadeDelar(d, kravFor(d.packin.id)) : [];
-      y = radV(y, ['I LÅDAN', 'SPEL'], kapa(d.packin ? d.packin.titel : 'INGET SPEL', 62), brist.length ? F.rod2 : d.packin ? F.guld : F.dim);
-      radV(y, 'NAMN', kapa(d.namn || nastaNamn(G, d), 70), d.namn ? F.text : F.dim2);
+      y = radV(y, [$t('I LÅDAN'), $t('SPEL')], kapa(d.packin ? d.packin.titel : $t('INGET SPEL'), 62), brist.length ? F.rod2 : d.packin ? F.guld : F.dim);
+      radV(y, $t('NAMN'), kapa(d.namn || nastaNamn(G, d), 70), d.namn ? F.text : F.dim2);
     },
   };
   // de nio delgrupperna: listan och (i konsolspelet) studiornas spel som vill ha mer
@@ -252,7 +253,7 @@ export function konsolSteg(api) {
   function namnFalt(y) {
     const falt = { x: RX, y, w: RW, h: 12 };
     rect(falt.x, falt.y, falt.w, falt.h, F.lo); ram(falt.x, falt.y, falt.w, falt.h, F.hi);
-    if (!api.A._falt) text(kapa(d.namn || 'TRYCK OCH SKRIV ETT NAMN', RW - 6), RX + 3, y + 4, d.namn ? F.text : F.dim2);
+    if (!api.A._falt) text(kapa(d.namn || $t('TRYCK OCH SKRIV ETT NAMN'), RW - 6), RX + 3, y + 4, d.namn ? F.text : F.dim2);
     hit(falt.x, falt.y, falt.w, falt.h, { klick: () => api.A.textfalt(falt, d.namn, (v) => { d.namn = v; }, 18), namn: 'design-namn' });
   }
   return UI;
@@ -280,7 +281,7 @@ function tv(x, y, pk, t) {
 }
 function skarm(x, y, pk, t) {
   const ctx = U.ctx;
-  if (!pk) { brus(ctx, x, y, t); rect(x + 12, y + 19, 40, 10, 0x05060f); text('INGET SPEL', x + SW / 2, y + 21, F.text, { just: 'c' }); return; }
+  if (!pk) { brus(ctx, x, y, t); rect(x + 12, y + 19, 40, 10, 0x05060f); text($t('INGET SPEL'), x + SW / 2, y + 21, F.text, { just: 'c' }); return; }
   const g = GLIMT[pk.glimt || pk.id];
   if (g) {
     // glimten förstoras i hela steg (mindre glimtar) eller krymps så att den ryms
@@ -307,7 +308,7 @@ function titelkort(x, y, pk, t) {
   const rader = radbryt(pk.titel, SW - 4).slice(0, 2), ty = y + (rader.length > 1 ? 9 : 13);
   rader.forEach((r, i) => text(kapa(r, SW - 2), x + SW / 2, ty + i * 8, F.guld, { just: 'c', skugga: 0x000000 }));
   rect(x + 10, ty + rader.length * 8 + 1, SW - 20, 1, c);
-  if (Math.floor(t * 1.6) % 2 === 0) text('TRYCK START', x + SW / 2, y + 32, F.text, { just: 'c', skugga: 0x000000 });
+  if (Math.floor(t * 1.6) % 2 === 0) text($t('TRYCK START'), x + SW / 2, y + 32, F.text, { just: 'c', skugga: 0x000000 });
 }
 // brus på skärmen utan spel: en liten duk som slumpas om tolv gånger i sekunden
 let brusDuk = null, brusT = -1;

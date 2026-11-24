@@ -4,17 +4,18 @@ import { kr, dec, datumText, arsdel, arAv } from '../sim/bas.js';
 import { ljudPa, sattLjud } from '../core/ljud.js';
 import { kontorsVarden } from '../sim/kontor.js';
 import { gavaKlar } from './gavor.js';
+import { $t } from '../core/i18n.js';
 
 export const INNEHALL = { y: 14, h: 188 };   // ytan mellan HUD och flikrad
 export const FLIKAR = [
-  { id: 'kontor', namn: 'KONTOR', ikon: 'hus' },
-  { id: 'telefoner', namn: 'TELEFONER', ikon: 'telefon' },
-  { id: 'bolaget', namn: 'BOLAGET', ikon: 'graf' },
-  { id: 'personal', namn: 'PERSONAL', ikon: 'team' },
-  { id: 'bygg', namn: 'BYGG', ikon: 'hammare', farg: F.orange },
-  { id: 'design', namn: 'DESIGN', ikon: 'penna', farg: F.gron },
-  { id: 'forskning', namn: 'FORSKNING', ikon: 'kolv' },
-  { id: 'nyheter', namn: 'NYHETER', ikon: 'tidning' },
+  { id: 'kontor', namn: $t('KONTOR'), ikon: 'hus' },
+  { id: 'telefoner', namn: $t('TELEFONER'), ikon: 'telefon' },
+  { id: 'bolaget', namn: $t('BOLAGET'), ikon: 'graf' },
+  { id: 'personal', namn: $t('PERSONAL'), ikon: 'team' },
+  { id: 'bygg', namn: $t('BYGG'), ikon: 'hammare', farg: F.orange },
+  { id: 'design', namn: $t('DESIGN'), ikon: 'penna', farg: F.gron },
+  { id: 'forskning', namn: $t('FORSKNING'), ikon: 'kolv' },
+  { id: 'nyheter', namn: $t('NYHETER'), ikon: 'tidning' },
 ];
 
 export function hud(A) {
@@ -32,11 +33,11 @@ export function hud(A) {
     ikon(ik, x, 3, ikc); text(etikett, x + 9, 2, F.dim2); text(varde, x + 9, 8, vc);
     if (klick) hit(x - 1, 0, 50, 13, { klick, namn });
   };
-  cell(96, 'pengar', F.gron, 'KASSA', kr(b.kassa, b.kassa >= 1e7), b.kassa < 0 ? F.rod2 : F.text, 'hud-kassa', () => A.go('bolaget'));
-  cell(158, 'fp', F.bla2, 'FP', String(Math.floor(b.fp)), F.text, 'hud-fp', () => A.go('forskning'));
+  cell(96, 'pengar', F.gron, $t('KASSA'), kr(b.kassa, b.kassa >= 1e7), b.kassa < 0 ? F.rod2 : F.text, 'hud-kassa', () => A.go('bolaget'));
+  cell(158, 'fp', F.bla2, $t('FP'), String(Math.floor(b.fp)), F.text, 'hud-fp', () => A.go('forskning'));
   const v = kontorsVarden(G);
-  cell(196, 'team', F.lila2, 'TEAM', `${G.personal.length}/${v.bord}`, F.text, 'hud-team', () => A.go('personal'));
-  cell(232, 'stjarna', F.guld, 'RYKTE', dec(b.rykte, 2), F.text, 'hud-rykte', () => A.go('bolaget'));
+  cell(196, 'team', F.lila2, $t('TEAM'), `${G.personal.length}/${v.bord}`, F.text, 'hud-team', () => A.go('personal'));
+  cell(232, 'stjarna', F.guld, $t('RYKTE'), dec(b.rykte, 2), F.text, 'hud-rykte', () => A.go('bolaget'));
   // hastighet
   const fart = [[0, 'paus'], [1, '1×'], [2, '2×'], [4, '4×'], [8, '8×']];
   let x = 270;
@@ -59,15 +60,15 @@ export function hud(A) {
 // Konsolspelet (G.lage 'konsol'): nio flikar. Scenen 'telefoner' heter KONSOLER (den visar telefonerna också när
 // telefonavdelningen är öppen) och STUDIOS är spelstudiornas förfrågningar, spelbiblioteket och egna spel.
 export const K_FLIKAR = [
-  { id: 'kontor', namn: 'KONTOR', ikon: 'hus' },
-  { id: 'telefoner', namn: 'KONSOLER', ikon: 'kontroll' },
-  { id: 'studios', namn: 'STUDIOS', ikon: 'kassett', farg: F.lila2 },
-  { id: 'bolaget', namn: 'BOLAGET', ikon: 'graf' },
-  { id: 'personal', namn: 'PERSONAL', ikon: 'team' },
-  { id: 'bygg', namn: 'BYGG', ikon: 'hammare', farg: F.orange },
-  { id: 'design', namn: 'DESIGN', ikon: 'penna', farg: F.gron },
-  { id: 'forskning', namn: 'FORSKNING', ikon: 'kolv' },
-  { id: 'nyheter', namn: 'NYHETER', ikon: 'tidning' },
+  { id: 'kontor', namn: $t('KONTOR'), ikon: 'hus' },
+  { id: 'telefoner', namn: $t('KONSOLER'), ikon: 'kontroll' },
+  { id: 'studios', namn: $t('STUDIOS'), ikon: 'kassett', farg: F.lila2 },
+  { id: 'bolaget', namn: $t('BOLAGET'), ikon: 'graf' },
+  { id: 'personal', namn: $t('PERSONAL'), ikon: 'team' },
+  { id: 'bygg', namn: $t('BYGG'), ikon: 'hammare', farg: F.orange },
+  { id: 'design', namn: $t('DESIGN'), ikon: 'penna', farg: F.gron },
+  { id: 'forskning', namn: $t('FORSKNING'), ikon: 'kolv' },
+  { id: 'nyheter', namn: $t('NYHETER'), ikon: 'tidning' },
 ];
 export const flikarFor = (G) => (G?.lage === 'konsol' ? K_FLIKAR : FLIKAR);
 export function flikrad(A, aktiv) {

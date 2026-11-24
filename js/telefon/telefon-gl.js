@@ -2,6 +2,7 @@
 // förlagans blanka produktbild: mjuk studioljussättning, clearcoat-glans, lysande skärm, blå podiumskiva,
 // cyan/magenta-neon som speglar sig i kroppen. Samma parametrar som pixelversionen (STANDARD, YTOR, VYER).
 import { IKONER, ritaIkon } from './ikoner.js';
+import { $t } from '../core/i18n.js';
 export const YTOR = [['klassisk', 'KLASSISK'], ['matt', 'MJUK MATT'], ['kolfiber', 'KOLFIBER'], ['borstad', 'BORSTAD METALL']];
 export const VYER = { fram: [0, 0.22], bak: [Math.PI, 0.22], sida: [Math.PI / 2, 0.22], under: [0.3, -1.1] };
 export const STANDARD = {
@@ -101,7 +102,7 @@ function vikSkarmTextur(asp) {
   // widget uppe till vänster (3 × 2 rutor): stor klocka och datum
   x.fillStyle = 'rgba(255,255,255,0.2)'; x.beginPath(); x.roundRect(m + cell * 0.12, y0 + cell * 0.05, cell * 2.76, cell * 1.8, cell * 0.2); x.fill();
   x.fillStyle = '#ffffff'; x.font = `bold ${cell * 0.62}px system-ui, sans-serif`; x.fillText('9:41', m + cell * 0.4, y0 + cell * 0.72);
-  x.fillStyle = 'rgba(255,255,255,0.85)'; x.font = `bold ${cell * 0.2}px system-ui, sans-serif`; x.fillText('TORSDAG 23 OKTOBER', m + cell * 0.44, y0 + cell * 1.38);
+  x.fillStyle = 'rgba(255,255,255,0.85)'; x.font = `bold ${cell * 0.2}px system-ui, sans-serif`; x.fillText($t('TORSDAG 23 OKTOBER'), m + cell * 0.44, y0 + cell * 1.38);
   const docka = ['telefon', 'meddelanden', 'webb', 'musik'], ovriga = IKONER.map((k) => k.id).filter((id) => !docka.includes(id));
   let n = 0;
   for (let j = 0; j < rows; j++) for (let i = 0; i < cols; i++) {

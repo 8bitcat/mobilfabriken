@@ -1,0 +1,1697 @@
+[
+ {
+  "i": 0,
+  "k": "UPPLÖSNING",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 1,
+  "k": "BILDFREKVENS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 2,
+  "k": "SKÄRMTEKNIK",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 3,
+  "k": "SELFIEKAMERA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 4,
+  "k": "BAKKAMERA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 5,
+  "k": "CHIP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 6,
+  "k": "ARBETSMINNE",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 7,
+  "k": "LAGRING",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 8,
+  "k": "BATTERI",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 9,
+  "k": "NÄT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 10,
+  "k": "MJUKVARA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 11,
+  "k": "LADDPORT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 12,
+  "k": "MATERIAL",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 13,
+  "k": "240P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 14,
+  "k": "320P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 15,
+  "k": "480P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 16,
+  "k": "540P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 17,
+  "k": "720P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 18,
+  "k": "1080P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 19,
+  "k": "1440P",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 20,
+  "k": "4K",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 21,
+  "k": "30 HZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 22,
+  "k": "60 HZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 23,
+  "k": "90 HZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 24,
+  "k": "120 HZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 25,
+  "k": "144 HZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 26,
+  "k": "TN LCD",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 27,
+  "k": "IPS LCD",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 28,
+  "k": "OLED",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 29,
+  "k": "AMOLED",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 30,
+  "k": "LTPO OLED",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 31,
+  "k": "0,3 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 32,
+  "k": "2 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 33,
+  "k": "5 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 34,
+  "k": "8 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 35,
+  "k": "12 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 36,
+  "k": "32 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 37,
+  "k": "1,3 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 38,
+  "k": "48 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 39,
+  "k": "108 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 40,
+  "k": "200 MP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 41,
+  "k": "1 KÄRNA 400 MHZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 42,
+  "k": "1 KÄRNA 1 GHZ",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 43,
+  "k": "DUBBELKÄRNA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 44,
+  "k": "FYRKÄRNA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 45,
+  "k": "ÅTTAKÄRNA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 46,
+  "k": "ÅTTAKÄRNA + AI",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 47,
+  "k": "3 NM FLAGGSKEPP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 48,
+  "k": "2 NM FLAGGSKEPP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 49,
+  "k": "128 MB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 50,
+  "k": "256 MB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 51,
+  "k": "512 MB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 52,
+  "k": "1 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 53,
+  "k": "2 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 54,
+  "k": "4 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 55,
+  "k": "8 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 56,
+  "k": "12 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 57,
+  "k": "16 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 58,
+  "k": "32 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 59,
+  "k": "64 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 60,
+  "k": "128 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 61,
+  "k": "256 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 62,
+  "k": "512 GB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 63,
+  "k": "1 TB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 64,
+  "k": "2 TB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 65,
+  "k": "1 000 MAH",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 66,
+  "k": "1 500 MAH",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 67,
+  "k": "2 000 MAH",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 68,
+  "k": "3 000 MAH",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 69,
+  "k": "4 000 MAH",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 70,
+  "k": "5 000 MAH",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 71,
+  "k": "6 000 MAH SI-C",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 72,
+  "k": "2G",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 73,
+  "k": "3G",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 74,
+  "k": "4G LTE",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 75,
+  "k": "5G",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 76,
+  "k": "5G ADVANCED",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 77,
+  "k": "ENKELT OS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 78,
+  "k": "ROBOOS (LICENS)",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 79,
+  "k": "ROBOOS + APPBUTIK",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 80,
+  "k": "EGET OS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 81,
+  "k": "EGET OS + AI",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 82,
+  "k": "MINI USB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 83,
+  "k": "MICRO USB",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 84,
+  "k": "USB-C",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 85,
+  "k": "USB-C 3.2",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 86,
+  "k": "USB4",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 87,
+  "k": "PLAST",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 88,
+  "k": "POLYKARBONAT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 89,
+  "k": "ALUMINIUM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 90,
+  "k": "GLAS & METALL",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 91,
+  "k": "TITAN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 92,
+  "k": "KROMPLATTA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 93,
+  "k": "BLANK PLATTA MED KROMKANT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 94,
+  "k": "GLANSKURVA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 95,
+  "k": "MJUKT RUNDAD BAKSIDA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 96,
+  "k": "MJUKT GREPP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 97,
+  "k": "GUMMERAD, SKÖN I HANDEN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 98,
+  "k": "GLASSMÖRGÅS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 99,
+  "k": "GLAS FRAM OCH BAK",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 100,
+  "k": "KONTUR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 101,
+  "k": "TUNNARE MOT KANTERNA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 102,
+  "k": "FASAD UNIBODY",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 103,
+  "k": "FRÄST UR ETT STYCKE",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 104,
+  "k": "POLY UNIBODY",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 105,
+  "k": "FÄRGAD RAKT IGENOM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 106,
+  "k": "RUNDAD METALL",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 107,
+  "k": "SVEPANDE METALLRYGG",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 108,
+  "k": "KANTGLAS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 109,
+  "k": "SKÄRMEN VIKER RUNT KANTEN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 110,
+  "k": "PLAN KANT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 111,
+  "k": "RAKA SIDOR IGEN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 112,
+  "k": "POLERAD PLAN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 113,
+  "k": "SPEGELBLANKA SIDOR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 114,
+  "k": "FLYTANDE Ö",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 115,
+  "k": "KAMERAÖN SVÄVAR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 116,
+  "k": "TITANPLAN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 117,
+  "k": "BORSTAD TITANRAM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 118,
+  "k": "KERAMISK SLIM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 119,
+  "k": "KERAMIK, 7 MM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 120,
+  "k": "LUFTTUNN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 121,
+  "k": "TUNNAST NÅGONSIN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 122,
+  "k": "SÖMLÖST GLAS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 123,
+  "k": "INGA SKARVAR ALLS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 124,
+  "k": "KLASSISK",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 125,
+  "k": "STANDARDYTAN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 126,
+  "k": "MJUK MATT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 127,
+  "k": "SLÄT UTAN REFLEXER",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 128,
+  "k": "BORSTAD METALL",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 129,
+  "k": "RIKTAD METALLGLANS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 130,
+  "k": "KOLFIBER",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 131,
+  "k": "MÖRKT VÄVT MÖNSTER",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 132,
+  "k": "GULD",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 133,
+  "k": "HOLO",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 134,
+  "k": "NEON",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 135,
+  "k": "GALAX",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 136,
+  "k": "LAVA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 137,
+  "k": "KROM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 138,
+  "k": "STANDARDRAM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 139,
+  "k": "SMALARE RAMAR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 140,
+  "k": "TUNNA RAMAR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 141,
+  "k": "KANT TILL KANT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 142,
+  "k": "HÅLKAMERA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 143,
+  "k": "KAMERA UNDER SKÄRMEN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 144,
+  "k": "VIDVINKEL",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 145,
+  "k": "TELE 2X",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 146,
+  "k": "DJUPSENSOR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 147,
+  "k": "MAKRO",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 148,
+  "k": "PERISKOP 5X",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 149,
+  "k": "LIDAR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 150,
+  "k": "GPS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 151,
+  "k": "STEREOHÖGTALARE",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 152,
+  "k": "PENNSTÖD",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 153,
+  "k": "TRÅDLÖS LADDNING",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 154,
+  "k": "FINGERAVTRYCK",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 155,
+  "k": "NFC-BETALNING",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 156,
+  "k": "VATTENTÄT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 157,
+  "k": "ANSIKTSUPPLÅSNING",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 158,
+  "k": "FALLDETEKTERING",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 159,
+  "k": "SPATIALT LJUD",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 160,
+  "k": "SATELLIT-SOS",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 161,
+  "k": "RÖSTASSISTENT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 162,
+  "k": "AR-KAMERA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 163,
+  "k": "ULTRABREDBAND",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 164,
+  "k": "AI-ASSISTENT",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 165,
+  "k": "TELEFON",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 166,
+  "k": "ER FÖRSTA ENHET",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 167,
+  "k": "SURFPLATTA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 168,
+  "k": "STÖRRE SKÄRM, FÖR SOFFAN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 169,
+  "k": "LAPTOP",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 170,
+  "k": "TANGENTBORD OCH STOR SKÄRM",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 171,
+  "k": "SMARTKLOCKA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 172,
+  "k": "TELEFONEN PÅ HANDLEDEN",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 173,
+  "k": "TRÅDLÖSA HÖRLURAR",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 174,
+  "k": "MUSIK UTAN SLADD",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 175,
+  "k": "VIKBAR TELEFON",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 176,
+  "k": "SKÄRMEN GÅR ATT VIKA",
+  "f": "js/data/delar.js"
+ },
+ {
+  "i": 177,
+  "k": "BORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 178,
+  "k": "DATORER",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 179,
+  "k": "STOLAR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 180,
+  "k": "LABB",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 181,
+  "k": "TRIVSEL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 182,
+  "k": "VÄXTER",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 183,
+  "k": "LAMPOR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 184,
+  "k": "DEKOR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 185,
+  "k": "GOLV",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 186,
+  "k": "VÄGGAR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 187,
+  "k": "FÄLLBORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 188,
+  "k": "TRÄBORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 189,
+  "k": "KONTORSBORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 190,
+  "k": "CHEFSBORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 191,
+  "k": "GLAS-LED-BORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 192,
+  "k": "STRIDSSTATION",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 193,
+  "k": "GULDBORD FÖR VD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 194,
+  "k": "GAMMAL BURKSKÄRM",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 195,
+  "k": "PLATT SKÄRM",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 196,
+  "k": "DUBBLA SKÄRMAR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 197,
+  "k": "ARBETSSTATION",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 198,
+  "k": "AI-TERMINAL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 199,
+  "k": "PALL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 200,
+  "k": "KONTORSSTOL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 201,
+  "k": "ERGONOMISK STOL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 202,
+  "k": "GAMINGSTOL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 203,
+  "k": "MASSAGESTOL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 204,
+  "k": "TESTBÄNK",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 205,
+  "k": "SERVERRACK",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 206,
+  "k": "3D-SKRIVARLABB",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 207,
+  "k": "ROBOTARM",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 208,
+  "k": "AI-SUPERDATOR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 209,
+  "k": "KVANTDATOR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 210,
+  "k": "VATTENAUTOMAT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 211,
+  "k": "KAFFEHÖRNA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 212,
+  "k": "WHITEBOARD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 213,
+  "k": "SOFFA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 214,
+  "k": "BOKHYLLA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 215,
+  "k": "ARKADMASKIN",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 216,
+  "k": "VARUAUTOMAT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 217,
+  "k": "BILJARDBORD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 218,
+  "k": "KRUKVÄXT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 219,
+  "k": "HÖG VÄXT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 220,
+  "k": "PALM",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 221,
+  "k": "BONSAI",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 222,
+  "k": "INOMHUSTRÄD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 223,
+  "k": "KRISTALLTRÄD",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 224,
+  "k": "GOLVLAMPA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 225,
+  "k": "BÅGLAMPA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 226,
+  "k": "NEONSKYLT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 227,
+  "k": "LED-PELARE",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 228,
+  "k": "KRISTALLKRONA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 229,
+  "k": "TAVLA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 230,
+  "k": "MATTA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 231,
+  "k": "ARKIVSKÅP",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 232,
+  "k": "JORDGLOB",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 233,
+  "k": "LYXMATTA",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 234,
+  "k": "TELEFONMONTER",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 235,
+  "k": "MODERN SKULPTUR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 236,
+  "k": "GULDTELEFON",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 237,
+  "k": "BETONG",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 238,
+  "k": "KLINKER",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 239,
+  "k": "SCHACKRUTOR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 240,
+  "k": "STÅLPLÅT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 241,
+  "k": "KONSTGRÄS",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 242,
+  "k": "PARKETT",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 243,
+  "k": "MARMOR",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 244,
+  "k": "NEONGOLV",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 245,
+  "k": "TEGELVÄGG",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 246,
+  "k": "PUTSAD VÄGG",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 247,
+  "k": "TRÄPANEL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 248,
+  "k": "VITT KAKEL",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 249,
+  "k": "GLASVÄGG",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 250,
+  "k": "BETONG & LED",
+  "f": "js/data/katalog.js"
+ },
+ {
+  "i": 251,
+  "k": "PROCESSOR",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 252,
+  "k": "GRAFIK",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 253,
+  "k": "LJUD",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 254,
+  "k": "MINNE",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 255,
+  "k": "MEDIA & SPARNING",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 256,
+  "k": "HANDKONTROLL",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 257,
+  "k": "UPPKOPPLING",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 258,
+  "k": "KROPP & DESIGN",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 259,
+  "k": "FUNKTIONER",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 260,
+  "k": "ENHETER",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 261,
+  "k": "MOBIL",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 262,
+  "k": "SPELMEDIA",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 263,
+  "k": "SPARNING",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 264,
+  "k": "NYA ENHETER",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 265,
+  "k": "KAROSSER",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 266,
+  "k": "KAROSSER {0}",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 267,
+  "k": "TELEFONER",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 268,
+  "k": "TELEFONAVDELNINGEN",
+  "f": "js/data/konsol-noder.js"
+ },
+ {
+  "i": 269,
+  "k": "ORBITEK 2800",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 270,
+  "k": "ORBITEK",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 271,
+  "k": "DATATRON 64",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 272,
+  "k": "DATATRON",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 273,
+  "k": "LUMA VISION",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 274,
+  "k": "LUMA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 275,
+  "k": "TENKO 8",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 276,
+  "k": "TENKO",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 277,
+  "k": "TORA SYSTEM 8",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 278,
+  "k": "TORA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 279,
+  "k": "TENKO POCKET",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 280,
+  "k": "TORA MEGA 16",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 281,
+  "k": "SUPER TENKO",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 282,
+  "k": "HOSHI NOVA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 283,
+  "k": "HOSHI",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 284,
+  "k": "TORA ORBIT",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 285,
+  "k": "TENKO 64",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 286,
+  "k": "TENKO POCKET COLOR",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 287,
+  "k": "TORA VORTEX",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 288,
+  "k": "HOSHI NOVA 2",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 289,
+  "k": "AXIOM X",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 290,
+  "k": "AXIOM",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 291,
+  "k": "TENKO KUB",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 292,
+  "k": "TENKO DUO",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 293,
+  "k": "AXIOM X2",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 294,
+  "k": "TENKO VIVA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 295,
+  "k": "HOSHI NOVA 3",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 296,
+  "k": "TENKO VIVA U",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 297,
+  "k": "HOSHI NOVA 4",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 298,
+  "k": "AXIOM X3",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 299,
+  "k": "TENKO SNAP",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 300,
+  "k": "PANORAMA VR",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 301,
+  "k": "PANORAMA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 302,
+  "k": "HOSHI NOVA 5",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 303,
+  "k": "AXIOM X4",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 304,
+  "k": "FORGE GO",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 305,
+  "k": "FORGE",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 306,
+  "k": "TENKO SNAP 2",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 307,
+  "k": "ARCADIA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 308,
+  "k": "MIRAI",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 309,
+  "k": "ACTION LABS",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 310,
+  "k": "SOYUZ SOFT",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 311,
+  "k": "SVAMPSTUDION",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 312,
+  "k": "TORA GAMES",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 313,
+  "k": "KATANA WORKS",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 314,
+  "k": "BLUE DASH",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 315,
+  "k": "DELTA LABS",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 316,
+  "k": "GRAY WOLF",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 317,
+  "k": "KERNEL",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 318,
+  "k": "QUADRA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 319,
+  "k": "OCTAVE",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 320,
+  "k": "CRITTER LAB",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 321,
+  "k": "KOMET",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 322,
+  "k": "ORBITAL",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 323,
+  "k": "ASFALT",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 324,
+  "k": "ATLAS",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 325,
+  "k": "DOODLE",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 326,
+  "k": "BLOCKSMITH",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 327,
+  "k": "NORTHSTAR",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 328,
+  "k": "PRISMA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 329,
+  "k": "NIGHT OWL",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 330,
+  "k": "ULTRA",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 331,
+  "k": "LITTLE SHIP",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 332,
+  "k": "RHYTHM BOX",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 333,
+  "k": "OPEN ROAD",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 334,
+  "k": "ASHEN",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 335,
+  "k": "TOYBOX",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 336,
+  "k": "RYMDANFALL",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 337,
+  "k": "GLUFS",
+  "f": "js/data/konsol-varld.js"
+ },
+ {
+  "i": 338,
+  "k": "APTORNET",
+  "f": "js/data/konsol-varld.js"
+ }
+]

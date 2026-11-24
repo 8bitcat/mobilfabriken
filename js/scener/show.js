@@ -12,6 +12,7 @@ import { telAv } from '../sim/design.js';
 import { rimligtPris } from '../sim/marknad.js';
 import { kr, dec, tal } from '../sim/bas.js';
 import { K_TIDNINGAR } from '../data/konsol-varld.js';
+import { $t } from '../core/i18n.js';
 
 let SCEN = null;
 const SX = 116;   // scenens mitt (betygskortet står till höger)
@@ -52,9 +53,9 @@ function ridå(ctx, oppen) {
 function citat(p) {
   const T = p.staplar.teknik, D = p.staplar.design, P = p.staplar.puts;
   return [
-    ['MOBILTIDNINGEN', T >= 1 ? 'TOPPMODERN TEKNIK RAKT IGENOM.' : T >= 0.85 ? 'GEDIGEN TEKNIK, INGA ÖVERRASKNINGAR.' : T >= 0.65 ? 'HALKAR EFTER PÅ NÅGRA DELAR.' : 'TEKNIKEN ÄR FRÅN I FJOL.'],
-    ['SIGNALEN', D >= 0.8 ? 'ÅRETS VACKRASTE TELEFON.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'DEN NYA KROPPEN VÄNDER HUVUDEN.' : 'SER UT SOM EN TEGELSTEN.'],
-    ['BYTESIZE', p.buggar >= 5 ? 'BUGGIGARE ÄN ETT MYRBO. AJ.' : P < 0.45 ? 'STRESSAT OCH OPUTSAT. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. GEDIGET.'],
+    [$t('MOBILTIDNINGEN'), T >= 1 ? $t('TOPPMODERN TEKNIK RAKT IGENOM.') : T >= 0.85 ? $t('GEDIGEN TEKNIK, INGA ÖVERRASKNINGAR.') : T >= 0.65 ? $t('HALKAR EFTER PÅ NÅGRA DELAR.') : $t('TEKNIKEN ÄR FRÅN I FJOL.')],
+    [$t('SIGNALEN'), D >= 0.8 ? $t('ÅRETS VACKRASTE TELEFON.') : D >= 0.6 ? $t('SNYGG OCH GENOMTÄNKT.') : D >= 0.45 ? $t('DEN NYA KROPPEN VÄNDER HUVUDEN.') : $t('SER UT SOM EN TEGELSTEN.')],
+    [$t('BYTESIZE'), p.buggar >= 5 ? $t('BUGGIGARE ÄN ETT MYRBO. AJ.') : P < 0.45 ? $t('STRESSAT OCH OPUTSAT. MER FORSKNING!') : P < 0.75 ? $t('OKEJ, MEN KÄNNS LITE OFÄRDIG.') : $t('KNAPPT EN BUGG I SIKTE. GEDIGET.')],
   ];
 }
 // speltidningarna om en konsol: den sakliga om tekniken, den designglada om lådan och den elaka om buggar och puts
@@ -63,12 +64,12 @@ function konsolCitat(p) {
   const T = p.staplar.teknik, D = p.staplar.design, P = p.staplar.puts, namn = (lynne, fall) => (K_TIDNINGAR.find((x) => x.lynne === lynne) || { namn: fall }).namn;
   return [
     // varje citat ryms på en rad i kortet (högst 132 px med citattecknen)
-    [namn('saklig', 'DATAPRESSEN'), T >= 1 ? 'ETT KRAFTPAKET. SPELEN FLYGER.' : T >= 0.85 ? 'GEDIGET. INGA ÖVERRASKNINGAR.' : T >= 0.65 ? 'HALKAR EFTER RIVALERNA LITE.' : 'TEKNIKEN ÄR FRÅN I FJOL.'],
-    [namn('design', 'PIXELPRESS'), D >= 0.8 ? 'ÅRETS SNYGGASTE KONSOL.' : D >= 0.6 ? 'SNYGG OCH GENOMTÄNKT.' : D >= 0.45 ? 'EN LÅDA SOM VÄNDER HUVUDEN.' : 'SER UT SOM EN BRÖDROST.'],
-    [namn('elak', 'SPELKRITIKERN'), p.buggar >= 5 ? 'KRASCHAR VAR FEMTE MINUT. AJ.' : P < 0.45 ? 'OPUTSAD. MER FORSKNING!' : P < 0.75 ? 'OKEJ, MEN KÄNNS LITE OFÄRDIG.' : 'KNAPPT EN BUGG I SIKTE. TYVÄRR.'],
+    [namn('saklig', $t('DATAPRESSEN')), T >= 1 ? $t('ETT KRAFTPAKET. SPELEN FLYGER.') : T >= 0.85 ? $t('GEDIGET. INGA ÖVERRASKNINGAR.') : T >= 0.65 ? $t('HALKAR EFTER RIVALERNA LITE.') : $t('TEKNIKEN ÄR FRÅN I FJOL.')],
+    [namn('design', $t('PIXELPRESS')), D >= 0.8 ? $t('ÅRETS SNYGGASTE KONSOL.') : D >= 0.6 ? $t('SNYGG OCH GENOMTÄNKT.') : D >= 0.45 ? $t('EN LÅDA SOM VÄNDER HUVUDEN.') : $t('SER UT SOM EN BRÖDROST.')],
+    [namn('elak', $t('SPELKRITIKERN')), p.buggar >= 5 ? $t('KRASCHAR VAR FEMTE MINUT. AJ.') : P < 0.45 ? $t('OPUTSAD. MER FORSKNING!') : P < 0.75 ? $t('OKEJ, MEN KÄNNS LITE OFÄRDIG.') : $t('KNAPPT EN BUGG I SIKTE. TYVÄRR.')],
   ];
 }
-const omdome = (b) => (b < 4 ? 'USEL' : b < 5 ? 'SVAG' : b < 6 ? 'OKEJ' : b < 7 ? 'BRA' : b < 8 ? 'MYCKET BRA' : b < 9 ? 'FANTASTISK' : 'MÄSTERVERK');
+const omdome = (b) => (b < 4 ? $t('USEL') : b < 5 ? $t('SVAG') : b < 6 ? $t('OKEJ') : b < 7 ? $t('BRA') : b < 8 ? $t('MYCKET BRA') : b < 9 ? $t('FANTASTISK') : $t('MÄSTERVERK'));
 
 export function show(A, o = {}) {
   const G = A.G, p = G.produkter.find((x) => x.id === o.produkt) || G.produkter[G.produkter.length - 1];
@@ -90,13 +91,13 @@ export function show(A, o = {}) {
       if (ljudSteg === 2 && t > 5.6) { if (p.betyg >= 7) { konfetti(120); A.ljud('mal'); } else if (p.betyg < 5) A.ljud('tomat'); else A.ljud('kaching'); ljudSteg = 3; }
       ctx.drawImage(scenBild(), 0, 0);
       // titeln
-      text('PRESENTERAR', SX, 20, F.lila2, { just: 'c' });
+      text($t('PRESENTERAR'), SX, 20, F.lila2, { just: 'c' });
       textB(kapa(p.namn, 112), SX, 28, F.guld, { just: 'c', k: 2, skugga: 0x8a2a6a });
       // telefonen på podiet (en konsol är bredare och låg, och visar spelet i lådan under namnet)
       if (konsol) {
         visaKonsol({ x: SX - 58, y: 75, w: 116, h: 76 }, p.design, { vy: 'auto', spin, pitch: 0.28, pixel: G.installningar.telefon === 'pixel', ctx });
         if (p.packin) {
-          const s = 'MED ' + kapa(p.packin.titel, 80) + ' I LÅDAN', st = t > 5.8 ? '★'.repeat(p.packin.stj || 1) : '', sw = st ? tw(st) + 4 : 0, x0 = Math.round(SX - (tw(s) + sw) / 2);
+          const s = $t`MED ${kapa(p.packin.titel, 80)} I LÅDAN`, st = t > 5.8 ? '★'.repeat(p.packin.stj || 1) : '', sw = st ? tw(st) + 4 : 0, x0 = Math.round(SX - (tw(s) + sw) / 2);
           text(s, x0, 46, F.lila2); if (st) text(st, x0 + tw(s) + 4, 46, F.guld);
         }
       } else Vy3d.visa({ x: SX - 40, y: 56, w: 80, h: 94 }, telAv(p.design), { vy: 'auto', spin, pitch: 0.1, pixel: G.installningar.telefon === 'pixel', ctx, skugga: false });
@@ -104,15 +105,15 @@ export function show(A, o = {}) {
       if (t > 2.8) {
         const x = 236, y = 18, w = 144, h = 182;
         papper(x, y, w, h);
-        text('KRITIKERBETYG', x + 6, y + 5, 0x9e1b22);
+        text($t('KRITIKERBETYG'), x + 6, y + 5, 0x9e1b22);
         const f = Math.min(1, Math.max(0, (t - 4.6) / 1.2)), visat = Math.round(p.betyg * f * 10) / 10;
         textB(dec(visat, 1), x + 6, y + 13, F.blak, { k: 2 }); text('/10', x + 6 + tw(dec(visat, 1), BIG, 2) + 2, y + 20, 0x7a7470);
         if (t > 5.8) { for (let i = 0; i < 5; i++) ikon('stjarna', x + 70 + i * 8, y + 13, i < stj ? 0xe8b230 : 0xb9ad94); rect(x + 70, y + 22, 50, 9, p.betyg >= 6 ? 0x2f8f46 : p.betyg >= 5 ? 0xe8b230 : 0x9e1b22); text(omdome(p.betyg), x + 95, y + 24, 0xffffff, { just: 'c' }); }
         // staplarna fylls en i taget
         const stapel = (namn, v, c, yy, start) => { const ff = Math.min(1, Math.max(0, (t - start) / 0.6)); text(namn, x + 6, yy, 0x3a3440); matare(x + 6, yy + 7, w - 12, 5, Math.min(1, v) * ff, c, { bak: 0xd8cfbe, segment: 10 }); };
-        stapel('TEKNIK MOT MARKNADEN', p.staplar.teknik, 0x3a7bd5, y + 36, 3.0);
-        stapel('DESIGN', p.staplar.design, 0x8e5bd1, y + 52, 3.5);
-        stapel('PUTS', p.staplar.puts, 0x45b964, y + 68, 4.0);
+        stapel($t('TEKNIK MOT MARKNADEN'), p.staplar.teknik, 0x3a7bd5, y + 36, 3.0);
+        stapel($t('DESIGN'), p.staplar.design, 0x8e5bd1, y + 52, 3.5);
+        stapel($t('PUTS'), p.staplar.puts, 0x45b964, y + 68, 4.0);
         if (t > 6.0) {
           C.forEach(([tid, rad], i) => {
             const ff = Math.min(1, Math.max(0, (t - 6.0 - i * 0.5) / 0.6)); if (ff <= 0) return;
@@ -123,24 +124,24 @@ export function show(A, o = {}) {
         if (t > 8.2) {
           // resultatrutor
           const ry = y + 148; const ruta = (e, v, xx, c = F.blak) => { text(e, xx, ry, 0x7a7470); text(v, xx, ry + 7, c); };
-          ruta('RÄTT PRIS', kr(rim), x + 6); ruta('DITT PRIS', kr(p.pris), x + 52, p.pris > rim * 1.25 ? 0x9e1b22 : F.blak); ruta('BUGGAR', String(p.buggar), x + 104, p.buggar >= 5 ? 0x9e1b22 : F.blak);
-          text(`LANSERINGEN KOSTADE ${kr(p.kostnader.fabrik + p.kostnader.reklam + p.kostnader.tillverkning)}`, x + 6, ry + 17, 0x9e1b22);
+          ruta($t('RÄTT PRIS'), kr(rim), x + 6); ruta($t('DITT PRIS'), kr(p.pris), x + 52, p.pris > rim * 1.25 ? 0x9e1b22 : F.blak); ruta($t('BUGGAR'), String(p.buggar), x + 104, p.buggar >= 5 ? 0x9e1b22 : F.blak);
+          text($t`LANSERINGEN KOSTADE ${kr(p.kostnader.fabrik + p.kostnader.reklam + p.kostnader.tillverkning)}`, x + 6, ry + 17, 0x9e1b22);
         }
       }
       ridå(ctx, Math.min(1, Math.max(0, (t - 1.4) / 1.2)));
-      if (t < 1.6) { textB(G.bolag.namn, W / 2, 90, F.guld, { just: 'c', skugga: 0x3a0810 }); text('PRESENTERAR STOLT …', W / 2, 104, F.text, { just: 'c' }); }
-      if (t < 8.5) knapp(W - 64, H - 14, 60, 10, 'HOPPA ÖVER', { stil: 'morkt', klick: hoppa });
+      if (t < 1.6) { textB(G.bolag.namn, W / 2, 90, F.guld, { just: 'c', skugga: 0x3a0810 }); text($t('PRESENTERAR STOLT …'), W / 2, 104, F.text, { just: 'c' }); }
+      if (t < 8.5) knapp(W - 64, H - 14, 60, 10, $t('HOPPA ÖVER'), { stil: 'morkt', klick: hoppa });
       else if (konsol) {
         // tre knappar ryms till vänster om betygskortet (x 236)
-        knapp(8, H - 16, 70, 12, 'TILL KONTORET', { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
-        knapp(82, H - 16, 70, 12, 'SE KONSOLEN', { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
-        knapp(156, H - 16, 74, 12, 'SE REKLAMFILMEN', { stil: 'lila', klick: reklam, namn: 'show-reklam' });
+        knapp(8, H - 16, 70, 12, $t('TILL KONTORET'), { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
+        knapp(82, H - 16, 70, 12, $t('SE KONSOLEN'), { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
+        knapp(156, H - 16, 74, 12, $t('SE REKLAMFILMEN'), { stil: 'lila', klick: reklam, namn: 'show-reklam' });
       } else {
-        knapp(8, H - 16, 100, 12, 'TILL KONTORET', { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
-        knapp(112, H - 16, 100, 12, p.design?.linje === 'konsol' ? 'SE KONSOLEN' : 'SE TELEFONEN', { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
+        knapp(8, H - 16, 100, 12, $t('TILL KONTORET'), { stil: 'gron', klick: () => { A.spelaTid(); A.go('kontor'); }, namn: 'show-klar' });
+        knapp(112, H - 16, 100, 12, p.design?.linje === 'konsol' ? $t('SE KONSOLEN') : $t('SE TELEFONEN'), { stil: 'morkt', klick: () => { A.spelaTid(); A.go('telefoner', { produkt: p.id }); } });
       }
       rect(0, 0, W, 14, 0x0a0d1a);
-      text('LANSERINGEN · ' + G.bolag.namn, 4, 4, F.dim);
+      text($t`LANSERINGEN · ${G.bolag.namn}`, 4, 4, F.dim);
     },
   };
 }

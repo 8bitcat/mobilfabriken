@@ -1,0 +1,1337 @@
+[
+ {
+  "i": 0,
+  "k": "HJÄRNAN I LÅDAN. EN SNABBARE PROCESSOR KLARAR STÖRRE SPEL.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 1,
+  "k": "HUR SPELEN SER UT PÅ TV:N. BLÅ KANT = VAD KRITIKERNA VÄNTAR SIG I ÅR.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 2,
+  "k": "FRÅN PIP TILL MELODIER, CD-LJUD OCH SURROUND.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 3,
+  "k": "MER MINNE GER STÖRRE SPELVÄRLDAR.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 4,
+  "k": "SPELEN SÄLJS PÅ MODUL, DISKETT ELLER SKIVA.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 5,
+  "k": "DET SPELARNA HÅLLER I. MÅNGA SPEL KRÄVER RÄTT KONTROLL.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 6,
+  "k": "SPELA MED KOMPISAR – FÖRST MED SLADD, SEDAN ÖVER NÄTET.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 7,
+  "k": "HUR SPELARNA SPARAR. UTAN SPARNING BLIR DET LÖSENORD.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 8,
+  "k": "LÅDANS MATERIAL. FINARE MATERIAL GER BÄTTRE DESIGNBETYG.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 9,
+  "k": "ENHET",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 10,
+  "k": "VILKEN SORTS KONSOL BYGGER NI?",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 11,
+  "k": "FORM",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 12,
+  "k": "KRITIKERNA ÄLSKAR NYA FORMER. FRÄSCHHETEN SJUNKER 12 % PER ÅR.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 13,
+  "k": "EXTRA FINESSER SOM KRITIKERNA GILLAR.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 14,
+  "k": "FÄRG & YTA",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 15,
+  "k": "VÄLJ FÄRG OCH YTA. YTAN GER DESIGNPOÄNG.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 16,
+  "k": "SPELET I LÅDAN",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 17,
+  "k": "SPELUTVECKLARNA GÖR DET EFTER HÅRDVARAN – OCH KONSOLEN SÄLJER MER.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 18,
+  "k": "PRIS & NAMN",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 19,
+  "k": "RIMLIGT PRIS FÖLJER BETYGET. DÖP KONSOLEN!",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 20,
+  "k": "GRANSKNING",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 21,
+  "k": "SER ALLT BRA UT? STARTA UTVECKLINGEN.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 22,
+  "k": "ORIGINALFÄRGER",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 23,
+  "k": "SPELET KRÄVER {0}",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 24,
+  "k": "ÅR {0}",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 25,
+  "k": "FORSKAS NU",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 26,
+  "k": "FORSKA",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 27,
+  "k": "SPELEN VILL HA",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 28,
+  "k": "KOMMER {0}",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 29,
+  "k": "KRÄVER FORSKNING",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 30,
+  "k": "FRÄSCH {0} %",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 31,
+  "k": "+{0} AV +{1}",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 32,
+  "k": "+0,1 VAR I BETYGET",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 33,
+  "k": "FUNKTIONERNA KOMMER MED FORSKNINGEN.",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 34,
+  "k": "FÄRG",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 35,
+  "k": "YTA",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 36,
+  "k": "INGET SPEL",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 37,
+  "k": "KÖPARE/V ~{0}",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 38,
+  "k": "KÖPARE/V ~{0} (UTAN ~{1})",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 39,
+  "k": "KÖPARE/V ~{0} (MED SPEL ~{1})",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 40,
+  "k": "ATT TILLVERKA",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 41,
+  "k": "VÄNTAT BETYG",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 42,
+  "k": "BETYG",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 43,
+  "k": "RIMLIGT PRIS",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 44,
+  "k": "PRIS",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 45,
+  "k": "MARGINAL",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 46,
+  "k": "KÖPARE/VECKA",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 47,
+  "k": "NAMN",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 48,
+  "k": "FÖRSLAG: {0}",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 49,
+  "k": "KRITIKERNAS GISSNING",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 50,
+  "k": "KRAV",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 51,
+  "k": "{0} AV {1} DELAR I NIVÅ",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 52,
+  "k": "FABRIK (ENGÅNG)",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 53,
+  "k": "FABRIK",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 54,
+  "k": "BYGGTID",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 55,
+  "k": "{0} + {1} DAGAR",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 56,
+  "k": "{0} DAGAR",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 57,
+  "k": "I LÅDAN",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 58,
+  "k": "TRYCK OCH SKRIV ETT NAMN",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 59,
+  "k": "TRYCK START",
+  "f": "js/scener/design-konsol.js"
+ },
+ {
+  "i": 60,
+  "k": "SVART",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 61,
+  "k": "VIT",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 62,
+  "k": "SILVER",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 63,
+  "k": "BLÅ",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 64,
+  "k": "RÖD",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 65,
+  "k": "GRÖN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 66,
+  "k": "GUL",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 67,
+  "k": "ROSA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 68,
+  "k": "LILA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 69,
+  "k": "TURKOS",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 70,
+  "k": "ORANGE",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 71,
+  "k": "MÖRKBLÅ",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 72,
+  "k": "EGEN FÄRG",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 73,
+  "k": "VILKEN SORTS PRYL BYGGER NI?",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 74,
+  "k": "KRITIKERNA ÄLSKAR NYA KAROSSER. FRÄSCHHETEN SJUNKER 16 % PER ÅR.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 75,
+  "k": "STORLEK & FORM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 76,
+  "k": "FORMEN ÄR DIN. STORLEKEN ÄNDRAR INTE BETYGET.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 77,
+  "k": "SKÄRMTYP",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 78,
+  "k": "KRITIKERNAS MÅTTSTOCK. BLÅ KANT = VAD DE VÄNTAR SIG I ÅR.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 79,
+  "k": "EN LITEN PRICK OVANFÖR SKÄRMEN.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 80,
+  "k": "BAKKAMEROR",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 81,
+  "k": "FLER LINSER KOMMER MED FORSKNING I KAMERAGRUPPEN.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 82,
+  "k": "PROCESSORN STYR HUR SNABB TELEFONEN KÄNNS.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 83,
+  "k": "ARBETSMINNE FÖR FART, LAGRING FÖR BILDER OCH MUSIK.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 84,
+  "k": "STÖRRE BATTERI GÖR TELEFONEN TJOCKARE.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 85,
+  "k": "NÄT & MJUKVARA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 86,
+  "k": "SNABBARE NÄT OCH ETT BÄTTRE OPERATIVSYSTEM.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 87,
+  "k": "KROPP & PORTAR",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 88,
+  "k": "MATERIAL, HEMKNAPP, LADDPORT OCH FUNKTIONER.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 89,
+  "k": "FÄRG & MÄRKE",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 90,
+  "k": "VÄLJ FÄRG, YTA OCH SÄTT DITT MÄRKE PÅ BAKSIDAN.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 91,
+  "k": "SÄTT PRIS, DÖP TELEFONEN OCH STARTA UTVECKLINGEN.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 92,
+  "k": "MOBILEN I FICKAN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 93,
+  "k": "LITEN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 94,
+  "k": "LAGOM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 95,
+  "k": "STOR",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 96,
+  "k": "{0} CM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 97,
+  "k": "BREDD",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 98,
+  "k": "HÖJD",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 99,
+  "k": "TJOCKLEK",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 100,
+  "k": "HÖRN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 101,
+  "k": "SKARPA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 102,
+  "k": "MJUKA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 103,
+  "k": "RUNDA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 104,
+  "k": "KAPSEL",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 105,
+  "k": "SKÄRMRAM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 106,
+  "k": "LINSER PÅ BAKSIDAN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 107,
+  "k": "KAMERAÖ",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 108,
+  "k": "MINSTA TJOCKLEK: {0} CM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 109,
+  "k": "HEMKNAPP",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 110,
+  "k": "JA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 111,
+  "k": "NEJ",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 112,
+  "k": "MAX NÅTT: FLER GER INGET",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 113,
+  "k": "+0,1 VAR, HÖGST +{0}",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 114,
+  "k": "FORSKA FRAM GPS FÖR DIN FÖRSTA FUNKTION.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 115,
+  "k": "MÄRKE",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 116,
+  "k": "{0} AV 13 DELAR I NIVÅ",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 117,
+  "k": "KONCEPTHYLLAN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 118,
+  "k": "HÄR SPARAS DESIGNER SOM INTE STARTATS. TRYCK SPARA I GRANSKNINGEN.",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 119,
+  "k": "NAMNLÖS",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 120,
+  "k": "TILLBAKA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 121,
+  "k": " · TIDEN STÅR STILL",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 122,
+  "k": "DESIGNSTUDIO",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 123,
+  "k": "TILL KONTORET",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 124,
+  "k": "KONCEPT ({0})",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 125,
+  "k": "NAMNLÖS KONSOL",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 126,
+  "k": "I LÅDAN: {0}",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 127,
+  "k": "INGET SPEL I LÅDAN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 128,
+  "k": "NAMNLÖS TELEFON",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 129,
+  "k": "{0}\" SKÄRM · {1}",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 130,
+  "k": "{0} × {1} × {2} CM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 131,
+  "k": "KONSOLEN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 132,
+  "k": "TELEFONEN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 133,
+  "k": "VY",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 134,
+  "k": "AUTO",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 135,
+  "k": "FRI",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 136,
+  "k": "FRAM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 137,
+  "k": "BAK",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 138,
+  "k": "SIDA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 139,
+  "k": "UNDER",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 140,
+  "k": "{0} RITAS SOM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 141,
+  "k": "RIKTIG 3D",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 142,
+  "k": "PIXEL",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 143,
+  "k": "DRA I {0}",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 144,
+  "k": "FÖR ATT VRIDA DEN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 145,
+  "k": "BÖRJA OM",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 146,
+  "k": "STEG {0} AV {1}",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 147,
+  "k": "FORTSÄTT",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 148,
+  "k": "HOPPA TILL GRANSKNING",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 149,
+  "k": "SPARA",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 150,
+  "k": "SPARAD, ÄLDSTA FÖLL BORT",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 151,
+  "k": "SPARAD PÅ KONCEPTHYLLAN",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 152,
+  "k": "STARTA UTVECKLING",
+  "f": "js/scener/design.js"
+ },
+ {
+  "i": 153,
+  "k": "PENGAR",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 154,
+  "k": "MYSTERIELÅDA",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 155,
+  "k": "LEGENDARISK YTA",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 156,
+  "k": "INFLUENCER",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 157,
+  "k": "+60 % HYPE\n1 LANSERING",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 158,
+  "k": "24K GULD",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 159,
+  "k": "DIREKTBYGGE + GULDYTA",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 160,
+  "k": "{0} ÖPPNADE DAGENS GÅVA: {1}.",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 161,
+  "k": "EN GÅVA VARJE DAG DU SPELAR – MISSAR DU EN DAG FORTSÄTTER DU DÄR DU VAR",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 162,
+  "k": "DAG {0}",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 163,
+  "k": "+{0} FP",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 164,
+  "k": "ÖPPNA!",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 165,
+  "k": "DAG 5-BONUS",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 166,
+  "k": "+10 % PÅ VARJE FÖRSÄLJNING",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 167,
+  "k": "ÖPPNA FEM GÅVOR SÅ TJÄNAR VARJE SÅLD TELEFON 10 % MER. FÖR ALLTID.",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 168,
+  "k": "ÖPPNA FEM GÅVOR SÅ TJÄNAR DU 10 % MER PÅ VARJE SÅLD PRYL. FÖR ALLTID.",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 169,
+  "k": "ÖPPNA FEM GÅVOR SÅ TJÄNAR DU 10 % MER PÅ VARJE SÅLD KONSOL. FÖR ALLTID.",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 170,
+  "k": "AKTIV!",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 171,
+  "k": "{0} AV 5",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 172,
+  "k": "LEGENDARISKA YTOR",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 173,
+  "k": "{0} AV 6 SAMLADE",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 174,
+  "k": "NY YTA: {0}! VÄLJ DEN I DESIGNERN.",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 175,
+  "k": "ANVÄNDS I DESIGNERN (FÄRG & YTA).",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 176,
+  "k": "ANVÄNDS I DESIGNERN (FÄRG & MÄRKE).",
+  "f": "js/scener/gavor.js"
+ },
+ {
+  "i": 177,
+  "k": "SPELTIDNINGAR",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 178,
+  "k": "TIDNINGAR",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 179,
+  "k": "TIDNING",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 180,
+  "k": "NÄTET",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 181,
+  "k": "TV",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 182,
+  "k": "GLOBAL",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 183,
+  "k": "LANSERINGSDAG",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 184,
+  "k": "BUGGAR KVAR",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 185,
+  "k": "STUDIOSPEL",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 186,
+  "k": "{0} PÅ GÅNG",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 187,
+  "k": "INGA ÄN",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 188,
+  "k": "1. REKLAMKAMPANJ",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 189,
+  "k": "3 MARKNADER",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 190,
+  "k": "+{0} % TIDIGT",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 191,
+  "k": "GRUNDNIVÅ",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 192,
+  "k": "2. VAD KAMPANJEN GER",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 193,
+  "k": "EFTERFRÅGAN FÖRSTA VECKAN",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 194,
+  "k": "{0} KÖPARE",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 195,
+  "k": "SÄLJS I {0} % AV VÄRLDEN. BETYG, PRIS OCH SPELEN AVGÖR RESTEN.",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 196,
+  "k": "SÄLJS I {0} % AV VÄRLDEN. BETYG, PRIS OCH LAGER AVGÖR RESTEN.",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 197,
+  "k": "REKLAMEN: +{0} SÅLDA, CA {1}",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 198,
+  "k": "INFLUENCER: PÅ",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 199,
+  "k": "ANVÄND INFLUENCER",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 200,
+  "k": "3. PRODUKTION",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 201,
+  "k": "FÖRSTA PARTIET: {0} KONSOLER · {1}",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 202,
+  "k": "FÖRSTA PARTIET: {0} ST · {1}",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 203,
+  "k": "NYA PARTIER BESTÄLLS AUTOMATISKT NÄR LAGRET TAR SLUT.",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 204,
+  "k": "FABRIK {0}  +  REKLAM {1}  +  FÖRSTA PARTIET {2}",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 205,
+  "k": "LANSERING TOTALT: {0}",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 206,
+  "k": "DU HAR {0} · {1} KVAR EFTER LANSERINGEN",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 207,
+  "k": "LÅNA {0}",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 208,
+  "k": "BANKEN LÅNAR {0} {1} TILL LANSERINGEN AV {2}. RÄNTAN ÄR 10 % OM ÅRET.",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 209,
+  "k": "AV BANKEN · 10 % RÄNTA OM ÅRET",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 210,
+  "k": "FÖR DYR REKLAM – VÄLJ EN BILLIGARE",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 211,
+  "k": "INTE ÄN",
+  "f": "js/scener/lansering.js"
+ },
+ {
+  "i": 212,
+  "k": "SPELA HEMMA!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 213,
+  "k": "HELA FAMILJEN SPELAR!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 214,
+  "k": "FRAMTIDEN ÄR HÄR!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 215,
+  "k": "NU BÖRJAR LEKEN!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 216,
+  "k": "SPELKVÄLL VARJE KVÄLL!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 217,
+  "k": "MER SPEL ÄN NÅGONSIN!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 218,
+  "k": "SPELBILD FRÅN {0}",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 219,
+  "k": "{0} PRESENTERAR",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 220,
+  "k": "BARA HOS OSS!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 221,
+  "k": "I BUTIK NU · {0}",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 222,
+  "k": "MED",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 223,
+  "k": "I LÅDAN!",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 224,
+  "k": "KRITIKERNA: {0}/10",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 225,
+  "k": "I BUTIK NU",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 226,
+  "k": "REKLAMFILM",
+  "f": "js/scener/reklam.js"
+ },
+ {
+  "i": 227,
+  "k": "TOPPMODERN TEKNIK RAKT IGENOM.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 228,
+  "k": "GEDIGEN TEKNIK, INGA ÖVERRASKNINGAR.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 229,
+  "k": "HALKAR EFTER PÅ NÅGRA DELAR.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 230,
+  "k": "TEKNIKEN ÄR FRÅN I FJOL.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 231,
+  "k": "ÅRETS VACKRASTE TELEFON.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 232,
+  "k": "SNYGG OCH GENOMTÄNKT.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 233,
+  "k": "DEN NYA KROPPEN VÄNDER HUVUDEN.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 234,
+  "k": "SER UT SOM EN TEGELSTEN.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 235,
+  "k": "BUGGIGARE ÄN ETT MYRBO. AJ.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 236,
+  "k": "STRESSAT OCH OPUTSAT. MER FORSKNING!",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 237,
+  "k": "OKEJ, MEN KÄNNS LITE OFÄRDIG.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 238,
+  "k": "KNAPPT EN BUGG I SIKTE. GEDIGET.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 239,
+  "k": "ETT KRAFTPAKET. SPELEN FLYGER.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 240,
+  "k": "GEDIGET. INGA ÖVERRASKNINGAR.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 241,
+  "k": "HALKAR EFTER RIVALERNA LITE.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 242,
+  "k": "ÅRETS SNYGGASTE KONSOL.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 243,
+  "k": "EN LÅDA SOM VÄNDER HUVUDEN.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 244,
+  "k": "SER UT SOM EN BRÖDROST.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 245,
+  "k": "KRASCHAR VAR FEMTE MINUT. AJ.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 246,
+  "k": "OPUTSAD. MER FORSKNING!",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 247,
+  "k": "KNAPPT EN BUGG I SIKTE. TYVÄRR.",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 248,
+  "k": "USEL",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 249,
+  "k": "SVAG",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 250,
+  "k": "OKEJ",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 251,
+  "k": "BRA",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 252,
+  "k": "MYCKET BRA",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 253,
+  "k": "FANTASTISK",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 254,
+  "k": "MÄSTERVERK",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 255,
+  "k": "PRESENTERAR",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 256,
+  "k": "MED {0} I LÅDAN",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 257,
+  "k": "KRITIKERBETYG",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 258,
+  "k": "TEKNIK MOT MARKNADEN",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 259,
+  "k": "PUTS",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 260,
+  "k": "RÄTT PRIS",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 261,
+  "k": "DITT PRIS",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 262,
+  "k": "LANSERINGEN KOSTADE {0}",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 263,
+  "k": "PRESENTERAR STOLT …",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 264,
+  "k": "SE KONSOLEN",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 265,
+  "k": "SE TELEFONEN",
+  "f": "js/scener/show.js"
+ },
+ {
+  "i": 266,
+  "k": "LANSERINGEN · {0}",
+  "f": "js/scener/show.js"
+ }
+]

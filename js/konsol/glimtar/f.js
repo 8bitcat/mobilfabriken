@@ -1,5 +1,6 @@
 // Spelglimtar, grupp F. Samma format som BAS i ../glimtar.js. Verktygen finns i ../pix.js.
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from '../pix.js';
+import { $t } from '../../core/i18n.js';
 
 // fylld ellips (bordsskivor, skuggor, öar)
 const ellips = (x, cx, cy, rx, ry, f) => {
@@ -104,22 +105,22 @@ function blandOss(x, t) {
   // besättningen: röd går åt höger med sitt husdjur, cyan och gul åt vänster, lime gör uppdraget
   const gang = (fas) => (Math.floor(t * 7 + fas) % 2) === 1;
   const rx = -12 + f * 216;
-  saker.push([75, () => bona(x, rx, 75, 'rod', false, gang(0), 'OLLE')]);
+  saker.push([75, () => bona(x, rx, 75, 'rod', false, gang(0), $t('OLLE'))]);
   saker.push([77, () => { const mx = rx - 17, st = gang(1); ellips(x, Math.round(mx), 77, 4, 1, 'rgba(20,24,40,0.35)'); spr(x, MINI, Math.round(mx) - 4, 68 - (st ? 1 : 0), bonaPal(BESATTNING.rosa)); }]);
-  const cx = 204 - mod(f + 0.35, 1) * 216; saker.push([101, () => bona(x, cx, 101, 'cyan', true, gang(0.5), 'SAGA', true)]);
-  const gx = 204 - mod(f + 0.8, 1) * 216; saker.push([41, () => bona(x, gx, 41, 'gul', true, gang(0.3), 'ELLA')]);
+  const cx = 204 - mod(f + 0.35, 1) * 216; saker.push([101, () => bona(x, cx, 101, 'cyan', true, gang(0.5), $t('SAGA'), true)]);
+  const gx = 204 - mod(f + 0.8, 1) * 216; saker.push([41, () => bona(x, gx, 41, 'gul', true, gang(0.3), $t('ELLA'))]);
   const jobbar = klara < 4 || f > 0.88;
-  saker.push([33, () => bona(x, 136, 33, 'lime', false, jobbar && Math.floor(t * 3) % 2 === 1, 'MAJA')]);
+  saker.push([33, () => bona(x, 136, 33, 'lime', false, jobbar && Math.floor(t * 3) % 2 === 1, $t('MAJA'))]);
   saker.sort((a, b) => a[0] - b[0]).forEach(([, rita]) => rita());
   // uppdraget klart
-  if (f > 0.62 && f < 0.82) { const s = 'KLART!'; TK(x, s, 146 - TW(s, BIG) / 2, 30 - Math.round((f - 0.62) * 30), '#5cff5c', '#0a3a0a', BIG); }
+  if (f > 0.62 && f < 0.82) { const s = $t('KLART!'); TK(x, s, 146 - TW(s, BIG) / 2, 30 - Math.round((f - 0.62) * 30), '#5cff5c', '#0a3a0a', BIG); }
   // uppdragsmätaren uppe till vänster
   R(x, 2, 2, 100, 10, '#101014'); R(x, 3, 3, 98, 8, '#3c3c44'); R(x, 3, 3, 59, 8, '#3cc83c'); R(x, 3, 3, 59, 1, '#7af06a'); R(x, 3, 10, 59, 1, '#22902a');
   const glans = Math.round(mod(t * 30, 120)) - 10; if (glans < 59) R(x, 3 + Math.max(0, glans), 4, Math.min(4, 59 - Math.max(0, glans)), 6, 'rgba(255,255,255,0.35)');
-  T(x, 'TOTALA UPPDRAG KLARA', 6, 5, '#101014'); T(x, 'TOTALA UPPDRAG KLARA', 5, 4, '#ffffff');
+  T(x, $t('TOTALA UPPDRAG KLARA'), 6, 5, '#101014'); T(x, $t('TOTALA UPPDRAG KLARA'), 5, 4, '#ffffff');
   // uppdragslistan
   R(x, 2, 14, 74, 15, 'rgba(10,12,20,0.82)');
-  T(x, 'KAFÉ: SLADDAR 1/3', 4, 16, klara >= 4 ? '#5cff5c' : '#ffe43a'); T(x, 'NAV: STYR KURSEN', 4, 23, '#ffffff');
+  T(x, $t('KAFÉ: SLADDAR 1/3'), 4, 16, klara >= 4 ? '#5cff5c' : '#ffe43a'); T(x, $t('NAV: STYR KURSEN'), 4, 23, '#ffffff');
   // karta och inställningar uppe till höger
   R(x, 166, 3, 12, 10, '#101018'); R(x, 167, 4, 10, 8, '#ffffff'); R(x, 170, 4, 1, 8, '#9aa4b4'); R(x, 173, 4, 1, 8, '#9aa4b4'); P(x, 168, 6, '#e02020');
   disc(x, 183, 8, 5, '#101018'); disc(x, 183, 8, 4, '#ffffff'); for (const [dx, dy] of [[0, -5], [5, 0], [0, 5], [-5, 0]]) R(x, 183 + dx - (dx ? 0 : 1), 8 + dy - (dy ? 0 : 1), dx ? 1 : 3, dy ? 1 : 3, '#ffffff'); disc(x, 183, 8, 1, '#101018');
@@ -130,7 +131,7 @@ function blandOss(x, t) {
   for (let i = 0; i < 4; i++) { const fh = [6, 8, 7, 5][i]; R(x, ux + 4 + i * 3 - 0, uy + 9 - fh, 3, fh + 1, '#101018'); R(x, ux + 5 + i * 3, uy + 10 - fh, 1 + (i < 3 ? 1 : 0), fh, '#ffffff'); }
   R(x, ux + 1, uy + 9, 4, 5, '#101018'); R(x, ux + 2, uy + 10, 3, 3, '#ffffff');
   R(x, ux + 5, uy + 17, 9, 2, '#101018');
-  TK(x, 'ANVÄND', ux + 9 - Math.round(TW('ANVÄND') / 2), uy + 22, '#ffffff', '#101018', SMALL);
+  TK(x, $t('ANVÄND'), ux + 9 - Math.round(TW($t('ANVÄND')) / 2), uy + 22, '#ffffff', '#101018', SMALL);
 }
 
 // ---------- 2025 MARCO KART VÄRLD (Mario Kart World) ----------
@@ -275,7 +276,7 @@ function marcoKart(x, t) {
   if (sak) { const [rader, pal] = MK_SAKER[sak]; spr(x, rader, 17 - Math.ceil(rader[0].length / 2), 17 - Math.ceil(rader.length / 2), pal); }
   spr(x, MK_SAKER.mynt[0], 5, 86, MK_SAKER.mynt[1]);
   kontur(x, '×10', 19, 88, '#ffffff', '#101830', BIG);
-  kontur(x, 'VARV 2/3', 5, 78, '#ffffff', '#101830', SMALL);
+  kontur(x, $t('VARV 2/3'), 5, 78, '#ffffff', '#101830', SMALL);
   const PX = 146, PY = 72;
   kontur(x, '1', PX, PY, '#7a3a00', '#101010', BIG, 4, 2);
   bandText(x, '1', PX, PY, ['#fff6a0', '#ffe040', '#ffc020', '#ff9a10'], BIG, 4);
@@ -359,7 +360,7 @@ function astroBotten(x, t) {
       // vinkande arm
       if (fas === 'vinka') { R(x, X + 6, Y + 8 - (upp ? 3 : 1), 2, 3, '#1a2236'); R(x, X + 7, Y + 4 - (upp ? 2 : 0), 2, 4, '#f4f8fc'); P(x, X + 8, Y + 3 - (upp ? 2 : 0), '#1a2236'); }
       if (hatt) { for (let j = 0; j < 4; j++) R(x, X - 1 - j / 2 + 1, Y - 4 + j, j + 1, 1, j % 2 ? '#ff5a8a' : '#ffd040'); P(x, X, Y - 5, '#ffffff'); }
-      if (fas === 'vinka' && Math.floor(t * 1.5) % 2) { R(x, X + 8, Y - 10, 13, 8, '#ffffff'); R(x, X + 9, Y - 3, 2, 2, '#ffffff'); T(x, 'HEJ', X + 9, Y - 8, '#2a7ae8'); }
+      if (fas === 'vinka' && Math.floor(t * 1.5) % 2) { R(x, X + 8, Y - 10, 13, 8, '#ffffff'); R(x, X + 9, Y - 3, 2, 2, '#ffffff'); T(x, $t('HEJ'), X + 9, Y - 8, '#2a7ae8'); }
     }
   };
   vink(196, 64, 'vinka'); vink(30, 78, 'hopp', true); vink(254, 72, 'vinka', false);
@@ -409,7 +410,7 @@ function astroBotten(x, t) {
 }
 
 export const GLIMTAR = [
-  { id: 'blandoss', titel: 'RYMDSABOTAGE', forebild: 'Among Us', ar: 2018, studio: 'LITTLE SHIP', w: 192, h: 108, rita: blandOss },
-  { id: 'astrobotten', titel: 'RYMDROBOTEN', forebild: 'Astro Bot', ar: 2024, studio: 'TOYBOX', w: 192, h: 108, rita: astroBotten },
-  { id: 'marcokartvarld', titel: 'PIPO KART JORDEN RUNT', forebild: 'Mario Kart World', ar: 2025, studio: 'SVAMPSTUDION', w: 192, h: 108, rita: marcoKart },
+  { id: 'blandoss', titel: $t('RYMDSABOTAGE'), forebild: 'Among Us', ar: 2018, studio: $t('LITTLE SHIP'), w: 192, h: 108, rita: blandOss },
+  { id: 'astrobotten', titel: $t('RYMDROBOTEN'), forebild: 'Astro Bot', ar: 2024, studio: $t('TOYBOX'), w: 192, h: 108, rita: astroBotten },
+  { id: 'marcokartvarld', titel: $t('PIPO KART JORDEN RUNT'), forebild: 'Mario Kart World', ar: 2025, studio: $t('SVAMPSTUDION'), w: 192, h: 108, rita: marcoKart },
 ];

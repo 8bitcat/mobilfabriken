@@ -6,6 +6,7 @@ import { Pix } from './kit.js';
 import { rum } from './kontor-art.js';
 import { ritaBord, ritaDator, ritaStol, ritaMobel, neonLage } from './mobler.js';
 import { ROLLER } from '../data/varld.js';
+import { $t } from '../core/i18n.js';
 
 const BORDSPRITES = new Map();
 function bordSprite(b) {
@@ -56,7 +57,7 @@ export function ritaKontor(ctx, A, o = {}) {
         if (!o.platser) {
           const x = p.x + 6, y = p.fy - 8, w = 44, h = 12, puls = Math.floor(A.t * 2) % 2;
           ctx.fillStyle = puls ? 'rgba(69,185,100,.55)' : 'rgba(69,185,100,.38)'; ctx.fillRect(x, y, w, h); ram(x, y, w, h, F.gron2);
-          text('BORD HÄR', x + w / 2, y + 4, F.text, { just: 'c' });
+          text($t('BORD HÄR'), x + w / 2, y + 4, F.text, { just: 'c' });
           hit(x - kx, y - ky, w, h, { klick: () => A.go('bygg', { kategori: 'bord', plats: { typ: 'bord', i } }), namn: 'bordsplats-' + i });
         }
         plats('bord', i, p.x + 2, p.fy - 30, 56, 34);
@@ -73,7 +74,7 @@ export function ritaKontor(ctx, A, o = {}) {
       if (person && !o.platser) {
         const roll = ROLLER[person.roll];
         if (trangt) { if (U.mus.x + kx >= p.x + 6 && U.mus.x + kx < p.x + 54 && U.mus.y + ky >= p.fy - 40 && U.mus.y + ky < p.fy + 6) hover = { person, roll, x: p.x + 18, y: p.fy - 44 }; }
-        else { const nw = Math.max(tw(person.namn), tw(roll.namn)) + 6, nx = p.x + 4, ny = p.fy + 6; rect(nx + 1, ny + 1, nw, 14, 0x05060f); rect(nx, ny, nw, 14, F.papper); ram(nx, ny, nw, 14, 0xb9ad94); text(person.namn, nx + 3, ny + 2, F.blak); text(roll.namn, nx + 3, ny + 8, roll.farg); }
+        else { const rn = roll.namn, nw = Math.max(tw(person.namn), tw(rn)) + 6, nx = p.x + 4, ny = p.fy + 6; rect(nx + 1, ny + 1, nw, 14, 0x05060f); rect(nx, ny, nw, 14, F.papper); ram(nx, ny, nw, 14, 0xb9ad94); text(person.namn, nx + 3, ny + 2, F.blak); text(rn, nx + 3, ny + 8, roll.farg); }
       }
       plats('bord', i, p.x + 2, p.fy - 30, 56, 34);
     } });

@@ -1,0 +1,902 @@
+[
+ {
+  "i": 0,
+  "k": "MÖBLERA GARAGET",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 1,
+  "k": "KLICKA PÅ BYGG.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 2,
+  "k": "STÄLL UT 2 SKRIVBORD",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 3,
+  "k": "FÄLLBORDET ÄR GRATIS. VÄLJ DET OCH TRYCK PÅ DE GRÖNA PLATSERNA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 4,
+  "k": "TRYCK KLAR FÖR ATT GÅ TILLBAKA TILL KONTORET.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 5,
+  "k": "ANSTÄLL DITT TEAM",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 6,
+  "k": "KLICKA PÅ PERSONAL.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 7,
+  "k": "ANSTÄLL 2 PERSONER",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 8,
+  "k": "VERA ÄR FORSKARE – HON GÖR TELEFONERNA BÄTTRE. LYKKE ÄR BUGGFIXARE. ANSTÄLL BÅDA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 9,
+  "k": "DAGS ATT RITA",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 10,
+  "k": "KLICKA PÅ DESIGN.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 11,
+  "k": "GÖR DEN TILL DIN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 12,
+  "k": "BLÄDDRA GENOM STEGEN MED FORTSÄTT – ELLER HOPPA TILL GRANSKNINGEN – OCH TRYCK STARTA UTVECKLING.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 13,
+  "k": "SPOLA FRAM TIDEN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 14,
+  "k": "TEAMET BYGGER NU. TRYCK 4× FÖR ATT GÅ FORTARE.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 15,
+  "k": "LANSERA!",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 16,
+  "k": "NÄR TELEFONEN ÄR KLAR: TRYCK LANSERA, VÄLJ REKLAM OCH LANSERA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 17,
+  "k": "VÄLJ REKLAM OCH TRYCK PÅ LANSERA!",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 18,
+  "k": "SHOWEN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 19,
+  "k": "NU AVSLÖJAS BETYGET! TEKNIK, DESIGN OCH PUTS AVGÖR.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 20,
+  "k": "FÖRSTA VECKAN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 21,
+  "k": "TELEFONEN SÄLJER VARJE DAG. TITTA I TELEFONER EFTER EN VECKA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 22,
+  "k": "HÄR SER DU VAD TELEFONEN SÄLJER. LÅT TIDEN GÅ EN VECKA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 23,
+  "k": "UPPFINN NY TEKNIK",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 24,
+  "k": "FORSKAREN TJÄNAR FORSKNINGSPOÄNG (FP). KLICKA PÅ FORSKNING.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 25,
+  "k": "STARTA FORSKNING",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 26,
+  "k": "KLICKA PÅ GPS OCH STARTA DEN. DÅ FÅR NÄSTA TELEFON EN NY FUNKTION.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 27,
+  "k": "TEAMET",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 28,
+  "k": "VERA ÄR FORSKARE – HON GÖR KONSOLERNA BÄTTRE. LYKKE ÄR SPELUTVECKLARE – HON GÖR SPELET PANG! ANSTÄLL BÅDA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 29,
+  "k": "DIN FÖRSTA KONSOL",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 30,
+  "k": "BLÄDDRA MED FORTSÄTT ELLER HOPPA TILL GRANSKNINGEN, OCH TRYCK STARTA UTVECKLING. PANG! FÖLJER MED I LÅDAN.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 31,
+  "k": "FÖRST BYGGS HÅRDVARAN, SEDAN GÖR {0} SPELET {1} TRYCK 4× FÖR ATT GÅ FORTARE.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 32,
+  "k": "TEAMET BYGGER NU KONSOLEN. TRYCK 4× FÖR ATT GÅ FORTARE.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 33,
+  "k": "FÖRST HÅRDVARAN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 34,
+  "k": "BLÅ PRICK = KVALITET, RÖD = BUGG. NÄR HÅRDVARAN ÄR KLAR BÖRJAR SPELET I LÅDAN.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 35,
+  "k": "BLÅ PRICK = KVALITET, RÖD = BUGG. INGET SPEL I LÅDAN DEN HÄR GÅNGEN.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 36,
+  "k": "SEDAN {0}",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 37,
+  "k": "SPELET",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 38,
+  "k": "HÅRDVARAN ÄR KLAR! NU GÖR {0} {1} GRÖN PRICK = SPELETS KVALITET. MÅLET ÄR {2}.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 39,
+  "k": "NÄR KONSOLEN ÄR KLAR: TRYCK LANSERA, VÄLJ REKLAM OCH LANSERA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 40,
+  "k": "NU AVSLÖJAS BETYGET! TEKNIK, DESIGN OCH SPELET I LÅDAN AVGÖR.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 41,
+  "k": "KONSOLEN SÄLJER VARJE DAG. TITTA I KONSOLER EFTER EN VECKA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 42,
+  "k": "HÄR SER DU VAD KONSOLEN SÄLJER OCH HUR MÅNGA SOM HAR DEN HEMMA. LÅT TIDEN GÅ EN VECKA.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 43,
+  "k": "EN STUDIO KNACKAR PÅ",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 44,
+  "k": "EN SPELSTUDIO VILL GÖRA ETT SPEL TILL DIN KONSOL! KLICKA PÅ STUDIOS.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 45,
+  "k": "STUDIOS HÖR AV SIG DEN 1:A VARJE MÅNAD NÄR KONSOLEN ÄR BRA NOG. LÅT TIDEN GÅ TILL {0}.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 46,
+  "k": "SÄG JA!",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 47,
+  "k": "STUDION KÖPER ETT UTVECKLINGSKIT AV DIG, OCH DU FÅR {0} % AV VARJE SÅLT SPEL. TRYCK JA!",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 48,
+  "k": "INGEN FÖRFRÅGAN JUST NU. NÄSTA KNACK KOMMER {0} – LÅT TIDEN GÅ.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 49,
+  "k": "KLICKA PÅ TRE KANALER OCH STARTA DEN. DÅ FÅR NÄSTA KONSOL BÄTTRE LJUD.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 50,
+  "k": "TRYCK JA – STUDION KÖPER ETT UTVECKLINGSKIT AV DIG, OCH DU FÅR {0} % AV VARJE SÅLT SPEL.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 51,
+  "k": "TILLBAKA TILL KONTORET",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 52,
+  "k": "BRA! STUDION GÖR NU SPELET TILL DIN KONSOL. GÅ TILLBAKA TILL KONTORET.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 53,
+  "k": "HÄR HAMNAR STUDIORNAS FÖRFRÅGNINGAR. GÅ TILLBAKA TILL KONTORET SÅ LÄNGE.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 54,
+  "k": "TIDEN STÅR STILL. TRYCK PÅ 1× SÅ ATT DAGARNA GÅR.",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 55,
+  "k": "TRYCK PÅ KONTORET FÖRST. {0}",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 56,
+  "k": "HOPPA ÖVER",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 57,
+  "k": "BYGG",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 58,
+  "k": "STÄLL UT SKRIVBORD",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 59,
+  "k": "TEAM",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 60,
+  "k": "ANSTÄLL FOLK",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 61,
+  "k": "RITA EN TELEFON",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 62,
+  "k": "LANSERA",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 63,
+  "k": "SLÄPP DEN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 64,
+  "k": "VÄX",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 65,
+  "k": "FORSKA OCH VÄX",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 66,
+  "k": "RITA EN KONSOL",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 67,
+  "k": "STUDIOS",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 68,
+  "k": "SPEL TILL KONSOLEN",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 69,
+  "k": "MIO, DIN GUIDE",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 70,
+  "k": "ETT TOMT GARAGE 1982 OCH EN STOR IDÉ",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 71,
+  "k": "ETT TOMT GARAGE OCH EN STOR IDÉ",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 72,
+  "k": "DU HAR STARTAT {0} MED TVÅ MILJONER KRONOR. NU BYGGER VI DIN FÖRSTA SPELKONSOL – DET TAR UNGEFÄR TIO MINUTER:",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 73,
+  "k": "DU HAR STARTAT {0} MED TVÅ MILJONER KRONOR. HÄR ÄR VAD DU SKA GÖRA – DET TAR UNGEFÄR TIO MINUTER:",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 74,
+  "k": "NU KÖR VI!",
+  "f": "js/scener/handledning.js"
+ },
+ {
+  "i": 75,
+  "k": "STARTA ETT MOBILBOLAG I ETT GARAGE 2007. DESIGNA TELEFONER, LÅT TEAMET BYGGA DEM, LANSERA OCH SÄLJ, FORSKA FRAM NY TEKNIK ÅR FÖR ÅR OCH VÄX TILL ETT HUVUDKONTOR.",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 76,
+  "k": "KONSOLSPELET: STARTA I ETT GARAGE 1982. DESIGNA SPELKONSOLER, LÅT STUDIOS GÖRA SPEL TILL DEM, LANSERA OCH SÄLJ, FORSKA FRAM TELEFONERNA 2007 OCH VÄX TILL ETT HUVUDKONTOR.",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 77,
+  "k": "MENY",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 78,
+  "k": "INSTÄLLNINGAR",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 79,
+  "k": "PÅ",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 80,
+  "k": "AV",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 81,
+  "k": "PAUSA NÄR NÅGOT HÄNDER",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 82,
+  "k": "BYGGE KLART, FORSKNING KLAR, MÅL …",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 83,
+  "k": "KONSOLEN RITAS SOM",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 84,
+  "k": "TELEFONEN RITAS SOM",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 85,
+  "k": "SNABBT LÄGE",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 86,
+  "k": "KONTOREN KOSTAR HALVA PRISET",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 87,
+  "k": "VISA HANDLEDNINGEN IGEN",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 88,
+  "k": "SPARA NU",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 89,
+  "k": "SPARAT!",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 90,
+  "k": "TILL STARTSKÄRMEN",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 91,
+  "k": "TILLBAKA TILL SPELET",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 92,
+  "k": "OM SPELET",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 93,
+  "k": "MOBILFABRIKEN",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 94,
+  "k": "VERSION {0} · {1}",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 95,
+  "k": "TANGENTER",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 96,
+  "k": "MELLANSLAG = PAUS · 1-4 = FART · ESC = TILL KONTORET · PILAR = BLÄDDRA I DESIGNERN",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 97,
+  "k": "BYGGT I PIXELSTADENS STIL. KONSOLERNA RITAS I RIKTIG 3D ELLER SOM PIXLAR.",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 98,
+  "k": "BYGGT I PIXELSTADENS STIL. TELEFONEN RITAS I RIKTIG 3D ELLER SOM PIXLAR.",
+  "f": "js/scener/meny.js"
+ },
+ {
+  "i": 99,
+  "k": "INGEN JOBBAR HÄR ÄN. ANSTÄLL NÅGON TILL HÖGER! EN FORSKARE GÖR TELEFONERNA BÄTTRE, EN BUGGFIXARE TAR BORT FELEN.",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 100,
+  "k": "INGEN JOBBAR HÄR ÄN. ANSTÄLL NÅGON TILL HÖGER! EN FORSKARE GÖR KONSOLERNA BÄTTRE, EN SPELUTVECKLARE GÖR SPELEN OCH EN BUGGFIXARE TAR BORT FELEN.",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 101,
+  "k": "{0} · {1} ÅR · ×{2}",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 102,
+  "k": "{0} ÅR",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 103,
+  "k": "ANSTÄLL, TRÄNA OCH HÅLL TEAMET GLATT · TIDEN STÅR STILL",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 104,
+  "k": "BORD (MAX {0})",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 105,
+  "k": "LÖNER/MÅN",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 106,
+  "k": "FORSKNING/DAG",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 107,
+  "k": "BUGGFIX/DAG",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 108,
+  "k": "MORAL",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 109,
+  "k": "{0} %",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 110,
+  "k": "MAX {0}",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 111,
+  "k": "FP PER DAG",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 112,
+  "k": "SPEL/DAG",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 113,
+  "k": "TEAMFEST",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 114,
+  "k": "DITT TEAM ({0})",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 115,
+  "k": "{0}/MÅN",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 116,
+  "k": "TRÄNA",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 117,
+  "k": "SÄKER?",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 118,
+  "k": "SPARKA",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 119,
+  "k": "KANDIDATER",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 120,
+  "k": "NYA KANDIDATER {0}",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 121,
+  "k": "NYA KANDIDATER (GRATIS)",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 122,
+  "k": "BARA ★-NYBÖRJARE VILL JOBBA I ETT GARAGE, OCH INGEN BLIR BÄTTRE HÄR. FLYTTA TILL ETT KONTOR FÖR ATT ANSTÄLLA PROFFS.",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 123,
+  "k": "UPP TILL {0} (KONTORETS STJÄRNOR + 2)",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 124,
+  "k": "STÄLL UT ETT BORD I BYGG FÖRST",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 125,
+  "k": "ALLA BORD UPPTAGNA – STÄLL UT FLER",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 126,
+  "k": "LOKALEN ÄR FULL – FLYTTA FÖR FLER",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 127,
+  "k": "FLYTTA",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 128,
+  "k": "ALLA {0} BORD I HUVUDKONTORET ÄR UPPTAGNA",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 129,
+  "k": "ANSTÄLL",
+  "f": "js/scener/personal.js"
+ },
+ {
+  "i": 130,
+  "k": "FP",
+  "f": "js/scener/ram.js"
+ },
+ {
+  "i": 131,
+  "k": "MIKROVÅG MOBIL",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 132,
+  "k": "PIXELFON AB",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 133,
+  "k": "LUREN & CO",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 134,
+  "k": "GARAGEGENIET",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 135,
+  "k": "TELEFONKUNGEN",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 136,
+  "k": "SMARTBOLAGET",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 137,
+  "k": "APPELKNAPP",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 138,
+  "k": "PIXELBOX AB",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 139,
+  "k": "BLIPP & BLOPP",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 140,
+  "k": "TV-SPEL AB",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 141,
+  "k": "JOYSTICKEN",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 142,
+  "k": "KASSETTKUNGEN",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 143,
+  "k": "SPELMASKINEN",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 144,
+  "k": "KONTROLLKUNGEN",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 145,
+  "k": "KONSOLFABRIKEN",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 146,
+  "k": "STARTA 1 JANUARI 1982",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 147,
+  "k": "BYGG SPELKONSOLER OCH LÅT STUDIOS GÖRA SPEL TILL DEM. TELEFONERNA KOMMER 2007.",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 148,
+  "k": "STARTA 1982",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 149,
+  "k": "SNABBSTART 2007",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 150,
+  "k": "TELEFONERNA SOM FÖRUT",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 151,
+  "k": "HOPPA RAKT TILL 2007 OCH DESIGNA TELEFONER, PLATTOR OCH KLOCKOR.",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 152,
+  "k": "STARTA 2007",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 153,
+  "k": "{0} ÄR SÅLT FÖR {1}. ARVET VÄNTAR I NÄSTA BOLAG.",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 154,
+  "k": "HÖGST {0} BOLAG. RADERA ETT FÖRST.",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 155,
+  "k": "SPARNINGEN GICK INTE ATT LÄSA",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 156,
+  "k": "BOLAGET ÄR SÅLT OCH FINNS I ARVET",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 157,
+  "k": "SKRIV ETT NAMN PÅ BOLAGET",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 158,
+  "k": "EN MOBILTYCOON I PIXELSTAD · FRÅN GARAGE TILL HUVUDKONTOR",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 159,
+  "k": "KONSOLER 1982",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 160,
+  "k": "MOBILER 2007. BYGG ETT IMPERIUM.",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 161,
+  "k": "DIN FÖRSTA KONSOL · 1982",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 162,
+  "k": "DIN FÖRSTA TELEFON · 2007",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 163,
+  "k": "NYTT BOLAG",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 164,
+  "k": "DINA BOLAG ({0})",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 165,
+  "k": "ARV: {0} SÅLT BOLAG · +{1} % STARTKASSA OCH FORSKNING",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 166,
+  "k": "ARV: {0} SÅLDA BOLAG · +{1} % STARTKASSA OCH FORSKNING",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 167,
+  "k": "VÄLJ SPEL",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 168,
+  "k": "DÖP DITT BOLAG",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 169,
+  "k": "SNABBSTART",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 170,
+  "k": "DU STARTAR I ETT GARAGE 1 JANUARI {0}.",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 171,
+  "k": "STARTKASSA {0}",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 172,
+  "k": " · ARV +{0} %",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 173,
+  "k": "STARTA I GARAGET",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 174,
+  "k": "DINA BOLAG",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 175,
+  "k": "{0} AV {1}",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 176,
+  "k": "RADERA {0}?",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 177,
+  "k": "= KONSOLBOLAG FRÅN 1982",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 178,
+  "k": "REKOMMENDERAT",
+  "f": "js/scener/start.js"
+ },
+ {
+  "i": 179,
+  "k": "TORSDAG 23 OKTOBER",
+  "f": "js/telefon/telefon-gl.js"
+ }
+]

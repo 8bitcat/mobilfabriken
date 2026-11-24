@@ -4,6 +4,7 @@
 //   GLIMTAR: [{ id, titel, forebild, ar, studio, w, h, rita(ctx, t) }]   t = sekunder
 //   glimtBild(id, t) → canvas i glimtens upplösning med bildrutan för tiden t
 import { SMALL, BIG, R, P, T, TW, TK, spr, tri, mod, disc, hash, toning, fast } from './pix.js';
+import { $t } from '../core/i18n.js';
 import { GLIMTAR as G_A } from './glimtar/a.js';
 import { GLIMTAR as G_B } from './glimtar/b.js';
 import { GLIMTAR as G_C } from './glimtar/c.js';
@@ -144,8 +145,8 @@ function marco(x, t) {
   if (fasJ > 128 && fasJ < 132) hopp = Math.min(hopp, 30);
   const my = MARK - 16 - Math.round(hopp), ben = hopp > 1 ? 1 : Math.floor(t * 9) % 2;
   spr(x, MARCO, 32, my, MARCO_PAL); spr(x, MARCO_BEN[ben], 32, my + 13, MARCO_PAL);
-  T(x, 'PIPO', 4, 4, '#000000'); T(x, 'PIPO', 3, 3, '#fcfcfc');
-  T(x, 'BANA 1-1', W - 4 - TW('BANA 1-1') + 1, 4, '#000000'); T(x, 'BANA 1-1', W - 4 - TW('BANA 1-1'), 3, '#fcfcfc');
+  T(x, $t('PIPO'), 4, 4, '#000000'); T(x, $t('PIPO'), 3, 3, '#fcfcfc');
+  T(x, $t('BANA 1-1'), W - 4 - TW($t('BANA 1-1')) + 1, 4, '#000000'); T(x, $t('BANA 1-1'), W - 4 - TW($t('BANA 1-1')), 3, '#fcfcfc');
 }
 
 // ---------- 1989 TETRIX på fickkonsolen (Tetris på Game Boy) ----------
@@ -169,11 +170,11 @@ function tetrix(x, t) {
   // högerpanelen
   const PX = 52;
   R(x, PX, 4, 26, 64, GB[2]); R(x, PX, 4, 26, 1, GB[0]); R(x, PX, 67, 26, 1, GB[0]);
-  T(x, 'POÄNG', PX + 3, 8, GB[0]); T(x, String(rensad ? 1240 : 40).padStart(5, '0'), PX + 3, 16, GB[0]);
-  T(x, 'RADER', PX + 3, 26, GB[0]); T(x, rensad ? '4' : '0', PX + 3, 34, GB[0]);
-  T(x, 'NÄSTA', PX + 3, 44, GB[0]); R(x, PX + 4, 51, 18, 13, GB[3]);
+  T(x, $t('POÄNG'), PX + 3, 8, GB[0]); T(x, String(rensad ? 1240 : 40).padStart(5, '0'), PX + 3, 16, GB[0]);
+  T(x, $t('RADER'), PX + 3, 26, GB[0]); T(x, rensad ? '4' : '0', PX + 3, 34, GB[0]);
+  T(x, $t('NÄSTA'), PX + 3, 44, GB[0]); R(x, PX + 4, 51, 18, 13, GB[3]);
   for (const [k, r] of [[0, 0], [1, 0], [1, 1], [2, 1]]) { const X = PX + 6 + k * 4, Y = 54 + r * 4; R(x, X, Y, 4, 4, GB[0]); R(x, X + 1, Y + 1, 2, 2, GB[1]); }
-  if (fas > 3.7 && fas < 4.8) { R(x, FX + 2, 26, 36, 11, GB[0]); T(x, 'BLOCKFALL!', FX + 6, 29, GB[3]); }
+  if (fas > 3.7 && fas < 4.8) { R(x, FX + 2, 26, 36, 11, GB[0]); T(x, $t('BLOCKFALL!'), FX + 6, 29, GB[3]); }
 }
 
 // ---------- 1991 SONNY THE HEDGEHOG (Sonic the Hedgehog) ----------
@@ -215,7 +216,7 @@ function sonny(x, t) {
   const v = t * 30;
   for (let i = 0; i < 3; i++) { const a = v + (i * Math.PI * 2) / 3; for (let r = 1; r < 7; r++) P(x, sonX + Math.cos(a + r * 0.35) * r, sy + Math.sin(a + r * 0.35) * r, '#5c8cf8'); }
   R(x, sonX + 1, sy - 4, 2, 1, '#e8f0ff'); P(x, sonX + 3, sy - 3, '#e8f0ff');
-  T(x, 'RINGAR 23', 4, 4, '#000040'); T(x, 'RINGAR 23', 3, 3, '#f8e000');
+  T(x, $t('RINGAR 23'), 4, 4, '#000040'); T(x, $t('RINGAR 23'), 3, 3, '#f8e000');
 }
 
 // ---------- 2006 VI SPORT bowling (Wii Sports) ----------
@@ -256,7 +257,7 @@ function viSport(x, t) {
   // poängrutor överst
   for (let i = 0; i < 10; i++) { R(x, 6 + i * 15, 3, 14, 9, '#ffffff'); R(x, 6 + i * 15, 3, 14, 1, '#8ab0d8'); R(x, 6 + i * 15, 3, 1, 9, '#8ab0d8'); }
   T(x, 'X', 10, 5, '#2050c0'); T(x, '9', 25, 5, '#2050c0');
-  if (fas > 3.4 && fas < 5.2) { const s = 'STRIKE!', w = TW(s, BIG, 2); TK(x, s, W / 2 - w / 2, 40, '#ffd800', '#c02040', BIG, 2); }
+  if (fas > 3.4 && fas < 5.2) { const s = $t('STRIKE!'), w = TW(s, BIG, 2); TK(x, s, W / 2 - w / 2, 40, '#ffd800', '#c02040', BIG, 2); }
 }
 
 // ---------- 2011 GRUVKRAFT (Minecraft) ----------
@@ -352,7 +353,7 @@ function fortnajt(x, t) {
   P(x, fx - 2, fy - 23, '#202020'); P(x, fx + 2, fy - 23, '#202020'); R(x, fx - 1, fy - 20, 3, 1, '#a04030');
   const armar = [[[-9, -24], [9, -24]], [[-9, -10], [9, -10]], [[-2, -14], [2, -14]], [[-9, -24], [9, -12]]][f];
   for (const [ax, ay] of armar) { const sx = fx + Math.sign(ax) * 4, sy = fy - 16; for (let i = 0; i <= 6; i++) R(x, sx + (ax - Math.sign(ax) * 4) * i / 6, sy + (ay + 16) * i / 6, 2, 2, '#e8b088'); }
-  if (mod(t, 6) > 3.5) { const s = '#1 SEGER-ROYAL', w = TW(s, BIG); TK(x, s, W / 2 - w / 2 + 6, 6, '#ffe040', '#6a1a90', BIG); }
+  if (mod(t, 6) > 3.5) { const s = $t('#1 SEGER-ROYAL'), w = TW(s, BIG); TK(x, s, W / 2 - w / 2 + 6, 6, '#ffe040', '#6a1a90', BIG); }
 }
 
 // ---------- 2026 GRAND THEFT AUTOMOBIL VI (GTA VI) ----------
@@ -405,8 +406,8 @@ function gta6(x, t) {
   disc(x, cx + 26, cy - 1, 2, '#3a2018'); R(x, cx + 25, cy - 4, 3, 1, '#3a2018');
   for (const hx of [cx + 9, cx + 31]) { disc(x, hx, cy + 9, 3, '#101010'); P(x, hx + (hjul ? 1 : -1), cy + 9 + (hjul ? -1 : 1), '#a0a0a0'); P(x, hx, cy + 9, '#c0c0c0'); }
   // logotypen: GRAND THEFT AUTOMOBIL och ett stort VI i rosa till orange
-  T(x, 'BILTJUVEN', 7, 8, '#120a20'); T(x, 'BILTJUVEN', 6, 7, '#ffffff');
-  T(x, 'DEL VI', 7, 15, '#120a20'); T(x, 'DEL VI', 6, 14, '#ffffff');
+  T(x, $t('BILTJUVEN'), 7, 8, '#120a20'); T(x, $t('BILTJUVEN'), 6, 7, '#ffffff');
+  T(x, $t('DEL VI'), 7, 15, '#120a20'); T(x, $t('DEL VI'), 6, 14, '#ffffff');
   const VI = ['##.......##.####', '##.......##.####', '.##.....##...##.', '.##.....##...##.', '..##...##....##.', '..##...##....##.', '...##.##.....##.', '...##.##.....##.', '....###.....####', '....###.....####'];
   const grad = ['#ff4fa0', '#ff4fa0', '#ff5a90', '#ff6a80', '#ff7a6a', '#ff8a58', '#ff9a48', '#ffb048', '#ffc850', '#ffd860'];
   for (let j = 0; j < VI.length; j++) for (let i = 0; i < VI[j].length; i++) if (VI[j][i] === '#') { for (const [dx, dy] of [[-1, 0], [1, 0], [0, -1], [0, 1], [1, 1]]) R(x, 6 + i * 2 + dx, 22 + j * 2 + dy, 2, 2, '#120a20'); }
@@ -414,15 +415,15 @@ function gta6(x, t) {
 }
 
 const BAS = [
-  { id: 'pang', titel: 'PANG!', forebild: 'Pong', ar: 1982, studio: 'ERT EGET', w: 64, h: 48, rita: pang },
-  { id: 'pac', titel: 'GLUFS', forebild: 'Pac-Man', ar: 1982, studio: 'MIRAI', w: 96, h: 72, rita: pacMunch },
-  { id: 'marco', titel: 'SUPER PIPO', forebild: 'Super Mario Bros.', ar: 1985, studio: 'SVAMPSTUDION', w: 128, h: 96, rita: marco },
-  { id: 'tetrix', titel: 'BLOCKFALL', forebild: 'Tetris (Game Boy)', ar: 1989, studio: 'SOYUZ SOFT', w: 80, h: 72, rita: tetrix },
-  { id: 'sonny', titel: 'ZIPPY IGELKOTTEN', forebild: 'Sonic the Hedgehog', ar: 1991, studio: 'BLUE DASH', w: 128, h: 90, rita: sonny },
-  { id: 'visport', titel: 'VIVA SPORT', forebild: 'Wii Sports', ar: 2006, studio: 'SVAMPSTUDION', w: 160, h: 90, rita: viSport },
-  { id: 'gruvkraft', titel: 'BLOCKRIKET', forebild: 'Minecraft', ar: 2011, studio: 'BLOCKSMITH', w: 160, h: 90, rita: gruvkraft },
-  { id: 'fortnajt', titel: 'BATTLE ISLAND', forebild: 'Fortnite', ar: 2017, studio: 'TITAN', w: 160, h: 90, rita: fortnajt },
-  { id: 'gta6', titel: 'BILTJUVEN VI', forebild: 'GTA VI', ar: 2026, studio: 'ASFALT', w: 192, h: 108, rita: gta6 },
+  { id: 'pang', titel: $t('PANG!'), forebild: 'Pong', ar: 1982, studio: $t('ERT EGET'), w: 64, h: 48, rita: pang },
+  { id: 'pac', titel: $t('GLUFS'), forebild: 'Pac-Man', ar: 1982, studio: $t('MIRAI'), w: 96, h: 72, rita: pacMunch },
+  { id: 'marco', titel: $t('SUPER PIPO'), forebild: 'Super Mario Bros.', ar: 1985, studio: $t('SVAMPSTUDION'), w: 128, h: 96, rita: marco },
+  { id: 'tetrix', titel: $t('BLOCKFALL'), forebild: 'Tetris (Game Boy)', ar: 1989, studio: $t('SOYUZ SOFT'), w: 80, h: 72, rita: tetrix },
+  { id: 'sonny', titel: $t('ZIPPY IGELKOTTEN'), forebild: 'Sonic the Hedgehog', ar: 1991, studio: $t('BLUE DASH'), w: 128, h: 90, rita: sonny },
+  { id: 'visport', titel: $t('VIVA SPORT'), forebild: 'Wii Sports', ar: 2006, studio: $t('SVAMPSTUDION'), w: 160, h: 90, rita: viSport },
+  { id: 'gruvkraft', titel: $t('BLOCKRIKET'), forebild: 'Minecraft', ar: 2011, studio: $t('BLOCKSMITH'), w: 160, h: 90, rita: gruvkraft },
+  { id: 'fortnajt', titel: $t('BATTLE ISLAND'), forebild: 'Fortnite', ar: 2017, studio: $t('TITAN'), w: 160, h: 90, rita: fortnajt },
+  { id: 'gta6', titel: $t('BILTJUVEN VI'), forebild: 'GTA VI', ar: 2026, studio: $t('ASFALT'), w: 192, h: 108, rita: gta6 },
 ];
 export const GLIMTAR = [...BAS, ...G_A, ...G_B, ...G_C, ...G_D, ...G_E, ...G_F, ...G_MOBIL];
 export const GLIMT = Object.fromEntries(GLIMTAR.map((g) => [g.id, g]));

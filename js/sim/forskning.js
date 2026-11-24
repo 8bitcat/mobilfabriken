@@ -9,6 +9,7 @@ import { DELAR, KAROSSER, RAMAR, LINSER, FUNKTIONER, ENHETER } from '../data/del
 import { K_DELAR, K_ENHETER, K_FUNKTIONER } from '../data/konsol.js';
 import { kontorAv } from '../data/varld.js';
 import { arAv, arsdel, klamp, kr } from './bas.js';
+import { $t } from '../core/i18n.js';
 import { signal, nyhet, betala, arKonsolSpel, prisniva } from './spel.js';
 import { kontorsVarden } from './kontor.js';
 import { oppnaMobil } from './konsol.js';
@@ -39,13 +40,13 @@ export function status(G, nod) {
 }
 export const redo = (G) => synligaNoder(G).filter((n) => status(G, n) === 'redo');
 export function starta(G, nodId) {
-  const n = NOD[nodId]; if (!n) return { ok: false, fel: 'FINNS INTE' };
+  const n = NOD[nodId]; if (!n) return { ok: false, fel: $t('FINNS INTE') };
   const st = status(G, n);
-  if (st !== 'redo') return { ok: false, fel: { klar: 'REDAN FORSKAD', pagar: 'PÅGÅR REDAN', last: sparrad(G, n) ? 'KRÄVER TELEFONAVDELNINGEN' : 'FORSKA FÖREGÅNGAREN FÖRST', uppfinns: 'UPPFINNS ' + n.ar }[st] };
-  if (G.forskning.pagar.length >= labbspar(G)) return { ok: false, fel: labbspar(G) > 1 ? 'ALLA LABBSPÅR ÄR UPPTAGNA' : 'LABBET FORSKAR REDAN PÅ NÅGOT' };
+  if (st !== 'redo') return { ok: false, fel: { klar: $t('REDAN FORSKAD'), pagar: $t('PÅGÅR REDAN'), last: sparrad(G, n) ? $t('KRÄVER TELEFONAVDELNINGEN') : $t('FORSKA FÖREGÅNGAREN FÖRST'), uppfinns: $t`UPPFINNS ${n.ar}` }[st] };
+  if (G.forskning.pagar.length >= labbspar(G)) return { ok: false, fel: labbspar(G) > 1 ? $t('ALLA LABBSPÅR ÄR UPPTAGNA') : $t('LABBET FORSKAR REDAN PÅ NÅGOT') };
   const pris = fpPris(G, n), kronor = krPris(G, n);
-  if (G.bolag.fp < pris) return { ok: false, fel: 'FÖR LITE FORSKNINGSPOÄNG' };
-  if (kronor && G.bolag.kassa < kronor) return { ok: false, fel: 'KOSTAR ' + kr(kronor) };
+  if (G.bolag.fp < pris) return { ok: false, fel: $t('FÖR LITE FORSKNINGSPOÄNG') };
+  if (kronor && G.bolag.kassa < kronor) return { ok: false, fel: $t`KOSTAR ${kr(kronor)}` };
   G.bolag.fp -= pris;
   if (kronor) betala(G, kronor, 'forskning');
   const t = dagar(G, n);
@@ -59,31 +60,31 @@ export function dagligForskning(G) {
     if (p.dagarKvar > 0) continue;
     G.forskning.pagar = G.forskning.pagar.filter((x) => x !== p);
     G.forskning.klara.push(p.nod);
-    const n = NOD[p.nod];
-    nyhet(G, 'DU', `${G.bolag.namn} HAR FORSKAT FRAM ${n.namn}.`);
+    const n = NOD[p.nod], namn = n.namn;
+    nyhet(G, 'DU', $t`${G.bolag.namn} HAR FORSKAT FRAM ${namn}.`);
     if (n.lasUpp.typ === 'mobil') { oppnaMobil(G); continue; }   // eget stort kort
     // autopaus (SPELDESIGN §2.1) ska alltid synas: ett kort med OK som bygget klart och nödlånet,
     // inte en banner som försvinner medan tiden står still. Utan autopaus räcker bannern.
     const vad = vadLasesUpp(n);
-    if (G.installningar.autopaus) signal(G, 'stor', { rubrik: 'NY TEKNIK!', text: vad ? `${n.namn}: ${vad}${/[.!]$/.test(vad) ? '' : '.'}` : `${n.namn}.`, paus: true, ljud: 'forskning' });
-    else signal(G, 'banner', { text: vad ? `NY TEKNIK: ${n.namn} – ${vad}` : `NY TEKNIK: ${n.namn}`, farg: 'bla', ljud: 'forskning' });
+    if (G.installningar.autopaus) signal(G, 'stor', { rubrik: $t('NY TEKNIK!'), text: vad ? `${namn}: ${vad}${/[.!]$/.test(vad) ? '' : '.'}` : `${namn}.`, paus: true, ljud: 'forskning' });
+    else signal(G, 'banner', { text: vad ? $t`NY TEKNIK: ${namn} – ${vad}` : $t`NY TEKNIK: ${namn}`, farg: 'bla', ljud: 'forskning' });
   }
 }
 export function vadLasesUpp(n) {
   const u = n.lasUpp;
   switch (u.typ) {
-    case 'del': { const d = DELAR[u.grupp].find((x) => x.id === u.id); return `NY DEL I DESIGNERN (${d.kostnad} KR/ST)`; }
-    case 'kaross': return 'NY KAROSS I DESIGNERN';
-    case 'ram': return 'TUNNARE RAMAR I DESIGNERN';
-    case 'lins': return 'EN LINS TILL PÅ BAKSIDAN';
-    case 'funktion': return 'NY FUNKTION (+0,1 I BETYG)';
-    case 'enhet': return 'NY ENHETSTYP!';
-    case 'enhetsteknik': return 'NY TEKNIK FÖR ' + ENHETER.find((e) => e.id === u.enhet).namn;
-    case 'kdel': { const d = K_DELAR[u.grupp].find((x) => x.id === u.id); return `NY KONSOLDEL I DESIGNERN (${d.kostnad} KR/ST)`; }
-    case 'kkaross': return 'NY KONSOLFORM I DESIGNERN';
-    case 'kfunk': return 'NY KONSOLFUNKTION (+0,1 I BETYG)';
-    case 'kenhet': return 'NY SORTS KONSOL: ' + K_ENHETER.find((e) => e.id === u.id).namn + '!';
-    case 'mobil': return 'NU KAN NI GÖRA TELEFONER!';
+    case 'del': { const d = DELAR[u.grupp].find((x) => x.id === u.id); return $t`NY DEL I DESIGNERN (${kr(d.kostnad)}/ST)`; }
+    case 'kaross': return $t('NY KAROSS I DESIGNERN');
+    case 'ram': return $t('TUNNARE RAMAR I DESIGNERN');
+    case 'lins': return $t('EN LINS TILL PÅ BAKSIDAN');
+    case 'funktion': return $t('NY FUNKTION (+0,1 I BETYG)');
+    case 'enhet': return $t('NY ENHETSTYP!');
+    case 'enhetsteknik': return $t`NY TEKNIK FÖR ${ENHETER.find((e) => e.id === u.enhet).namn}`;
+    case 'kdel': { const d = K_DELAR[u.grupp].find((x) => x.id === u.id); return $t`NY KONSOLDEL I DESIGNERN (${kr(d.kostnad)}/ST)`; }
+    case 'kkaross': return $t('NY KONSOLFORM I DESIGNERN');
+    case 'kfunk': return $t('NY KONSOLFUNKTION (+0,1 I BETYG)');
+    case 'kenhet': return $t`NY SORTS KONSOL: ${K_ENHETER.find((e) => e.id === u.id).namn}!`;
+    case 'mobil': return $t('NU KAN NI GÖRA TELEFONER!');
     default: return '';
   }
 }

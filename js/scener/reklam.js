@@ -18,6 +18,7 @@ import { visaKonsol, ritaKonsol2D } from '../konsol/konsol-vy.js';
 import { konsolTel } from '../sim/design.js';
 import { studioAv, spelPris } from '../sim/konsol.js';
 import { arAv, kr, dec } from '../sim/bas.js';
+import { $t } from '../core/i18n.js';
 
 // ---------- tv-rutan (delas med STUDIOS och notiserna) ----------
 // Eran avgör tv:n: träteve (–1989), svart plastteve (90-talet), silverteve (2000–2005), platt-tv (2006–).
@@ -131,7 +132,7 @@ export function titelkort(titel, studio, t, x, y, w, h, fro = titel) {
   let ty = h >= 40 ? y + Math.round(h * 0.38 - th / 2) : y + Math.round((h - th) / 2);
   for (const r of rader) { text(r, x + w / 2, ty, tc, { F: Fn, k, just: 'c', skugga: morka(c1, 0.5) }); ty += lh; }
   if (h >= 40 && studio) text(kapa(studio, max), x + w / 2, ty + 2, ljusa(c2, 0.55), { just: 'c' });
-  if (h >= 30 && Math.floor(t * 1.6) % 2 === 0) text('TRYCK START', x + w / 2, y + h - (h >= 120 ? 16 : 8), 0xffffff, { just: 'c', F: h >= 120 ? BIG : SMALL });
+  if (h >= 30 && Math.floor(t * 1.6) % 2 === 0) text($t('TRYCK START'), x + w / 2, y + h - (h >= 120 ? 16 : 8), 0xffffff, { just: 'c', F: h >= 120 ? BIG : SMALL });
   ctx.restore();
 }
 
@@ -255,14 +256,14 @@ function slutBakgrund(ctx, t, cx, cy) {
 }
 
 // ---------- filmen ----------
-const SLOGAN = ['SPELA HEMMA!', 'HELA FAMILJEN SPELAR!', 'FRAMTIDEN ÄR HÄR!', 'NU BÖRJAR LEKEN!', 'SPELKVÄLL VARJE KVÄLL!', 'MER SPEL ÄN NÅGONSIN!'];
+const SLOGAN = [$t('SPELA HEMMA!'), $t('HELA FAMILJEN SPELAR!'), $t('FRAMTIDEN ÄR HÄR!'), $t('NU BÖRJAR LEKEN!'), $t('SPELKVÄLL VARJE KVÄLL!'), $t('MER SPEL ÄN NÅGONSIN!')];
 // vad filmen visar, ur spelets tillstånd (det som saknas tas från o)
 function filmen(G, o) {
   const s = o.spel != null ? G.k?.spel.find((x) => x.id === o.spel) : null;
   const konsolId = o.konsol ?? o.produkt ?? s?.konsol;
   const p = G.produkter.find((x) => x.id === konsolId) || null, pr = p ? null : G.projekt.find((x) => x.id === konsolId) || null;
   const design = p?.design || pr?.design || null, ar = arAv(G.dag);
-  const konsolNamn = p?.namn || design?.namn || 'DIN KONSOL', modell = design ? konsolTel(design).enhet : 'konsol-ataro';
+  const konsolNamn = p?.namn || design?.namn || $t('DIN KONSOL'), modell = design ? konsolTel(design).enhet : 'konsol-ataro';
   const bas = { konsolNamn, design, modell, ar, era: ERA(ar), bolag: G.bolag.namn };
   if (s || o.titel) {
     const glimt = s ? s.glimt : o.glimt;
@@ -343,7 +344,7 @@ export function reklam(A, o = {}) {
     const r = helRuta();
     glimtRuta(ctx, f.glimt, f.titel, f.studio, t, r.x, r.y, r.w, r.h);
     if (t > RUM_SLUT + ZOOM + 0.2) {
-      const s = `SPELBILD FRÅN ${f.konsolNamn}`;
+      const s = $t`SPELBILD FRÅN ${f.konsolNamn}`;
       rect(4, H - 14, tw(s) + 8, 10, 0x000000); text(s, 8, H - 12, F.text);
     }
   }
@@ -361,7 +362,7 @@ export function reklam(A, o = {}) {
     const x0 = 12 + tvB + 12, cw = W - 8 - x0;
     const in_ = (start, dur = 0.4) => ease((u - start) / dur), glid = (start) => Math.round((1 - in_(start)) * 170);
     let y = 24;
-    if (u > 0.1) text(kapa(`${f.studio} PRESENTERAR`, cw), x0 + glid(0.1), y, F.lila2);
+    if (u > 0.1) text(kapa($t`${f.studio} PRESENTERAR`, cw), x0 + glid(0.1), y, F.lila2);
     y += 10;
     const titel = rubrikRader(f.titel, cw);
     if (u > 0.15) titel.rader.forEach((r, i) => text(r, x0 + glid(0.15 + i * 0.08), y + i * titel.lh, F.guld, { F: titel.Fn, k: titel.k, skugga: 0x3a0a2a }));
@@ -371,16 +372,16 @@ export function reklam(A, o = {}) {
       ikon('stjarna', x0 + i * 16, y + Math.round((1 - p) * -6), i < f.stj ? F.guld : 0x4a4a6a, 2);
     }
     y += 22;
-    if (f.exklusiv && u > 1.0) { const s = 'BARA HOS OSS!'; rect(x0, y - 2, tw(s) + 8, 10, F.lila); text(s, x0 + 4, y, F.text); y += 14; }
+    if (f.exklusiv && u > 1.0) { const s = $t('BARA HOS OSS!'); rect(x0, y - 2, tw(s) + 8, 10, F.lila); text(s, x0 + 4, y, F.text); y += 14; }
     // NU TILL <KONSOL>! och konsolen i hörnet
     const namn = f.konsolNamn + '!', stor = tw(namn, BIG, 2) <= cw ? 2 : 1;
     if (u > 1.1) {
       const puls = Math.floor(u * 3) % 2 ? F.guld : 0xfff0a0;
-      text('NU TILL', x0, y, F.text);
+      text($t('NU TILL'), x0, y, F.text);
       text(stor === 1 ? kapa(namn, cw, BIG) : namn, x0, y + 9, puls, { F: BIG, k: stor, skugga: 0x3a0a2a });
     }
     y += 9 + 9 * stor + 4;
-    if (u > 1.5) text(`I BUTIK NU · ${kr(f.pris)}`, x0, y, F.text);
+    if (u > 1.5) text($t`I BUTIK NU · ${kr(f.pris)}`, x0, y, F.text);
     // konsolen i hörnet, under texten
     const y3d = Math.max(124, y + 10);
     if (u > 0.3 && u < LANGD - SLUT) visaKonsol({ x: W - 106, y: y3d, w: 102, h: H - 12 - y3d }, f.design || f.modell, { vy: 'auto', spin: u * 0.9, pitch: 0.3, ctx });
@@ -394,7 +395,7 @@ export function reklam(A, o = {}) {
     const x0 = 214, cw = W - 8 - x0;
     const in_ = (start, dur = 0.4) => ease((u - start) / dur), glid = (start) => Math.round((1 - in_(start)) * 170);
     let y = 24;
-    if (u > 0.2) text(kapa(`${f.bolag} PRESENTERAR`, cw), x0 + glid(0.2), y, F.lila2);
+    if (u > 0.2) text(kapa($t`${f.bolag} PRESENTERAR`, cw), x0 + glid(0.2), y, F.lila2);
     y += 10;
     const namn = rubrikRader(f.konsolNamn, cw, 3);
     if (u > 0.3) namn.rader.forEach((r, i) => text(r, x0 + glid(0.3 + i * 0.08), y + i * namn.lh, F.guld, { F: namn.Fn, k: namn.k, skugga: 0x3a0a2a }));
@@ -404,15 +405,15 @@ export function reklam(A, o = {}) {
       const sk = tvSkarm(tvTyp(f.ar), 48), typ = tvTyp(f.ar), k = tvKant(typ);
       tvMedGlimt(typ, x0 + k.l, y + k.t, sk.w, sk.h, f.glimt, f.packin.titel, f.bolag, SLUT + u);
       const tx = x0 + sk.w + k.l + k.r + 6;
-      text('MED', tx, y + 4, F.dim); text(kapa(f.packin.titel, W - 8 - tx), tx, y + 12, F.text); text('I LÅDAN!', tx, y + 20, F.dim);
+      text($t('MED'), tx, y + 4, F.dim); text(kapa(f.packin.titel, W - 8 - tx), tx, y + 12, F.text); text($t('I LÅDAN!'), tx, y + 20, F.dim);
       y += sk.h + k.t + k.b + k.fot + 6;
     }
-    if (u > 1.9 && f.betyg >= 7) { text(`KRITIKERNA: ${dec(f.betyg)}/10`, x0, Math.min(y, 172), F.gron2); }
+    if (u > 1.9 && f.betyg >= 7) { text($t`KRITIKERNA: ${dec(f.betyg)}/10`, x0, Math.min(y, 172), F.gron2); }
     if (u > 2.2 && f.pris) {
       const p = kr(f.pris), pw = tw(p, BIG) + 12, px = x0, py = 182;
       rect(px + 2, py + 2, pw, 13, 0x05060f); rect(px, py, pw, 13, F.rod); rect(px, py, pw, 1, ljusa(F.rod, 0.3));
       text(p, px + 6, py + 3, F.text, { F: BIG });
-      text('I BUTIK NU', px + pw + 6, py + 4, F.text);
+      text($t('I BUTIK NU'), px + pw + 6, py + 4, F.text);
     }
   }
   // svarta band, REKLAMFILM, delarna och HOPPA ÖVER
@@ -420,12 +421,12 @@ export function reklam(A, o = {}) {
     const hel = spel && t >= RUM_SLUT && t < SLUT;
     if (!hel) {
       rect(0, 0, W, 12, 0x000000); rect(0, H - 12, W, 12, 0x000000);
-      rect(6, 4, 3, 3, Math.floor(t * 2) % 2 ? F.rod : 0x5a1010); text('REKLAMFILM', 12, 4, F.dim);
+      rect(6, 4, 3, 3, Math.floor(t * 2) % 2 ? F.rod : 0x5a1010); text($t('REKLAMFILM'), 12, 4, F.dim);
       text(String(f.ar), W - 6, 4, F.dim2, { just: 'h' });
       const delar = spel ? [[0, RUM_SLUT], [RUM_SLUT, SLUT], [SLUT, LANGD]] : [[0, SLUT], [SLUT, LANGD]];
       delar.forEach(([a, b], i) => { const x = 6 + i * 14; rect(x, H - 7, 12, 3, 0x2a2a34); rect(x, H - 7, Math.round(12 * Math.max(0, Math.min(1, (t - a) / (b - a)))), 3, F.guld2); });
     }
-    knapp(W - 66, H - 11, 62, 10, 'HOPPA ÖVER', { stil: 'morkt', klick: tillbaka, namn: 'reklam-hoppa' });
+    knapp(W - 66, H - 11, 62, 10, $t('HOPPA ÖVER'), { stil: 'morkt', klick: tillbaka, namn: 'reklam-hoppa' });
   }
 }
 // rubriken så stor som ryms: BIG ×2 på högst två rader, annars BIG ×1 på högst max rader, annars SMALL

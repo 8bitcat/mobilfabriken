@@ -13,6 +13,7 @@ import { arKonsolSpel } from '../sim/spel.js';
 import { packinDagar, lanbaraStudios, lanaUtvecklare, lanePris } from '../sim/konsol.js';
 import { NOD } from '../data/noder.js';
 import { onskemal } from '../sim/personal.js';
+import { $t } from '../core/i18n.js';
 
 export function kontor(A) {
   const pr = []; // flygande prickar
@@ -30,8 +31,8 @@ export function kontor(A) {
       const { L, kx, ky } = ritaKontor(ctx, A, { kamera, kameraY });
       kamera = Math.max(0, Math.min(L.bredd - W, kamera)); kameraY = Math.max(0, Math.min(L.hojd - 202, kameraY));
       if (L.hojd > 202 || L.bredd > W) hit(0, 25, W, 136, { hjul: (dy) => { kameraY += dy; }, block: false });
-      if (L.hojd > 202 && kameraY < L.hojd - 206) { const b = Math.round(Math.sin(A.t * 4)); rect(W - 70, 150, 66, 10, 0x0a0d1a); ikon('pil_ned', W - 68, 151 + b, F.guld); text('DRA FÖR MER', W - 58, 152, F.guld); }
-      if (L.bredd > W && kamera < L.bredd - W - 4) { rect(W - 70, 139, 66, 10, 0x0a0d1a); ikon('hoger', W - 68, 140, F.guld); text('DRA ÅT SIDAN', W - 58, 141, F.guld); }
+      if (L.hojd > 202 && kameraY < L.hojd - 206) { const b = Math.round(Math.sin(A.t * 4)); rect(W - 70, 150, 66, 10, 0x0a0d1a); ikon('pil_ned', W - 68, 151 + b, F.guld); text($t('DRA FÖR MER'), W - 58, 152, F.guld); }
+      if (L.bredd > W && kamera < L.bredd - W - 4) { rect(W - 70, 139, 66, 10, 0x0a0d1a); ikon('hoger', W - 68, 140, F.guld); text($t('DRA ÅT SIDAN'), W - 58, 141, F.guld); }
       ctx.save(); ctx.translate(-kx, -ky);
       // sur personal säger vad som hjälper
       const onske = onskemal(G);
@@ -60,7 +61,7 @@ export function kontor(A) {
         rect(0, 15, W, 9, 0x0a0d1a); rect(0, 24, W, 1, F.hi);
         ticker.x -= dt * 30; const tw_ = tw(ticker.text);
         if (ticker.x < -tw_) { ticker.text = tick(); ticker.x = W; }
-        rect(0, 15, 34, 9, F.rod); text('NYTT', 5, 17, F.text);
+        rect(0, 15, 34, 9, F.rod); text($t('NYTT'), 5, 17, F.text);
         ctx.save(); ctx.beginPath(); ctx.rect(36, 15, W - 36, 9); ctx.clip(); text(ticker.text, Math.round(ticker.x), 17, F.text); ctx.restore();
       }
       panelen(A);
@@ -115,18 +116,18 @@ function prickMal(G, farg) {
 // studiornas obesvarade förfrågningar: en blinkande knapp ovanför panelen som leder till STUDIOS
 function studioKnapp(A, y) {
   const n = A.G.k?.forfragningar?.length || 0; if (!n) return;
-  const s = `${n} ${n === 1 ? 'STUDIO' : 'STUDIOS'} VILL GÖRA SPEL`, w = 10 + tw(s) + 13 + tw('STUDIOS') + 6, x = 8;
+  const s = n === 1 ? $t`${n} STUDIO VILL GÖRA SPEL` : $t`${n} STUDIOS VILL GÖRA SPEL`, st = $t('STUDIOS'), w = 10 + tw(s) + 13 + tw(st) + 6, x = 8;
   const blink = Math.floor(A.t * 2) % 2 === 0, ned = inne(x, y, w, 11) && U.mus.ned, d = ned ? 1 : 0;
   knapp(x, y, w, 11, '', { stil: 'lila', klick: () => A.go('studios'), namn: 'kontor-studios' });
   if (blink) ram(x - 1 + d, y - 1 + d, w + 2, 13, F.guld);
   ikon('kassett', x + 3 + d, y + 2 + d, blink ? F.guld : F.text);
   const tx = x + 13 + d + text(s, x + 13 + d, y + 3 + d, F.text);
-  ikon('hoger', tx + 3, y + 2 + d, F.guld); text('STUDIOS', tx + 12, y + 3 + d, F.guld);
+  ikon('hoger', tx + 3, y + 2 + d, F.guld); text(st, tx + 12, y + 3 + d, F.guld);
 }
 // låna en utvecklare av den studio som tycker bäst om bolaget (bara studios som gör eller gjort spel till dig)
 function lanaKnapp(A, pr, x, y, w) {
   const G = A.G, studio = lanbaraStudios(G).sort((a, b) => (G.k.relation[b.id] || 0) - (G.k.relation[a.id] || 0))[0];
-  knapp(x, y, w, 11, 'LÅNA UTVECKLARE · ' + kr(lanePris(G), true), { stil: 'lila', av: G.bolag.kassa < lanePris(G), namn: 'kontor-lana', klick: () => {
+  knapp(x, y, w, 11, $t`LÅNA UTVECKLARE · ${kr(lanePris(G), true)}`, { stil: 'lila', av: G.bolag.kassa < lanePris(G), namn: 'kontor-lana', klick: () => {
     if (lanaUtvecklare(G, pr.id, studio.id).ok) A.ljud('mynt'); else A.ljud('fel');
   } });
 }
@@ -141,16 +142,17 @@ function panelen(A) {
     const konsol = pr.design.linje === 'konsol', mjuk = pr.fas === 'mjukvara', spel = u.gron != null;
     const ikf = konsol && mjuk && !klar ? F.gron : F.orange;
     rect(8, y + 4, 14, 14, mixa(ikf, F.panel, 0.5)); ikon(konsol ? 'kontroll' : 'telefon', 11, y + 7, konsol && mjuk && !klar ? F.gron2 : F.orange2);
-    textB((klar ? '' : 'BYGGER ') + kapa(pr.design.namn, 150), 27, y + 4, F.text);
+    textB(klar ? kapa(pr.design.namn, 150) : $t`BYGGER ${kapa(pr.design.namn, 150)}`, 27, y + 4, F.text);
     // (bara buggfixare putsar ett klart bygge – konsolspelet börjar utan dem)
     const putsas = !arKonsolSpel(G) || G.personal.some((p) => p.roll === 'buggfixare');
-    if (klar || !spel) text(klar ? `KLAR ${datumText(pr.klarDag)} · ${putsas ? 'BUGGFIXARNA PUTSAR VIDARE' : 'LANSERA NÄR DU VILL'}` : `DAG ${pr.dagNu} AV ${pr.dagar} · ${Math.round(proc * 100)} % KLART · ${kr(byggkostnadPerDag(G))}/DAG`, 27, y + 14, F.dim);
+    if (klar || !spel) text(klar ? $t`KLAR ${datumText(pr.klarDag)} · ${putsas ? $t('BUGGFIXARNA PUTSAR VIDARE') : $t('LANSERA NÄR DU VILL')}` : $t`DAG ${pr.dagNu} AV ${pr.dagar} · ${Math.round(proc * 100)} % KLART · ${kr(byggkostnadPerDag(G))}/DAG`, 27, y + 14, F.dim);
     else {
       // fasen: HÅRDVARA och sedan SPELET I LÅDAN, med fasens egen dagräkning
       // (spelDagar blir oändligt om hela teamet sades upp när hårdvaran blev klar)
-      const rest = mjuk ? ` DAG ${pr.spelDagNu} AV ${Number.isFinite(pr.spelDagar) ? pr.spelDagar : '?'} · ${kr(byggkostnadPerDag(G))}/DAG` : ` DAG ${pr.dagNu} AV ${pr.dagar} · ${Math.round(proc * 100)} % KLART · ${kr(byggkostnadPerDag(G))}/DAG`;
+      const rest = ' ' + (mjuk ? $t`DAG ${pr.spelDagNu} AV ${Number.isFinite(pr.spelDagar) ? pr.spelDagar : '?'} · ${kr(byggkostnadPerDag(G))}/DAG` : $t`DAG ${pr.dagNu} AV ${pr.dagar} · ${Math.round(proc * 100)} % KLART · ${kr(byggkostnadPerDag(G))}/DAG`);
       const plats = u.kant - 27 - tw(rest) - 5;
-      const lapp = mjuk ? 'SPELET I LÅDAN: ' + kapa(pr.design.packin.titel, plats - tw('SPELET I LÅDAN: ')) : 'HÅRDVARA';
+      const etikett = $t('SPELET I LÅDAN:') + ' ';
+      const lapp = mjuk ? etikett + kapa($t(pr.design.packin.titel), plats - tw(etikett)) : $t('HÅRDVARA');
       const lw = fasLapp(lapp, 27, y + 13, mjuk ? F.gron : F.orange);
       text(rest, 27 + lw, y + 14, F.dim);
     }
@@ -166,25 +168,25 @@ function panelen(A) {
     // raden under mätaren: bekräftelsen för AVBRYT, gåvan DIREKTBYGGE (bara hårdvaran), LÅNA UTVECKLARE
     // eller den lånade, eller förklaringen av prickarna
     const lanbar = konsol && !klar && !pr.lanad && lanbaraStudios(G).length > 0;
-    if (!klar && A.bekrafta === pr.id) text('TRYCK X IGEN FÖR ATT AVBRYTA', 8, y + 30, F.rod2);
-    else if (!klar && !mjuk && G.inventarie.direktbygge > 0) knapp(8, y + 27, u.radB, 11, 'DIREKTBYGGE (' + G.inventarie.direktbygge + ' KVAR)', { stil: 'guld', namn: 'kontor-direktbygge', klick: () => { if (direktbygg(G, pr.id).ok) A.ljud('klar'); else A.ljud('fel'); } });
+    if (!klar && A.bekrafta === pr.id) text($t('TRYCK X IGEN FÖR ATT AVBRYTA'), 8, y + 30, F.rod2);
+    else if (!klar && !mjuk && G.inventarie.direktbygge > 0) knapp(8, y + 27, u.radB, 11, $t`DIREKTBYGGE (${G.inventarie.direktbygge} KVAR)`, { stil: 'guld', namn: 'kontor-direktbygge', klick: () => { if (direktbygg(G, pr.id).ok) A.ljud('klar'); else A.ljud('fel'); } });
     else if (lanbar) lanaKnapp(A, pr, 8, y + 27, u.radB);
-    else if (konsol && !klar && pr.lanad) { ikon('team', 8, y + 29, F.lila2); text(kapa('LÅNAD FRÅN ' + pr.lanad.namn, u.radB - 12), 18, y + 30, F.lila2); }
-    else text(mjuk && !klar ? 'GRÖN PRICK = SPELETS KVALITET' : 'BLÅ PRICK = KVALITET · RÖD = BUGG', 8, y + 30, F.dim2);
+    else if (konsol && !klar && pr.lanad) { ikon('team', 8, y + 29, F.lila2); text(kapa($t`LÅNAD FRÅN ${$t(pr.lanad.namn)}`, u.radB - 12), 18, y + 30, F.lila2); }
+    else text(mjuk && !klar ? $t('GRÖN PRICK = SPELETS KVALITET') : $t('BLÅ PRICK = KVALITET · RÖD = BUGG'), 8, y + 30, F.dim2);
     // räcker inte kassan till lanseringen säger knappen det (lånet erbjuds på lanseringsskärmen)
     const fattig = klar && forLitePengar(G, pr);
-    knapp(u.lansX, y + 27, u.kant - u.lansX, 11, !klar ? 'LANSERA NÄR KLAR' : fattig ? 'LANSERA (FÖR LITE PENGAR)' : 'LANSERA!', { stil: fattig ? 'orange' : 'gron', av: !klar, klick: () => A.go('lansering', { projekt: pr.id }), namn: 'kontor-lansera' });
+    knapp(u.lansX, y + 27, u.kant - u.lansX, 11, !klar ? $t('LANSERA NÄR KLAR') : fattig ? $t('LANSERA (FÖR LITE PENGAR)') : $t('LANSERA!'), { stil: fattig ? 'orange' : 'gron', av: !klar, klick: () => A.go('lansering', { projekt: pr.id }), namn: 'kontor-lansera' });
     // ringarna med köpknappar under
-    ring(u.bla, y + 12, 9, F.bla); textB(String(pr.kvalitet), u.bla, y + 9, F.text, { just: 'c' }); text('KVALITET', u.bla, y + 23, F.bla2, { just: 'c' });
-    ring(u.rod, y + 12, 9, F.rod); textB(String(pr.buggar), u.rod, y + 9, F.text, { just: 'c' }); text('BUGGAR', u.rod, y + 23, F.rod2, { just: 'c' });
-    knapp(u.bla - u.knappB / 2, y + 30, u.knappB, 8, '+' + PRICK_FP + ' FP', { stil: 'bla', klick: () => { if (!kopPrick(G, pr.id).ok) A.ljud('fel'); }, av: klar || G.bolag.fp < PRICK_FP });
-    knapp(u.rod - u.knappB / 2, y + 30, u.knappB, 8, 'LAGA ' + PRICK_FP, { stil: 'rod', klick: () => { if (!lagaBugg(G, pr.id).ok) A.ljud('fel'); }, av: G.bolag.fp < PRICK_FP || !pr.buggar });
+    ring(u.bla, y + 12, 9, F.bla); textB(String(pr.kvalitet), u.bla, y + 9, F.text, { just: 'c' }); text($t('KVALITET'), u.bla, y + 23, F.bla2, { just: 'c' });
+    ring(u.rod, y + 12, 9, F.rod); textB(String(pr.buggar), u.rod, y + 9, F.text, { just: 'c' }); text($t('BUGGAR'), u.rod, y + 23, F.rod2, { just: 'c' });
+    knapp(u.bla - u.knappB / 2, y + 30, u.knappB, 8, $t`+${PRICK_FP} FP`, { stil: 'bla', klick: () => { if (!kopPrick(G, pr.id).ok) A.ljud('fel'); }, av: klar || G.bolag.fp < PRICK_FP });
+    knapp(u.rod - u.knappB / 2, y + 30, u.knappB, 8, $t`LAGA ${PRICK_FP}`, { stil: 'rod', klick: () => { if (!lagaBugg(G, pr.id).ok) A.ljud('fel'); }, av: G.bolag.fp < PRICK_FP || !pr.buggar });
     if (spel) {
       // spelet i lådan: tänds när hårdvaran är klar; när konsolen är klar visas spelets stjärnor under ringen
       const pa = mjuk || klar, c = pa ? F.gron : mixa(F.gron, F.panel, 0.6);
-      ring(u.gron, y + 12, 9, c); textB(String(pr.spelKval || 0), u.gron, y + 9, pa ? F.text : F.dim2, { just: 'c' }); text('SPELET', u.gron, y + 23, pa ? F.gron2 : F.dim2, { just: 'c' });
+      ring(u.gron, y + 12, 9, c); textB(String(pr.spelKval || 0), u.gron, y + 9, pa ? F.text : F.dim2, { just: 'c' }); text($t('SPELET'), u.gron, y + 23, pa ? F.gron2 : F.dim2, { just: 'c' });
       if (klar && pr.packinStj) stjarnor(u.gron - 17, y + 30, pr.packinStj);
-      else text('MÅL ' + pr.spelMal, u.gron, y + 31, pa ? F.dim : F.dim2, { just: 'c' });
+      else text($t`MÅL ${pr.spelMal}`, u.gron, y + 31, pa ? F.dim : F.dim2, { just: 'c' });
     }
     if (!klar) knapp(362, y + 4, 16, 11, 'X', { stil: 'rod', klick: () => { if (A.bekrafta === pr.id) { avbryt(G, pr.id); A.bekrafta = null; } else { A.bekrafta = pr.id; setTimeout(() => { A.bekrafta = null; }, 2500); } } });
     return;
@@ -192,20 +194,20 @@ function panelen(A) {
   // inget bygge: nästa mål, labbet och stora knappen
   const m = nastaMal(G), antal = malLista(G).length;
   if (m) {
-    text(`MÅL ${m.nr} AV ${antal}`, 8, y + 5, F.guld);
-    textB(kapa(m.text, 160), 8, y + 13, F.text);
-    text('BELÖNING ' + kr(m.belopp), 8, y + 25, F.gron2);
+    text($t`MÅL ${m.nr} AV ${antal}`, 8, y + 5, F.guld);
+    textB(kapa($t(m.text), 160), 8, y + 13, F.text);
+    text($t`BELÖNING ${kr(m.belopp)}`, 8, y + 25, F.gron2);
     matare(8, y + 32, 120, 3, G.mal.klara.length / antal, F.guld2);
   }
   // labbet
   const lx = 176;
   const pagar = G.forskning.pagar[0];
-  text('LABBET', lx, y + 5, F.bla2);
-  if (pagar) { const n = NOD[pagar.nod]; text(kapa(n.namn, 100), lx, y + 13, F.text); text(`${pagar.dagarKvar} DAGAR KVAR`, lx, y + 21, F.dim); matare(lx, y + 29, 90, 3, 1 - pagar.dagarKvar / pagar.totalt, F.bla); }
-  else { text('LEDIGT – VÄLJ NY TEKNIK', lx, y + 13, F.orange2); knapp(lx, y + 23, 70, 10, 'FORSKNING', { stil: 'bla', klick: () => A.go('forskning') }); }
+  text($t('LABBET'), lx, y + 5, F.bla2);
+  if (pagar) { const n = NOD[pagar.nod]; text(kapa($t(n.namn), 100), lx, y + 13, F.text); text($t`${pagar.dagarKvar} DAGAR KVAR`, lx, y + 21, F.dim); matare(lx, y + 29, 90, 3, 1 - pagar.dagarKvar / pagar.totalt, F.bla); }
+  else { text($t('LEDIGT – VÄLJ NY TEKNIK'), lx, y + 13, F.orange2); knapp(lx, y + 23, 70, 10, $t('FORSKNING'), { stil: 'bla', klick: () => A.go('forskning') }); }
   const harBord = G.kontor.bord.some(Boolean);
   // konsolspelet: DESIGNA KONSOL (med telefonavdelningen kan designern göra båda)
-  const designa = !arKonsolSpel(G) ? 'DESIGNA TELEFON' : G.flaggor.mobil ? 'NY DESIGN' : 'DESIGNA KONSOL';
-  const stor = !harBord ? ['STÄLL UT BORD', 'orange', () => A.go('bygg')] : !G.personal.length ? ['ANSTÄLL ETT TEAM', 'rosa', () => A.go('personal')] : [designa, 'gron', () => A.go('design')];
+  const designa = !arKonsolSpel(G) ? $t('DESIGNA TELEFON') : G.flaggor.mobil ? $t('NY DESIGN') : $t('DESIGNA KONSOL');
+  const stor = !harBord ? [$t('STÄLL UT BORD'), 'orange', () => A.go('bygg')] : !G.personal.length ? [$t('ANSTÄLL ETT TEAM'), 'rosa', () => A.go('personal')] : [designa, 'gron', () => A.go('design')];
   knapp(282, y + 8, 94, 22, stor[0], { stil: stor[1], klick: stor[2], namn: 'kontor-stor' });
 }

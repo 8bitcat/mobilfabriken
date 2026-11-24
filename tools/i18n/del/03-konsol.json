@@ -1,0 +1,537 @@
+[
+ {
+  "i": 0,
+  "k": "KREDIT 00",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 1,
+  "k": "POÄNG<1>",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 2,
+  "k": "REKORD",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 3,
+  "k": "POÄNG<2>",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 4,
+  "k": "OIL",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 5,
+  "k": "1UP",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 6,
+  "k": "BONUS",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 7,
+  "k": "HJÄLP!",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 8,
+  "k": "KID KOSMO I MIRAKELLANDET",
+  "f": "js/konsol/glimtar/a.js"
+ },
+ {
+  "i": 9,
+  "k": "VARV 3/5",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 10,
+  "k": "CHECK POINT",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 11,
+  "k": "TIME",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 12,
+  "k": "POS",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 13,
+  "k": "LAP 1/3",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 14,
+  "k": "CHECK POINT!",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 15,
+  "k": "EXTENDED TIME",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 16,
+  "k": "KM/H",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 17,
+  "k": "YAHOO!",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 18,
+  "k": "HP:",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 19,
+  "k": "MUSKEN",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 20,
+  "k": "VOLTIS",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 21,
+  "k": "EN VILD MUSKEN",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 22,
+  "k": "DÖK UPP!",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 23,
+  "k": "KÖR, VOLTIS!",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 24,
+  "k": "KAMP",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 25,
+  "k": "MONST",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 26,
+  "k": "VÄSKA",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 27,
+  "k": "FLY",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 28,
+  "k": "DU KOM UNDAN!",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 29,
+  "k": "TORA RACING",
+  "f": "js/konsol/glimtar/b.js"
+ },
+ {
+  "i": 30,
+  "k": "TAXI",
+  "f": "js/konsol/glimtar/c.js"
+ },
+ {
+  "i": 31,
+  "k": "GALEN DRIFT!",
+  "f": "js/konsol/glimtar/c.js"
+ },
+ {
+  "i": 32,
+  "k": "KONTROLLPUNKT... KLAR",
+  "f": "js/konsol/glimtar/c.js"
+ },
+ {
+  "i": 33,
+  "k": "VINEWOOD",
+  "f": "js/konsol/glimtar/c.js"
+ },
+ {
+  "i": 34,
+  "k": "GANTON",
+  "f": "js/konsol/glimtar/c.js"
+ },
+ {
+  "i": 35,
+  "k": "BUSTER",
+  "f": "js/konsol/glimtar/c.js"
+ },
+ {
+  "i": 36,
+  "k": "TAKT",
+  "f": "js/konsol/glimtar/e.js"
+ },
+ {
+  "i": 37,
+  "k": "SABEL",
+  "f": "js/konsol/glimtar/e.js"
+ },
+ {
+  "i": 38,
+  "k": "KOMBO",
+  "f": "js/konsol/glimtar/e.js"
+ },
+ {
+  "i": 39,
+  "k": "HORISONT",
+  "f": "js/konsol/glimtar/e.js"
+ },
+ {
+  "i": 40,
+  "k": "DRIFT!",
+  "f": "js/konsol/glimtar/e.js"
+ },
+ {
+  "i": 41,
+  "k": "OLLE",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 42,
+  "k": "SAGA",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 43,
+  "k": "ELLA",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 44,
+  "k": "MAJA",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 45,
+  "k": "KLART!",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 46,
+  "k": "TOTALA UPPDRAG KLARA",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 47,
+  "k": "KAFÉ: SLADDAR 1/3",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 48,
+  "k": "NAV: STYR KURSEN",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 49,
+  "k": "ANVÄND",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 50,
+  "k": "VARV 2/3",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 51,
+  "k": "HEJ",
+  "f": "js/konsol/glimtar/f.js"
+ },
+ {
+  "i": 52,
+  "k": "DRAG",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 53,
+  "k": "MÅL 20 000",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 54,
+  "k": "LJUVLIGT!",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 55,
+  "k": "KATAPULTKRIGET",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 56,
+  "k": "FEATHER",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 57,
+  "k": "SOCKERSTORMEN",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 58,
+  "k": "SUGARLAB",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 59,
+  "k": "TUNNELRUSH",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 60,
+  "k": "RAILHEAD",
+  "f": "js/konsol/glimtar/mobil.js"
+ },
+ {
+  "i": 61,
+  "k": "PIPO",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 62,
+  "k": "BANA 1-1",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 63,
+  "k": "POÄNG",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 64,
+  "k": "RADER",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 65,
+  "k": "NÄSTA",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 66,
+  "k": "BLOCKFALL!",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 67,
+  "k": "RINGAR 23",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 68,
+  "k": "STRIKE!",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 69,
+  "k": "#1 SEGER-ROYAL",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 70,
+  "k": "BILTJUVEN",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 71,
+  "k": "DEL VI",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 72,
+  "k": "ERT EGET",
+  "f": "js/konsol/glimtar.js"
+ },
+ {
+  "i": 73,
+  "k": "KASSETTEN",
+  "f": "js/konsol/konsol-gl.js"
+ },
+ {
+  "i": 74,
+  "k": "SKIVLUCKAN",
+  "f": "js/konsol/konsol-gl.js"
+ },
+ {
+  "i": 75,
+  "k": "SIDOKONTROLLERNA",
+  "f": "js/konsol/konsol-gl.js"
+ },
+ {
+  "i": 76,
+  "k": "HOSHI NOVA 6",
+  "f": "js/konsol/konsol-gl.js"
+ },
+ {
+  "i": 77,
+  "k": "TOP",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 78,
+  "k": "STRÖM",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 79,
+  "k": "TV-TYP",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 80,
+  "k": "SVÅR V",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 81,
+  "k": "SVÅR H",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 82,
+  "k": "VÄLJ",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 83,
+  "k": "START",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 84,
+  "k": "VIDEO SPELSYSTEM",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 85,
+  "k": "VISION",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 86,
+  "k": "RESET",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 87,
+  "k": "SYSTEM 8",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 88,
+  "k": "TORA KORT",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 89,
+  "k": "PAUS",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 90,
+  "k": "16-BIT",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 91,
+  "k": "HIGH GRADE MULTI PURPOSE USE",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 92,
+  "k": "MEGA 16",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 93,
+  "k": "VOLYM",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 94,
+  "k": "HANDKONTROLLEN",
+  "f": "js/konsol/modeller/a.js"
+ },
+ {
+  "i": 95,
+  "k": "POWER",
+  "f": "js/konsol/modeller/b.js"
+ },
+ {
+  "i": 96,
+  "k": "ORBIT",
+  "f": "js/konsol/modeller/b.js"
+ },
+ {
+  "i": 97,
+  "k": "COMPACT DISC",
+  "f": "js/konsol/modeller/b.js"
+ },
+ {
+  "i": 98,
+  "k": "OPEN",
+  "f": "js/konsol/modeller/b.js"
+ },
+ {
+  "i": 99,
+  "k": "BOLL",
+  "f": "js/konsol/modeller/c.js"
+ },
+ {
+  "i": 100,
+  "k": "MAT",
+  "f": "js/konsol/modeller/c.js"
+ },
+ {
+  "i": 101,
+  "k": "GÅ UT",
+  "f": "js/konsol/modeller/c.js"
+ },
+ {
+  "i": 102,
+  "k": "SKIVLÅDAN",
+  "f": "js/konsol/modeller/c.js"
+ },
+ {
+  "i": 103,
+  "k": "LOCKET",
+  "f": "js/konsol/modeller/c.js"
+ },
+ {
+  "i": 104,
+  "k": "VI U",
+  "f": "js/konsol/modeller/d.js"
+ },
+ {
+  "i": 105,
+  "k": "SKIVAN",
+  "f": "js/konsol/modeller/d.js"
+ },
+ {
+  "i": 106,
+  "k": "VÄND GLASÖGONEN",
+  "f": "js/konsol/modeller/e.js"
+ }
+]

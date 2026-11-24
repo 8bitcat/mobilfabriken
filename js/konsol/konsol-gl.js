@@ -4,6 +4,7 @@
 //   tel.kropp (färg, valfri – annars formens originalfärg), tel.yta (klassisk|matt|kolfiber|borstad)
 //   satt(o): luckor och delar som öppnas (kassettluckan, skivluckan, sidokontrollerna)
 //   tick(t): levande skärmar visar spelglimtar (fickkonsolen och hybriden)
+import { $t } from '../core/i18n.js';
 import { BYGGARE } from '../telefon/telefon-gl.js';
 import { TH, mat, glans, lyser, skugg, platta, staende, kloss, rund, kabel, styrkors, glimtSkarm, glimtEtikett, kropp, joystick, nesKontroll, grepp, roundedBox, rektHorn, klamp01 } from './gl-verktyg.js';
 import { KONSOLER as M_A } from './modeller/a.js';
@@ -199,15 +200,15 @@ function nasta(tel) {
 // Alla konsoler i årsordning. Varje post: { id, namn (parodi), forebild, ar, glimt (spelet som hör till),
 // oppna: [reglagets namn, standardläge] | null, info, bygg(tel) → THREE.Group, pixel?(ctx, X, Y) 40×28 för tidslinjen }
 const BAS = [
-  { id: 'konsol-hemdator', namn: 'DATATRON 64', ar: 1982, forebild: 'Commodore 64', glimt: 'pac', bygg: hemdator, oppna: null, info: 'Brödlådan: tangentbordet sitter i lådan och joysticken står bredvid. Spelen kommer på modul eller disk.' },
-  { id: 'konsol-lada', namn: 'TENKO 8', ar: 1986, forebild: 'Nintendo Entertainment System', glimt: 'marco', bygg: lada, oppna: ['KASSETTEN', 0], info: 'Luckan fram fälls upp och kassetten trycks ner. Handkontroll med styrkors och två röda knappar.' },
-  { id: 'konsol-ficka', namn: 'TENKO POCKET', ar: 1989, forebild: 'Game Boy', glimt: 'tetrix', bygg: ficka, oppna: null, info: 'Grön skärm, styrkors och två knappar. Spelet syns live på skärmen och kassetten sticker upp där bak.' },
-  { id: 'konsol-skiva', namn: 'HOSHI NOVA', ar: 1995, forebild: 'PlayStation', glimt: 'crash', bygg: skiva, oppna: ['SKIVLUCKAN', 0], info: 'Spelen på CD under den runda luckan. Handkontroll med grepp och fyra symbolknappar.' },
-  { id: 'konsol-torn00', namn: 'HOSHI NOVA 2', ar: 2000, forebild: 'PlayStation 2', glimt: 'gtasa', bygg: torn00, oppna: null, info: 'Svart och stående med ränder. DVD, och två analoga spakar på handkontrollen.' },
-  { id: 'konsol-smal', namn: 'TENKO VIVA', ar: 2006, forebild: 'Wii', glimt: 'visport', bygg: smal, oppna: null, info: 'Vit och smal med blått sken i skivfacket. Rörelsekontroll man svingar.' },
-  { id: 'konsol-hybrid', namn: 'TENKO SNAP', ar: 2017, forebild: 'Nintendo Switch', glimt: 'fortnajt', bygg: hybrid, oppna: ['SIDOKONTROLLERNA', 0], info: 'Skärm med lösa sidokontroller. Spelet syns live på skärmen.' },
-  { id: 'konsol-torn20', namn: 'HOSHI NOVA 5', ar: 2020, forebild: 'PlayStation 5', glimt: 'astrobotten', bygg: torn20, oppna: null, info: 'Vita vingar runt en svart kärna och blått ljus. SSD och strålspårning.' },
-  { id: 'konsol-nasta', namn: 'HOSHI NOVA 6', ar: 2026, forebild: 'PlayStation 6 (ryktas)', glimt: 'gta6', bygg: nasta, oppna: null, info: 'Låg kil med lila ljuslist. En gissning på hur nästa generation ser ut.' },
+  { id: 'konsol-hemdator', namn: $t('DATATRON 64'), ar: 1982, forebild: 'Commodore 64', glimt: 'pac', bygg: hemdator, oppna: null, info: 'Brödlådan: tangentbordet sitter i lådan och joysticken står bredvid. Spelen kommer på modul eller disk.' },
+  { id: 'konsol-lada', namn: $t('TENKO 8'), ar: 1986, forebild: 'Nintendo Entertainment System', glimt: 'marco', bygg: lada, oppna: [$t('KASSETTEN'), 0], info: 'Luckan fram fälls upp och kassetten trycks ner. Handkontroll med styrkors och två röda knappar.' },
+  { id: 'konsol-ficka', namn: $t('TENKO POCKET'), ar: 1989, forebild: 'Game Boy', glimt: 'tetrix', bygg: ficka, oppna: null, info: 'Grön skärm, styrkors och två knappar. Spelet syns live på skärmen och kassetten sticker upp där bak.' },
+  { id: 'konsol-skiva', namn: $t('HOSHI NOVA'), ar: 1995, forebild: 'PlayStation', glimt: 'crash', bygg: skiva, oppna: [$t('SKIVLUCKAN'), 0], info: 'Spelen på CD under den runda luckan. Handkontroll med grepp och fyra symbolknappar.' },
+  { id: 'konsol-torn00', namn: $t('HOSHI NOVA 2'), ar: 2000, forebild: 'PlayStation 2', glimt: 'gtasa', bygg: torn00, oppna: null, info: 'Svart och stående med ränder. DVD, och två analoga spakar på handkontrollen.' },
+  { id: 'konsol-smal', namn: $t('TENKO VIVA'), ar: 2006, forebild: 'Wii', glimt: 'visport', bygg: smal, oppna: null, info: 'Vit och smal med blått sken i skivfacket. Rörelsekontroll man svingar.' },
+  { id: 'konsol-hybrid', namn: $t('TENKO SNAP'), ar: 2017, forebild: 'Nintendo Switch', glimt: 'fortnajt', bygg: hybrid, oppna: [$t('SIDOKONTROLLERNA'), 0], info: 'Skärm med lösa sidokontroller. Spelet syns live på skärmen.' },
+  { id: 'konsol-torn20', namn: $t('HOSHI NOVA 5'), ar: 2020, forebild: 'PlayStation 5', glimt: 'astrobotten', bygg: torn20, oppna: null, info: 'Vita vingar runt en svart kärna och blått ljus. SSD och strålspårning.' },
+  { id: 'konsol-nasta', namn: $t('HOSHI NOVA 6'), ar: 2026, forebild: 'PlayStation 6 (ryktas)', glimt: 'gta6', bygg: nasta, oppna: null, info: 'Låg kil med lila ljuslist. En gissning på hur nästa generation ser ut.' },
 ];
 export const KONSOLFORMER = [...BAS, ...M_A, ...M_B, ...M_C, ...M_D, ...M_E, ...M_F].sort((a, b) => a.ar - b.ar || a.namn.localeCompare(b.namn));
 for (const f of KONSOLFORMER) BYGGARE[f.id] = f.bygg;

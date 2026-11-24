@@ -1,0 +1,1567 @@
+[
+ {
+  "i": 0,
+  "k": "BORD HÄR",
+  "f": "js/art/kontor-vy.js"
+ },
+ {
+  "i": 1,
+  "k": "MÅL {0} AV 28 KLART!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 2,
+  "k": "SENARE",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 3,
+  "k": "TILL LANSERINGEN",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 4,
+  "k": "OK",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 5,
+  "k": "BELÖNING",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 6,
+  "k": "HURRA!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 7,
+  "k": "DIN KONSOL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 8,
+  "k": "EN STUDIO KNACKAR PÅ!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 9,
+  "k": "VILL GÖRA ETT LANSERINGSSPEL TILL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 10,
+  "k": "VILL GÖRA SPELET TILL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 11,
+  "k": "UTVECKLINGSKIT",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 12,
+  "k": "SISTA DAGEN ATT SVARA!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 13,
+  "k": "SVARA INOM 1 DAG",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 14,
+  "k": "SVARA INOM {0} DAGAR",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 15,
+  "k": "SVARAR DU INTE GÅR SPELET TILL EN RIVAL.",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 16,
+  "k": "SE FÖRFRÅGAN",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 17,
+  "k": "{0} ÄR UTE!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 18,
+  "k": "DITT EGET SPEL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 19,
+  "k": "NU TILL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 20,
+  "k": "HELA INTÄKTEN ÄR DIN, MINUS TILLVERKNINGEN.",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 21,
+  "k": "DU FÅR {0} % AV VARJE SÅLT SPEL. BARA HOS DIG!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 22,
+  "k": "DU FÅR {0} % AV VARJE SÅLT SPEL.",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 23,
+  "k": "FLER KÖPER KONSOLEN NÄR",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 24,
+  "k": "BIBLIOTEKET VÄXER.",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 25,
+  "k": "SE REKLAMFILMEN",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 26,
+  "k": "GOTT NYTT {0}!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 27,
+  "k": "ÅRSRAPPORT {0}",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 28,
+  "k": "INTÄKTER",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 29,
+  "k": "KOSTNADER",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 30,
+  "k": "ÅRETS RESULTAT",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 31,
+  "k": "ÅRETS TELEFON",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 32,
+  "k": "ÅRETS BÄSTA PRYL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 33,
+  "k": "ÅRETS KONSOL",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 34,
+  "k": "NU KAN DU SÄLJA BOLAGET (BOLAGET > SÄLJ BOLAGET)",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 35,
+  "k": "KRITIKERNA HÖJER KRAVEN: SNITTET ÄR {0}",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 36,
+  "k": "NYTT ÅR!",
+  "f": "js/core/notiser.js"
+ },
+ {
+  "i": 37,
+  "k": "Mobilfabriken",
+  "f": "js/main.js"
+ },
+ {
+  "i": 38,
+  "k": "Vänd på mobilen!",
+  "f": "js/main.js"
+ },
+ {
+  "i": 39,
+  "k": "Mobilfabriken spelas liggande.",
+  "f": "js/main.js"
+ },
+ {
+  "i": 40,
+  "k": "Spela stående ändå",
+  "f": "js/main.js"
+ },
+ {
+  "i": 41,
+  "k": "Större spel utan Safaris fält: tryck på <b>Dela</b> och välj <b>Lägg till på hemskärmen</b>.",
+  "f": "js/main.js"
+ },
+ {
+  "i": 42,
+  "k": "FEL: {0}",
+  "f": "js/main.js"
+ },
+ {
+  "i": 43,
+  "k": "EKONOMI",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 44,
+  "k": "MÅL",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 45,
+  "k": "MARKNADER",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 46,
+  "k": "KONTOR",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 47,
+  "k": "SÄLJ BOLAGET",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 48,
+  "k": "FÖRSÄLJNING",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 49,
+  "k": "MÅLBELÖNINGAR",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 50,
+  "k": "MÖBLER",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 51,
+  "k": "LÖNER",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 52,
+  "k": "UTVECKLING",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 53,
+  "k": "TILLVERKNING",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 54,
+  "k": "FABRIKER",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 55,
+  "k": "REKLAM",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 56,
+  "k": "PERSONAL",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 57,
+  "k": "RÄNTA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 58,
+  "k": "GÅVOR",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 59,
+  "k": "LÅN",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 60,
+  "k": "SPEL",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 61,
+  "k": "GICK INTE",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 62,
+  "k": "BOLAGET",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 63,
+  "k": "{0} · GRUNDAT {1}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 64,
+  "k": "KASSAN VECKA FÖR VECKA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 65,
+  "k": "KASSA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 66,
+  "k": "SÅLDA TOTALT",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 67,
+  "k": "RYKTE",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 68,
+  "k": "BÄSTA BETYG",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 69,
+  "k": "INSTALLERAD BAS",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 70,
+  "k": "SPEL I BIBLIOTEKET",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 71,
+  "k": "+{0} PÅ GÅNG",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 72,
+  "k": "BETALA AV {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 73,
+  "k": "BETALA AV",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 74,
+  "k": "{0} BETALADE TILLBAKA {1} TILL BANKEN. KVAR ATT BETALA: {2}.",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 75,
+  "k": "{0} BETALADE TILLBAKA {1} TILL BANKEN. LÅNET ÄR BETALT!",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 76,
+  "k": "{0} STANNAR I KASSAN TILL LÖNERNA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 77,
+  "k": "ÅR {0} HITTILLS",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 78,
+  "k": "RESULTAT",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 79,
+  "k": "FÖRRA ÅRET ({0})",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 80,
+  "k": "MÅL KLARA: {0} AV {1}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 81,
+  "k": "UTMÄRKELSER",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 82,
+  "k": "DU SÄLJER I {0} % AV VÄRLDEN · MARKNADSANDEL {1} %",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 83,
+  "k": "{0} % AV VÄRLDENS KÖPARE",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 84,
+  "k": "DU SÄLJER HÄR",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 85,
+  "k": "KRÄVER RYKTE {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 86,
+  "k": "ÖPPNA · {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 87,
+  "k": "{0} BÖRJAR SÄLJA I {1}!",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 88,
+  "k": "NY MARKNAD: {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 89,
+  "k": "KONTORET",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 90,
+  "k": "{0} BORD · {1} LABBSPÅR · KANDIDATER UPP TILL {2}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 91,
+  "k": "NI SITTER HÄR",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 92,
+  "k": "AVKLARAT",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 93,
+  "k": "KRAV: {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 94,
+  "k": "FLYTTA · {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 95,
+  "k": "SPELET BÖRJAR OM I GARAGET – 1982 ELLER 2007.",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 96,
+  "k": "SPELET BÖRJAR OM I GARAGET 2007.",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 97,
+  "k": "VID SLUTGALAN 1 JANUARI 2027 KAN DU SÄLJA BOLAGET. DÅ FÅR NÄSTA BOLAG ETT ARV: +10 % STARTKASSA OCH +10 % FORSKNING PER SÅLT BOLAG (MAX 5) OCH DINA LEGENDARISKA YTOR, OCH DITT GAMLA BOLAG BLIR EN RIVAL. {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 98,
+  "k": "BOLAGETS VÄRDE",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 99,
+  "k": "BOLAGETS VÄRDE IDAG",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 100,
+  "k": "TELEFONERNA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 101,
+  "k": "KONSOLERNA OCH TELEFONERNA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 102,
+  "k": "KONSOLERNA",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 103,
+  "k": "(KASSA - LÅN + 10 × ÅRSVINSTEN PÅ {0}) × RYKTE",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 104,
+  "k": "TIDIGARE SÅLDA BOLAG: {0}",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 105,
+  "k": "KAN SÄLJAS 1 JAN 2027",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 106,
+  "k": "{0} ÅR KVAR TILL SLUTGALAN",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 107,
+  "k": "{0} DAGAR KVAR TILL SLUTGALAN",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 108,
+  "k": "ÄR DU SÄKER? TRYCK IGEN",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 109,
+  "k": "BOLAGET FÖRSVINNER UR DINA BOLAG",
+  "f": "js/scener/bolaget.js"
+ },
+ {
+  "i": 110,
+  "k": "DU",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 111,
+  "k": "RIVAL",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 112,
+  "k": "VÄRLD",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 113,
+  "k": "ALLA",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 114,
+  "k": "NYHETER",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 115,
+  "k": "VÄRLDSHÄNDELSER, RIVALERNAS LANSERINGAR OCH TRENDER",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 116,
+  "k": "PÅGÅENDE VÄRLDSHÄNDELSER",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 117,
+  "k": "INGET SÄRSKILT HÄNDER JUST NU.",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 118,
+  "k": "{0} · TILL {1}",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 119,
+  "k": "RUBRIKER",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 120,
+  "k": "INGA SÅDANA RUBRIKER ÄN.",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 121,
+  "k": "KRITIKERNA VÄNTAR SIG {0}",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 122,
+  "k": "KONSOLER",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 123,
+  "k": "KAROSS, FÄRG OCH YTA ÄR DITT VAL.",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 124,
+  "k": "FORM, STORLEK OCH FÄRG ÄR DITT VAL.",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 125,
+  "k": "SNITTET I ÅR: {0}/10",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 126,
+  "k": "BÄSTA TEKNIK NU",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 127,
+  "k": "BÄSTA TEKNIK SOM FINNS NU",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 128,
+  "k": "{0} (FORSKA)",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 129,
+  "k": "RIVALKONSOLER I BUTIKERNA",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 130,
+  "k": "INGA ÄN.",
+  "f": "js/scener/nyheter.js"
+ },
+ {
+  "i": 131,
+  "k": "FINNS INTE",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 132,
+  "k": "REDAN FORSKAD",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 133,
+  "k": "PÅGÅR REDAN",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 134,
+  "k": "FORSKA FÖREGÅNGAREN FÖRST",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 135,
+  "k": "ALLA LABBSPÅR ÄR UPPTAGNA",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 136,
+  "k": "LABBET FORSKAR REDAN PÅ NÅGOT",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 137,
+  "k": "FÖR LITE FORSKNINGSPOÄNG",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 138,
+  "k": "KOSTAR {0}",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 139,
+  "k": "{0} HAR FORSKAT FRAM {1}.",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 140,
+  "k": "NY TEKNIK!",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 141,
+  "k": "NY TEKNIK: {0} – {1}",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 142,
+  "k": "NY TEKNIK: {0}",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 143,
+  "k": "NY DEL I DESIGNERN ({0}/ST)",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 144,
+  "k": "NY KAROSS I DESIGNERN",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 145,
+  "k": "TUNNARE RAMAR I DESIGNERN",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 146,
+  "k": "EN LINS TILL PÅ BAKSIDAN",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 147,
+  "k": "NY FUNKTION (+0,1 I BETYG)",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 148,
+  "k": "NY ENHETSTYP!",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 149,
+  "k": "NY TEKNIK FÖR {0}",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 150,
+  "k": "NY KONSOLDEL I DESIGNERN ({0}/ST)",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 151,
+  "k": "NY KONSOLFORM I DESIGNERN",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 152,
+  "k": "NY KONSOLFUNKTION (+0,1 I BETYG)",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 153,
+  "k": "NY SORTS KONSOL: {0}!",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 154,
+  "k": "NU KAN NI GÖRA TELEFONER!",
+  "f": "js/sim/forskning.js"
+ },
+ {
+  "i": 155,
+  "k": "{0} VALDE {1} FÖR {2}",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 156,
+  "k": "DIN NYA KONSOL",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 157,
+  "k": "{0} VILL GÖRA {1} TILL {2}!",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 158,
+  "k": "{0} KNACKAR PÅ!",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 159,
+  "k": "DE VILL GÖRA {0} ({1}) TILL {2}.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 160,
+  "k": "{0} TYCKTE ATT DU VAR FÖR GIRIG!",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 161,
+  "k": "FÖR LITE PENGAR",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 162,
+  "k": "AVTAL! {0} BÖRJAR GÖRA {1} – BARA TILL DINA KONSOLER. DE KÖPER ETT UTVECKLINGSKIT FÖR {2}.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 163,
+  "k": "AVTAL! {0} BÖRJAR GÖRA {1}. DE KÖPER ETT UTVECKLINGSKIT FÖR {2}.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 164,
+  "k": "{0} SLÄPPER {1} TILL {2}.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 165,
+  "k": "{0} SLÄPPS TILL {1} SAMMA DAG SOM KONSOLEN!",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 166,
+  "k": "{0} SLÄPPS TILL {1}!",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 167,
+  "k": "VÄLJ EN KONSOL SOM SÄLJS",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 168,
+  "k": "SPELUTVECKLARNA BÖRJAR GÖRA {0}. BERÄKNAD TID: {1} DAGAR.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 169,
+  "k": "INGET KONSOLBYGGE",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 170,
+  "k": "BYGGET HAR REDAN EN LÅNAD",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 171,
+  "k": "STUDION KÄNNER INTE ER ÄN",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 172,
+  "k": "{0} LÅNAR UT EN UTVECKLARE TILL {1}.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 173,
+  "k": "{0} SLÄPPER {1}. KRITIKERNA GER DEN {2}/10.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 174,
+  "k": "{0} ÖPPNAR EN TELEFONAVDELNING! NU KAN NI DESIGNA TELEFONER OCH ANDRA PRYLAR.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 175,
+  "k": "TELEFONAVDELNINGEN!",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 176,
+  "k": "NU FINNS TELEFONERNA I FORSKNINGEN OCH I DESIGNERN. KONSOLERNA SÄLJER VIDARE SOM VANLIGT.",
+  "f": "js/sim/konsol.js"
+ },
+ {
+  "i": 177,
+  "k": "KRÄVER {0}",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 178,
+  "k": "STÄLL ETT BORD FÖRST",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 179,
+  "k": "OKÄND PLATS",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 180,
+  "k": "NÅGON SITTER HÄR",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 181,
+  "k": "FLYTTA ETT STEG I TAGET",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 182,
+  "k": "{0} FLYTTAR IN I ETT EGET HUVUDKONTOR!",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 183,
+  "k": "{0} FLYTTAR IN I ETT {1}!",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 184,
+  "k": "NYTT KONTOR!",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 185,
+  "k": "VÄLKOMMEN TILL {0}. {1} ARBETSPLATSER OCH {2} LABBSPÅR.",
+  "f": "js/sim/kontor.js"
+ },
+ {
+  "i": 186,
+  "k": "STÄLL UT 2 BORD",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 187,
+  "k": "LANSERA DIN FÖRSTA TELEFON",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 188,
+  "k": "KÖP NYA KONTORSMÖBLER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 189,
+  "k": "FORSKA FRAM EN TEKNIK",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 190,
+  "k": "SÄLJ 100 TELEFONER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 191,
+  "k": "FÅ MINST 6,5 I BETYG",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 192,
+  "k": "TJÄNA IN FABRIKEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 193,
+  "k": "LANSERA TELEFON NUMMER 2",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 194,
+  "k": "KÖR EN REKLAMKAMPANJ",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 195,
+  "k": "SÄLJ 1 000 TELEFONER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 196,
+  "k": "TRIVSEL ★★",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 197,
+  "k": "FLYTTA TILL ETT LITET KONTOR",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 198,
+  "k": "ANSTÄLL NÅGON MED ★★",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 199,
+  "k": "FÅ MINST 7,5 I BETYG",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 200,
+  "k": "BÖRJA SÄLJA I EUROPA",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 201,
+  "k": "LANSERA EN SURFPLATTA",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 202,
+  "k": "10 % MARKNADSANDEL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 203,
+  "k": "FORSKA FRAM 25 TEKNIKER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 204,
+  "k": "FLYTTA TILL EN KONTORSVÅNING",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 205,
+  "k": "BYGG ETT EGET OPERATIVSYSTEM",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 206,
+  "k": "LANSERA EN SMARTKLOCKA",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 207,
+  "k": "FÅ MINST 9,0 I BETYG",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 208,
+  "k": "FLYTTA TILL EN STUDIO",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 209,
+  "k": "SÄLJ I HELA VÄRLDEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 210,
+  "k": "FORSKA FRAM 100 TEKNIKER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 211,
+  "k": "FLYTTA TILL ETT HUVUDKONTOR",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 212,
+  "k": "DESIGNA EN SPELKONSOL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 213,
+  "k": "LANSERA DIN FÖRSTA KONSOL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 214,
+  "k": "SÄLJ 100 KONSOLER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 215,
+  "k": "SÄG JA TILL EN SPELSTUDIO",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 216,
+  "k": "SLÄPP 3 SPEL TILL DINA KONSOLER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 217,
+  "k": "SÄLJ 1 000 KONSOLER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 218,
+  "k": "GÖR ETT EGET SPEL TILL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 219,
+  "k": "FÅ ETT ★★★★-SPEL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 220,
+  "k": "LANSERA EN FICKKONSOL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 221,
+  "k": "FÅ ETT ★★★★★-SPEL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 222,
+  "k": "LANSERA EN KONSOL MED CD",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 223,
+  "k": "ÖPPNA TELEFONAVDELNINGEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 224,
+  "k": "MÅL {0} AV 28 KLART: {1}. BELÖNING {2}.",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 225,
+  "k": "HEJ VÄRLDEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 226,
+  "k": "TUSENKLUBBEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 227,
+  "k": "MILJONEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 228,
+  "k": "SÄLJ 1 000 000 TELEFONER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 229,
+  "k": "NIOAN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 230,
+  "k": "FÅ 9,0 ELLER MER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 231,
+  "k": "PERFEKT TIA",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 232,
+  "k": "FÅ 10,0",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 233,
+  "k": "TOMATEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 234,
+  "k": "FLOPPA MED UNDER 5,0",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 235,
+  "k": "LABBRÅTTAN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 236,
+  "k": "FORSKA FRAM 50 TEKNIKER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 237,
+  "k": "ALLT VETANDE",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 238,
+  "k": "FORSKA FRAM ALLA 144 TEKNIKER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 239,
+  "k": "FAMILJEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 240,
+  "k": "LANSERA FEM OLIKA SORTERS ENHETER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 241,
+  "k": "SÄLJ 1 000 000 KONSOLER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 242,
+  "k": "BIBLIOTEKARIEN",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 243,
+  "k": "20 SPEL TILL DINA KONSOLER",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 244,
+  "k": "BARA HOS OSS",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 245,
+  "k": "SLÄPP ETT EXKLUSIVT SPEL",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 246,
+  "k": "SISTA SPELET",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 247,
+  "k": "FÅ GRAND THEFT AUTOMOBIL VI",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 248,
+  "k": "{0} FICK UTMÄRKELSEN \"{1}\".",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 249,
+  "k": "UTMÄRKELSE: {0}",
+  "f": "js/sim/mal.js"
+ },
+ {
+  "i": 250,
+  "k": "RIVALEN",
+  "f": "js/sim/marknad.js"
+ },
+ {
+  "i": 251,
+  "k": "MODELL",
+  "f": "js/sim/marknad.js"
+ },
+ {
+  "i": 252,
+  "k": "{0} SLÄPPER {1} {2}. KRITIKERNA GER DEN {3}/10.",
+  "f": "js/sim/marknad.js"
+ },
+ {
+  "i": 253,
+  "k": "{0} SLÄPPER {1} {2} – {3}/10",
+  "f": "js/sim/marknad.js"
+ },
+ {
+  "i": 254,
+  "k": "{0} ÄR ÖVER.",
+  "f": "js/sim/marknad.js"
+ },
+ {
+  "i": 255,
+  "k": "VÄRLDSHÄNDELSE: {0}",
+  "f": "js/sim/marknad.js"
+ },
+ {
+  "i": 256,
+  "k": "ALLA BORD ÄR UPPTAGNA – STÄLL UT FLER I BYGG",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 257,
+  "k": "STÄLL UT ETT BORD FÖRST (BYGG)",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 258,
+  "k": "{0} BÖRJAR SOM {1} HOS {2}.",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 259,
+  "k": "INGEN ATT FIRA MED",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 260,
+  "k": "TEAMFEST! MORALEN STIGER.",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 261,
+  "k": "{0} ÄR NU {1}!",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 262,
+  "k": "KAN VI FÅ EN SOFFA?",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 263,
+  "k": "NÄR HAR VI FEST NÄST?",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 264,
+  "k": "DET ÄR TRÅNGT HÄR...",
+  "f": "js/sim/personal.js"
+ },
+ {
+  "i": 265,
+  "k": "ANSTÄLL NÅGON FÖRST",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 266,
+  "k": "ALLA LABBSPÅR BYGGER REDAN",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 267,
+  "k": "TEAMET BYGGER REDAN EN KONSOL",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 268,
+  "k": "TEAMET BYGGER REDAN EN TELEFON",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 269,
+  "k": "OKÄND ENHET",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 270,
+  "k": "KONSOLER FINNS I KONSOLSPELET",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 271,
+  "k": "FORSKA FRAM TELEFONAVDELNINGEN FÖRST",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 272,
+  "k": "KONSOLEN KLARAR INTE SPELET I LÅDAN",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 273,
+  "k": "TEAMET BÖRJAR BYGGA {0}. BERÄKNAD TID: {1} DAGAR.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 274,
+  "k": "PIXELBOX {0}",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 275,
+  "k": "PIXEL PHONE {0}",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 276,
+  "k": "HÅRDVARAN TILL {0} ÄR KLAR. NU GÖR SPELUTVECKLARNA {1}.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 277,
+  "k": "HÅRDVARAN KLAR! NU: {0}",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 278,
+  "k": "{0} ÄR KLAR ATT LANSERA!",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 279,
+  "k": "{0} ÄR KLAR!",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 280,
+  "k": "LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 281,
+  "k": "DAGS ATT LANSERA! (EN BUGGFIXARE KAN PUTSA BORT BUGGAR FÖRST.)",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 282,
+  "k": "MAX KÖPTA PRICKAR",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 283,
+  "k": "INGA BUGGAR",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 284,
+  "k": "{0} LADES PÅ HYLLAN.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 285,
+  "k": "INTE KLAR ÄN",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 286,
+  "k": "GLOBAL LANSERING KRÄVER FLER MARKNADER",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 287,
+  "k": "{0} LANSERAR {1}! KRITIKERNA: {2}/10.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 288,
+  "k": "FLOPP! {0} SÅGAS AV KRITIKERNA. FÖRSÄLJNINGEN HALVERAS DE FÖRSTA VECKORNA.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 289,
+  "k": "BUGGSKANDAL! {0} KOM UT MED {1} BUGGAR. SLÄPP UPPDATERING 1.1 I KONSOLER.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 290,
+  "k": "BUGGSKANDAL! {0} KOM UT MED {1} BUGGAR. SLÄPP UPPDATERING 1.1 I TELEFONER.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 291,
+  "k": "{0} SÄNKER PRISET TILL {1}!",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 292,
+  "k": "VÄNTA NÅGRA VECKOR",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 293,
+  "k": "{0} GÅR VIRALT! ALLA PRATAR OM DEN.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 294,
+  "k": "UPPDATERING 1.1 TILL {0} LAGAR ALLA BUGGAR.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 295,
+  "k": "{0} SLUTAR SÄLJAS. LAGRET REAS UT FÖR {1}.",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 296,
+  "k": "KA-CHING! FÖRSTA KONSOLEN SÅLD!",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 297,
+  "k": "KA-CHING! FÖRSTA TELEFONEN SÅLD!",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 298,
+  "k": "{0}: {1} SÅLDA DENNA VECKA",
+  "f": "js/sim/projekt.js"
+ },
+ {
+  "i": 299,
+  "k": "MITT BOLAG",
+  "f": "js/sim/spel.js"
+ },
+ {
+  "i": 300,
+  "k": "DU GRUNDADE {0} I ETT GARAGE 1982. DAGS ATT RITA DIN FÖRSTA SPELKONSOL!",
+  "f": "js/sim/spel.js"
+ },
+ {
+  "i": 301,
+  "k": "DU GRUNDADE {0} I ETT GARAGE. DAGS ATT RITA DIN FÖRSTA TELEFON!",
+  "f": "js/sim/spel.js"
+ },
+ {
+  "i": 302,
+  "k": "DITT GAMLA BOLAG",
+  "f": "js/sim/spel.js"
+ },
+ {
+  "i": 303,
+  "k": "BANKEN LÅNAR {0} {1}. RÄNTAN ÄR 10 % OM ÅRET.",
+  "f": "js/sim/spel.js"
+ },
+ {
+  "i": 304,
+  "k": "LÖNERNA ÄR {0} I MÅNADEN. SÄLJ FLER KONSOLER ELLER HA FÄRRE ANSTÄLLDA.",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 305,
+  "k": "LÖNERNA ÄR {0} I MÅNADEN. SÄLJ FLER TELEFONER ELLER HA FÄRRE ANSTÄLLDA.",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 306,
+  "k": "SÄLJ FLER KONSOLER.",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 307,
+  "k": "SÄLJ FLER TELEFONER.",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 308,
+  "k": "NÖDLÅN",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 309,
+  "k": "KASSAN TOG SLUT. BANKEN LÅNADE ER {0} (10 % RÄNTA OM ÅRET). {1} BETALA TILLBAKA I BOLAGET NÄR DET GÅR BÄTTRE.",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 310,
+  "k": "NYTT NÖDLÅN +{0} · LÅN TOTALT {1}",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 311,
+  "k": "GOTT NYTT {0}! KRITIKERNA HÖJER KRAVEN – SNITTET ÄR NU {1}.",
+  "f": "js/sim/tick.js"
+ },
+ {
+  "i": 312,
+  "k": "{0} ÅR I BRANSCHEN! NU KAN DU SÄLJA {1} (BOLAGET > SÄLJ BOLAGET) ELLER SPELA VIDARE.",
+  "f": "js/sim/tick.js"
+ }
+]

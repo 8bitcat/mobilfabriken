@@ -15,6 +15,7 @@ import { moralFaktor } from './personal.js';
 import { veckoEfterfragan, aktivaEffekter, snitt, rimligtPris } from './marknad.js';
 import { packinDagar, dagligPackin, konsolLanserad, spelMal, egnaStjarnor, klararKrav } from './konsol.js';
 import { egetSpelAv } from '../data/konsol-varld.js';
+import { $t } from '../core/i18n.js';
 
 export const FABRIK = 300_000;
 export const DAGKOSTNAD = 700;
@@ -31,17 +32,16 @@ export function byggdagar(G, d) {
 export const byggkostnadPerDag = (G) => DAGKOSTNAD * G.personal.length;
 export const labbspar = (G) => kontorAv(G.kontor.niva).labb;
 export const pagaendeBygg = (G) => G.projekt.filter((p) => p.status === 'bygger');
-const sak = (d) => (d?.linje === 'konsol' ? 'KONSOL' : 'TELEFON');
 
 // kan designen startas? (granskningsknappen)
 export function kanStarta(G, d) {
-  if (!G.personal.length) return { ok: false, fel: 'ANSTÄLL NÅGON FÖRST' };
-  if (pagaendeBygg(G).length >= labbspar(G)) return { ok: false, fel: labbspar(G) > 1 ? 'ALLA LABBSPÅR BYGGER REDAN' : 'TEAMET BYGGER REDAN EN ' + sak(d) };
-  if (!linjeAv(d).ENHETER.find((e) => e.id === d.enhet)) return { ok: false, fel: 'OKÄND ENHET' };
+  if (!G.personal.length) return { ok: false, fel: $t('ANSTÄLL NÅGON FÖRST') };
+  if (pagaendeBygg(G).length >= labbspar(G)) return { ok: false, fel: labbspar(G) > 1 ? $t('ALLA LABBSPÅR BYGGER REDAN') : d?.linje === 'konsol' ? $t('TEAMET BYGGER REDAN EN KONSOL') : $t('TEAMET BYGGER REDAN EN TELEFON') };
+  if (!linjeAv(d).ENHETER.find((e) => e.id === d.enhet)) return { ok: false, fel: $t('OKÄND ENHET') };
   // konsolspelet: telefoner först när telefonavdelningen är öppen; snabbstarten gör inga konsoler
-  if (d.linje === 'konsol' && !arKonsolSpel(G)) return { ok: false, fel: 'KONSOLER FINNS I KONSOLSPELET' };
-  if (d.linje !== 'konsol' && arKonsolSpel(G) && !G.flaggor.mobil) return { ok: false, fel: 'FORSKA FRAM TELEFONAVDELNINGEN FÖRST' };
-  if (d.packin && !klararKrav(d, egetSpelAv(d.packin.id)?.kraver)) return { ok: false, fel: 'KONSOLEN KLARAR INTE SPELET I LÅDAN' };
+  if (d.linje === 'konsol' && !arKonsolSpel(G)) return { ok: false, fel: $t('KONSOLER FINNS I KONSOLSPELET') };
+  if (d.linje !== 'konsol' && arKonsolSpel(G) && !G.flaggor.mobil) return { ok: false, fel: $t('FORSKA FRAM TELEFONAVDELNINGEN FÖRST') };
+  if (d.packin && !klararKrav(d, egetSpelAv(d.packin.id)?.kraver)) return { ok: false, fel: $t('KONSOLEN KLARAR INTE SPELET I LÅDAN') };
   return { ok: true };
 }
 export function startaUtveckling(G, design) {
@@ -58,17 +58,17 @@ export function startaUtveckling(G, design) {
   if (d.linje === 'konsol') { pr.fas = 'hardvara'; if (d.packin) { pr.spelDagar = 0; pr.spelDagNu = 0; pr.spelKval = 0; pr.spelMal = spelMal(G); } }
   G.projekt.push(pr);
   G.koncept = G.koncept.filter((c) => c.id !== design.id);
-  nyhet(G, 'DU', `TEAMET BÖRJAR BYGGA ${d.namn}. BERÄKNAD TID: ${dagar} DAGAR.`);
+  nyhet(G, 'DU', $t`TEAMET BÖRJAR BYGGA ${d.namn}. BERÄKNAD TID: ${dagar} DAGAR.`);
   G.flaggor.startatBygge = true;
   return { ok: true };
 }
 export function nastaNamn(G, d = null) {
   if (d?.linje === 'konsol') {
     const n = [...G.produkter, ...G.projekt].filter((p) => p.design?.linje === 'konsol').length + 1;
-    return `PIXELBOX ${n}`;
+    return $t`PIXELBOX ${n}`;
   }
   const n = G.produkter.length + G.projekt.length + 1;
-  return `PIXEL PHONE ${n}`;
+  return $t`PIXELFON ${n}`;
 }
 
 export function dagligtBygge(G) {
@@ -95,8 +95,9 @@ export function dagligtBygge(G) {
       if (pr.dagNu >= pr.dagar) {
         if (pr.fas === 'hardvara' && pr.design.packin) {
           pr.fas = 'mjukvara'; pr.spelDagar = packinDagar(G);
-          nyhet(G, 'DU', `HÅRDVARAN TILL ${pr.design.namn} ÄR KLAR. NU GÖR SPELUTVECKLARNA ${pr.design.packin.titel}.`);
-          signal(G, 'toast', { text: `HÅRDVARAN KLAR! NU: ${pr.design.packin.titel}`, farg: 'gron' });
+          const titel = pr.design.packin.titel;
+          nyhet(G, 'DU', $t`HÅRDVARAN TILL ${pr.design.namn} ÄR KLAR. NU GÖR SPELUTVECKLARNA ${titel}.`);
+          signal(G, 'toast', { text: $t`HÅRDVARAN KLAR! NU: ${titel}`, farg: 'gron' });
         } else blirKlar(G, pr);
       }
     } else if (pr.status === 'klar') {
@@ -108,20 +109,20 @@ export function dagligtBygge(G) {
 function blirKlar(G, pr) {
   pr.status = 'klar'; pr.klarDag = G.dag;
   if (pr.fas === 'mjukvara') pr.packinStj = egnaStjarnor(G, pr.spelKval, pr.spelMal);
-  nyhet(G, 'DU', `${pr.design.namn} ÄR KLAR ATT LANSERA!`);
+  nyhet(G, 'DU', $t`${pr.design.namn} ÄR KLAR ATT LANSERA!`);
   // konsolspelet börjar utan buggfixare (Lykke är spelutvecklare): då finns ingen som putsar vidare
   const putsar = !arKonsolSpel(G) || G.personal.some((p) => p.roll === 'buggfixare');
-  signal(G, 'stor', { rubrik: `${pr.design.namn} ÄR KLAR!`, text: putsar ? 'LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.' : 'DAGS ATT LANSERA! (EN BUGGFIXARE KAN PUTSA BORT BUGGAR FÖRST.)', paus: true, knapp: 'lansera', projekt: pr.id, ljud: 'klar' });
+  signal(G, 'stor', { rubrik: $t`${pr.design.namn} ÄR KLAR!`, text: putsar ? $t('LANSERA NU ELLER LÅT BUGGFIXARNA PUTSA VIDARE.') : $t('DAGS ATT LANSERA! (EN BUGGFIXARE KAN PUTSA BORT BUGGAR FÖRST.)'), paus: true, knapp: 'lansera', projekt: pr.id, ljud: 'klar' });
 }
 export function kopPrick(G, prId) {
   const pr = G.projekt.find((p) => p.id === prId); if (!pr || pr.status !== 'bygger') return { ok: false };
-  if (pr.koptaPrickar >= Math.floor(pr.kvalMal / 2) || pr.kvalitet >= pr.kvalMal) return { ok: false, fel: 'MAX KÖPTA PRICKAR' };
-  if (G.bolag.fp < PRICK_FP) return { ok: false, fel: 'FÖR LITE FORSKNINGSPOÄNG' };
+  if (pr.koptaPrickar >= Math.floor(pr.kvalMal / 2) || pr.kvalitet >= pr.kvalMal) return { ok: false, fel: $t('MAX KÖPTA PRICKAR') };
+  if (G.bolag.fp < PRICK_FP) return { ok: false, fel: $t('FÖR LITE FORSKNINGSPOÄNG') };
   G.bolag.fp -= PRICK_FP; pr.kvalitet++; pr.koptaPrickar++; return { ok: true };
 }
 export function lagaBugg(G, prId) {
-  const pr = G.projekt.find((p) => p.id === prId); if (!pr || !pr.buggar) return { ok: false, fel: 'INGA BUGGAR' };
-  if (G.bolag.fp < PRICK_FP) return { ok: false, fel: 'FÖR LITE FORSKNINGSPOÄNG' };
+  const pr = G.projekt.find((p) => p.id === prId); if (!pr || !pr.buggar) return { ok: false, fel: $t('INGA BUGGAR') };
+  if (G.bolag.fp < PRICK_FP) return { ok: false, fel: $t('FÖR LITE FORSKNINGSPOÄNG') };
   G.bolag.fp -= PRICK_FP; pr.buggar--; return { ok: true };
 }
 export function avbryt(G, prId) {
@@ -129,7 +130,7 @@ export function avbryt(G, prId) {
   G.projekt = G.projekt.filter((p) => p !== pr);
   // samma tak som SPARA i designern (8 koncept); samma design ligger aldrig två gånger på hyllan
   G.koncept = [pr.design, ...G.koncept.filter((c) => c.id !== pr.design.id)].slice(0, KONCEPT_MAX);
-  nyhet(G, 'DU', `${pr.design.namn} LADES PÅ HYLLAN.`);
+  nyhet(G, 'DU', $t`${pr.design.namn} LADES PÅ HYLLAN.`);
   return { ok: true };
 }
 // DIREKTBYGGE (gåvan 24K GULD): bygget blir klart direkt. Teamet hinner de blå prickar det i snitt
@@ -180,9 +181,9 @@ export function lanseringsKalkyl(G, prId, kampanjId) {
 }
 export function lansera(G, prId, kampanjId) {
   const k = lanseringsKalkyl(G, prId, kampanjId), pr = k.pr;
-  if (pr.status !== 'klar') return { ok: false, fel: 'INTE KLAR ÄN' };
-  if (k.kamp.tackningMin && G.marknad.regioner.length < 3) return { ok: false, fel: 'GLOBAL LANSERING KRÄVER FLER MARKNADER' };
-  if (k.kvar < 0) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  if (pr.status !== 'klar') return { ok: false, fel: $t('INTE KLAR ÄN') };
+  if (k.kamp.tackningMin && G.marknad.regioner.length < 3) return { ok: false, fel: $t('GLOBAL LANSERING KRÄVER FLER MARKNADER') };
+  if (k.kvar < 0) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   betala(G, k.fabrik, 'fabrik'); betala(G, k.parti, 'tillverkning'); if (k.kamp.pris) betala(G, k.kamp.pris, 'reklam');
   const d = pr.design;
   // ar = lanseringsåret (nyårsrapportens "Årets telefon"). styck = grundkostnaden UTAN tillfälliga händelser:
@@ -211,9 +212,10 @@ export function lansera(G, prId, kampanjId) {
   G.bolag.lanseringar++;
   G.bolag.bastaBetyg = Math.max(G.bolag.bastaBetyg, prod.betyg);
   if (!G.bolag.enhetstyper.includes(d.enhet)) G.bolag.enhetstyper.push(d.enhet);
-  nyhet(G, 'DU', `${G.bolag.namn} LANSERAR ${d.namn}! KRITIKERNA: ${dec(prod.betyg)}/10.`);
-  if (prod.betyg < 5) nyhet(G, 'DU', `FLOPP! ${d.namn} SÅGAS AV KRITIKERNA. FÖRSÄLJNINGEN HALVERAS DE FÖRSTA VECKORNA.`);
-  if (prod.skandal) nyhet(G, 'DU', `BUGGSKANDAL! ${d.namn} KOM UT MED ${pr.buggar} BUGGAR. SLÄPP UPPDATERING 1.1 I ${d.linje === 'konsol' ? 'KONSOLER' : 'TELEFONER'}.`);
+  nyhet(G, 'DU', $t`${G.bolag.namn} LANSERAR ${d.namn}! KRITIKERNA: ${dec(prod.betyg)}/10.`);
+  if (prod.betyg < 5) nyhet(G, 'DU', $t`FLOPP! ${d.namn} SÅGAS AV KRITIKERNA. FÖRSÄLJNINGEN HALVERAS DE FÖRSTA VECKORNA.`);
+  if (prod.skandal) nyhet(G, 'DU', d.linje === 'konsol' ? $t`BUGGSKANDAL! ${d.namn} KOM UT MED ${pr.buggar} BUGGAR. SLÄPP UPPDATERING 1.1 I KONSOLER.`
+    : $t`BUGGSKANDAL! ${d.namn} KOM UT MED ${pr.buggar} BUGGAR. SLÄPP UPPDATERING 1.1 I TELEFONER.`);
   return { ok: true, produkt: prod };
 }
 
@@ -224,23 +226,23 @@ export function andraPris(G, prodId, pris) {
   const rim = Number.isFinite(p.rimligt) ? p.rimligt : rimligtPris(p.lanseradDag, p.betyg, p.design.enhet);
   const golv = Math.ceil(p.styck * 0.5 / 10) * 10, tak = Math.max(golv, rim * 3);
   pris = Math.round(klamp(pris, golv, tak) / 10) * 10;
-  if (pris <= p.pris * 0.9 && (p.prisDag == null || G.dag - p.prisDag >= 28)) { p.prisDag = G.dag; nyhet(G, 'DU', `${p.namn} SÄNKER PRISET TILL ${kr(pris)}!`); }
+  if (pris <= p.pris * 0.9 && (p.prisDag == null || G.dag - p.prisDag >= 28)) { p.prisDag = G.dag; nyhet(G, 'DU', $t`${p.namn} SÄNKER PRISET TILL ${kr(pris)}!`); }
   p.pris = pris; return { ok: true };
 }
 export const VIRAL_FP = 39;
 export const kanViral = (G, p) => p.aktiv && (p.viralDag == null || G.dag - p.viralDag >= 28);
 export function bliViral(G, prodId) {
-  const p = G.produkter.find((x) => x.id === prodId); if (!p || !kanViral(G, p)) return { ok: false, fel: 'VÄNTA NÅGRA VECKOR' };
-  if (G.bolag.fp < VIRAL_FP) return { ok: false, fel: 'FÖR LITE FORSKNINGSPOÄNG' };
+  const p = G.produkter.find((x) => x.id === prodId); if (!p || !kanViral(G, p)) return { ok: false, fel: $t('VÄNTA NÅGRA VECKOR') };
+  if (G.bolag.fp < VIRAL_FP) return { ok: false, fel: $t('FÖR LITE FORSKNINGSPOÄNG') };
   G.bolag.fp -= VIRAL_FP; p.viralDag = G.dag;
-  nyhet(G, 'DU', `${p.namn} GÅR VIRALT! ALLA PRATAR OM DEN.`);
+  nyhet(G, 'DU', $t`${p.namn} GÅR VIRALT! ALLA PRATAR OM DEN.`);
   return { ok: true };
 }
 export function uppdatering(G, prodId) {
   const p = G.produkter.find((x) => x.id === prodId); if (!p || !p.buggar) return { ok: false };
-  const pris = p.buggar * PRICK_FP; if (G.bolag.fp < pris) return { ok: false, fel: 'FÖR LITE FORSKNINGSPOÄNG' };
+  const pris = p.buggar * PRICK_FP; if (G.bolag.fp < pris) return { ok: false, fel: $t('FÖR LITE FORSKNINGSPOÄNG') };
   G.bolag.fp -= pris; p.buggar = 0; p.uppdaterad = true;
-  nyhet(G, 'DU', `UPPDATERING 1.1 TILL ${p.namn} LAGAR ALLA BUGGAR.`);
+  nyhet(G, 'DU', $t`UPPDATERING 1.1 TILL ${p.namn} LAGAR ALLA BUGGAR.`);
   return { ok: true };
 }
 export function laggNer(G, prodId) {
@@ -253,7 +255,7 @@ export function laggNer(G, prodId) {
   const rea = Math.round(p.lager * Math.min(Number.isFinite(p.pris) ? p.pris : tak, tak) * 0.5);
   intakt(G, rea, 'forsaljning'); p.intakt += rea; p.salda += p.lager; G.bolag.totaltSalda += p.lager; p.lager = 0;
   p.aktiv = false; p.nedlagdDag = G.dag;
-  nyhet(G, 'DU', `${p.namn} SLUTAR SÄLJAS. LAGRET REAS UT FÖR ${kr(rea)}.`);
+  nyhet(G, 'DU', $t`${p.namn} SLUTAR SÄLJAS. LAGRET REAS UT FÖR ${kr(rea)}.`);
   return { ok: true };
 }
 export const modellVinst = (p) => p.intakt - p.kostnader.fabrik - p.kostnader.utveckling - p.kostnader.reklam - p.kostnader.tillverkning;
@@ -284,12 +286,12 @@ export function dagligForsaljning(G) {
     const bonus = G.flaggor.saljBonus ? 1.1 : 1;
     const in_ = salda * p.pris * bonus; intakt(G, in_, 'forsaljning'); p.intakt += in_;
     G.bolag.totaltSalda += salda;
-    if (salda && !G.flaggor.forstaForsaljning) { G.flaggor.forstaForsaljning = true; signal(G, 'toast', { text: `KA-CHING! FÖRSTA ${p.design.linje === 'konsol' ? 'KONSOLEN' : 'TELEFONEN'} SÅLD!`, farg: 'gron', ljud: 'kaching' }); }
+    if (salda && !G.flaggor.forstaForsaljning) { G.flaggor.forstaForsaljning = true; signal(G, 'toast', { text: p.design.linje === 'konsol' ? $t('KA-CHING! FÖRSTA KONSOLEN SÅLD!') : $t('KA-CHING! FÖRSTA TELEFONEN SÅLD!'), farg: 'gron', ljud: 'kaching' }); }
     // veckoslut för produkten
     if ((G.dag - p.lanseradDag) % 7 === 6) {
       p.veckor.push(p.veckaNu); if (p.veckor.length > 104) p.veckor.shift();
       p.forraVeckan = p.veckaNu;
-      if (p.veckor.length <= 1 || p.veckor.length % 4 === 0) signal(G, 'toast', { text: `${p.namn}: ${p.veckaNu} SÅLDA DENNA VECKA`, farg: 'gron' });
+      if (p.veckor.length <= 1 || p.veckor.length % 4 === 0) signal(G, 'toast', { text: $t`${p.namn}: ${p.veckaNu} SÅLDA DENNA VECKA`, farg: 'gron' });
       p.veckaNu = 0;
     }
   }

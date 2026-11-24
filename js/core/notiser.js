@@ -6,6 +6,7 @@ import { kr, dec, arAv } from '../sim/bas.js';
 import * as Vy3d from '../telefon/vy3d.js';
 import { tvTyp, tvKant, tvSkarm, tvMedGlimt } from '../scener/reklam.js';
 import { spelAv, studioAv } from '../data/konsol-varld.js';
+import { $t } from './i18n.js';
 
 const N = { toasts: [], banner: null, stora: [], konfetti: [], mal: [] };
 const FARG = { gron: F.gron, rod: F.rod, bla: F.bla, lila: F.lila, guld: F.guld2, orange: F.orange };
@@ -81,7 +82,7 @@ export function rita(A, dt) {
     const y = ly + (m.t < 0.25 ? Math.round((1 - m.t / 0.25) * 40) : m.t > 3.2 ? Math.round((m.t - 3.2) / 0.3 * 40) : 0);
     rect(x + 2, y + 2, w, 26, F.skugga); rect(x, y, w, 26, F.papper); ram(x, y, w, 26, 0xb9ad94); rect(x, y, 4, 26, F.guld2);
     Vy3d.skymma({ x, y, w: w + 2, h: 28 });
-    text(`MÅL ${m.nr} AV 28 KLART!`, x + 9, y + 4, 0x9e1b22); text('+' + kr(m.belopp), x + w - 6, y + 4, 0x2f8f46, { just: 'h' });
+    text($t`MÅL ${m.nr} AV 28 KLART!`, x + 9, y + 4, 0x9e1b22); text('+' + kr(m.belopp), x + w - 6, y + 4, 0x2f8f46, { just: 'h' });
     textB(m.text, x + 9, y + 13, F.blak);
     if (m.t > 3.5) N.mal.shift();
   }
@@ -100,9 +101,9 @@ export function rita(A, dt) {
   rader.forEach((r, i) => text(r, W / 2, y + 20 + i * 7, F.dim, { just: 'c' }));
   const by = y + h - 16;
   if (s.knapp === 'lansera') {
-    knapp(x + 10, by, 96, 11, 'SENARE', { stil: 'morkt', klick: () => stang(A), namn: 'stor-senare' });
-    knapp(x + w - 106, by, 96, 11, 'TILL LANSERINGEN', { stil: 'gron', klick: () => { stang(A); A.go('lansering', { projekt: s.projekt }); }, namn: 'stor-lansera' });
-  } else knapp(x + w / 2 - 40, by, 80, 11, 'OK', { stil: 'bla', klick: () => stang(A), namn: 'stor-ok' });
+    knapp(x + 10, by, 96, 11, $t('SENARE'), { stil: 'morkt', klick: () => stang(A), namn: 'stor-senare' });
+    knapp(x + w - 106, by, 96, 11, $t('TILL LANSERINGEN'), { stil: 'gron', klick: () => { stang(A); A.go('lansering', { projekt: s.projekt }); }, namn: 'stor-lansera' });
+  } else knapp(x + w / 2 - 40, by, 80, 11, $t('OK'), { stil: 'bla', klick: () => stang(A), namn: 'stor-ok' });
 }
 function hitBlock() { U.hits.push({ x: 0, y: 0, w: W, h: H, block: true }); }
 // kortet stängs. Pausade loopen spelet för att något hände (autopaus, A.autopausad i main.js) går tiden
@@ -117,11 +118,11 @@ function malKort(A, s) {
   papper(x, y, w, h);
   text(s.rubrik, W / 2, y + 7, 0x9e1b22, { just: 'c' });
   stycke(s.text, x + 12, y + 18, w - 24, F.blak, { F: BIG, just: undefined });
-  text('BELÖNING', x + 12, y + 46, 0x7a7470); textB(kr(s.belopp), x + 12, y + 53, 0x2f8f46);
-  knapp(x + w - 62, y + h - 18, 52, 12, 'HURRA!', { stil: 'gron', klick: () => stang(A) });
+  text($t('BELÖNING'), x + 12, y + 46, 0x7a7470); textB(kr(s.belopp), x + 12, y + 53, 0x2f8f46);
+  knapp(x + w - 62, y + h - 18, 52, 12, $t('HURRA!'), { stil: 'gron', klick: () => stang(A) });
 }
 // ---------- konsolspelet ----------
-const konsolNamn = (G, id) => G.produkter.find((p) => p.id === id)?.namn || G.projekt.find((p) => p.id === id)?.design.namn || 'DIN KONSOL';
+const konsolNamn = (G, id) => G.produkter.find((p) => p.id === id)?.namn || G.projekt.find((p) => p.id === id)?.design.namn || $t('DIN KONSOL');
 // spelet på en liten tv (tv:n följer eran) i rutan (x, y, 86 × 66)
 function kortTv(A, x, y, id, titel, studio) {
   const typ = tvTyp(arAv(A.G.dag)), k = tvKant(typ), s = tvSkarm(typ, typ === 'platt' ? 72 : 64);
@@ -141,22 +142,23 @@ function studioKort(A, s) {
   const G = A.G, f = G.k?.forfragningar.find((x) => x.id === s.forfragan), sp = f && spelAv(f.spel);
   const w = 272, h = sp ? 112 : 44 + radbryt(s.text || '', w - 20).length * 7, x = (W - w) / 2, y = Math.round((H - h) / 2);
   panel(x, y, w, h, { fyll: F.panel, kant: F.lila2 });
-  textB(kapa(s.rubrik || 'EN STUDIO KNACKAR PÅ!', w - 16, BIG), W / 2, y + 7, F.guld, { just: 'c' });
+  textB(kapa(s.rubrik || $t('EN STUDIO KNACKAR PÅ!'), w - 16, BIG), W / 2, y + 7, F.guld, { just: 'c' });
   if (sp) {
     const st = studioAv(sp.studio), ix = x + 100, iw = w - 108, dagar = Math.max(0, f.slutDag - G.dag);
-    kortTv(A, x + 8, y + 20, sp.id, sp.titel, st.namn);
-    titelRad(sp.titel, ix, y + 22, iw);
-    stjarnor(ix, y + 32, sp.stj); text(kapa(st.namn, iw - 40), ix + 40, y + 33, F.lila2);
-    text(f.lanseringsspel ? 'VILL GÖRA ETT LANSERINGSSPEL TILL' : 'VILL GÖRA SPELET TILL', ix, y + 43, F.dim);
+    const titel = sp.titel, stNamn = st.namn;
+    kortTv(A, x + 8, y + 20, sp.id, titel, stNamn);
+    titelRad(titel, ix, y + 22, iw);
+    stjarnor(ix, y + 32, sp.stj); text(kapa(stNamn, iw - 40), ix + 40, y + 33, F.lila2);
+    text(f.lanseringsspel ? $t('VILL GÖRA ETT LANSERINGSSPEL TILL') : $t('VILL GÖRA SPELET TILL'), ix, y + 43, F.dim);
     text(kapa(konsolNamn(G, f.konsol), iw), ix, y + 51, F.text);
-    text('UTVECKLINGSKIT', ix, y + 62, F.dim); text('+' + kr(f.devkit), ix + iw, y + 62, F.gron2, { just: 'h' });
-    text(dagar <= 0 ? 'SISTA DAGEN ATT SVARA!' : dagar === 1 ? 'SVARA INOM 1 DAG' : `SVARA INOM ${dagar} DAGAR`, ix, y + 71, dagar <= 1 ? F.orange2 : F.dim);
-    text('SVARAR DU INTE GÅR SPELET TILL EN RIVAL.', W / 2, y + 89, F.dim2, { just: 'c' });
+    text($t('UTVECKLINGSKIT'), ix, y + 62, F.dim); text('+' + kr(f.devkit), ix + iw, y + 62, F.gron2, { just: 'h' });
+    text(dagar <= 0 ? $t('SISTA DAGEN ATT SVARA!') : dagar === 1 ? $t('SVARA INOM 1 DAG') : $t`SVARA INOM ${dagar} DAGAR`, ix, y + 71, dagar <= 1 ? F.orange2 : F.dim);
+    text($t('SVARAR DU INTE GÅR SPELET TILL EN RIVAL.'), W / 2, y + 89, F.dim2, { just: 'c' });
   } else radbryt(s.text || '', w - 20).forEach((r, i) => text(r, W / 2, y + 20 + i * 7, F.dim, { just: 'c' }));
   const by = y + h - 16;
-  knapp(x + 10, by, 96, 11, 'SENARE', { stil: 'morkt', klick: () => stang(A), namn: 'stor-senare' });
+  knapp(x + 10, by, 96, 11, $t('SENARE'), { stil: 'morkt', klick: () => stang(A), namn: 'stor-senare' });
   markera('stor-ok', x + 10, by, 96, 11);
-  knapp(x + w - 106, by, 96, 11, 'SE FÖRFRÅGAN', { stil: 'gron', klick: () => { stangTyp(A, 'studio'); A.go('studios', { flik: 'forfragningar' }); }, namn: 'stor-forfragan' });
+  knapp(x + w - 106, by, 96, 11, $t('SE FÖRFRÅGAN'), { stil: 'gron', klick: () => { stangTyp(A, 'studio'); A.go('studios', { flik: 'forfragningar' }); }, namn: 'stor-forfragan' });
 }
 // Ett spel är ute: spelet på tv:n, stjärnorna, konsolen och vad det ger. SE REKLAMFILMEN spelar filmen och
 // går sedan tillbaka till scenen man var på.
@@ -164,18 +166,18 @@ function slappKort(A, s) {
   const G = A.G, sp = G.k?.spel.find((x) => x.id === s.spel), w = 264, h = 108, x = (W - w) / 2, y = Math.round((H - h) / 2);
   const titel = sp?.titel || s.titel || '', stj = sp?.stj || 0, studio = sp ? (sp.egen ? G.bolag.namn : studioAv(sp.studio).namn) : '';
   panel(x, y, w, h, { fyll: F.panel, kant: F.guld2 });
-  textB(kapa(s.rubrik || `${titel} ÄR UTE!`, w - 16, BIG), W / 2, y + 7, F.guld, { just: 'c' });
+  textB(kapa(s.rubrik || $t`${titel} ÄR UTE!`, w - 16, BIG), W / 2, y + 7, F.guld, { just: 'c' });
   kortTv(A, x + 8, y + 20, s.glimt, titel, studio);
   const ix = x + 100, iw = w - 108;
   titelRad(titel, ix, y + 22, iw);
-  stjarnor(ix, y + 32, stj); text(kapa(sp?.egen ? 'DITT EGET SPEL' : studio, iw - 40), ix + 40, y + 33, sp?.egen ? F.gron2 : F.lila2);
-  text('NU TILL', ix, y + 43, F.dim); text(kapa(konsolNamn(G, s.konsol ?? sp?.konsol), iw - 32), ix + 32, y + 43, F.text);
-  if (sp?.egen) stycke('HELA INTÄKTEN ÄR DIN, MINUS TILLVERKNINGEN.', ix, y + 53, iw, F.gron2);
-  else if (sp) stycke(`DU FÅR ${Math.round((sp.licens || 0) * 100)} % AV VARJE SÅLT SPEL.${sp.exklusiv ? ' BARA HOS DIG!' : ''}`, ix, y + 53, iw, F.gron2);
-  text('FLER KÖPER KONSOLEN NÄR', ix, y + 70, F.dim); text('BIBLIOTEKET VÄXER.', ix, y + 77, F.dim);
+  stjarnor(ix, y + 32, stj); text(kapa(sp?.egen ? $t('DITT EGET SPEL') : studio, iw - 40), ix + 40, y + 33, sp?.egen ? F.gron2 : F.lila2);
+  text($t('NU TILL'), ix, y + 43, F.dim); text(kapa(konsolNamn(G, s.konsol ?? sp?.konsol), iw - 32), ix + 32, y + 43, F.text);
+  if (sp?.egen) stycke($t('HELA INTÄKTEN ÄR DIN, MINUS TILLVERKNINGEN.'), ix, y + 53, iw, F.gron2);
+  else if (sp) { const andel = Math.round((sp.licens || 0) * 100); stycke(sp.exklusiv ? $t`DU FÅR ${andel} % AV VARJE SÅLT SPEL. BARA HOS DIG!` : $t`DU FÅR ${andel} % AV VARJE SÅLT SPEL.`, ix, y + 53, iw, F.gron2); }
+  text($t('FLER KÖPER KONSOLEN NÄR'), ix, y + 70, F.dim); text($t('BIBLIOTEKET VÄXER.'), ix, y + 77, F.dim);
   const by = y + h - 16, tillbaka = ['show', 'lansering', 'reklam', 'start'].includes(A.scenNamn) ? 'kontor' : A.scenNamn;
-  knapp(x + 10, by, 80, 11, 'OK', { stil: 'bla', klick: () => stang(A), namn: 'stor-ok' });
-  knapp(x + w - 118, by, 108, 11, 'SE REKLAMFILMEN', { stil: 'lila', namn: 'stor-reklam', klick: () => {
+  knapp(x + 10, by, 80, 11, $t('OK'), { stil: 'bla', klick: () => stang(A), namn: 'stor-ok' });
+  knapp(x + w - 118, by, 108, 11, $t('SE REKLAMFILMEN'), { stil: 'lila', namn: 'stor-reklam', klick: () => {
     stang(A); A.go('reklam', { spel: s.spel, glimt: s.glimt, titel: s.titel, konsol: s.konsol, tillbaka });
   } });
 }
@@ -190,18 +192,18 @@ function nyarsKort(A, s) {
     const c = [F.guld, F.rod2, F.bla2, F.gron2, F.lila2][i];
     for (let a = 0; a < 8; a++) { const v = a * Math.PI / 4; rect(Math.round(cx + Math.cos(v) * rad), Math.round(cy + Math.sin(v) * rad * 0.8), 1, 1, fas < 0.85 ? c : F.dim2); }
   }
-  textB(`GOTT NYTT ${s.ar}!`, W / 2, y + 36, F.guld, { just: 'c', skugga: F.skugga });
-  text(`ÅRSRAPPORT ${r.ar ?? s.ar - 1}`, W / 2, y + 48, F.dim, { just: 'c' });
+  textB($t`GOTT NYTT ${s.ar}!`, W / 2, y + 36, F.guld, { just: 'c', skugga: F.skugga });
+  text($t`ÅRSRAPPORT ${r.ar ?? s.ar - 1}`, W / 2, y + 48, F.dim, { just: 'c' });
   const rad = (e, v, c, yy) => { text(e, x + 30, yy, F.dim); text(v, x + w - 30, yy, c, { just: 'h' }); };
-  rad('INTÄKTER', kr(r.intakt || 0), F.text, y + 60);
-  rad('KOSTNADER', kr(-(r.kostnad || 0)), F.text, y + 68);
-  rad('ÅRETS RESULTAT', kr(r.vinst || 0), (r.vinst || 0) >= 0 ? F.gron2 : F.rod2, y + 78);
+  rad($t('INTÄKTER'), kr(r.intakt || 0), F.text, y + 60);
+  rad($t('KOSTNADER'), kr(-(r.kostnad || 0)), F.text, y + 68);
+  rad($t('ÅRETS RESULTAT'), kr(r.vinst || 0), (r.vinst || 0) >= 0 ? F.gron2 : F.rod2, y + 78);
   // konsolspelet: årets bästa lansering är en konsol (eller, med telefonavdelningen, en konsol eller en telefon)
-  const basta = A.G.lage !== 'konsol' ? 'ÅRETS TELEFON' : A.G.flaggor.mobil ? 'ÅRETS BÄSTA PRYL' : 'ÅRETS KONSOL';
+  const basta = A.G.lage !== 'konsol' ? $t('ÅRETS TELEFON') : A.G.flaggor.mobil ? $t('ÅRETS BÄSTA PRYL') : $t('ÅRETS KONSOL');
   rad(basta, r.basta ? `${r.basta.namn} (${dec(r.basta.betyg)})` : '-', F.guld, y + 88);
   // 2027: säljknappen har låsts upp (BOLAGET > SÄLJ BOLAGET) – det viktigare beskedet tar kritikerraden
-  if (r.salj) text('NU KAN DU SÄLJA BOLAGET (BOLAGET > SÄLJ BOLAGET)', W / 2, y + 98, F.guld, { just: 'c' });
-  else text(`KRITIKERNA HÖJER KRAVEN: SNITTET ÄR ${dec(r.snitt || 6.2)}`, W / 2, y + 98, F.bla2, { just: 'c' });
-  knapp(x + w / 2 - 34, y + h - 14, 68, 11, 'NYTT ÅR!', { stil: 'guld', klick: () => stang(A), namn: 'stor-ok' });
+  if (r.salj) text($t('NU KAN DU SÄLJA BOLAGET (BOLAGET > SÄLJ BOLAGET)'), W / 2, y + 98, F.guld, { just: 'c' });
+  else text($t`KRITIKERNA HÖJER KRAVEN: SNITTET ÄR ${dec(r.snitt || 6.2)}`, W / 2, y + 98, F.bla2, { just: 'c' });
+  knapp(x + w / 2 - 34, y + h - 14, 68, 11, $t('NYTT ÅR!'), { stil: 'guld', klick: () => stang(A), namn: 'stor-ok' });
 }
 export function rensa() { N.toasts = []; N.banner = null; N.stora = []; N.konfetti = []; N.mal = []; }

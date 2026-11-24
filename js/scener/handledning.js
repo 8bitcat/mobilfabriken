@@ -9,24 +9,25 @@ import { personSprite } from '../core/people.js';
 import * as Vy3d from '../telefon/vy3d.js';
 import { LICENS } from '../sim/konsol.js';
 import { datumText, forstaIManaden } from '../sim/bas.js';
+import { $t, $n } from '../core/i18n.js';
 
 const MIO = { skin: '#c68a5c', hair: '#8e5bd1', style: 'long', top: 'tee', shirt: '#e07a2e', accent: '#f4f1ea', bottom: 'jeans', pants: '#2d3a5c', shoes: '#c23b3b', build: 5, glasses: false };
 const KAP = { BYGG: F.orange, TEAM: F.rosa, DESIGN: F.gron, LANSERA: F.guld2, STUDIOS: F.lila2, 'VÄX': F.bla2 };
 export const STEG = [
   null,
-  { kap: 'BYGG', rubrik: 'MÖBLERA GARAGET', text: 'KLICKA PÅ BYGG.', mal: 'flik-bygg', klar: (A) => A.scenNamn === 'bygg' },
-  { kap: 'BYGG', rubrik: 'STÄLL UT 2 SKRIVBORD', text: 'FÄLLBORDET ÄR GRATIS. VÄLJ DET OCH TRYCK PÅ DE GRÖNA PLATSERNA.', mal: (A) => (U.mark['mobel-fallbord'] && !A.G.flaggor.valtFallbord ? 'mobel-fallbord' : U.mark['plats-bord-0'] && !A.G.kontor.bord[0] ? 'plats-bord-0' : 'plats-bord-1'), klar: (A) => A.G.kontor.bord.filter(Boolean).length >= 2 },
-  { kap: 'BYGG', rubrik: 'KLART!', text: 'TRYCK KLAR FÖR ATT GÅ TILLBAKA TILL KONTORET.', mal: 'bygg-klar', klar: (A) => A.scenNamn === 'kontor' },
-  { kap: 'TEAM', rubrik: 'ANSTÄLL DITT TEAM', text: 'KLICKA PÅ PERSONAL.', mal: 'flik-personal', klar: (A) => A.scenNamn === 'personal' || A.G.personal.length >= 2 },
-  { kap: 'TEAM', rubrik: 'ANSTÄLL 2 PERSONER', text: 'VERA ÄR FORSKARE – HON GÖR TELEFONERNA BÄTTRE. LYKKE ÄR BUGGFIXARE. ANSTÄLL BÅDA.', mal: 'anstall-0', klar: (A) => A.G.personal.length >= 2 },
-  { kap: 'DESIGN', rubrik: 'DAGS ATT RITA', text: 'KLICKA PÅ DESIGN.', mal: 'flik-design', klar: (A) => A.scenNamn === 'design' || A.G.projekt.length > 0 },
-  { kap: 'DESIGN', rubrik: 'GÖR DEN TILL DIN', text: 'BLÄDDRA GENOM STEGEN MED FORTSÄTT – ELLER HOPPA TILL GRANSKNINGEN – OCH TRYCK STARTA UTVECKLING.', mal: () => (U.mark['design-starta'] ? 'design-starta' : 'design-hoppa'), klar: (A) => A.G.projekt.length > 0 || A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'SPOLA FRAM TIDEN', text: 'TEAMET BYGGER NU. TRYCK 4× FÖR ATT GÅ FORTARE.', mal: 'fart-4', klar: (A) => (A.G.fart >= 4 && A.G.projekt.length > 0) || A.G.projekt.some((p) => p.status === 'klar') || A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'LANSERA!', text: 'NÄR TELEFONEN ÄR KLAR: TRYCK LANSERA, VÄLJ REKLAM OCH LANSERA.', texter: { lansering: 'VÄLJ REKLAM OCH TRYCK PÅ LANSERA!' }, mal: () => (U.mark['lansera'] ? 'lansera' : 'kontor-lansera'), klar: (A) => A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'SHOWEN', text: 'NU AVSLÖJAS BETYGET! TEKNIK, DESIGN OCH PUTS AVGÖR.', mal: 'show-klar', baraPil: true, klar: (A) => A.scenNamn !== 'show' && A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'FÖRSTA VECKAN', text: 'TELEFONEN SÄLJER VARJE DAG. TITTA I TELEFONER EFTER EN VECKA.', texter: { telefoner: 'HÄR SER DU VAD TELEFONEN SÄLJER. LÅT TIDEN GÅ EN VECKA.' }, mal: (A) => (A.scenNamn === 'telefoner' ? null : 'flik-telefoner'), klar: (A) => A.G.produkter.some((p) => p.veckor.length > 0) && A.scenNamn === 'telefoner' },
-  { kap: 'VÄX', rubrik: 'UPPFINN NY TEKNIK', text: 'FORSKAREN TJÄNAR FORSKNINGSPOÄNG (FP). KLICKA PÅ FORSKNING.', mal: 'flik-forskning', klar: (A) => A.scenNamn === 'forskning' },
-  { kap: 'VÄX', rubrik: 'STARTA FORSKNING', text: 'KLICKA PÅ GPS OCH STARTA DEN. DÅ FÅR NÄSTA TELEFON EN NY FUNKTION.', mal: () => (U.mark['starta-forskning'] ? 'starta-forskning' : 'redo-funk-gps'), klar: (A) => A.G.forskning.pagar.length > 0 || A.G.forskning.klara.length > 0 },
+  { kap: 'BYGG', rubrik: $n('MÖBLERA GARAGET'), text: $t('KLICKA PÅ BYGG.'), mal: 'flik-bygg', klar: (A) => A.scenNamn === 'bygg' },
+  { kap: 'BYGG', rubrik: $n('STÄLL UT 2 SKRIVBORD'), text: $t('FÄLLBORDET ÄR GRATIS. VÄLJ DET OCH TRYCK PÅ DE GRÖNA PLATSERNA.'), mal: (A) => (U.mark['mobel-fallbord'] && !A.G.flaggor.valtFallbord ? 'mobel-fallbord' : U.mark['plats-bord-0'] && !A.G.kontor.bord[0] ? 'plats-bord-0' : 'plats-bord-1'), klar: (A) => A.G.kontor.bord.filter(Boolean).length >= 2 },
+  { kap: 'BYGG', rubrik: $n('KLART!'), text: $t('TRYCK KLAR FÖR ATT GÅ TILLBAKA TILL KONTORET.'), mal: 'bygg-klar', klar: (A) => A.scenNamn === 'kontor' },
+  { kap: 'TEAM', rubrik: $n('ANSTÄLL DITT TEAM'), text: $t('KLICKA PÅ PERSONAL.'), mal: 'flik-personal', klar: (A) => A.scenNamn === 'personal' || A.G.personal.length >= 2 },
+  { kap: 'TEAM', rubrik: $n('ANSTÄLL 2 PERSONER'), text: $t('VERA ÄR FORSKARE – HON GÖR TELEFONERNA BÄTTRE. LYKKE ÄR BUGGFIXARE. ANSTÄLL BÅDA.'), mal: 'anstall-0', klar: (A) => A.G.personal.length >= 2 },
+  { kap: 'DESIGN', rubrik: $n('DAGS ATT RITA'), text: $t('KLICKA PÅ DESIGN.'), mal: 'flik-design', klar: (A) => A.scenNamn === 'design' || A.G.projekt.length > 0 },
+  { kap: 'DESIGN', rubrik: $n('GÖR DEN TILL DIN'), text: $t('BLÄDDRA GENOM STEGEN MED FORTSÄTT – ELLER HOPPA TILL GRANSKNINGEN – OCH TRYCK STARTA UTVECKLING.'), mal: () => (U.mark['design-starta'] ? 'design-starta' : 'design-hoppa'), klar: (A) => A.G.projekt.length > 0 || A.G.produkter.length > 0 },
+  { kap: 'LANSERA', rubrik: $n('SPOLA FRAM TIDEN'), text: $t('TEAMET BYGGER NU. TRYCK 4× FÖR ATT GÅ FORTARE.'), mal: 'fart-4', klar: (A) => (A.G.fart >= 4 && A.G.projekt.length > 0) || A.G.projekt.some((p) => p.status === 'klar') || A.G.produkter.length > 0 },
+  { kap: 'LANSERA', rubrik: $n('LANSERA!'), text: $t('NÄR TELEFONEN ÄR KLAR: TRYCK LANSERA, VÄLJ REKLAM OCH LANSERA.'), texter: { lansering: $t('VÄLJ REKLAM OCH TRYCK PÅ LANSERA!') }, mal: () => (U.mark['lansera'] ? 'lansera' : 'kontor-lansera'), klar: (A) => A.G.produkter.length > 0 },
+  { kap: 'LANSERA', rubrik: $n('SHOWEN'), text: $t('NU AVSLÖJAS BETYGET! TEKNIK, DESIGN OCH PUTS AVGÖR.'), mal: 'show-klar', baraPil: true, klar: (A) => A.scenNamn !== 'show' && A.G.produkter.length > 0 },
+  { kap: 'LANSERA', rubrik: $n('FÖRSTA VECKAN'), text: $t('TELEFONEN SÄLJER VARJE DAG. TITTA I TELEFONER EFTER EN VECKA.'), texter: { telefoner: $t('HÄR SER DU VAD TELEFONEN SÄLJER. LÅT TIDEN GÅ EN VECKA.') }, mal: (A) => (A.scenNamn === 'telefoner' ? null : 'flik-telefoner'), klar: (A) => A.G.produkter.some((p) => p.veckor.length > 0) && A.scenNamn === 'telefoner' },
+  { kap: 'VÄX', rubrik: $n('UPPFINN NY TEKNIK'), text: $t('FORSKAREN TJÄNAR FORSKNINGSPOÄNG (FP). KLICKA PÅ FORSKNING.'), mal: 'flik-forskning', klar: (A) => A.scenNamn === 'forskning' },
+  { kap: 'VÄX', rubrik: $n('STARTA FORSKNING'), text: $t('KLICKA PÅ GPS OCH STARTA DEN. DÅ FÅR NÄSTA TELEFON EN NY FUNKTION.'), mal: () => (U.mark['starta-forskning'] ? 'starta-forskning' : 'redo-funk-gps'), klar: (A) => A.G.forskning.pagar.length > 0 || A.G.forskning.klara.length > 0 },
 ];
 
 // ---------- konsolspelet 1982 ----------
@@ -39,7 +40,7 @@ const byggerKonsol = (G) => !!kBygge(G) && kBygge(G).status === 'bygger';
 const forfragan = (G) => (G.k?.forfragningar.length || 0) > 0;
 const avtal = (G) => (G.flaggor.avtal || 0) > 0 || !!G.k?.spel.some((s) => !s.egen);
 // den som gör spelet i lådan: första spelutvecklaren (Lykke), annars hela teamet
-const utvecklare = (G) => G.personal.find((p) => p.roll === 'spelutvecklare')?.namn || 'TEAMET';
+const utvecklare = (G) => G.personal.find((p) => p.roll === 'spelutvecklare')?.namn || $t('TEAMET');
 const nastaKnack = (G) => { let d = G.dag + 1; while (!forstaIManaden(d) && d < G.dag + 40) d++; return datumText(d); };
 const licens = () => Math.round(LICENS * 100);
 // en speltitel mitt i en mening: PANG! har redan sitt utropstecken, RYMDSKYTTEN får en punkt
@@ -53,35 +54,35 @@ function anstallMal(A) {
 export const K_STEG = [
   null,
   STEG[1], STEG[2], STEG[3], STEG[4],
-  { kap: 'TEAM', rubrik: 'ANSTÄLL 2 PERSONER', text: 'VERA ÄR FORSKARE – HON GÖR KONSOLERNA BÄTTRE. LYKKE ÄR SPELUTVECKLARE – HON GÖR SPELET PANG! ANSTÄLL BÅDA.', mal: anstallMal, klar: (A) => A.G.personal.length >= 2 },
-  { kap: 'DESIGN', rubrik: 'DAGS ATT RITA', text: 'KLICKA PÅ DESIGN.', mal: 'flik-design', klar: (A) => A.scenNamn === 'design' || A.G.projekt.length > 0 },
-  { kap: 'DESIGN', rubrik: 'DIN FÖRSTA KONSOL', text: 'BLÄDDRA MED FORTSÄTT ELLER HOPPA TILL GRANSKNINGEN, OCH TRYCK STARTA UTVECKLING. PANG! FÖLJER MED I LÅDAN.', mal: () => (U.mark['design-starta'] ? 'design-starta' : 'design-hoppa'), bygge: 'design', klar: (A) => A.G.projekt.length > 0 || A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'SPOLA FRAM TIDEN', text: (A) => (kBygge(A.G)?.design.packin ? `FÖRST BYGGS HÅRDVARAN, SEDAN GÖR ${utvecklare(A.G)} SPELET ${mening(kBygge(A.G).design.packin.titel)} TRYCK 4× FÖR ATT GÅ FORTARE.` : 'TEAMET BYGGER NU KONSOLEN. TRYCK 4× FÖR ATT GÅ FORTARE.'),
+  { kap: 'TEAM', rubrik: $n('ANSTÄLL 2 PERSONER'), text: $t('VERA ÄR FORSKARE – HON GÖR KONSOLERNA BÄTTRE. LYKKE ÄR SPELUTVECKLARE – HON GÖR SPELET PANG! ANSTÄLL BÅDA.'), mal: anstallMal, klar: (A) => A.G.personal.length >= 2 },
+  { kap: 'DESIGN', rubrik: $n('DAGS ATT RITA'), text: $t('KLICKA PÅ DESIGN.'), mal: 'flik-design', klar: (A) => A.scenNamn === 'design' || A.G.projekt.length > 0 },
+  { kap: 'DESIGN', rubrik: $n('DIN FÖRSTA KONSOL'), text: $t('BLÄDDRA MED FORTSÄTT ELLER HOPPA TILL GRANSKNINGEN, OCH TRYCK STARTA UTVECKLING. PANG! FÖLJER MED I LÅDAN.'), mal: () => (U.mark['design-starta'] ? 'design-starta' : 'design-hoppa'), bygge: 'design', klar: (A) => A.G.projekt.length > 0 || A.G.produkter.length > 0 },
+  { kap: 'LANSERA', rubrik: $n('SPOLA FRAM TIDEN'), text: (A) => (kBygge(A.G)?.design.packin ? $t`FÖRST BYGGS HÅRDVARAN, SEDAN GÖR ${utvecklare(A.G)} SPELET ${mening(kBygge(A.G).design.packin.titel)} TRYCK 4× FÖR ATT GÅ FORTARE.` : $t('TEAMET BYGGER NU KONSOLEN. TRYCK 4× FÖR ATT GÅ FORTARE.')),
     mal: 'fart-4', bygge: true, klar: (A) => (A.G.fart >= 4 && A.G.projekt.length > 0) || A.G.projekt.some((p) => p.status === 'klar') || A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'FÖRST HÅRDVARAN', text: (A) => (kBygge(A.G)?.design.packin ? 'BLÅ PRICK = KVALITET, RÖD = BUGG. NÄR HÅRDVARAN ÄR KLAR BÖRJAR SPELET I LÅDAN.' : 'BLÅ PRICK = KVALITET, RÖD = BUGG. INGET SPEL I LÅDAN DEN HÄR GÅNGEN.'),
+  { kap: 'LANSERA', rubrik: $n('FÖRST HÅRDVARAN'), text: (A) => (kBygge(A.G)?.design.packin ? $t('BLÅ PRICK = KVALITET, RÖD = BUGG. NÄR HÅRDVARAN ÄR KLAR BÖRJAR SPELET I LÅDAN.') : $t('BLÅ PRICK = KVALITET, RÖD = BUGG. INGET SPEL I LÅDAN DEN HÄR GÅNGEN.')),
     mal: null, kontor: true, bygge: true, vantar: (A) => byggerKonsol(A.G), klar: (A) => { const p = kBygge(A.G); return !p || p.fas === 'mjukvara' || p.status === 'klar' || A.G.produkter.length > 0; } },
-  { kap: 'LANSERA', rubrik: (A) => kapa('SEDAN ' + (kBygge(A.G)?.design.packin?.titel || 'SPELET'), 128), text: (A) => { const p = kBygge(A.G); return `HÅRDVARAN ÄR KLAR! NU GÖR ${utvecklare(A.G)} ${mening(p?.design.packin?.titel || 'SPELET')} GRÖN PRICK = SPELETS KVALITET. MÅLET ÄR ${p?.spelMal || 6}.`; },
+  { kap: 'LANSERA', rubrik: (A) => kapa($t`SEDAN ${kBygge(A.G)?.design.packin?.titel || $t('SPELET')}`, 128), text: (A) => { const p = kBygge(A.G); return $t`HÅRDVARAN ÄR KLAR! NU GÖR ${utvecklare(A.G)} ${mening(p?.design.packin?.titel || $t('SPELET'))} GRÖN PRICK = SPELETS KVALITET. MÅLET ÄR ${p?.spelMal || 6}.`; },
     mal: null, kontor: true, bygge: true, vantar: (A) => byggerKonsol(A.G), klar: (A) => { const p = kBygge(A.G); return !p || p.status === 'klar' || A.G.produkter.length > 0; } },
-  { kap: 'LANSERA', rubrik: 'LANSERA!', text: 'NÄR KONSOLEN ÄR KLAR: TRYCK LANSERA, VÄLJ REKLAM OCH LANSERA.', texter: { lansering: 'VÄLJ REKLAM OCH TRYCK PÅ LANSERA!' }, mal: () => (U.mark['lansera'] ? 'lansera' : 'kontor-lansera'),
+  { kap: 'LANSERA', rubrik: $n('LANSERA!'), text: $t('NÄR KONSOLEN ÄR KLAR: TRYCK LANSERA, VÄLJ REKLAM OCH LANSERA.'), texter: { lansering: $t('VÄLJ REKLAM OCH TRYCK PÅ LANSERA!') }, mal: () => (U.mark['lansera'] ? 'lansera' : 'kontor-lansera'),
     kontor: true, bygge: true, vantar: (A) => byggerKonsol(A.G), klar: (A) => A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'SHOWEN', text: 'NU AVSLÖJAS BETYGET! TEKNIK, DESIGN OCH SPELET I LÅDAN AVGÖR.', mal: 'show-klar', baraPil: true, klar: (A) => A.scenNamn !== 'show' && A.G.produkter.length > 0 },
-  { kap: 'LANSERA', rubrik: 'FÖRSTA VECKAN', text: 'KONSOLEN SÄLJER VARJE DAG. TITTA I KONSOLER EFTER EN VECKA.', texter: { telefoner: 'HÄR SER DU VAD KONSOLEN SÄLJER OCH HUR MÅNGA SOM HAR DEN HEMMA. LÅT TIDEN GÅ EN VECKA.' },
+  { kap: 'LANSERA', rubrik: $n('SHOWEN'), text: $t('NU AVSLÖJAS BETYGET! TEKNIK, DESIGN OCH SPELET I LÅDAN AVGÖR.'), mal: 'show-klar', baraPil: true, klar: (A) => A.scenNamn !== 'show' && A.G.produkter.length > 0 },
+  { kap: 'LANSERA', rubrik: $n('FÖRSTA VECKAN'), text: $t('KONSOLEN SÄLJER VARJE DAG. TITTA I KONSOLER EFTER EN VECKA.'), texter: { telefoner: $t('HÄR SER DU VAD KONSOLEN SÄLJER OCH HUR MÅNGA SOM HAR DEN HEMMA. LÅT TIDEN GÅ EN VECKA.') },
     mal: (A) => (A.scenNamn === 'telefoner' ? null : 'flik-telefoner'), vantar: (A) => !A.G.produkter.some((p) => p.veckor.length > 0), klar: (A) => A.G.produkter.some((p) => p.veckor.length > 0) && A.scenNamn === 'telefoner' },
-  { kap: 'STUDIOS', rubrik: 'EN STUDIO KNACKAR PÅ', text: (A) => (forfragan(A.G) ? 'EN SPELSTUDIO VILL GÖRA ETT SPEL TILL DIN KONSOL! KLICKA PÅ STUDIOS.' : `STUDIOS HÖR AV SIG DEN 1:A VARJE MÅNAD NÄR KONSOLEN ÄR BRA NOG. LÅT TIDEN GÅ TILL ${nastaKnack(A.G)}.`),
+  { kap: 'STUDIOS', rubrik: $n('EN STUDIO KNACKAR PÅ'), text: (A) => (forfragan(A.G) ? $t('EN SPELSTUDIO VILL GÖRA ETT SPEL TILL DIN KONSOL! KLICKA PÅ STUDIOS.') : $t`STUDIOS HÖR AV SIG DEN 1:A VARJE MÅNAD NÄR KONSOLEN ÄR BRA NOG. LÅT TIDEN GÅ TILL ${nastaKnack(A.G)}.`),
     mal: (A) => (!forfragan(A.G) ? null : U.mark['kontor-studios'] ? 'kontor-studios' : 'flik-studios'), vantar: (A) => !forfragan(A.G), klar: (A) => A.scenNamn === 'studios' || avtal(A.G) },
-  { kap: 'STUDIOS', rubrik: 'SÄG JA!', text: (A) => (forfragan(A.G) ? `STUDION KÖPER ETT UTVECKLINGSKIT AV DIG, OCH DU FÅR ${licens()} % AV VARJE SÅLT SPEL. TRYCK JA!` : `INGEN FÖRFRÅGAN JUST NU. NÄSTA KNACK KOMMER ${nastaKnack(A.G)} – LÅT TIDEN GÅ.`),
+  { kap: 'STUDIOS', rubrik: $n('SÄG JA!'), text: (A) => (forfragan(A.G) ? $t`STUDION KÖPER ETT UTVECKLINGSKIT AV DIG, OCH DU FÅR ${licens()} % AV VARJE SÅLT SPEL. TRYCK JA!` : $t`INGEN FÖRFRÅGAN JUST NU. NÄSTA KNACK KOMMER ${nastaKnack(A.G)} – LÅT TIDEN GÅ.`),
     mal: (A) => (!forfragan(A.G) ? null : U.mark['studios-ja-0'] ? 'studios-ja-0' : U.mark['studios-flik-forfragningar'] ? 'studios-flik-forfragningar' : U.mark['kontor-studios'] ? 'kontor-studios' : 'flik-studios'),
     vantar: (A) => !forfragan(A.G), klar: (A) => avtal(A.G) },
-  { kap: 'VÄX', rubrik: 'UPPFINN NY TEKNIK', text: 'FORSKAREN TJÄNAR FORSKNINGSPOÄNG (FP). KLICKA PÅ FORSKNING.', mal: 'flik-forskning', klar: (A) => A.scenNamn === 'forskning' },
-  { kap: 'VÄX', rubrik: 'STARTA FORSKNING', text: 'KLICKA PÅ TRE KANALER OCH STARTA DEN. DÅ FÅR NÄSTA KONSOL BÄTTRE LJUD.', mal: () => (U.mark['starta-forskning'] ? 'starta-forskning' : 'redo-kdel-ljud-3kan'), klar: (A) => A.G.forskning.pagar.length > 0 || A.G.forskning.klara.length > 0 },
+  { kap: 'VÄX', rubrik: $n('UPPFINN NY TEKNIK'), text: $t('FORSKAREN TJÄNAR FORSKNINGSPOÄNG (FP). KLICKA PÅ FORSKNING.'), mal: 'flik-forskning', klar: (A) => A.scenNamn === 'forskning' },
+  { kap: 'VÄX', rubrik: $n('STARTA FORSKNING'), text: $t('KLICKA PÅ TRE KANALER OCH STARTA DEN. DÅ FÅR NÄSTA KONSOL BÄTTRE LJUD.'), mal: () => (U.mark['starta-forskning'] ? 'starta-forskning' : 'redo-kdel-ljud-3kan'), klar: (A) => A.G.forskning.pagar.length > 0 || A.G.forskning.klara.length > 0 },
 ];
 const K_RITA = K_STEG.findIndex((s) => s?.rubrik === 'DAGS ATT RITA');
 const K_STUDIOS = K_STEG.findIndex((s) => s?.kap === 'STUDIOS');
 // En studio knackade på redan under bygget och barnet tryckte SE FÖRFRÅGAN: i STUDIOS hjälper Mio till med svaret fast
 // kapitlet STUDIOS inte har börjat (steget står kvar). Finns inget att svara på pekar hon tillbaka till kontoret.
-const SIDO_JA = { kap: 'STUDIOS', rubrik: 'EN STUDIO KNACKAR PÅ!', text: () => `TRYCK JA – STUDION KÖPER ETT UTVECKLINGSKIT AV DIG, OCH DU FÅR ${licens()} % AV VARJE SÅLT SPEL.`,
+const SIDO_JA = { kap: 'STUDIOS', rubrik: $n('EN STUDIO KNACKAR PÅ!'), text: () => $t`TRYCK JA – STUDION KÖPER ETT UTVECKLINGSKIT AV DIG, OCH DU FÅR ${licens()} % AV VARJE SÅLT SPEL.`,
   mal: () => (U.mark['studios-ja-0'] ? 'studios-ja-0' : 'studios-flik-forfragningar') };
-const SIDO_KONTOR = { kap: 'STUDIOS', rubrik: 'TILLBAKA TILL KONTORET', text: (A) => (avtal(A.G) ? 'BRA! STUDION GÖR NU SPELET TILL DIN KONSOL. GÅ TILLBAKA TILL KONTORET.' : 'HÄR HAMNAR STUDIORNAS FÖRFRÅGNINGAR. GÅ TILLBAKA TILL KONTORET SÅ LÄNGE.'), mal: 'flik-kontor' };
+const SIDO_KONTOR = { kap: 'STUDIOS', rubrik: $n('TILLBAKA TILL KONTORET'), text: (A) => (avtal(A.G) ? $t('BRA! STUDION GÖR NU SPELET TILL DIN KONSOL. GÅ TILLBAKA TILL KONTORET.') : $t('HÄR HAMNAR STUDIORNAS FÖRFRÅGNINGAR. GÅ TILLBAKA TILL KONTORET SÅ LÄNGE.')), mal: 'flik-kontor' };
 
 export const stegFor = (G) => (G?.lage === 'konsol' ? K_STEG : STEG);
 export function handledningAktiv(A) { const h = A.G?.handledning; return !!(h && !h.klar && !h.av && h.steg === 0 && A.scenNamn !== 'start'); }
@@ -101,7 +102,7 @@ const K_PLATS = {
   studios: { x: 4, nere: 189 },             // över kravtabellen – förfrågan, JA och svarsraden (y 190) syns
   lansering: { x: 2, y: 36, w: 114 },       // över konsolen i 3D – I LÅDAN och STUDIOSPEL under den syns
 };
-const TIDEN_STAR = 'TIDEN STÅR STILL. TRYCK PÅ 1× SÅ ATT DAGARNA GÅR.';
+const TIDEN_STAR = $t('TIDEN STÅR STILL. TRYCK PÅ 1× SÅ ATT DAGARNA GÅR.');
 // Ett tryck byter ut U.mus mot ett nytt objekt (pekareNer i ui.js). Ett nytt objekt sedan förra bildrutan betyder alltså
 // ett tryck – även ett så snabbt att U.mus.ned aldrig hann synas i en bildruta.
 let forraMus = null;
@@ -135,9 +136,9 @@ export function ritaHandledning(A, dt) {
   }
   let malNamn = varde(s.mal), mal = U.mark[malNamn], stegText = varde(s.texter?.[A.scenNamn] || s.text);
   // flikraden syns inte i designern: peka på KONTORET-knappen först
-  if (!mal && malNamn?.startsWith('flik-') && U.mark['design-kontoret']) { malNamn = 'design-kontoret'; mal = U.mark[malNamn]; stegText = 'TRYCK PÅ KONTORET FÖRST. ' + varde(s.text); }
+  if (!mal && malNamn?.startsWith('flik-') && U.mark['design-kontoret']) { malNamn = 'design-kontoret'; mal = U.mark[malNamn]; stegText = $t`TRYCK PÅ KONTORET FÖRST. ${varde(s.text)}`; }
   // konsolspelet: målet finns bara i kontoret – från en annan scen pekar Mio på vägen dit
-  else if (!mal && s.kontor && A.scenNamn !== 'kontor' && (U.mark['design-kontoret'] || U.mark['flik-kontor'])) { malNamn = U.mark['design-kontoret'] ? 'design-kontoret' : 'flik-kontor'; mal = U.mark[malNamn]; stegText = 'TRYCK PÅ KONTORET FÖRST. ' + varde(s.text); }
+  else if (!mal && s.kontor && A.scenNamn !== 'kontor' && (U.mark['design-kontoret'] || U.mark['flik-kontor'])) { malNamn = U.mark['design-kontoret'] ? 'design-kontoret' : 'flik-kontor'; mal = U.mark[malNamn]; stegText = $t`TRYCK PÅ KONTORET FÖRST. ${varde(s.text)}`; }
   // steget väntar på att dagarna går men tiden står på paus: peka på 1×
   const vantarPaTid = konsol ? !!s.vantar?.(A) : (h.steg === 9 && G.projekt.length && !G.projekt.some((p) => p.status === 'klar')) || (h.steg === 11 && !G.produkter.some((p) => p.veckor.length > 0));
   if (vantarPaTid && !G.fart && A.scen?.tid !== false && U.mark['fart-1']) { malNamn = 'fart-1'; mal = U.mark[malNamn]; stegText = TIDEN_STAR; }
@@ -164,11 +165,11 @@ export function ritaHandledning(A, dt) {
   Vy3d.skymma(A.mioRuta);   // 3D-telefonen ritas inte ovanpå rutan
   U.ctx.drawImage(personSprite(MIO, 'down', 0), 0, 0, 24, 22, x + 4, y + 4, 24, 22);
   // sidosteget i STUDIOS räknas inte som ett eget steg: räknaren visar steget barnet står på
-  text(s.kap, x + 32, y + 4, c); text(`${steg} / ${sista}`, x + w - 5, y + 4, F.dim, { just: 'h' });
+  text($t(s.kap), x + 32, y + 4, c); text(`${steg} / ${sista}`, x + w - 5, y + 4, F.dim, { just: 'h' });
   rect(x + 32, y + 10, w - 37, 2, F.lo); rect(x + 32, y + 10, Math.round((w - 37) * steg / sista), 2, c);
-  text(varde(s.rubrik), x + 32, y + 15, c);
+  text(typeof s.rubrik === 'function' ? s.rubrik(A) : $t(s.rubrik), x + 32, y + 15, c);
   rader.forEach((r, i) => text(r, x + 32, y + 23 + i * 7, F.text));
-  knapp(x + w - 54, y + hh - 9, 50, 7, 'HOPPA ÖVER', { stil: 'dim', klick: () => { h.av = true; } });
+  knapp(x + w - 54, y + hh - 9, 50, 7, $t('HOPPA ÖVER'), { stil: 'dim', klick: () => { h.av = true; } });
   pil(A, mal, [{ x, y, w: w + 2, h: hh + 2 }]);
 }
 const ror = (a, b) => a.x < b.x + b.w && b.x < a.x + a.w && a.y < b.y + b.h && b.y < a.y + a.h;
@@ -194,8 +195,8 @@ function pil(A, mal, hinder) {
 }
 
 // välkomstrutans kapitel: telefonspelets fem och konsolspelets sex (med STUDIOS)
-const KAPITEL = [['BYGG', 'STÄLL UT SKRIVBORD', 'hammare'], ['TEAM', 'ANSTÄLL FOLK', 'team'], ['DESIGN', 'RITA EN TELEFON', 'penna'], ['LANSERA', 'SLÄPP DEN', 'mega'], ['VÄX', 'FORSKA OCH VÄX', 'kolv']];
-const K_KAPITEL = [['BYGG', 'STÄLL UT SKRIVBORD', 'hammare'], ['TEAM', 'ANSTÄLL FOLK', 'team'], ['DESIGN', 'RITA EN KONSOL', 'penna'], ['LANSERA', 'SLÄPP DEN', 'mega'], ['STUDIOS', 'SPEL TILL KONSOLEN', 'kassett'], ['VÄX', 'FORSKA OCH VÄX', 'kolv']];
+const KAPITEL = [[$n('BYGG'), $t('STÄLL UT SKRIVBORD'), 'hammare'], [$n('TEAM'), $t('ANSTÄLL FOLK'), 'team'], [$n('DESIGN'), $t('RITA EN TELEFON'), 'penna'], [$n('LANSERA'), $t('SLÄPP DEN'), 'mega'], [$n('VÄX'), $t('FORSKA OCH VÄX'), 'kolv']];
+const K_KAPITEL = [[$n('BYGG'), $t('STÄLL UT SKRIVBORD'), 'hammare'], [$n('TEAM'), $t('ANSTÄLL FOLK'), 'team'], [$n('DESIGN'), $t('RITA EN KONSOL'), 'penna'], [$n('LANSERA'), $t('SLÄPP DEN'), 'mega'], [$n('STUDIOS'), $t('SPEL TILL KONSOLEN'), 'kassett'], [$n('VÄX'), $t('FORSKA OCH VÄX'), 'kolv']];
 function valkomst(A) {
   const G = A.G, h = G.handledning, konsol = G.lage === 'konsol';
   morkna(0, 0, W, H, 0.6);
@@ -204,16 +205,16 @@ function valkomst(A) {
   const kap = konsol ? K_KAPITEL : KAPITEL, w = konsol ? 354 : 300, hh = 150, x = Math.round((W - w) / 2), y = (H - hh) / 2;
   panel(x, y, w, hh, { fyll: 0x141828, kant: konsol ? F.lila2 : F.bla2 });
   U.ctx.drawImage(personSprite(MIO, 'down', 0), 0, 0, 24, 30, x + 8, y + 8, 24, 30);
-  text('MIO, DIN GUIDE', x + 36, y + 9, F.lila2);
-  textB(konsol ? 'ETT TOMT GARAGE 1982 OCH EN STOR IDÉ' : 'ETT TOMT GARAGE OCH EN STOR IDÉ', x + 36, y + 17, F.text);
-  stycke(konsol ? `DU HAR STARTAT ${G.bolag.namn} MED TVÅ MILJONER KRONOR. NU BYGGER VI DIN FÖRSTA SPELKONSOL – DET TAR UNGEFÄR TIO MINUTER:`
-    : `DU HAR STARTAT ${G.bolag.namn} MED TVÅ MILJONER KRONOR. HÄR ÄR VAD DU SKA GÖRA – DET TAR UNGEFÄR TIO MINUTER:`, x + 36, y + 29, w - 44, F.dim);
+  text($t('MIO, DIN GUIDE'), x + 36, y + 9, F.lila2);
+  textB(konsol ? $t('ETT TOMT GARAGE 1982 OCH EN STOR IDÉ') : $t('ETT TOMT GARAGE OCH EN STOR IDÉ'), x + 36, y + 17, F.text);
+  stycke(konsol ? $t`DU HAR STARTAT ${G.bolag.namn} MED TVÅ MILJONER KRONOR. NU BYGGER VI DIN FÖRSTA SPELKONSOL – DET TAR UNGEFÄR TIO MINUTER:`
+    : $t`DU HAR STARTAT ${G.bolag.namn} MED TVÅ MILJONER KRONOR. HÄR ÄR VAD DU SKA GÖRA – DET TAR UNGEFÄR TIO MINUTER:`, x + 36, y + 29, w - 44, F.dim);
   kap.forEach(([k, t, ik], i) => {
     const kx = x + 8 + i * 57, ky = y + 52, c = KAP[k];
     rect(kx, ky, 53, 56, mixa(c, 0x141828, 0.8)); ram(kx, ky, 53, 56, c);
     rect(kx + 15, ky + 5, 22, 22, mixa(c, 0x141828, 0.5)); ikon(ik, kx + 19, ky + 9, c, 2);
-    text(k, kx + 26, ky + 32, c, { just: 'c' }); stycke(t, kx + 3, ky + 40, 47, F.dim, { rad: 6 });
+    text($t(k), kx + 26, ky + 32, c, { just: 'c' }); stycke(t, kx + 3, ky + 40, 47, F.dim, { rad: 6 });
   });
-  knapp(x + 8, y + hh - 20, 90, 13, 'HOPPA ÖVER', { stil: 'morkt', klick: () => { h.av = true; } });
-  knapp(x + w - 128, y + hh - 20, 120, 13, 'NU KÖR VI!', { stil: 'gron', F: BIG, klick: () => { h.steg = 1; A.ljud('klar'); }, namn: 'handledning-start' });
+  knapp(x + 8, y + hh - 20, 90, 13, $t('HOPPA ÖVER'), { stil: 'morkt', klick: () => { h.av = true; } });
+  knapp(x + w - 128, y + hh - 20, 120, 13, $t('NU KÖR VI!'), { stil: 'gron', F: BIG, klick: () => { h.steg = 1; A.ljud('klar'); }, namn: 'handledning-start' });
 }

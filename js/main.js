@@ -9,9 +9,20 @@ import * as Vy3d from './telefon/vy3d.js';
 import { dagTick } from './sim/tick.js';
 import { SCENER } from './scener/index.js';
 import { ritaHandledning, handledningAktiv } from './scener/handledning.js';
+import { $t } from './core/i18n.js';
+import { startaAppuppdatering } from './core/appuppdatering.js';
 
 export const DAG_SEK = 2;
 const $ = (s) => document.querySelector(s);
+// texterna i index.html följer språket: svenskan står i HTML-filen, här sätts den översatta (på svenska samma text)
+document.title = $t('Mobilfabriken');
+{
+  const vand = $('#vand'), rubrik = vand?.querySelector('b'), rad = vand?.querySelector('p'), anda = $('#vand-anda'), tips = $('#hemskarm');
+  if (rubrik) rubrik.textContent = $t('Vänd på mobilen!');
+  if (rad) rad.textContent = $t('Mobilfabriken spelas liggande.');
+  if (anda) anda.textContent = $t('Spela stående ändå');
+  if (tips) tips.innerHTML = $t('Större spel utan Safaris fält: tryck på <b>Dela</b> och välj <b>Lägg till på hemskärmen</b>.');
+}
 const stage = $('#spel'), cv = $('#c'), ctx = cv.getContext('2d'), falt = $('#falt');
 const buf = document.createElement('canvas'); buf.width = UI.W; buf.height = UI.H;
 const b = buf.getContext('2d'); b.imageSmoothingEnabled = false;
@@ -163,7 +174,7 @@ function loop(nu) {
   }
   UI.borja(b, A.t);
   b.fillStyle = '#0b0e1c'; b.fillRect(0, 0, UI.W, UI.H);
-  try { A.scen?.rita(b, dt); } catch (e) { console.error(e); b.fillStyle = '#c9323a'; b.fillRect(0, 0, UI.W, 10); UI.text('FEL: ' + String(e.message).toUpperCase().slice(0, 80), 4, 2, 0xffffff); }
+  try { A.scen?.rita(b, dt); } catch (e) { console.error(e); b.fillStyle = '#c9323a'; b.fillRect(0, 0, UI.W, 10); UI.text($t`FEL: ${String(e.message).toUpperCase().slice(0, 80)}`, 4, 2, 0xffffff); }
   A.mioRuta = null;   // handledningens ruta den här bildrutan (sätts i ritaHandledning)
   if (G && A.scenNamn !== 'start') ritaHandledning(A, dt);
   Notiser.rita(A, dt);
@@ -177,5 +188,6 @@ function loop(nu) {
 // ---------- start ----------
 A.go('start');
 requestAnimationFrame(loop);
+startaAppuppdatering(A);   // bara i App Store-appen: nya spelversioner hämtas tyst och gäller vid nästa start
 window.__A = A;   // testrobotarna (tools/*.mjs) styr spelet härifrån
 window.__U = UI.U;

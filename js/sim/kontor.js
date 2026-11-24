@@ -5,6 +5,7 @@ import { MOBEL } from '../data/katalog.js';
 import { KONTOR, kontorAv } from '../data/varld.js';
 import { K_KONTORSKRAV } from '../data/konsol-varld.js';
 import { betala, intakt, signal, nyhet, PLATSER, arKonsolSpel, prisniva } from './spel.js';
+import { $t } from '../core/i18n.js';
 
 const ORDNING = KONTOR.map((k) => k.id);
 export const lastOk = (G, m) => !m.las || ORDNING.indexOf(G.kontor.niva) >= ORDNING.indexOf(m.las);
@@ -28,25 +29,25 @@ export function kontorsVarden(G) {
 
 // ställ en möbel på en plats. plats = { typ: 'bord'|'golv'|'vagg'|'golvtyp'|'vaggtyp', i, del?: 'bord'|'dator'|'stol' }
 export function placera(G, plats, mobelId) {
-  const m = MOBEL[mobelId]; if (!m) return { ok: false, fel: 'FINNS INTE' };
-  if (!lastOk(G, m)) return { ok: false, fel: 'KRÄVER ' + kontorAv(m.las).namn };
+  const m = MOBEL[mobelId]; if (!m) return { ok: false, fel: $t('FINNS INTE') };
+  if (!lastOk(G, m)) return { ok: false, fel: $t`KRÄVER ${kontorAv(m.las).namn}` };
   const k = G.kontor;
   // finns den i förrådet är den gratis
   const iForrad = k.forrad.indexOf(mobelId);
   const pris = iForrad >= 0 ? 0 : m.pris;
-  if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  if (G.bolag.kassa < pris) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   let gammal = null;
   if (plats.typ === 'bord') {
     if (m.plats === 'bord') { if (k.bord[plats.i]) gammal = k.bord[plats.i].bord; k.bord[plats.i] = { bord: mobelId, dator: k.bord[plats.i]?.dator || 'crt', stol: k.bord[plats.i]?.stol || 'pall' }; }
     else if ((m.plats === 'dator' || m.plats === 'stol') && k.bord[plats.i]) { gammal = k.bord[plats.i][m.plats]; k.bord[plats.i][m.plats] = mobelId; }
-    else return { ok: false, fel: 'STÄLL ETT BORD FÖRST' };
+    else return { ok: false, fel: $t('STÄLL ETT BORD FÖRST') };
   } else if (plats.typ === 'golv' || plats.typ === 'vagg') {
-    if (m.plats !== plats.typ) return { ok: false, fel: 'PASSAR INTE HÄR' };
+    if (m.plats !== plats.typ) return { ok: false, fel: $t('PASSAR INTE HÄR') };
     gammal = k[plats.typ][plats.i]; k[plats.typ][plats.i] = mobelId;
   } else if (plats.typ === 'golvtyp' || plats.typ === 'vaggtyp') {
-    if (m.plats !== plats.typ) return { ok: false, fel: 'PASSAR INTE HÄR' };
+    if (m.plats !== plats.typ) return { ok: false, fel: $t('PASSAR INTE HÄR') };
     gammal = k[plats.typ]; k[plats.typ] = mobelId;
-  } else return { ok: false, fel: 'OKÄND PLATS' };
+  } else return { ok: false, fel: $t('OKÄND PLATS') };
   if (iForrad >= 0) k.forrad.splice(iForrad, 1); else betala(G, pris, 'mobler');
   if (gammal && MOBEL[gammal] && MOBEL[gammal].pris > 0) k.forrad.push(gammal);   // den gamla hamnar i förrådet
   G.flaggor.kopteMobel = true;
@@ -58,7 +59,7 @@ export function taBort(G, plats, salj = true) {
   const k = G.kontor; let id = null;
   if (plats.typ === 'bord') {
     const b = k.bord[plats.i]; if (!b) return;
-    if (G.personal.some((p) => p.bord === plats.i)) return { ok: false, fel: 'NÅGON SITTER HÄR' };
+    if (G.personal.some((p) => p.bord === plats.i)) return { ok: false, fel: $t('NÅGON SITTER HÄR') };
     for (const del of ['bord', 'dator', 'stol']) { const m = MOBEL[b[del]]; if (m?.pris) salj ? intakt(G, m.pris / 2, 'mobler') : k.forrad.push(b[del]); }
     k.bord[plats.i] = null; return { ok: true };
   }
@@ -83,15 +84,16 @@ export function kravUppfyllt(G, niva) {
 }
 export function flytta(G, niva) {
   const k = kontorAv(niva), i = ORDNING.indexOf(niva);
-  if (i !== ORDNING.indexOf(G.kontor.niva) + 1) return { ok: false, fel: 'FLYTTA ETT STEG I TAGET' };
-  if (!kravUppfyllt(G, niva)) return { ok: false, fel: 'KRAV: ' + kontorKrav(G, niva).kravText };
+  if (i !== ORDNING.indexOf(G.kontor.niva) + 1) return { ok: false, fel: $t('FLYTTA ETT STEG I TAGET') };
+  if (!kravUppfyllt(G, niva)) return { ok: false, fel: $t`KRAV: ${kontorKrav(G, niva).kravText}` };
   const pris = flyttPris(G, niva);
-  if (G.bolag.kassa < pris) return { ok: false, fel: 'FÖR LITE PENGAR' };
+  if (G.bolag.kassa < pris) return { ok: false, fel: $t('FÖR LITE PENGAR') };
   betala(G, pris, 'kontor');
   const ko = G.kontor, p = PLATSER[niva];
   const fyll = (lista, n) => { const ut = lista.slice(0, n); while (ut.length < n) ut.push(null); for (const x of lista.slice(n)) if (x) ko.forrad.push(typeof x === 'string' ? x : x.bord); return ut; };
   ko.niva = niva; ko.bord = fyll(ko.bord, k.bord); ko.golv = fyll(ko.golv, p.golv); ko.vagg = fyll(ko.vagg, p.vagg);
-  nyhet(G, 'DU', `${G.bolag.namn} FLYTTAR IN I ${k.namn === 'HUVUDKONTOR' ? 'ETT EGET HUVUDKONTOR' : 'ETT ' + k.namn}!`);
-  signal(G, 'stor', { rubrik: 'NYTT KONTOR!', text: `VÄLKOMMEN TILL ${k.namn}. ${k.bord} ARBETSPLATSER OCH ${k.labb} LABBSPÅR.`, paus: true, konfetti: true });
+  const kNamn = k.namn;
+  nyhet(G, 'DU', k.id === 'hk' ? $t`${G.bolag.namn} FLYTTAR IN I ETT EGET HUVUDKONTOR!` : $t`${G.bolag.namn} FLYTTAR IN I ETT ${kNamn}!`);
+  signal(G, 'stor', { rubrik: $t('NYTT KONTOR!'), text: $t`VÄLKOMMEN TILL ${kNamn}. ${k.bord} ARBETSPLATSER OCH ${k.labb} LABBSPÅR.`, paus: true, konfetti: true });
   return { ok: true };
 }

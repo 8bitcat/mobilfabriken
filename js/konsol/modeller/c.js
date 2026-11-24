@@ -1,5 +1,6 @@
 // Konsoler i 3D, grupp C. Samma format som KONSOLFORMER i ../konsol-gl.js. Verktygen finns i ../gl-verktyg.js.
 // SEGO DRÖMCAST (1999), MIKROMJUK X-LÅDA (2002), NINTENTO GAMEKUB (2002) och NINTENTO DS (2005). Modellenhet 1 = 10 cm.
+import { $t } from '../../core/i18n.js';
 import * as V from '../gl-verktyg.js';
 import { glimtBild } from '../glimtar.js';
 import { T as PT, SMALL } from '../pix.js';
@@ -110,7 +111,7 @@ function dromcast(tel) {
   platta(g, W - 0.02, D - 0.02, 0.32, m, 0, 0.41, 0, 0.2, 0.1);
   // skivfacket under luckan med GD-skivan och spindeln
   rund(g, 0.7, 0.008, mat(0x3a3a3e, { roughness: 0.7 }), 0, TOPP + 0.004, 0.04, 64);
-  spelskiva(g, 0.6, 'galentaxi', 'TURBOTAXI', 0, TOPP + 0.008, 0.04, '#e8a010');
+  spelskiva(g, 0.6, 'galentaxi', $t('TURBOTAXI'), 0, TOPP + 0.008, 0.04, '#e8a010');
   rund(g, 0.07, 0.03, mat(0x9a9aa0), 0, TOPP + 0.03, 0.04);
   // luckan: gångjärn bak, lätt välvd, med virveln
   const lucka = new T.Group(); lucka.position.set(0, TOPP + 0.012, 0.04 - 0.66); g.add(lucka);
@@ -120,8 +121,8 @@ function dromcast(tel) {
   // strömknapp (vänster) med orange lampa, öppningsknapp (höger)
   for (const sx of [-1, 1]) { rund(g, 0.105, 0.012, gra, sx * 0.68, TOPP + 0.003, 0.72, 32); rund(g, 0.085, 0.04, mat(0xeeeeea, { clearcoat: 0.8 }), sx * 0.68, TOPP + 0.012, 0.72, 32); }
   kloss(g, 0.05, 0.012, 0.03, lyser(0xff8a20, 2.4), -0.46, TOPP + 0.004, 0.84);
-  dekal(g, textTextur('POWER', '#8a8a86', 256, 64, 'bold 40px system-ui, sans-serif'), 0.2, 0.05, -0.68, TOPP + 0.003, 0.86);
-  dekal(g, textTextur('OPEN', '#8a8a86', 256, 64, 'bold 40px system-ui, sans-serif'), 0.2, 0.05, 0.68, TOPP + 0.003, 0.86);
+  dekal(g, textTextur($t('POWER'), '#8a8a86', 256, 64, 'bold 40px system-ui, sans-serif'), 0.2, 0.05, -0.68, TOPP + 0.003, 0.86);
+  dekal(g, textTextur($t('OPEN'), '#8a8a86', 256, 64, 'bold 40px system-ui, sans-serif'), 0.2, 0.05, 0.68, TOPP + 0.003, 0.86);
   // framsidan: fyra handkontrollsportar A–D
   const fram = D / 2;
   for (const [i, px] of [-0.6, -0.2, 0.2, 0.6].entries()) {
@@ -193,7 +194,7 @@ function xlada(tel) {
   const lada = new T.Group(); lada.position.set(-0.3, 0.46, 0); g.add(lada);
   platta(lada, 1.42, 1.3, 0.04, mat(0x1a1a1c), 0, 0.02, fram - 0.67, 0.03, 0.01);
   rund(lada, 0.63, 0.006, mat(0x0e0e10), 0, 0.06, fram - 0.68, 64);
-  spelskiva(lada, 0.6, 'haloo', 'GLORIA', 0, 0.064, fram - 0.68, '#3a5a1e');
+  spelskiva(lada, 0.6, 'haloo', $t('GLORIA'), 0, 0.064, fram - 0.68, '#3a5a1e');
   staende(lada, 1.52, 0.17, 0.06, blank, 0, 0, fram + 0.01, 0.03, 0.012);
   kloss(lada, 1.36, 0.014, 0.01, gron(2.2), 0, 0.015, fram + 0.042);
   for (const [by, r, ljus] of [[0.62, 0.1, 2.4], [0.38, 0.075, 1.2]]) {
@@ -202,7 +203,7 @@ function xlada(tel) {
   }
   for (const px of [-1.2, -0.4, 0.4, 1.2]) { staende(g, 0.42, 0.15, 0.03, mat(0x080809), px, 0.12, fram, 0.04, 0.01); kloss(g, 0.3, 0.05, 0.02, mat(0x3a3a3e), px, 0.2, fram + 0.01); }
   kloss(g, W - 0.7, 0.012, 0.01, mork, 0, 0.32, fram + 0.002);
-  dekal(g, textTextur('AXIOM X', '#52e24a', 512, 128, 'bold 92px system-ui, sans-serif'), 0.46, 0.115, 0.72, 0.6, fram + 0.002, 'fram', { emissive: 0x2aa02a, emissiveIntensity: 0.5 });
+  dekal(g, textTextur($t('AXIOM X'), '#52e24a', 512, 128, 'bold 92px system-ui, sans-serif'), 0.46, 0.115, 0.72, 0.6, fram + 0.002, 'fram', { emissive: 0x2aa02a, emissiveIntensity: 0.5 });
   // baksidan: fläktgaller och uttag
   for (const fx of [-0.9, 0.55]) { framRund(g, 0.3, 0.02, mork, fx, 0.45, -fram - 0.005, 40); for (let i = -4; i <= 4; i++) kloss(g, Math.sqrt(Math.max(0, 0.26 * 0.26 - (i * 0.055) ** 2)) * 2, 0.018, 0.02, m, fx, 0.45 + i * 0.055, -fram - 0.018); }
   kloss(g, 0.3, 0.1, 0.03, mork, 1.15, 0.45, -fram - 0.005); kloss(g, 0.14, 0.12, 0.03, mork, 1.15, 0.25, -fram - 0.005);
@@ -248,7 +249,7 @@ function gamekub(tel) {
   platta(g, W, D, 1.05, m, 0, 0.04, 0, 0.13, 0.08);
   // skivfacket med en liten skiva och luckan (gångjärn bak) med kubloggan
   rund(g, 0.6, 0.008, mork, 0, TOPP + 0.004, -0.06, 64);
-  spelskiva(g, 0.4, 'marcosolsken', 'PIPO SOLSKEN', 0, TOPP + 0.008, -0.06, '#d83818');
+  spelskiva(g, 0.4, 'marcosolsken', $t('PIPO SOLSKEN'), 0, TOPP + 0.008, -0.06, '#d83818');
   rund(g, 0.05, 0.03, mat(0x9a9aa0), 0, TOPP + 0.03, -0.06);
   const lucka = new T.Group(); lucka.position.set(0, TOPP + 0.012, -0.06 - 0.58); g.add(lucka);
   rund(lucka, 0.58, 0.04, m, 0, 0.02, 0.58, 64);
@@ -308,9 +309,9 @@ function dsPekskarm() {
   const rita = (t) => {
     r(0, 0, 128, 96, '#fff3e2');
     for (let i = -96; i < 128; i += 12) for (let j = 0; j < 96; j++) r(i + j, j, 5, 1, '#ffe7cc');
-    r(0, 0, 128, 15, '#ff8a9e'); r(0, 15, 128, 1, '#d8607a'); PT(x, 'VALPARNA', 64 - 15, 5, '#ffffff', SMALL);
+    r(0, 0, 128, 15, '#ff8a9e'); r(0, 15, 128, 1, '#d8607a'); PT(x, $t('VALPARNA'), 64 - 15, 5, '#ffffff', SMALL);
     const tryck = Math.floor(t / 1.5) % 3, puls = (t % 1.5) < 0.35;
-    [['BOLL', '#d8f040'], ['MAT', '#e8783a'], ['GÅ UT', '#5ab0f0']].forEach(([s, c], i) => {
+    [[$t('BOLL'), '#d8f040'], [$t('MAT'), '#e8783a'], [$t('GÅ UT'), '#5ab0f0']].forEach(([s, c], i) => {
       const cx = 22 + i * 42, cy = 46, rr = tryck === i && puls ? 14 : 16;
       cirkel(cx, cy + 2, rr, '#d8b49a'); cirkel(cx, cy, rr, tryck === i && puls ? '#ffe070' : '#ffffff'); cirkel(cx, cy, rr - 6, c);
       if (i === 0) { r(cx - 4, cy - 1, 2, 2, '#ffffff'); r(cx + 2, cy, 2, 2, '#ffffff'); }
@@ -353,7 +354,7 @@ function ds(tel) {
   platta(vik, 0.69, 0.54, 0.006, mork, 0, -0.004, zc, 0.02, 0.002);
   const sk = glimtSkarm('valparna', 0.61, 0.46); sk.me.rotation.x = Math.PI / 2; sk.me.position.set(0, -0.0055, zc); vik.add(sk.me);
   for (const sx of [-1, 1]) for (let i = 0; i < 3; i++) for (let j = 0; j < 3; j++) rund(vik, 0.009, 0.006, mork, sx * 0.53 + (i - 1) * 0.04, -0.002, zc - 0.05 + (j - 1) * 0.04, 8);
-  dekal(vik, textTextur('TENKO DUO', '#b4b4bc', 512, 96, 'bold 58px system-ui, sans-serif'), 0.5, 0.094, 0, HT + 0.002, zc, 'upp', { metalness: 0.6, roughness: 0.3 });
+  dekal(vik, textTextur($t('TENKO DUO'), '#b4b4bc', 512, 96, 'bold 58px system-ui, sans-serif'), 0.5, 0.094, 0, HT + 0.002, zc, 'upp', { metalness: 0.6, roughness: 0.3 });
   // pennan ligger framför
   const penna = new T.Group(); penna.position.set(0.12, 0.022, D / 2 + 0.2); penna.rotation.y = 0.12; g.add(penna);
   const skaft = rund(penna, 0.02, 0.8, gra, 0, 0, 0, 16); skaft.rotation.z = Math.PI / 2;
@@ -366,7 +367,7 @@ function ds(tel) {
 
 export const KONSOLER = [
   {
-    id: 'konsol-dromcast', namn: 'TORA VORTEX', forebild: 'Sega Dreamcast', ar: 1999, glimt: 'galentaxi', oppna: ['SKIVLUCKAN', 0], bygg: dromcast,
+    id: 'konsol-dromcast', namn: $t('TORA VORTEX'), forebild: 'Sega Dreamcast', ar: 1999, glimt: 'galentaxi', oppna: [$t('SKIVLUCKAN'), 0], bygg: dromcast,
     info: 'Vit och fyrkantig med en orange virvel på den runda luckan. Minneskortet med egen liten skärm sitter i handkontrollen.',
     pixel(x, X, Y) {
       skugga2(x, X + 5, Y + 25, 30); lada2(x, X + 5, Y + 11, 30, 7, 7, '#f2f2ee', '#d8d8d2');
@@ -377,7 +378,7 @@ export const KONSOLER = [
     },
   },
   {
-    id: 'konsol-xlada', namn: 'AXIOM X', forebild: 'Microsoft Xbox', ar: 2002, glimt: 'haloo', oppna: ['SKIVLÅDAN', 0], bygg: xlada,
+    id: 'konsol-xlada', namn: $t('AXIOM X'), forebild: 'Microsoft Xbox', ar: 2002, glimt: 'haloo', oppna: [$t('SKIVLÅDAN'), 0], bygg: xlada,
     info: 'Stor och svart med en grön X-juvel ovanpå. Skivlådan glider ut framtill, och den första handkontrollen var jättestor.',
     pixel(x, X, Y) {
       skugga2(x, X, Y + 25, 40); lada2(x, X, Y + 9, 40, 7, 10, '#2a2a2e', '#1a1a1c');
@@ -390,7 +391,7 @@ export const KONSOLER = [
     },
   },
   {
-    id: 'konsol-gamekub', namn: 'TENKO KUB', forebild: 'Nintendo GameCube', ar: 2002, glimt: 'marcosolsken', oppna: ['SKIVLUCKAN', 0], bygg: gamekub,
+    id: 'konsol-gamekub', namn: $t('TENKO KUB'), forebild: 'Nintendo GameCube', ar: 2002, glimt: 'marcosolsken', oppna: [$t('SKIVLUCKAN'), 0], bygg: gamekub,
     info: 'En lila kub med handtag där bak. Små skivor under den runda luckan och en handkontroll med en stor grön A-knapp.',
     pixel(x, X, Y) {
       skugga2(x, X + 8, Y + 26, 26);
@@ -403,7 +404,7 @@ export const KONSOLER = [
     },
   },
   {
-    id: 'konsol-ds', namn: 'TENKO DUO', forebild: 'Nintendo DS Lite', ar: 2005, glimt: 'valparna', oppna: ['LOCKET', 1], bygg: ds,
+    id: 'konsol-ds', namn: $t('TENKO DUO'), forebild: 'Nintendo DS Lite', ar: 2005, glimt: 'valparna', oppna: [$t('LOCKET'), 1], bygg: ds,
     info: 'Två skärmar i ett skal som fälls upp. Den undre är en pekskärm, och pennan ligger bredvid. Valpen syns live på den övre.',
     pixel(x, X, Y) {
       skugga2(x, X + 7, Y + 26, 26);
