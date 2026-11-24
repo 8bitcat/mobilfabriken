@@ -29,7 +29,8 @@ const ENHETER = {
   ipad: { vp: [1376, 1032], dsf: 2 },
 };
 const BILD = 'const bild = async () => { for (let q = 0; q < 2; q++) await new Promise((r) => requestAnimationFrame(r)); };';
-const K = "nyttTestspel({ lage: 'konsol', namn: 'PIXELBOX AB' });", KLANS = K + ' forstaKonsolen(); lanseraKonsolen();';
+const KB = LANG === 'en' ? 'PIXELBOX CO' : 'PIXELBOX AB', TB = LANG === 'en' ? 'MICROWAVE CO' : 'MIKROVÅG MOBIL';
+const K = `nyttTestspel({ lage: 'konsol', namn: '${KB}' });`, KLANS = K + ' forstaKonsolen(); lanseraKonsolen();';
 const TILL_KLAR = " let n = 0; while (A.G.projekt[0].status !== 'klar' && n++ < 300) dagar(1);";
 // ordningen är ordningen i App Store (högst tio)
 const SCENER = [
@@ -39,7 +40,7 @@ const SCENER = [
   ['studios', KLANS + " dagar(40); A.G.ko = []; A.go('studios');"],
   ['reklam', KLANS + " A.G.ko = []; A.go('reklam', { konsol: A.G.produkter[0].id, t: 5 });"],
   ['kontor', K + " forstaKonsolen(); dagar(5); A.G.ko = []; A.go('kontor');"],
-  ['telefon-design', "nyttTestspel({ namn: 'MIKROVÅG MOBIL' }); A.go('design', { steg: " + opt('tsteg', 12) + " });"],
+  ['telefon-design', `nyttTestspel({ namn: '${TB}' }); A.go('design', { steg: ${opt('tsteg', 12)} });`],
   ['forskning', K + " A.go('forskning', { nod: 'k-mobil' });"],
   ['telefoner', KLANS + " dagar(60); A.G.ko = []; A.go('telefoner');"],
 ];
