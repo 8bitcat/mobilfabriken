@@ -246,6 +246,12 @@ async function skicka() {
   const app = await appen(), v = await versionAv(app);
   const b = await tyst404(call('GET', `/v1/appStoreVersions/${v.id}/build`));
   if (!b?.data) throw new Error('inget bygge kopplat – kör bygge först');
+  // köpen som är redo skickas in tillsammans med versionen (första gången måste de följa med en appversion)
+  for (const iap of await alla(`/v1/apps/${app.id}/inAppPurchasesV2?limit=200`)) {
+    if (iap.attributes.state !== 'READY_TO_SUBMIT') continue;
+    try { await call('POST', '/v1/inAppPurchaseSubmissions', { data: { type: 'inAppPurchaseSubmissions', relationships: { inAppPurchaseV2: { data: { type: 'inAppPurchases', id: iap.id } } } } }); console.log(`✓ köp med i granskningen: ${iap.attributes.productId}`); }
+    catch (e) { console.log(`✗ ${iap.attributes.productId}: ${e.message.slice(0, 300)}`); }
+  }
   const rs = (await call('POST', '/v1/reviewSubmissions', { data: { type: 'reviewSubmissions', attributes: { platform: 'IOS' }, relationships: { app: rel('apps', app.id) } } })).data;
   await call('POST', '/v1/reviewSubmissionItems', { data: { type: 'reviewSubmissionItems', relationships: { reviewSubmission: rel('reviewSubmissions', rs.id), appStoreVersion: rel('appStoreVersions', v.id) } } });
   await call('PATCH', `/v1/reviewSubmissions/${rs.id}`, { data: { type: 'reviewSubmissions', id: rs.id, attributes: { submitted: true } } });

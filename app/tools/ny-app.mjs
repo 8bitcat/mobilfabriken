@@ -5,13 +5,16 @@
 //   2. Codemagic-appen för repot – läggs till via Codemagic API om den saknas, och den hemliga variabeln
 //      CERTIFICATE_PRIVATE_KEY (grupp apple_signing) läggs på den. Bygget skapar sedan profilen själv
 //      (codemagic.yaml: app-store-connect fetch-signing-files --create), så inget "Fetch profiles" behövs.
-//   3. Appen i App Store Connect – finns ingen API för att skapa den: skriptet skriver exakt vad Carl ska fylla i
-//      under New App, och när appen finns skriver det ut Apple ID (till codemagic.yaml APP_STORE_APPLE_ID).
+//   3. Appen i App Store Connect (New App) och App Privacy ("No, we do not collect data") – via Carls Apple
+//      ID-session (apple-webb.rb). Saknas sessionen säger skriptet till. Apple ID skrivs ut (codemagic.yaml).
 // Nycklar: App Store Connect-nyckeln "Codemagic" (Downloads/AuthKey_94H7H2CY53.p8), Codemagic-token
 // (.secrets/codemagic.txt), distributionsnyckeln (.secrets/apple-dist-8bitcat.key, certifikat XVHF37T5LZ).
 // Inget hemligt skrivs ut.
 import fs from 'fs';
 import crypto from 'crypto';
+import path from 'path';
+import { execFileSync } from 'child_process';
+import { fileURLToPath } from 'url';
 
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf('--' + n); return i >= 0 ? args[i + 1] : d; };
@@ -48,7 +51,20 @@ else {
   console.log('+ CERTIFICATE_PRIVATE_KEY lagd som hemlig variabel (apple_signing)');
 }
 
-// ---------- appen i App Store Connect ----------
-const a = (await asc('GET', `/v1/apps?filter[bundleId]=${BUNDLE}`)).data.find((x) => x.attributes.bundleId === BUNDLE);
-if (a) console.log(`✓ Appen finns i App Store Connect: ${a.attributes.name} – Apple ID ${a.id} (codemagic.yaml APP_STORE_APPLE_ID)`);
-else console.log(`\nKVAR FÖR CARL (inget API finns): App Store Connect → My Apps → ＋ → New App\n  Platforms: iOS · Name: ${NAMN} · Primary Language: English (U.S.) · Bundle ID: ${BUNDLE} · SKU: ${BUNDLE.split('.').pop()} · Full Access\n  Kör sedan skriptet igen för Apple ID.`);
+// ---------- appen i App Store Connect + App Privacy ----------
+// New App och App Privacy saknar officiellt API: de görs med Carls Apple ID-session (app/tools/apple-webb.rb,
+// fastlane/spaceship). Sessionen skapas ungefär en gång i månaden med app/tools/apple-inloggning.ps1.
+const RUBY = 'C:/Ruby33-x64/bin/ruby.exe', WEBB = path.join(path.dirname(fileURLToPath(import.meta.url)), 'apple-webb.rb');
+const webb = (...x) => { try { return { ok: true, ut: execFileSync(RUBY, [WEBB, ...x], { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] }) }; } catch (e) { return { ok: false, ut: String(e.stdout || '') + String(e.stderr || '') }; } };
+const sista = (s) => s.trim().split('\n').pop();
+let a = (await asc('GET', `/v1/apps?filter[bundleId]=${BUNDLE}`)).data.find((x) => x.attributes.bundleId === BUNDLE);
+if (!a) {
+  const r = webb('ny-app', BUNDLE, NAMN, BUNDLE.split('.').pop(), 'en-US');
+  console.log(r.ok ? `+ ${sista(r.ut)}` : `✗ New App: ${sista(r.ut)}`);
+  a = (await asc('GET', `/v1/apps?filter[bundleId]=${BUNDLE}`)).data.find((x) => x.attributes.bundleId === BUNDLE);
+}
+if (a) {
+  console.log(`✓ Appen finns i App Store Connect: ${a.attributes.name} – Apple ID ${a.id} (codemagic.yaml APP_STORE_APPLE_ID)`);
+  const p = webb('privacy', BUNDLE);
+  console.log(p.ok ? p.ut.trim().split('\n').map((l) => '✓ ' + l).join('\n') : `✗ App Privacy: ${sista(p.ut)}`);
+}
