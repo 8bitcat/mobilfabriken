@@ -41,7 +41,8 @@ const n = (html.match(cdn) || []).length;
 if (n !== 1) throw new Error(`index.html: hittade ${n} three.js-rader från cdnjs (väntade 1) – uppdatera app/build.mjs`);
 html = html.replace(cdn, '<script src="vendor/three.min.js" defer></script>');
 // vilken app: app/package.json "applage" ('telefon' = Smartphone Empire, 'konsol' = Console Empire) – js/core/applage.js
-const APPLAGE = JSON.parse(fs.readFileSync(path.join(APP, 'package.json'), 'utf8')).applage;
+const argApplage = process.argv.includes('--applage') ? process.argv[process.argv.indexOf('--applage') + 1] : process.env.APPLAGE;
+const APPLAGE = argApplage || JSON.parse(fs.readFileSync(path.join(APP, 'package.json'), 'utf8')).applage;
 if (!['telefon', 'konsol'].includes(APPLAGE)) throw new Error('app/package.json saknar "applage" (telefon eller konsol)');
 html = html.replace('<script type="module" src="js/main.js"></script>', `<script>window.MF_APPLAGE = '${APPLAGE}';</script>
   <script type="module" src="js/main.js"></script>`);

@@ -6,6 +6,7 @@ import { modellVinst } from './projekt.js';
 import { intakt, signal, nyhet, arKonsolSpel } from './spel.js';
 import { kr } from './bas.js';
 import { $t } from '../core/i18n.js';
+import { APPLAGE } from '../core/applage.js';
 
 const salda = (G) => G.bolag.totaltSalda;
 // en produkts sålda per vecka under de senaste n kalenderveckorna – en nedlagd telefon räknas bara
@@ -88,7 +89,10 @@ export const K_MAL = [
   { nr: 24, text: $t('FÅ MINST 9,0 I BETYG'), belopp: 10_000_000, klart: (G) => G.bolag.bastaBetyg >= 9 },
   { nr: 25, text: $t('FLYTTA TILL EN STUDIO'), belopp: 15_000_000, klart: (G) => ['studio', 'hk'].includes(G.kontor.niva) },
   { nr: 26, text: $t('SÄLJ I HELA VÄRLDEN'), belopp: 25_000_000, klart: (G) => G.marknad.regioner.length >= 4 },
-  { nr: 27, text: $t('ÖPPNA TELEFONAVDELNINGEN'), belopp: 40_000_000, klart: (G) => !!G.flaggor.mobil },
+  // Console Empire har ingen telefonavdelning: där är mål 27 en hybridkonsol (2017)
+  APPLAGE === 'konsol'
+    ? { nr: 27, text: $t('LANSERA EN HYBRIDKONSOL'), belopp: 40_000_000, klart: (G) => G.bolag.enhetstyper.includes('hybrid') }
+    : { nr: 27, text: $t('ÖPPNA TELEFONAVDELNINGEN'), belopp: 40_000_000, klart: (G) => !!G.flaggor.mobil },
   { nr: 28, text: $t('FLYTTA TILL ETT HUVUDKONTOR'), belopp: 100_000_000, klart: (G) => G.kontor.niva === 'hk' },
 ];
 export const malLista = (G) => (arKonsolSpel(G) ? K_MAL : MAL);

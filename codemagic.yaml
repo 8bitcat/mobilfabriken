@@ -10,8 +10,9 @@
 #   hos Carl). Inget klick i Codemagic behövs.
 #   APP_STORE_APPLE_ID nedan = App Store Connect → appen → App Information → Apple ID.
 workflows:
+  # Smartphone Empire / Mobilfabriken (bara telefonspelet från 2007)
   ios-testflight:
-    name: iOS → TestFlight
+    name: iOS → TestFlight (Smartphone Empire)
     max_build_duration: 45
     instance_type: mac_mini_m2
     integrations:
@@ -20,15 +21,18 @@ workflows:
       groups:
         - apple_signing                   # CERTIFICATE_PRIVATE_KEY (hemlig)
       vars:
+        APP_VARIANT: telefon              # app/tools/variant.mjs
         BUNDLE_ID: io.eightbitcat.mobilfabriken
-        APP_STORE_APPLE_ID: 6839119728    # Smartphone Empire / Mobilfabriken i App Store Connect (App Information → Apple ID)
+        APP_STORE_APPLE_ID: 6839119728    # Smartphone Empire i App Store Connect (App Information → Apple ID)
         XCODE_PROJECT: App.xcodeproj
         XCODE_SCHEME: App
       node: 22
       xcode: latest
-    scripts:
+    scripts: &steg
       - name: Installera
         script: cd app && npm ci
+      - name: Appen (bundle-id, namn, ikon)
+        script: node app/tools/variant.mjs "$APP_VARIANT"
       - name: Spelet in i appen
         script: cd app && node build.mjs && npx cap sync ios
       - name: Signering (App ID, profil och certifikat hämtas eller skapas via API)
@@ -43,7 +47,7 @@ workflows:
           VERSION=$(node -p "require('./app/package.json').appVersion")
           LATEST=$(app-store-connect get-latest-testflight-build-number "$APP_STORE_APPLE_ID" 2>/dev/null || echo 0)
           BUILD=$((LATEST + 1))
-          echo "Mobilfabriken $VERSION (bygge $BUILD)"
+          echo "$APP_VARIANT $VERSION (bygge $BUILD)"
           sed -i '' -E "s/MARKETING_VERSION = [^;]+;/MARKETING_VERSION = $VERSION;/; s/CURRENT_PROJECT_VERSION = [^;]+;/CURRENT_PROJECT_VERSION = $BUILD;/" app/ios/App/App.xcodeproj/project.pbxproj
       - name: Bygg ipa
         script: |
@@ -54,12 +58,34 @@ workflows:
             grep -h -E "error:|Provisioning profile|doesn't (include|support|match)" /tmp/xcodebuild_logs/*.log | sort -u | head -40
             exit 1
           }
-    artifacts:
+    artifacts: &filer
       - app/ios/App/build/ios/ipa/*.ipa
       - /tmp/xcodebuild_logs/*.log
-    publishing:
+    publishing: &publicera
       app_store_connect:
         auth: integration
         # bara uppladdning: interna testare (Carl) får bygget direkt i TestFlight
         submit_to_testflight: false
         submit_to_app_store: false
+
+  # Console Empire / Konsolimperiet (bara konsolspelet 1982–2026, utan telefonavdelningen) – skapad 2026-11-25
+  ios-console:
+    name: iOS → TestFlight (Console Empire)
+    max_build_duration: 45
+    instance_type: mac_mini_m2
+    integrations:
+      app_store_connect: Codemagic
+    environment:
+      groups:
+        - apple_signing
+      vars:
+        APP_VARIANT: konsol
+        BUNDLE_ID: io.eightbitcat.consoleempire
+        APP_STORE_APPLE_ID: 6839358453    # Console Empire i App Store Connect
+        XCODE_PROJECT: App.xcodeproj
+        XCODE_SCHEME: App
+      node: 22
+      xcode: latest
+    scripts: *steg
+    artifacts: *filer
+    publishing: *publicera

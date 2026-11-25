@@ -15,8 +15,8 @@ const XC = path.join(APP, 'ios/App/App/Assets.xcassets');
 const py = `
 import sys
 from PIL import Image, ImageFont, ImageDraw
-root, xc = sys.argv[1], sys.argv[2]
-ikon = Image.open(root + '/icons/ikon-512.png').convert('RGBA')
+root, xc, kalla = sys.argv[1], sys.argv[2], sys.argv[3]
+ikon = Image.open(kalla).convert('RGBA')
 # ikonen: 1024, hela pixelkorn, över spelets botten så att inget blir genomskinligt
 stor = ikon.resize((1024, 1024), Image.NEAREST)
 botten = Image.new('RGBA', (1024, 1024), '#070912'); botten.alpha_composite(stor)
@@ -43,4 +43,6 @@ for f in ['splash-2732x2732.png', 'splash-2732x2732-1.png', 'splash-2732x2732-2.
     rgb.save(xc + '/Splash.imageset/' + f, optimize=True)
 print('ikon 1024 + startbild 2732 skrivna till', xc)
 `;
-execFileSync('python', ['-c', py, ROOT, XC], { stdio: 'inherit' });
+// --kalla <png 512>: annan ikon (Console Empire: app/variant/konsol/ikon-512.png, ritad av ikon-konsol.py)
+const KALLA = process.argv.includes('--kalla') ? path.resolve(process.argv[process.argv.indexOf('--kalla') + 1]) : path.join(ROOT, 'icons', 'ikon-512.png');
+execFileSync('python', ['-c', py, ROOT, XC, KALLA], { stdio: 'inherit' });

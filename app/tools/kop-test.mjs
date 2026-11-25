@@ -25,6 +25,8 @@ const bas = `http://127.0.0.1:${srv.address().port}`;
 const { chromium } = createRequire('D:/Qisy/QISYFrontend/QISYFrontend-1/package.json')('playwright');
 const browser = await chromium.launch({ args: ['--use-angle=swiftshader', '--enable-unsafe-swiftshader', '--ignore-gpu-blocklist'] });
 const IAP = path.join(APP, 'store', 'iap'); fs.mkdirSync(IAP, { recursive: true });
+// --app konsol: Console Empire (applage konsol, konsolbolag) – granskningsbilden heter då butik-konsol-<sv|en>.jpg
+const APPV = process.argv.includes('--app') ? process.argv[process.argv.indexOf('--app') + 1] : 'telefon';
 
 // låtsat StoreKit: priser, köp med nya transaktions-id, och getPurchases = allt engångsköpt
 const FAKE = () => {
@@ -49,10 +51,10 @@ for (const lang of ['sv', 'en']) {
   const fel = [];
   page.on('pageerror', (e) => fel.push(String(e.message)));
   page.on('console', (m) => { if (m.type() === 'error' && !/deprecated with r150/.test(m.text())) fel.push(m.text()); });
-  await page.goto(`${bas}/index.html?test&applage=telefon&lang=${lang}`);
+  await page.goto(`${bas}/index.html?test&applage=${APPV}&lang=${lang}`);
   await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 60000 });
   // granskningsbilden till Apple tas när butiken visar alla priser och inget är köpt
-  const png = path.join(IAP, `butik-${lang}.png`);
+  const png = path.join(IAP, APPV === 'konsol' ? `butik-konsol-${lang}.png` : `butik-${lang}.png`);
   const bildvakt = (async () => { await page.waitForFunction(() => window.__tabild === true, null, { timeout: 120000 }); await page.waitForTimeout(400); await page.screenshot({ path: png }); await page.evaluate(() => window.__bildKlar()); })();
   const r = await page.evaluate(async () => {
     const A = window.__A, UI = await import('/js/core/ui.js'), K = await import('/js/core/kop.js');
@@ -61,7 +63,8 @@ for (const lang of ['sv', 'en']) {
     const tryck = async (namn) => { await bild(); const m = window.__U.mark[namn]; if (!m) return false; UI.pekareNer(m.x + m.w / 2, m.y + m.h / 2); UI.pekareUpp(m.x + m.w / 2, m.y + m.h / 2); await bild(); return true; };
     const vanta = (ms) => new Promise((r) => setTimeout(r, ms));
     localStorage.removeItem('mobilfabriken.kop');
-    const G = sim.nyttSpel({ namn: 'PIXELFON AB', seed: 7, lage: 'telefon' }); pers.startKandidater(G); A.G = G; G.handledning.av = true; G.installningar.autopaus = false;
+    const konsolApp = new URLSearchParams(location.search).get('applage') === 'konsol';
+    const G = sim.nyttSpel({ namn: konsolApp ? 'PIXELBOX AB' : 'PIXELFON AB', seed: 7, lage: konsolApp ? 'konsol' : 'telefon' }); pers.startKandidater(G); A.G = G; G.handledning.av = true; G.installningar.autopaus = false;
     const ut = {};
     A.go('meny'); await bild();
     ut.knapp = await tryck('meny-butik');

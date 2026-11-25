@@ -2,6 +2,7 @@
 // (data/noder.js). Noden TELEFONAVDELNINGEN (k-mobil) öppnar telefongrenen: i konsolspelet är alla telefonnoder
 // låsta tills den är forskad (sim/forskning.js).
 import { $t } from '../core/i18n.js';
+import { APPLAGE } from '../core/applage.js';
 import { K_GRUPPER, K_DELAR, K_KAROSSER, K_ENHETER, K_FUNKTIONER } from './konsol.js';
 
 export const K_KATEGORIER = [
@@ -42,8 +43,9 @@ function bygg() {
       () => (e.fp ? `kenhet-${e.id}` : null));
   }
   rad('kfunk', $t('FUNKTIONER'), K_FUNKTIONER, (d) => ({ typ: 'kfunk', linje: 'konsol', id: d.id, nyckel: `kfunk-${d.id}` }), false);
-  // telefonavdelningen: kräver fickkonsol, pekskärm och trådlöst nät
-  ut.push({ id: 'k-mobil', linje: 'konsol', kat: 'kmobil', rad: $t('TELEFONER'), namn: $t('TELEFONAVDELNINGEN'), ar: 2007, fp: 300, kostnadKr: 2_000_000,
+  // telefonavdelningen: kräver fickkonsol, pekskärm och trådlöst nät. Finns inte i appen Console Empire (bara konsoler,
+  // Carl 2026-11-25: två appar med ren delning) – utan noden öppnas telefonerna aldrig.
+  if (APPLAGE !== 'konsol') ut.push({ id: 'k-mobil', linje: 'konsol', kat: 'kmobil', rad: $t('TELEFONER'), namn: $t('TELEFONAVDELNINGEN'), ar: 2007, fp: 300, kostnadKr: 2_000_000,
     foreg: ['kenhet-ficka', 'kfunk-pekskarm', 'kfunk-wifi'], lasUpp: { typ: 'mobil', linje: 'konsol', id: 'mobil', nyckel: 'k-mobil' } });
   return ut;
 }

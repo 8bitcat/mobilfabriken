@@ -10,16 +10,19 @@
 // rullar Capgo tillbaka till det förra. Det görs när spelets första scen har ritats.
 // På webben och i testerna gör modulen ingenting.
 import { VERSION } from '../version.js';
+import { APPLAGE } from './applage.js';
 
 const UPD = (() => { try { return window.Capacitor?.isNativePlatform?.() ? window.Capacitor.Plugins?.CapacitorUpdater || null : null; } catch { return null; } })();
 const WEBB = 'https://8bitcat.github.io/mobilfabriken/version.json';
-const PAKET = (v) => `https://github.com/8bitcat/mobilfabriken/releases/download/v${v}/mobilfabriken-${v}.zip`;
+// ett paket per app: Smartphone Empire mobilfabriken-<V>.zip (så heter det i 1.0), Console Empire mobilfabriken-<V>-konsol.zip
+const ZIPNAMN = (v) => (APPLAGE === 'konsol' ? `mobilfabriken-${v}-konsol.zip` : `mobilfabriken-${v}.zip`);
+const PAKET = (v) => `https://github.com/8bitcat/mobilfabriken/releases/download/v${v}/${ZIPNAMN(v)}`;
 const nyare = (a, b) => { const x = String(a).split('.').map(Number), y = String(b).split('.').map(Number); for (let i = 0; i < 3; i++) { if ((x[i] || 0) !== (y[i] || 0)) return (x[i] || 0) > (y[i] || 0); } return false; };
 
 async function kontrollsumma(v) {
   const r = await fetch(`https://api.github.com/repos/8bitcat/mobilfabriken/releases/tags/v${v}`, { cache: 'no-store' });
   if (!r.ok) return null;
-  const a = (await r.json()).assets?.find((x) => x.name === `mobilfabriken-${v}.zip`);
+  const a = (await r.json()).assets?.find((x) => x.name === ZIPNAMN(v));
   const m = /^sha256:([0-9a-f]{64})$/.exec(a?.digest || '');
   return m ? m[1] : null;
 }

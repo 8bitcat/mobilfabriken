@@ -18,7 +18,6 @@ const V = fs.readFileSync(path.join(ROOT, 'js', 'version.js'), 'utf8').match(/VE
 const ver = JSON.parse(fs.readFileSync(path.join(ROOT, 'version.json'), 'utf8'));
 if (ver.version !== V) throw new Error(`version.json säger ${ver.version} men js/version.js ${V} – uppdatera version.json först`);
 
-execFileSync(process.execPath, [path.join(APP, 'build.mjs')], { stdio: 'inherit' });
 
 // ---------- zip (deflate, utan beroenden): index.html i roten, som uppdateringspluginet vill ha
 const CRC = new Uint32Array(256).map((_, n) => { let c = n; for (let k = 0; k < 8; k++) c = c & 1 ? 0xedb88320 ^ (c >>> 1) : c >>> 1; return c >>> 0; });
@@ -46,24 +45,29 @@ function zip(files) {
   slut.writeUInt32LE(cd.length, 12); slut.writeUInt32LE(off, 16);
   return Buffer.concat([...delar, cd, slut]);
 }
+// ett paket per app (js/core/appuppdatering.js): Smartphone Empire mobilfabriken-<V>.zip, Console Empire -konsol.zip
 const WWW = path.join(APP, 'www');
-const alla = [];
-(function gå(dir) { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const p = path.join(dir, e.name); if (e.isDirectory()) gå(p); else alla.push(p); } })(WWW);
-alla.sort();
-const files = alla.map((p) => ({ name: path.relative(WWW, p).split(path.sep).join('/'), data: fs.readFileSync(p) }));
-if (!files.some((f) => f.name === 'index.html')) throw new Error('index.html saknas i app/www');
 const OUT = path.join(APP, 'out');
 fs.mkdirSync(OUT, { recursive: true });
-const ZIP = path.join(OUT, `mobilfabriken-${V}.zip`);
-fs.writeFileSync(ZIP, zip(files));
-console.log(`paket: ${path.relative(ROOT, ZIP)} – ${files.length} filer, ${(fs.statSync(ZIP).size / 1e6).toFixed(2)} MB`);
-if (process.argv.includes('--bara-zip')) process.exit(0);
-
-// ---------- GitHub-releasen v<version> (taggen måste redan vara pushad)
 const gh = (args) => execFileSync('gh', args, { encoding: 'utf8', stdio: ['ignore', 'pipe', 'pipe'] });
-let finns = true;
-try { gh(['release', 'view', `v${V}`, '--repo', REPO, '--json', 'tagName']); } catch { finns = false; }
-if (finns) gh(['release', 'upload', `v${V}`, ZIP, '--repo', REPO, '--clobber']);
-else gh(['release', 'create', `v${V}`, ZIP, '--repo', REPO, '--verify-tag', '--title', `v${V} – ${ver.title || 'Mobilfabriken'}`, '--notes', `Spelpaketet till appen Smartphone Empire / Mobilfabriken (${path.basename(ZIP)}). Appen hämtar det själv – se js/core/appuppdatering.js.`]);
-const url = `https://github.com/${REPO}/releases/download/v${V}/mobilfabriken-${V}.zip`;
-console.log(`uppladdat: ${url}`);
+for (const [applage, namn] of [['telefon', `mobilfabriken-${V}.zip`], ['konsol', `mobilfabriken-${V}-konsol.zip`]]) {
+  execFileSync(process.execPath, [path.join(APP, 'build.mjs'), '--applage', applage], { stdio: 'inherit' });
+  const alla = [];
+  (function gå(dir) { for (const e of fs.readdirSync(dir, { withFileTypes: true })) { const p = path.join(dir, e.name); if (e.isDirectory()) gå(p); else alla.push(p); } })(WWW);
+  alla.sort();
+  const files = alla.map((p) => ({ name: path.relative(WWW, p).split(path.sep).join('/'), data: fs.readFileSync(p) }));
+  if (!files.some((f) => f.name === 'index.html')) throw new Error('index.html saknas i app/www');
+  const ZIP = path.join(OUT, namn);
+  fs.writeFileSync(ZIP, zip(files));
+  console.log(`paket: ${path.relative(ROOT, ZIP)} – ${files.length} filer, ${(fs.statSync(ZIP).size / 1e6).toFixed(2)} MB`);
+  if (process.argv.includes('--bara-zip')) continue;
+  // GitHub-releasen v<version> (taggen måste redan vara pushad)
+  let finns = true;
+  try { gh(['release', 'view', `v${V}`, '--repo', REPO, '--json', 'tagName']); } catch { finns = false; }
+  if (finns) gh(['release', 'upload', `v${V}`, ZIP, '--repo', REPO, '--clobber']);
+  else gh(['release', 'create', `v${V}`, ZIP, '--repo', REPO, '--verify-tag', '--title', `v${V} – ${ver.title || 'Mobilfabriken'}`, '--notes', `Spelpaketen till apparna Smartphone Empire och Console Empire. Apparna hämtar dem själva – se js/core/appuppdatering.js.`]);
+  console.log(`uppladdat: https://github.com/${REPO}/releases/download/v${V}/${namn}`);
+}
+// app/www lämnas som Smartphone Empire (det Xcode-projektet i repot är byggt för)
+execFileSync(process.execPath, [path.join(APP, 'build.mjs'), '--applage', 'telefon'], { stdio: 'ignore' });
+

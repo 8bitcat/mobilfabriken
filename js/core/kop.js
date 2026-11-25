@@ -15,8 +15,10 @@ import { $t } from './i18n.js';
 import { LEGENDARISKA } from '../data/delar.js';
 import { arAv } from '../sim/bas.js';
 import { prisniva, arKonsolSpel } from '../sim/spel.js';
+import { APPLAGE } from './applage.js';
 
-const SKU = 'io.eightbitcat.mobilfabriken.';
+// produkt-id följer appen: Smartphone Empire io.eightbitcat.mobilfabriken.*, Console Empire io.eightbitcat.consoleempire.*
+const SKU = APPLAGE === 'konsol' ? 'io.eightbitcat.consoleempire.' : 'io.eightbitcat.mobilfabriken.';
 export const PRODUKTER = [
   { id: 'investerare-liten', sku: SKU + 'investerare.liten', typ: 'pengar', bas: 3_000_000, ikon: 'pengar', namn: $t('INVESTERARE'), text: $t('PENGAR RAKT I KASSAN') },
   { id: 'investerare-stor', sku: SKU + 'investerare.stor', typ: 'pengar', bas: 20_000_000, ikon: 'pengar', namn: $t('STOR INVESTERARE'), text: $t('MYCKET PENGAR RAKT I KASSAN') },

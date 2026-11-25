@@ -7,9 +7,11 @@
 import fs from 'fs';
 import crypto from 'crypto';
 
-const ISS = '08e19ca3-bbeb-4a09-8096-06f1e3eb6e4b', KID = '94H7H2CY53', APP = '6839119728';   // Smartphone Empire
+// --app konsol = Console Empire (6839358453, io.eightbitcat.consoleempire.*), standard Smartphone Empire
+const KONSOL = process.argv.includes('--app') && process.argv[process.argv.indexOf('--app') + 1] === 'konsol';
+const ISS = '08e19ca3-bbeb-4a09-8096-06f1e3eb6e4b', KID = '94H7H2CY53', APP = KONSOL ? '6839358453' : '6839119728';
 const KEYFILE = 'C:/Users/palss/Downloads/AuthKey_94H7H2CY53.p8';
-const PNG = 'D:/GamesProjects/mobilfabriken/app/store/iap/butik-en.jpg';   // node app/tools/kop-test.mjs tar den (2208×1242 JPEG)
+const PNG = KONSOL ? 'D:/GamesProjects/mobilfabriken/app/store/iap/butik-konsol-en.jpg' : 'D:/GamesProjects/mobilfabriken/app/store/iap/butik-en.jpg';   // node app/tools/kop-test.mjs tar den (2208×1242 JPEG)
 const key = fs.readFileSync(KEYFILE, 'utf8');
 const b64 = (o) => Buffer.from(typeof o === 'string' ? o : JSON.stringify(o)).toString('base64url');
 function jwt() {
@@ -29,8 +31,8 @@ async function call(method, path, body) {
 async function alla(path) { const out = []; let next = path; while (next) { const j = await call('GET', next); out.push(...(j.data || [])); next = j.links?.next || null; } return out; }
 const tyst404 = (p) => p.catch((e) => { if (e.status === 404) return null; throw e; });
 
-const REVIEW = 'Open MENU (top right ≡) → SHOP. The shop lists the products with StoreKit prices. INVESTOR and BIG INVESTOR are consumables that add in-game cash to the company that is open; RESEARCH PACK is a consumable that adds in-game research points. The amounts are shown in the shop before purchase. GOLD PACK (non-consumable) unlocks six cosmetic legendary finishes in the phone designer for all companies. SUPPORTER (non-consumable) unlocks 16× game speed (tap the 8× speed button again). RESTORE in the same screen restores the non-consumables. Nothing is random. The shop only exists in the iOS app, never on the web version, and is only opened by the player from the menu.';
-const SKU = 'io.eightbitcat.mobilfabriken.';
+const REVIEW = 'Open MENU (top right ≡) → SHOP. The shop lists the products with StoreKit prices. INVESTOR and BIG INVESTOR are consumables that add in-game cash to the company that is open; RESEARCH PACK is a consumable that adds in-game research points. The amounts are shown in the shop before purchase. GOLD PACK (non-consumable) unlocks six cosmetic legendary finishes in the ' + (KONSOL ? 'console' : 'phone') + ' designer for all companies. SUPPORTER (non-consumable) unlocks 16× game speed (tap the 8× speed button again). RESTORE in the same screen restores the non-consumables. Nothing is random. The shop only exists in the iOS app, never on the web version, and is only opened by the player from the menu.';
+const SKU = KONSOL ? 'io.eightbitcat.consoleempire.' : 'io.eightbitcat.mobilfabriken.';
 const LOC = { sv: 'sv', en: 'en-US' };
 // namn ≤ 30, beskrivning ≤ 45 tecken. Priser i SEK (Sverige är basland), Apple väljer närmaste prispunkt.
 const PRODUKTER = [
@@ -111,7 +113,7 @@ if (cmd === 'prispunkter') {
 }
 if (cmd === 'allt') {
   const list = await befintliga();
-  const terr = await alla('/v1/territories?limit=200');
+  const terr = (await alla('/v1/territories?limit=200')).filter((t) => t.id !== 'CHN');   // utom Kina (se asc-app.mjs pris)
   const png = fs.readFileSync(PNG), md5 = crypto.createHash('md5').update(png).digest('hex');
   for (const P of PRODUKTER) {
     let iap = list.find((x) => x.attributes.productId === P.sku);

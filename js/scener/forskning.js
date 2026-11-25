@@ -13,6 +13,7 @@ import { arKonsolSpel } from '../sim/spel.js';
 import { ritaKonsol2D } from '../konsol/konsol-vy.js';
 import { arsdel, arAv, dec, kr } from '../sim/bas.js';
 import { $t } from '../core/i18n.js';
+import { APPLAGE } from '../core/applage.js';
 
 const AR1 = 2026, KOLW = 50, RADH = 17, VX = 188, VY = 38, VW = W - VX - 2, VH = 202 - VY - 2;
 const KX = 122;   // kategorikolumnen
@@ -69,7 +70,7 @@ export function forskning(A, o = {}) {
         // flikarna: KONSOL och MOBIL (låset tills telefonavdelningen är forskad)
         textB($t('FORSKNING'), 4, 16, F.guld); text($t('LÅS UPP NY TEKNIK · TIDEN STÅR STILL'), 66, 18, F.dim);
         knapp(W - 128, 15, 60, 9, $t('KONSOL'), { stil: 'dim', ikon: 'kontroll', aktiv: flik === 'konsol', klick: () => byt('konsol'), namn: 'forskning-konsol' });
-        knapp(W - 64, 15, 60, 9, $t('MOBIL'), { stil: 'dim', ikon: G.flaggor.mobil ? 'telefon' : 'las', aktiv: flik === 'telefon', klick: () => byt('telefon'), namn: 'forskning-mobil' });
+        if (APPLAGE !== 'konsol') knapp(W - 64, 15, 60, 9, $t('MOBIL'), { stil: 'dim', ikon: G.flaggor.mobil ? 'telefon' : 'las', aktiv: flik === 'telefon', klick: () => byt('telefon'), namn: 'forskning-mobil' });
       }
       // vänster panel
       panel(2, 27, 118, 173);

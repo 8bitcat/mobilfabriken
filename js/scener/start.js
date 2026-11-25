@@ -83,7 +83,7 @@ export function start(A, o = {}) {
       const titel = APPLAGE === 'konsol' ? $t('KONSOLIMPERIET') : $t('MOBILFABRIKEN');
       textB(titel, tx + 1, 30 + 1, 0x8a2a6a, { k: 3 });
       textB(titel, tx, 30, F.guld, { k: 3 });
-      text($t('EN MOBILTYCOON I PIXELSTAD · FRÅN GARAGE TILL HUVUDKONTOR'), tx, 58, F.dim);
+      text(APPLAGE === 'konsol' ? $t('EN KONSOLTYCOON I PIXELSTAD · FRÅN GARAGE TILL HUVUDKONTOR') : $t('EN MOBILTYCOON I PIXELSTAD · FRÅN GARAGE TILL HUVUDKONTOR'), tx, 58, F.dim);
       // KONSOLER 1982 → MOBILER 2007. BYGG ETT IMPERIUM.
       if (APPLAGE === 'telefon') text($t('DESIGNA TELEFONER 2007–2026. BYGG ETT IMPERIUM.'), tx, 66, F.cyan);
       else if (APPLAGE === 'konsol') text($t('BYGG SPELKONSOLER 1982–2026. BYGG ETT IMPERIUM.'), tx, 66, F.cyan);

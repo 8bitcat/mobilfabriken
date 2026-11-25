@@ -18,7 +18,8 @@ const ROOT = path.resolve(APP, '..');
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf('--' + n); return i >= 0 ? args[i + 1] : d; };
 const LANG = opt('lang', 'sv');   // --lang en → engelska bilder i app/store/skarmbilder/en/
-const OUT = path.join(APP, 'store', 'skarmbilder', ...(LANG === 'sv' ? [] : [LANG]));
+const APPV0 = opt('app', 'telefon');
+const OUT = path.join(APP, 'store', APPV0 === 'konsol' ? 'skarmbilder-konsol' : 'skarmbilder', ...(LANG === 'sv' ? [] : [LANG]));
 const enhetVal = args.find((a) => !a.startsWith('--') && !['iphone', 'ipad', 'alla'].includes(a) === false) || 'alla';
 const bara = opt('bara', '') ? opt('bara', '').split(',') : null;
 const VANTA = +opt('vanta', 1800);
@@ -58,8 +59,20 @@ const SCENER_TELEFON = [
   ['lansering', T + ' forstaTelefonen();' + TKLAR + " A.G.ko = []; A.go('lansering', { projekt: A.G.projekt[0].id });"],
   ['bolaget', T + ' forstaTelefonen();' + TKLAR + " proj.lansera(A.G, A.G.projekt[0].id, 'natet'); dagar(120); A.G.ko = []; A.go('bolaget');"],
 ];
-const APPV = opt('app', 'telefon');   // telefon = Smartphone Empire, alla = webbens båda lägen
-const SCENER = APPV === 'telefon' ? SCENER_TELEFON : SCENER_ALLA;
+// Console Empire (--app konsol): bara konsolspelet, ?applage=konsol (ingen telefonavdelning)
+const SCENER_KONSOL = [
+  ['start', BILD + " A.go('start'); await bild(); const m = window.__U.mark['start-nytt']; const UI = await import('/js/core/ui.js'); UI.pekareNer(m.x + 2, m.y + 2); UI.pekareUpp(m.x + 2, m.y + 2);"],
+  ['design', K + " A.go('design', { steg: " + opt('ksteg', 6) + " });"],
+  ['show', K + ' forstaKonsolen();' + TILL_KLAR + " const r = proj.lansera(A.G, A.G.projekt[0].id, 'tv'); A.G.ko = []; A.go('show', { produkt: r.produkt.id, t: 30 });"],
+  ['studios', KLANS + " dagar(40); A.G.ko = []; A.go('studios');"],
+  ['reklam', KLANS + " A.G.ko = []; A.go('reklam', { konsol: A.G.produkter[0].id, t: 5 });"],
+  ['kontor', K + " forstaKonsolen(); dagar(5); A.G.ko = []; A.go('kontor');"],
+  ['design-lada', K + " A.go('design', { steg: 13 });"],
+  ['forskning', K + " A.go('forskning');"],
+  ['konsoler', KLANS + " dagar(60); A.G.ko = []; A.go('telefoner');"],
+];
+const APPV = opt('app', 'telefon');   // telefon = Smartphone Empire, konsol = Console Empire, alla = webbens båda lägen
+const SCENER = APPV === 'telefon' ? SCENER_TELEFON : APPV === 'konsol' ? SCENER_KONSOL : SCENER_ALLA;
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.otf': 'font/otf', '.json': 'application/json', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 const srv = http.createServer((req, res) => {
@@ -85,7 +98,7 @@ for (const [enhet, E] of Object.entries(ENHETER)) {
     const pagefel = [];
     page.on('pageerror', (e) => pagefel.push(String(e.message || e)));
     page.on('console', (m) => { if (m.type() === 'error' && !/deprecated with r150/.test(m.text())) pagefel.push(m.text()); });
-    await page.goto(`${bas}/index.html?test${LANG === 'sv' ? '' : '&lang=' + LANG}${APPV === 'telefon' ? '&applage=telefon' : ''}`);
+    await page.goto(`${bas}/index.html?test${LANG === 'sv' ? '' : '&lang=' + LANG}${APPV === 'telefon' || APPV === 'konsol' ? '&applage=' + APPV : ''}`);
     await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 15000 });
     await page.waitForTimeout(400);
     const r = await page.evaluate(async (kod) => {

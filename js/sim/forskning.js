@@ -13,6 +13,7 @@ import { $t } from '../core/i18n.js';
 import { signal, nyhet, betala, arKonsolSpel, prisniva } from './spel.js';
 import { kontorsVarden } from './kontor.js';
 import { oppnaMobil } from './konsol.js';
+import { APPLAGE } from '../core/applage.js';
 
 export function fpPris(G, nod) {
   const ar = arsdel(G.dag);
@@ -25,7 +26,7 @@ export function dagar(G, nod) { return Math.max(3, Math.round(Math.min(150, 14 +
 export const labbspar = (G) => kontorAv(G.kontor.niva).labb;
 
 // noderna spelaren ser: telefonspelet bara telefonernas, konsolspelet båda (telefonernas låsta tills avdelningen finns)
-export const synligaNoder = (G) => (arKonsolSpel(G) ? [...K_NODER, ...NODER] : NODER);
+export const synligaNoder = (G) => (arKonsolSpel(G) ? (APPLAGE === 'konsol' ? K_NODER : [...K_NODER, ...NODER]) : NODER);
 // spärren: en nod som inte hör till spelläget går inte att forska
 const sparrad = (G, nod) => (arKonsolSpel(G) ? (nod.linje !== 'konsol' && !G.flaggor.mobil) : nod.linje === 'konsol');
 

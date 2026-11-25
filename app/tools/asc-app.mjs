@@ -23,8 +23,11 @@ const KEYFILE = 'C:/Users/palss/Downloads/AuthKey_94H7H2CY53.p8';
 const PIXELCITY = '6818844405';
 const args = process.argv.slice(2);
 const opt = (n, d) => { const i = args.indexOf('--' + n); return i >= 0 ? args[i + 1] : d; };
-const BUNDLE = opt('bundle', 'io.eightbitcat.mobilfabriken');
-const cmd = args.find((a) => !a.startsWith('--') && a !== opt('bundle', '')) || 'koll';
+// --app konsol = Console Empire (texter app/appstore-konsol*.md, bilder app/store/skarmbilder-konsol/); standard = Smartphone Empire
+const APPV = opt('app', 'telefon');
+const KONSOL = APPV === 'konsol';
+const BUNDLE = opt('bundle', KONSOL ? 'io.eightbitcat.consoleempire' : 'io.eightbitcat.mobilfabriken');
+const cmd = args.find((a) => !a.startsWith('--') && a !== opt('bundle', '') && a !== opt('app', '')) || 'koll';
 
 const key = fs.readFileSync(KEYFILE, 'utf8');
 const b64 = (o) => Buffer.from(typeof o === 'string' ? o : JSON.stringify(o)).toString('base64url');
@@ -54,7 +57,7 @@ function lasTexter(fil) {
     support: block('Support URL'), marknad: block('Marketing URL'), noter: block('Notes', false), copyright: block('Copyright', false),
   };
 }
-const SPRAK = { 'en-US': lasTexter('appstore-en.md'), sv: lasTexter('appstore.md') };
+const SPRAK = KONSOL ? { 'en-US': lasTexter('appstore-konsol-en.md'), sv: lasTexter('appstore-konsol.md') } : { 'en-US': lasTexter('appstore-en.md'), sv: lasTexter('appstore.md') };
 SPRAK.sv.namn ||= 'Mobilfabriken';
 const TEXT = { integritet: 'https://8bitcat.github.io/mobilfabriken/integritet.html', copyright: SPRAK.sv.copyright || '2026 8bitcat Productions', noter: SPRAK['en-US'].noter };
 const granser = [['namn', 30], ['undertitel', 30], ['promo', 170], ['beskrivning', 4000], ['nyckelord', 100], ['noter', 4000]];
@@ -187,7 +190,7 @@ async function bilder() {
   for (const [loc, under] of [['en-US', 'en'], ['sv', '']]) {
     const l = lokal(lok, loc);
     if (!l) { console.log(`✗ ingen lokalisering ${loc} – kör version först`); continue; }
-    const mapp = path.join(APP, 'store', 'skarmbilder', under);
+    const mapp = path.join(APP, 'store', KONSOL ? 'skarmbilder-konsol' : 'skarmbilder', under);
     if (!fs.existsSync(mapp)) { console.log(`✗ ${mapp} saknas – kör node app/tools/skarmbilder.mjs${under ? ' --lang ' + under : ''}`); continue; }
     console.log(`${loc}:`);
     await bilderFor(l, mapp);
@@ -230,9 +233,10 @@ async function pris() {
   await call('POST', '/v1/appPriceSchedules', { data: { type: 'appPriceSchedules', relationships: { app: rel('apps', app.id), baseTerritory: rel('territories', 'SWE'), manualPrices: { data: [{ type: 'appPrices', id: '${gratis}' }] } } }, included: [{ type: 'appPrices', id: '${gratis}', attributes: { startDate: null }, relationships: { appPricePoint: rel('appPricePoints', gratis.id) } }] });
   console.log('✓ pris: gratis (basland Sverige)');
   const terr = await alla('/v1/territories?limit=200');
+  // utom Kina (fastlandet): spel kräver licens där, och Apples Kina-deklarationer blockerar inskick och saknar API
   const ids = terr.map((t) => t.id);
-  await call('POST', '/v2/appAvailabilities', { data: { type: 'appAvailabilities', attributes: { availableInNewTerritories: true }, relationships: { app: rel('apps', app.id), territoryAvailabilities: { data: ids.map((t) => ({ type: 'territoryAvailabilities', id: '${' + t + '}' })) } } }, included: ids.map((t) => ({ type: 'territoryAvailabilities', id: '${' + t + '}', attributes: { available: true }, relationships: { territory: rel('territories', t) } })) });
-  console.log(`✓ tillgänglig i ${ids.length} länder (och nya länder automatiskt)`);
+  await call('POST', '/v2/appAvailabilities', { data: { type: 'appAvailabilities', attributes: { availableInNewTerritories: true }, relationships: { app: rel('apps', app.id), territoryAvailabilities: { data: ids.map((t) => ({ type: 'territoryAvailabilities', id: '${' + t + '}' })) } } }, included: ids.map((t) => ({ type: 'territoryAvailabilities', id: '${' + t + '}', attributes: { available: t !== 'CHN' }, relationships: { territory: rel('territories', t) } })) });
+  console.log(`✓ tillgänglig i ${ids.length - 1} länder, inte Kina (och nya länder automatiskt)`);
 }
 async function bygge() {
   const app = await appen(), v = await versionAv(app);
