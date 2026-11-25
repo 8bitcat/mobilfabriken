@@ -5,6 +5,7 @@ import { ljudPa, sattLjud } from '../core/ljud.js';
 import { kontorsVarden } from '../sim/kontor.js';
 import { gavaKlar } from './gavor.js';
 import { $t } from '../core/i18n.js';
+import { arSupporter } from '../core/kop.js';
 
 export const INNEHALL = { y: 14, h: 188 };   // ytan mellan HUD och flikrad
 export const FLIKAR = [
@@ -39,14 +40,16 @@ export function hud(A) {
   cell(196, 'team', F.lila2, $t('TEAM'), `${G.personal.length}/${v.bord}`, F.text, 'hud-team', () => A.go('personal'));
   cell(232, 'stjarna', F.guld, $t('RYKTE'), dec(b.rykte, 2), F.text, 'hud-rykte', () => A.go('bolaget'));
   // hastighet
-  const fart = [[0, 'paus'], [1, '1×'], [2, '2×'], [4, '4×'], [8, '8×']];
+  // SUPPORTER (köp i appen, js/core/kop.js): 8× en gång till ger 16×
+  const sup = arSupporter();
+  const fart = [[0, 'paus'], [1, '1×'], [2, '2×'], [4, '4×'], [sup && G.fart === 16 ? 16 : 8, sup && G.fart === 16 ? '16' : '8×']];
   let x = 270;
   for (const [f, t] of fart) {
     const aktiv = G.fart === f, w = 13;
     const c = aktiv ? F.bla : inne(x, 1, w, 11) ? F.panel3 : F.panel2;
     rect(x, 1, w, 11, c); rect(x, 1, w, 1, ljusa(c, 0.25));
     if (t === 'paus') ikon('paus', x + 3, 3, aktiv ? F.text : F.dim); else text(t, x + 7, 4, aktiv ? F.text : F.dim, { just: 'c' });
-    hit(x, 1, w, 11, { klick: () => A.sattFart(f), namn: 'fart-' + f });
+    hit(x, 1, w, 11, { klick: () => A.sattFart(sup && f >= 8 && G.fart === f ? (f === 8 ? 16 : 8) : f), namn: 'fart-' + (f === 16 ? 8 : f) });
     x += w + 1;
   }
   // gåva, ljud, meny

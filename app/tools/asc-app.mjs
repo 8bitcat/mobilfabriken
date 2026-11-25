@@ -46,7 +46,7 @@ const rel = (type, id) => ({ data: { type, id } });
 
 // ---------- texterna: app/appstore-en.md (en-US, huvudspråk) och app/appstore.md (sv) ----------
 function lasTexter(fil) {
-  const MD = fs.readFileSync(path.join(APP, fil), 'utf8');
+  const MD = fs.readFileSync(path.join(APP, fil), 'utf8').replace(/\r\n/g, '\n');   // git på Windows kan ge CRLF
   const block = (rubrik, maste = true) => { const m = MD.match(new RegExp(`\\*\\*${rubrik}\\*\\*[^\\n]*\\n\`\`\`\\n([\\s\\S]*?)\\n\`\`\``)); if (!m && maste) throw new Error(`hittar inte kodblocket efter **${rubrik}** i ${fil}`); return m ? m[1].trim() : null; };
   return {
     namn: block('Name', false), undertitel: block('Subtitle', false) || (MD.match(/\*\*Subtitle\*\*[^`]*`([^`]+)`/) || [])[1],
@@ -130,8 +130,14 @@ async function info() {
   // åldersgräns: allt NONE/false → 4+. Fälten läses först, så att nya fält i Apples schema också nollas.
   const ald = await call('GET', `/v1/appInfos/${i.id}/ageRatingDeclaration`);
   const a = ald.data.attributes, ny = {};
+  // En ny app har null i alla fält, så typen avgörs av listorna (samma svar som Pixelcity har, 2026-11-25).
+  // Ja/nej-frågorna → false, gradfrågorna → NONE. Okända fält med värde följer typen på värdet.
+  const JANEJ = ['messagingAndChat', 'gambling', 'parentalControls', 'advertising', 'healthOrWellnessTopics', 'unrestrictedWebAccess', 'lootBox', 'socialMedia', 'ageAssurance', 'userGeneratedContent', 'socialMediaAgeRestricted'];
+  const GRAD = ['sexualContentGraphicAndNudity', 'horrorOrFearThemes', 'violenceRealisticProlongedGraphicOrSadistic', 'matureOrSuggestiveThemes', 'violenceCartoonOrFantasy', 'medicalOrTreatmentInformation', 'alcoholTobaccoOrDrugUseOrReferences', 'gamblingSimulated', 'violenceRealistic', 'profanityOrCrudeHumor', 'contests', 'gunsOrOtherWeapons', 'sexualContentOrNudity'];
+  for (const k of JANEJ) ny[k] = false;
+  for (const k of GRAD) ny[k] = 'NONE';
   for (const [k, v] of Object.entries(a)) {
-    if (k === 'kidsAgeBand' || k === 'ageRatingOverride' || k === 'koreaAgeRatingOverride') continue;
+    if (k in ny || ['kidsAgeBand', 'ageRatingOverride', 'ageRatingOverrideV2', 'koreaAgeRatingOverride'].includes(k)) continue;
     if (typeof v === 'boolean') ny[k] = false; else if (typeof v === 'string' && /^(NONE|INFREQUENT_OR_MILD|FREQUENT_OR_INTENSE|INFREQUENT_MILD|FREQUENT_INTENSE)$/.test(v)) ny[k] = 'NONE';
   }
   try { await call('PATCH', `/v1/ageRatingDeclarations/${ald.data.id}`, { data: { type: 'ageRatingDeclarations', id: ald.data.id, attributes: ny } }); console.log(`✓ åldersgräns: ${Object.keys(ny).length} fält satta till inget → 4+`); }

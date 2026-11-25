@@ -40,6 +40,12 @@ let html = fs.readFileSync(idx, 'utf8');
 const n = (html.match(cdn) || []).length;
 if (n !== 1) throw new Error(`index.html: hittade ${n} three.js-rader från cdnjs (väntade 1) – uppdatera app/build.mjs`);
 html = html.replace(cdn, '<script src="vendor/three.min.js" defer></script>');
+// vilken app: app/package.json "applage" ('telefon' = Smartphone Empire, 'konsol' = Console Empire) – js/core/applage.js
+const APPLAGE = JSON.parse(fs.readFileSync(path.join(APP, 'package.json'), 'utf8')).applage;
+if (!['telefon', 'konsol'].includes(APPLAGE)) throw new Error('app/package.json saknar "applage" (telefon eller konsol)');
+html = html.replace('<script type="module" src="js/main.js"></script>', `<script>window.MF_APPLAGE = '${APPLAGE}';</script>
+  <script type="module" src="js/main.js"></script>`);
+if (!html.includes('window.MF_APPLAGE')) throw new Error('index.html: hittade inte main.js-raden för applaget');
 if (/https?:\/\//.test(html.replace(/<!--[\s\S]*?-->/g, ''))) throw new Error('index.html har kvar externa adresser');
 fs.writeFileSync(idx, html);
 
@@ -51,4 +57,4 @@ if (yttre.length) throw new Error('externa adresser i spelet:\n' + yttre.join('\
 
 const antal = (function räkna(dir) { let k = 0; for (const e of fs.readdirSync(dir, { withFileTypes: true })) k += e.isDirectory() ? räkna(path.join(dir, e.name)) : 1; return k; })(WWW);
 const ver = fs.readFileSync(path.join(ROOT, 'js', 'version.js'), 'utf8').match(/VERSION = '([^']+)'/)?.[1];
-console.log(`app/www: spelet v${ver} – ${antal} filer, three.js lokalt`);
+console.log(`app/www: spelet v${ver} som ${APPLAGE === 'telefon' ? 'Smartphone Empire' : 'Console Empire'} – ${antal} filer, three.js lokalt`);

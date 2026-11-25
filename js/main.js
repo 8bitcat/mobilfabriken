@@ -11,6 +11,7 @@ import { SCENER } from './scener/index.js';
 import { ritaHandledning, handledningAktiv } from './scener/handledning.js';
 import { $t } from './core/i18n.js';
 import { startaAppuppdatering } from './core/appuppdatering.js';
+import { startKop, kopIBolaget } from './core/kop.js';
 
 export const DAG_SEK = 2;
 const $ = (s) => document.querySelector(s);
@@ -36,6 +37,7 @@ export const A = {
     if (!SCENER[namn]) namn = 'kontor';
     A.scen?.exit?.();
     A.dolj();
+    if (A.G) kopIBolaget(A.G);   // guldytor och köp som väntat (köp i appen)
     A.scenNamn = namn; A.scen = SCENER[namn](A, o); A.scen.enter?.();
     if (A.G) A.spara();
   },
@@ -188,6 +190,7 @@ function loop(nu) {
 // ---------- start ----------
 A.go('start');
 requestAnimationFrame(loop);
-startaAppuppdatering(A);   // bara i App Store-appen: nya spelversioner hämtas tyst och gäller vid nästa start
+startaAppuppdatering(A);
+startKop(A);   // bara i appen: köp som godkänns senare och engångsköpen från Apple-kontot   // bara i App Store-appen: nya spelversioner hämtas tyst och gäller vid nästa start
 window.__A = A;   // testrobotarna (tools/*.mjs) styr spelet härifrån
 window.__U = UI.U;

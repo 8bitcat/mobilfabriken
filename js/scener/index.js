@@ -14,5 +14,6 @@ import { meny } from './meny.js';
 import { gavor } from './gavor.js';
 import { studios } from './studios.js';
 import { reklam } from './reklam.js';
+import { butik } from './butik.js';
 
-export const SCENER = { start, kontor, design, personal, bygg, lansering, show, telefoner, forskning, nyheter, bolaget, meny, gavor, studios, reklam };
+export const SCENER = { start, kontor, design, personal, bygg, lansering, show, telefoner, forskning, nyheter, bolaget, meny, gavor, studios, reklam, butik };

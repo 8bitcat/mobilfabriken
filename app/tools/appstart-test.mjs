@@ -37,6 +37,14 @@ try { await page.waitForFunction(() => window.__A && window.__A.scen && window._
 await page.waitForTimeout(1500);
 const st = await page.evaluate(() => ({ three: typeof THREE !== 'undefined' && THREE.REVISION, scen: window.__A?.scenNamn, tips: !document.getElementById('hemskarm').classList.contains('dold'), vand: !document.getElementById('vand').classList.contains('dold'), canvas: document.getElementById('c').getBoundingClientRect().height }));
 await page.screenshot({ path: path.join(APP, 'out', 'appstart.png') });
+// Smartphone Empire: NYTT BOLAG går rakt till namnrutan för telefonspelet (inget konsolval)
+const nytt = await page.evaluate(async () => {
+  const UI = await import('/js/core/ui.js');
+  const bild = async () => { for (let q = 0; q < 2; q++) await new Promise((r) => requestAnimationFrame(r)); };
+  await bild(); const m = window.__U.mark['start-nytt']; if (!m) return { fel: 'ingen NYTT BOLAG-knapp' };
+  UI.pekareNer(m.x + 2, m.y + 2); UI.pekareUpp(m.x + 2, m.y + 2); await bild(); await bild();
+  return { namn: !!window.__U.mark['start-skapa'], konsolkort: !!window.__U.mark['start-kort-konsol'], applage: window.MF_APPLAGE };
+});
 await browser.close(); srv.close();
 const koll = [
   ['startmenyn kom', start && st.scen === 'start'],
@@ -46,6 +54,8 @@ const koll = [
   ['inga fel i konsolen', !fel.length, fel],
   ['hemskärmstipset dolt', !st.tips],
   ['ingen vänd-ruta', !st.vand],
+  ['appen är Smartphone Empire (MF_APPLAGE ' + nytt.applage + ')', nytt.applage === 'telefon'],
+  ['NYTT BOLAG går rakt till telefonspelet', nytt.namn && !nytt.konsolkort, nytt.fel ? [nytt.fel] : []],
   ['spelet fyller höjden (' + Math.round(st.canvas) + ' av 402 px)', st.canvas >= 400],
 ];
 let ok = true;

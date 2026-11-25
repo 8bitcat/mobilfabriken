@@ -18,6 +18,12 @@
 - Alla rivaler, konsoler, studios, spel, telefoner och tidningar har fått helt påhittade namn utan å, ä, ö:
   TENKO, HOSHI NOVA, TORA, AXIOM X, ORBITEK, SUPER PIPO, BLOCKFALL, BILTJUVEN VI, BLOCKRIKET, KVITTEN, SAMBA …
   Din egen telefon heter PIXELFON i stället för PIXEL PHONE.
+- Spelet finns på engelska (Smartphone Empire). Språket följer telefonen, och MENY har SPRÅK / LANGUAGE.
+  Pengar visas i dollar på engelska.
+- Appen Smartphone Empire / Mobilfabriken är bara telefonspelet från 2007 (Carl 2026-11-25: två appar, ren delning).
+  Konsolspelet blir en egen app, Console Empire, senare. Webben har båda lägena som förut.
+- BUTIK i appens MENY: investerare (pengar), forskningspaket, Guldpaketet (sex legendariska ytor) och Supporter
+  (16× fart). Köpen betalas via Apple och finns inte på webben.
 - Appen: spelet finns som iOS-app (mappen app/, Capacitor), byggd i Codemagic och på väg till App Store.
   I appen ligger three.js lokalt, så spelet går utan internet. Tipset om hemskärmen visas inte i appen.
 

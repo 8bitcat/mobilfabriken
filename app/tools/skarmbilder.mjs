@@ -33,7 +33,7 @@ const KB = LANG === 'en' ? 'PIXELBOX CO' : 'PIXELBOX AB', TB = LANG === 'en' ? '
 const K = `nyttTestspel({ lage: 'konsol', namn: '${KB}' });`, KLANS = K + ' forstaKonsolen(); lanseraKonsolen();';
 const TILL_KLAR = " let n = 0; while (A.G.projekt[0].status !== 'klar' && n++ < 300) dagar(1);";
 // ordningen är ordningen i App Store (högst tio)
-const SCENER = [
+const SCENER_ALLA = [
   ['startval', BILD + " A.go('start'); await bild(); const m = window.__U.mark['start-nytt']; const UI = await import('/js/core/ui.js'); UI.pekareNer(m.x + 2, m.y + 2); UI.pekareUpp(m.x + 2, m.y + 2);"],
   ['konsol-design', K + " A.go('design', { steg: " + opt('ksteg', 6) + " });"],
   ['show', K + ' forstaKonsolen();' + TILL_KLAR + " const r = proj.lansera(A.G, A.G.projekt[0].id, 'tv'); A.G.ko = []; A.go('show', { produkt: r.produkt.id, t: 30 });"],
@@ -44,6 +44,22 @@ const SCENER = [
   ['forskning', K + " A.go('forskning', { nod: 'k-mobil' });"],
   ['telefoner', KLANS + " dagar(60); A.G.ko = []; A.go('telefoner');"],
 ];
+// Smartphone Empire (--app telefon, standard sedan 2026-11-25): bara telefonspelet från 2007, appläget ?applage=telefon
+const TB2 = TB;
+const T = `nyttTestspel({ namn: '${TB2}' });`, TKLAR = " let n = 0; while (A.G.projekt[0].status !== 'klar' && n++ < 300) dagar(1);";
+const SCENER_TELEFON = [
+  ['start', BILD + " A.go('start'); await bild(); const m = window.__U.mark['start-nytt']; const UI = await import('/js/core/ui.js'); UI.pekareNer(m.x + 2, m.y + 2); UI.pekareUpp(m.x + 2, m.y + 2);"],
+  ['design', T + ` A.go('design', { steg: ${opt('tsteg', 12)} });`],
+  ['show', T + ' forstaTelefonen();' + TKLAR + " const r = proj.lansera(A.G, A.G.projekt[0].id, 'natet'); A.G.ko = []; A.go('show', { produkt: r.produkt.id, t: 30 });"],
+  ['kontor', T + " forstaTelefonen(); dagar(8); A.G.ko = []; A.go('kontor');"],
+  ['telefoner', T + ' forstaTelefonen();' + TKLAR + " proj.lansera(A.G, A.G.projekt[0].id, 'natet'); dagar(70); A.G.ko = []; A.go('telefoner');"],
+  ['design-farg', T + " A.go('design', { steg: 10 });"],
+  ['forskning', T + " dagar(40); A.G.ko = []; A.go('forskning', { nod: 'funk-gps' });"],
+  ['lansering', T + ' forstaTelefonen();' + TKLAR + " A.G.ko = []; A.go('lansering', { projekt: A.G.projekt[0].id });"],
+  ['bolaget', T + ' forstaTelefonen();' + TKLAR + " proj.lansera(A.G, A.G.projekt[0].id, 'natet'); dagar(120); A.G.ko = []; A.go('bolaget');"],
+];
+const APPV = opt('app', 'telefon');   // telefon = Smartphone Empire, alla = webbens båda lägen
+const SCENER = APPV === 'telefon' ? SCENER_TELEFON : SCENER_ALLA;
 
 const MIME = { '.html': 'text/html', '.js': 'text/javascript', '.mjs': 'text/javascript', '.css': 'text/css', '.otf': 'font/otf', '.json': 'application/json', '.png': 'image/png', '.webmanifest': 'application/manifest+json' };
 const srv = http.createServer((req, res) => {
@@ -69,7 +85,7 @@ for (const [enhet, E] of Object.entries(ENHETER)) {
     const pagefel = [];
     page.on('pageerror', (e) => pagefel.push(String(e.message || e)));
     page.on('console', (m) => { if (m.type() === 'error' && !/deprecated with r150/.test(m.text())) pagefel.push(m.text()); });
-    await page.goto(`${bas}/index.html?test${LANG === 'sv' ? '' : '&lang=' + LANG}`);
+    await page.goto(`${bas}/index.html?test${LANG === 'sv' ? '' : '&lang=' + LANG}${APPV === 'telefon' ? '&applage=telefon' : ''}`);
     await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 15000 });
     await page.waitForTimeout(400);
     const r = await page.evaluate(async (kod) => {
@@ -77,9 +93,10 @@ for (const [enhet, E] of Object.entries(ENHETER)) {
       const sim = await import('/js/sim/spel.js'), pers = await import('/js/sim/personal.js'), kont = await import('/js/sim/kontor.js'), tick = await import('/js/sim/tick.js'), des = await import('/js/sim/design.js'), proj = await import('/js/sim/projekt.js');
       const nyttTestspel = (o = {}) => { const G = sim.nyttSpel({ namn: o.namn || (o.lage === 'konsol' ? 'PIXELBOX AB' : 'MIKROVÅG MOBIL'), seed: o.seed ?? 7, lage: o.lage || 'telefon' }); pers.startKandidater(G); A.G = G; G.installningar.autopaus = false; G.handledning.av = true; kont.placera(G, { typ: 'bord', i: 0 }, 'fallbord'); kont.placera(G, { typ: 'bord', i: 1 }, 'fallbord'); pers.anstall(G, G.kandidater[0].id); pers.anstall(G, G.kandidater[0].id); return G; };
       const dagar = (n) => { for (let i = 0; i < n; i++) tick.dagTick(A.G); };
+      const forstaTelefonen = () => { const d = des.nyDesign(A.G); d.namn = proj.nastaNamn ? proj.nastaNamn(A.G, d) : 'PIXELFON 1'; proj.startaUtveckling(A.G, d); };
       const forstaKonsolen = () => { const d = des.nyDesign(A.G, null, 'konsol'); d.namn = 'PIXELBOX 1'; proj.startaUtveckling(A.G, d); };
       const lanseraKonsolen = (kamp = 'ingen') => { let n = 0; while (A.G.projekt[0] && A.G.projekt[0].status !== 'klar' && n++ < 300) tick.dagTick(A.G); return proj.lansera(A.G, A.G.projekt[0].id, kamp); };
-      try { const f = new Function('A', 'nyttTestspel', 'dagar', 'forstaKonsolen', 'lanseraKonsolen', 'proj', 'des', 'tick', 'return (async () => {' + kod + '})()'); await f(A, nyttTestspel, dagar, forstaKonsolen, lanseraKonsolen, proj, des, tick); }
+      try { const f = new Function('A', 'nyttTestspel', 'dagar', 'forstaKonsolen', 'lanseraKonsolen', 'proj', 'des', 'tick', 'forstaTelefonen', 'return (async () => {' + kod + '})()'); await f(A, nyttTestspel, dagar, forstaKonsolen, lanseraKonsolen, proj, des, tick, forstaTelefonen); }
       catch (e) { return { fel: String(e.stack || e) }; }
       A.G && (A.G.fart = 0);   // stilla bild
       return { ok: true, canvas: [document.getElementById('c').width, document.getElementById('c').height, document.getElementById('c').getBoundingClientRect().height] };

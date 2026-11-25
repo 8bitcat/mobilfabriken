@@ -19,7 +19,7 @@ workflows:
         distribution_type: app_store
         bundle_identifier: io.eightbitcat.mobilfabriken
       vars:
-        APP_STORE_APPLE_ID: 0             # FYLL I: Mobilfabriken i App Store Connect (App Information → Apple ID)
+        APP_STORE_APPLE_ID: 6839119728    # Smartphone Empire / Mobilfabriken i App Store Connect (App Information → Apple ID)
         XCODE_PROJECT: App.xcodeproj
         XCODE_SCHEME: App
       node: 22

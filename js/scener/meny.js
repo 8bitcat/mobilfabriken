@@ -8,6 +8,8 @@ import { VERSION, DATE, TITLE } from '../version.js';
 $n('Konsolfabriken 1982');
 import { arKonsolSpel } from '../sim/spel.js';
 import { $n, $t, LANG, LANGS, setLang } from '../core/i18n.js';
+import { APPLAGE } from '../core/applage.js';
+import { butikFinns } from '../core/kop.js';
 
 const OM = {
   telefon: $t('STARTA ETT MOBILBOLAG I ETT GARAGE 2007. DESIGNA TELEFONER, LÅT TEAMET BYGGA DEM, LANSERA OCH SÄLJ, FORSKA FRAM NY TEKNIK ÅR FÖR ÅR OCH VÄX TILL ETT HUVUDKONTOR.'),
@@ -23,6 +25,7 @@ export function meny(A) {
     rita() {
       rect(0, 14, W, 188, 0x0b0e1c);
       textB($t('MENY'), 4, 16, F.guld);
+      if (butikFinns()) knapp(300, 15, 76, 11, $t('BUTIK'), { stil: 'guld', klick: () => A.go('butik'), namn: 'meny-butik' });
       panel(8, 28, 180, 168);
       text($t('INSTÄLLNINGAR'), 14, 33, F.text);
       // etiketten slutar före knappen (x 130), förklaringen ligger under knappen
@@ -40,9 +43,9 @@ export function meny(A) {
       knapp(14, 182, 168, 10, $t('TILLBAKA TILL SPELET'), { stil: 'gron', klick: () => A.go('kontor') });
       panel(196, 28, 180, 168);
       text($t('OM SPELET'), 202, 33, F.text);
-      textB($t('MOBILFABRIKEN'), 202, 44, F.guld);
+      textB(APPLAGE === 'konsol' ? $t('KONSOLIMPERIET') : $t('MOBILFABRIKEN'), 202, 44, F.guld);
       text($t`VERSION ${VERSION} · ${DATE}`, 202, 56, F.dim);
-      text($t(TITLE), 202, 63, F.dim);
+      if (APPLAGE !== 'telefon') text($t(TITLE), 202, 63, F.dim);
       stycke(OM[konsol ? 'konsol' : 'telefon'], 202, 76, 168, F.dim);
       text($t('TANGENTER'), 202, 122, F.text);
       stycke($t('MELLANSLAG = PAUS · 1-4 = FART · ESC = TILL KONTORET · PILAR = BLÄDDRA I DESIGNERN'), 202, 130, 168, F.dim);

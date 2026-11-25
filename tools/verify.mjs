@@ -59,6 +59,8 @@ const kScener = [
   ['reklam', KLANS + " A.G.ko = []; A.go('reklam', { konsol: A.G.produkter[0].id, t: 5 });"],
 ];
 for (const [namn, kod] of kScener) steg('konsolscen ' + namn, kor('snap.mjs', ['verify-k-' + namn, kod], 120000), (u) => { const j = JSON.parse(u.slice(0, u.lastIndexOf('}') + 1)); return j.resultat.ok !== false && !j.fel.length; });
+// köpen i appen (js/core/kop.js, butiken) med låtsat StoreKit, och att webben inte har någon butik
+steg('köp i appen (låtsat StoreKit)', kor('../app/tools/kop-test.mjs', [], 600000), (u) => /✓ kop-test/.test(u));
 // ENGELSKAN (2026-11-24, docs/SPRAK.md): varje text har en översättning, och alla scener ritar utan konsolfel på engelska
 steg('engelska: alla texter översatta', kor('i18n-nycklar.mjs'), (u) => /en: (\d+)\/\1 översatta/.test(u));
 for (const [namn, kod] of [...scener.map(([n, k]) => ['t-' + n, k]), ...kScener.map(([n, k]) => ['k-' + n, k])]) steg('engelska ' + namn, kor('snap.mjs', ['verify-en-' + namn, kod, '--lang', 'en'], 120000), (u) => { const j = JSON.parse(u.slice(0, u.lastIndexOf('}') + 1)); return j.resultat.ok !== false && !j.fel.length; });

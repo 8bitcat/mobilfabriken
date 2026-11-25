@@ -29,7 +29,7 @@ export const dec = (x, d = 1) => (x < 0 ? '-' : '') + (EN ? Math.abs(x).toFixed(
 function dollar(n, kort) {
   const a = Math.abs(n), s = n < 0 ? '-' : '';
   if (a >= 1e8) return s + '$' + dec(a / 1e9, a >= 1e10 ? 0 : 1) + 'B';
-  if (a >= 1e6 || (kort && a >= 1e5)) return s + '$' + dec(a / 1e6) + 'M';
+  if (a >= 1e6) return s + '$' + dec(a / 1e6) + 'M';
   if (kort && a >= 1e3) return s + '$' + Math.round(a / 1e3) + 'K';
   return s + '$' + grupp(a);
 }
