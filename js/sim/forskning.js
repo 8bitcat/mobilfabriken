@@ -18,7 +18,8 @@ import { APPLAGE } from '../core/applage.js';
 export function fpPris(G, nod) {
   const ar = arsdel(G.dag);
   const f = ar <= nod.ar ? 1 : Math.max(0.3, Math.pow(0.88, ar - nod.ar));
-  return Math.max(1, Math.round(nod.fp * f));
+  // konsolteknikerna kostar 2,5 gånger mer: FP samlades annars på hög i konsolspelet (484 kvar efter tre år)
+  return Math.max(1, Math.round(nod.fp * f * (nod.linje === 'konsol' && nod.ar > 1982 ? 2.5 : 1)));   // 1982 (handledningen) som förut
 }
 // noder som också kostar pengar (TELEFONAVDELNINGEN): en ny avdelning är ett bygge, inte bara forskning
 export const krPris = (G, nod) => (nod.kostnadKr ? Math.round(nod.kostnadKr * prisniva(G) / 10_000) * 10_000 : 0);

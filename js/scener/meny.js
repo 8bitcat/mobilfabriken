@@ -3,6 +3,7 @@
 import { F, W, rect, text, textB, knapp, panel, stycke, ikon } from '../core/ui.js';
 import { hud, flikrad } from './ram.js';
 import { sattLjud, ljudPa } from '../core/ljud.js';
+import { musikPa, sattMusik } from '../core/musik.js';
 import { VERSION, DATE, TITLE } from '../version.js';
 // versionstitlarna som nycklar (TITLE skrivs i js/version.js och visas med $t nedan)
 $n('Konsolfabriken 1982');
@@ -31,7 +32,8 @@ export function meny(A) {
       // etiketten slutar före knappen (x 130), förklaringen ligger under knappen
       const vaxel = (y, namn, pa, klick, info) => { text(namn, 14, y + 2, F.text); knapp(130, y, 52, 10, pa ? $t('PÅ') : $t('AV'), { stil: pa ? 'gron' : 'morkt', klick }); if (info) text(info, 14, y + 12, F.dim2); };
       vaxel(44, $t('PAUSA NÄR NÅGOT HÄNDER'), G.installningar.autopaus, () => { G.installningar.autopaus = !G.installningar.autopaus; }, $t('BYGGE KLART, FORSKNING KLAR, MÅL …'));
-      vaxel(64, $t('LJUD'), ljudPa(), () => { sattLjud(!ljudPa()); G.installningar.ljud = ljudPa(); });
+      vaxel(62, $t('LJUD'), ljudPa(), () => { sattLjud(!ljudPa()); G.installningar.ljud = ljudPa(); });
+      vaxel(74, $t('MUSIK'), musikPa(), () => sattMusik(!musikPa()));
       // samma inställning gäller konsolerna och (från 2007) telefonerna
       text(konsol ? $t('KONSOLEN RITAS SOM') : $t('TELEFONEN RITAS SOM'), 14, 86, F.text);
       knapp(14, 94, 80, 10, $t('RIKTIG 3D'), { stil: 'dim', aktiv: G.installningar.telefon !== 'pixel', klick: () => { G.installningar.telefon = '3d'; } });

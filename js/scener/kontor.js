@@ -204,7 +204,13 @@ function panelen(A) {
   const pagar = G.forskning.pagar[0];
   text($t('LABBET'), lx, y + 5, F.bla2);
   if (pagar) { const n = NOD[pagar.nod]; text(kapa($t(n.namn), 100), lx, y + 13, F.text); text($t`${pagar.dagarKvar} DAGAR KVAR`, lx, y + 21, F.dim); matare(lx, y + 29, 90, 3, 1 - pagar.dagarKvar / pagar.totalt, F.bla); }
-  else { text($t('LEDIGT – VÄLJ NY TEKNIK'), lx, y + 13, F.orange2); knapp(lx, y + 23, 70, 10, $t('FORSKNING'), { stil: 'bla', klick: () => A.go('forskning') }); }
+  else {
+    // ledigt labb blinkar (Carl 2026-11-25: "när man inte forskar gör så att den rutan blinkar så man går dit")
+    const blink = Math.floor(A.t * 2.5) % 2 === 0;
+    if (blink) ram(lx - 3, y + 2, 98, 34, F.orange2);
+    text($t('LEDIGT – VÄLJ NY TEKNIK'), lx, y + 13, blink ? F.orange2 : F.guld);
+    knapp(lx, y + 23, 70, 10, $t('FORSKNING'), { stil: blink ? 'orange' : 'bla', klick: () => A.go('forskning'), namn: 'kontor-forskning' });
+  }
   const harBord = G.kontor.bord.some(Boolean);
   // konsolspelet: DESIGNA KONSOL (med telefonavdelningen kan designern göra båda)
   const designa = !arKonsolSpel(G) ? $t('DESIGNA TELEFON') : G.flaggor.mobil ? $t('NY DESIGN') : $t('DESIGNA KONSOL');

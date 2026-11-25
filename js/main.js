@@ -12,6 +12,7 @@ import { ritaHandledning, handledningAktiv } from './scener/handledning.js';
 import { $t } from './core/i18n.js';
 import { startaAppuppdatering } from './core/appuppdatering.js';
 import { startKop, kopIBolaget } from './core/kop.js';
+import { uppdateraMusik } from './core/musik.js';
 
 export const DAG_SEK = 2;
 const $ = (s) => document.querySelector(s);
@@ -53,9 +54,19 @@ export const A = {
   textfalt(rect, varde, klar, max = 22) {
     const k = skala / dpr;
     falt.style.display = 'block'; falt.maxLength = max;
-    falt.style.left = Math.round(rect.x * k) + 'px'; falt.style.top = Math.round(rect.y * k) + 'px';
-    falt.style.width = Math.round(rect.w * k) + 'px'; falt.style.height = Math.round(rect.h * k) + 'px';
-    falt.style.fontSize = Math.max(16, Math.round(rect.h * k * 0.62)) + 'px';   // under 16 px zoomar iPhone in
+    falt.enterKeyHint = 'done';   // "Klar" på iPhones tangentbord – Enter stänger fältet
+    if (pek()) {
+      // Pekskärm (Carl 2026-11-25: "när man skriver namnet så täcker tangentbordet hela skärmen"): i liggande läge tar
+      // tangentbordet nedre halvan, så fältet läggs högst upp på skärmen, stort, medan man skriver – både bolagsnamnet
+      // och namnet på konsolen eller telefonen. Fältet sitter i #spel, så positionen räknas från spelets övre vänstra hörn.
+      falt.classList.add('upp');
+      placeraUpp();
+    } else {
+      falt.classList.remove('upp');
+      falt.style.left = Math.round(rect.x * k) + 'px'; falt.style.top = Math.round(rect.y * k) + 'px';
+      falt.style.width = Math.round(rect.w * k) + 'px'; falt.style.height = Math.round(rect.h * k) + 'px';
+      falt.style.fontSize = Math.max(16, Math.round(rect.h * k * 0.62)) + 'px';   // under 16 px zoomar iPhone in
+    }
     falt.value = varde || ''; falt.focus(); falt.select();
     A._falt = (v, slut) => klar(v.toUpperCase().replace(/[^A-ZÅÄÖÉ0-9 &.!?\-+]/g, ''), slut);
   },
@@ -66,6 +77,14 @@ falt.addEventListener('input', () => { if (A._falt) A._falt(falt.value, false); 
 falt.addEventListener('keydown', (e) => { if (e.key === 'Enter' || e.key === 'Escape') { e.preventDefault(); A.dolj(); } e.stopPropagation(); });
 falt.addEventListener('blur', () => setTimeout(() => { if (document.activeElement !== falt && falt.style.display !== 'none') A.dolj(); }, 50));
 
+// textfältet högst upp på pekskärmar (se A.textfalt) – räknas om när tangentbordet krymper vyn och spelet skalas om
+function placeraUpp() {
+  if (!falt.classList.contains('upp')) return;
+  const r = stage.getBoundingClientRect(), vw = window.innerWidth, w = Math.min(vw - 32, 560);
+  falt.style.left = Math.round((vw - w) / 2 - r.left) + 'px';
+  falt.style.top = Math.round((window.visualViewport?.offsetTop || 0) + 8 - r.top) + 'px';
+  falt.style.width = w + 'px'; falt.style.height = '48px'; falt.style.fontSize = '26px';
+}
 // ---------- skalning ----------
 const pek = () => matchMedia('(pointer: coarse)').matches;   // mobil eller surfplatta
 function fit() {
@@ -81,10 +100,12 @@ function fit() {
   ctx.imageSmoothingEnabled = false;
   const stående = pek() && h > w && !A.staendeOk;
   $('#vand').classList.toggle('dold', !stående);
+  if (A._falt) placeraUpp();
 }
 addEventListener('resize', fit);
 addEventListener('orientationchange', () => setTimeout(fit, 250));
 window.visualViewport?.addEventListener('resize', fit);
+window.visualViewport?.addEventListener('scroll', () => { if (A._falt) placeraUpp(); });
 $('#vand-anda').addEventListener('click', () => { A.staendeOk = true; fit(); });
 fit();
 
@@ -122,16 +143,20 @@ document.addEventListener('fullscreenchange', () => setTimeout(fit, 50));
 const lokal = (e) => { const r = cv.getBoundingClientRect(); return [Math.floor((e.clientX - r.left) / r.width * UI.W), Math.floor((e.clientY - r.top) / r.height * UI.H)]; };
 cv.addEventListener('pointerdown', (e) => {
   Ljud.lasUpp(); if (A._falt) A.dolj();
-  cv.setPointerCapture(e.pointerId);
+  try { cv.setPointerCapture(e.pointerId); } catch { /* syntetiska eller redan släppta pekare */ }
   const [x, y] = lokal(e);
   // fingret är grövre än musen: ett tryck strax bredvid en knapp räknas som en träff
-  if (UI.pekareNer(x, y, e.pointerType === 'mouse' ? 0 : 3)) Ljud.spela('klick');
-  else A.scen?.ner?.(x, y);
+  if (e.pointerType === 'mouse') { if (UI.pekareNer(x, y, 0)) Ljud.spela('klick'); else A.scen?.ner?.(x, y); }
+  else {
+    // pekskärm: klicket väntar till fingret släpps (UI.pekareNerPek), så att man kan dra/skrolla från en knapp eller rad
+    const r = UI.pekareNerPek(x, y, 3);
+    if (r === 'vantar' || r === 'inget') A.scen?.ner?.(x, y);   // inte under en spärrad ruta
+  }
   e.preventDefault();
 });
-cv.addEventListener('pointermove', (e) => { const [x, y] = lokal(e); UI.pekareFlytta(x, y); A.scen?.flytta?.(x, y); });
-cv.addEventListener('pointerup', (e) => { const [x, y] = lokal(e); UI.pekareUpp(x, y); A.scen?.upp?.(x, y); });
-cv.addEventListener('pointercancel', (e) => { const [x, y] = lokal(e); UI.pekareUpp(x, y); });
+cv.addEventListener('pointermove', (e) => { const [x, y] = lokal(e); if (e.pointerType === 'mouse') UI.pekareFlytta(x, y); else UI.pekareFlyttaPek(x, y); A.scen?.flytta?.(x, y); });
+cv.addEventListener('pointerup', (e) => { const [x, y] = lokal(e); if (e.pointerType === 'mouse') UI.pekareUpp(x, y); else if (UI.pekareUppPek(x, y)) Ljud.spela('klick'); A.scen?.upp?.(x, y); });
+cv.addEventListener('pointercancel', (e) => { const [x, y] = lokal(e); UI.U.vantar = null; UI.pekareUpp(x, y); });
 cv.addEventListener('pointerleave', () => { if (!UI.U.drag) { UI.U.mus.x = -1; UI.U.mus.y = -1; } });
 cv.addEventListener('wheel', (e) => { const [x, y] = lokal(e); if (UI.hjul(x, y, Math.sign(e.deltaY) * 18)) e.preventDefault(); }, { passive: false });
 addEventListener('keydown', (e) => {
@@ -169,11 +194,12 @@ function loop(nu) {
     let i = 0;
     while (G.ko.length && i++ < 20) {
       const h = G.ko.shift();
-      if (h.ljud) Ljud.spela(h.ljud);
+      if (h.ljud) Ljud.spela(h.ljud); else if (Ljud.LJUD_FOR_TYP[h.typ]) Ljud.spela(Ljud.LJUD_FOR_TYP[h.typ]);
       if (!Notiser.ta(h, A)) A.handelser.push(h);
     }
     if (A.handelser.length > 60) A.handelser.splice(0, A.handelser.length - 60);
   }
+  uppdateraMusik(A);   // musiken följer epoken och skärmen (js/core/musik.js)
   UI.borja(b, A.t);
   b.fillStyle = '#0b0e1c'; b.fillRect(0, 0, UI.W, UI.H);
   try { A.scen?.rita(b, dt); } catch (e) { console.error(e); b.fillStyle = '#c9323a'; b.fillRect(0, 0, UI.W, 10); UI.text($t`FEL: ${String(e.message).toUpperCase().slice(0, 80)}`, 4, 2, 0xffffff); }

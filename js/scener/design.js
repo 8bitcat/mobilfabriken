@@ -14,7 +14,7 @@ import { linjeAv } from '../data/linjer.js';
 import { NOD } from '../data/noder.js';
 import { nyDesign, telAv, tum, styckkostnad, prisNu, harDel, harKaross, harFunktion, harEnhet, antalLinserTillatna, minRam, minDjup, forvantan, fraschhet, teknik, betyg } from '../sim/design.js';
 import { aktivaEffekter, rimligtPris, prognos, snitt } from '../sim/marknad.js';
-import { kanStarta, startaUtveckling, byggdagar, fabriksPris } from '../sim/projekt.js';
+import { kanStarta, startaUtveckling, byggdagar, fabriksPris, prisVarde } from '../sim/projekt.js';
 import { status as nodStatus } from '../sim/forskning.js';
 import { arKonsolSpel } from '../sim/spel.js';
 import { kr, dec, proc, arAv, klamp } from '../sim/bas.js';
@@ -230,7 +230,9 @@ export function design(A, o = {}) {
       const pmin = Math.max(100, Math.round(styck * 1.05 / 10) * 10), pmax = Math.max(pmin + 100, Math.round(rim * 2.4 / 10) * 10);
       reglage(RX, y + 1, RW, d.pris, pmin, pmax, (v) => { d.pris = Math.round(v / 10) * 10; }, { namn: 'design-pris' }); y += 10;
       rad($t('MARGINAL'), proc(marg / 100), marg < 30 ? F.rod2 : marg < 55 ? F.guld : F.gron2);
-      rad($t('RIMLIGT PRIS'), '~' + kr(rim), F.dim);
+      // priset i betyget (Carl 2026-11-25): för dyrt drar betyget, billigt ger lite plus
+      const pv = prisVarde(G.dag, snitt(G.dag) + 0.3, d.pris, d.enhet);
+      rad($t('RIMLIGT PRIS'), '~' + kr(rim) + (pv.justering ? ` ${pv.justering > 0 ? '+' : ''}${dec(pv.justering, 1)}` : ''), pv.justering < 0 ? F.rod2 : pv.justering > 0 ? F.gron2 : F.dim);
       const tk = teknik(d, ar, eff), inom = tk.per.filter((p) => p.poang >= 1).length;
       rad($t('KRAV'), $t`${inom} AV 13 DELAR I NIVÅ`, inom >= 12 ? F.gron2 : inom >= 8 ? F.guld : F.rod2);
       rad($t('KÖPARE/VECKA'), '~' + Math.round(prognos(G, d, 6.2 + (inom - 7) * 0.25, d.pris)), F.text);

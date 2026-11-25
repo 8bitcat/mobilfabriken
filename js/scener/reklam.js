@@ -281,7 +281,8 @@ export function reklam(A, o = {}) {
   const f = filmen(G, o), spel = f.typ === 'spel';
   // tidslinjen: rummet → (spelet i helbild) → slutbilden → tona ut
   const RUM_SLUT = spel ? 2.8 : 3.0, ZOOM = 0.4, SLUT = spel ? 5.0 : 3.0, LANGD = spel ? 8.2 : 7.4;
-  let t = o.t || 0, borta = false, ljud = t >= SLUT ? 1 : 0;   // (o.t: börja mitt i filmen – skärmbilder och robotar)
+  let t = o.t || 0, borta = false, ljud = t >= SLUT ? 1 : 0;
+  if (!o.t) setTimeout(() => A.ljud('jingel'), 150);   // tv-jingeln när filmen börjar   // (o.t: börja mitt i filmen – skärmbilder och robotar)
   const tillbaka = () => { if (borta) return; borta = true; A.go(o.tillbaka && o.tillbaka !== 'reklam' ? o.tillbaka : 'kontor', o.tillbakaOpts || {}); };
   return {
     tid: false,

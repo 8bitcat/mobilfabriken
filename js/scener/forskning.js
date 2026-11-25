@@ -98,6 +98,9 @@ export function forskning(A, o = {}) {
       }, skR);
       // tidslinjen
       rect(KX, 27, W - KX - 2, 175, 0x090b16);
+      // hjulet rullar trädet. Ytan ligger UNDER grenarna och spärrar inte: ett tryck på en gren väljer den, och ett
+      // drag på tom yta går till scenens drag (förut låg den ovanpå med block och slukade både tryck och drag)
+      hit(KX, VY, W - KX - 2, VH, { hjul: (dy) => { ky += dy; klampa(); } });
       // årsrubriker
       ctx.save(); ctx.beginPath(); ctx.rect(VX, 27, VW, 175); ctx.clip();
       for (let a = T.ar0; a <= AR1; a++) {
@@ -163,7 +166,6 @@ export function forskning(A, o = {}) {
       const nx = VX + (arsdel(G.dag) - T.ar0) * KOLW + 23 - kx;
       rect(Math.round(nx), VY, 1, VH, F.guld2);
       ctx.restore();
-      hit(KX, VY, W - KX - 2, VH, { hjul: (dy) => { ky += dy; klampa(); }, block: true });
       knapp(W - 46, 190, 42, 10, $t('I DAG'), { stil: 'morkt', klick: () => { kx = iDag(); klampa(); } });
       // vald nod (eller varför MOBIL är låst)
       if (vald) detalj(NOD[vald]);
@@ -204,7 +206,7 @@ export function forskning(A, o = {}) {
   function detalj(n) {
     const st = status(G, n), kat = katAv(n.kat), x = KX + 4, y = 148, w = W - KX - 10, h = 50;
     const spar = sparrad(n), kronor = krPris(G, n);
-    panel(x, y, w, h, { fyll: F.panel, kant: spar ? F.rosa : kat.farg });
+    panel(x, y, w, h, { fyll: F.panel, kant: spar ? F.rosa : kat.farg }); hit(x, y, w, h, { block: true });   // grenarna bakom rutan väljs inte
     text(`${$t(kat.namn)} · ${spar ? $t('KRÄVER TELEFONAVDELNINGEN') : { klar: $t('FORSKAD'), pagar: $t('PÅGÅR'), redo: $t('REDO'), uppfinns: $t`UPPFINNS ${n.ar}`, last: $t('LÅST') }[st]}`, x + 5, y + 4, spar ? F.rosa : kat.farg);
     textB(kapa($t(n.namn), 150), x + 5, y + 11, F.text);
     const pris = fpPris(G, n), t = dagar(G, n), bild = konsolSpel ? bildAv(n) : null;
@@ -229,7 +231,7 @@ export function forskning(A, o = {}) {
       if (konsolSpel) text(kapa($t`FORSKA FÖRST: ${n.foreg.filter((f) => !G.forskning.klara.includes(f)).map((f) => (NOD[f] ? $t(NOD[f].namn) : f)).join(', ')}`, w - 10), x + 5, y + 42, F.orange2);
       else text($t`FORSKA FÖREGÅNGAREN FÖRST: ${n.foreg.map((f) => (NOD[f] ? $t(NOD[f].namn) : f)).join(', ')}`, x + 5, y + 42, F.orange2);
     } else if (st === 'uppfinns') text($t('NY TEKNIK ÄR DYR I BÖRJAN OCH BLIR BILLIGARE VARJE ÅR.'), x + 5, y + 42, F.dim2);
-    knapp(x + w - 18, y + 3, 14, 9, 'X', { stil: 'morkt', klick: () => { vald = null; } });
+    knapp(x + w - 18, y + 3, 14, 9, 'X', { stil: 'morkt', namn: 'detalj-stang', klick: () => { vald = null; } });
     // TELEFONAVDELNINGEN kostar både FP och kronor: bredare knapp
     const kw = kronor ? 112 : 92, by = kronor ? 34 : 30, bh = kronor ? 12 : 16;
     if (st === 'redo') knapp(x + w - kw - 4, y + by, kw, bh, $t`STARTA · ${pris} FP${kronor ? ' + ' + kr(kronor, true) : ''}`, { stil: 'rosa', av: G.bolag.fp < pris || (kronor > 0 && G.bolag.kassa < kronor), namn: 'starta-forskning', klick: () => {
@@ -240,7 +242,7 @@ export function forskning(A, o = {}) {
   // MOBIL-fliken innan telefonavdelningen: vad som krävs och en knapp till noden
   function lastRuta() {
     const n = NOD[MOBIL], x = KX + 4, y = 148, w = W - KX - 10, h = 50, kronor = krPris(G, n);
-    panel(x, y, w, h, { fyll: F.panel, kant: F.rosa });
+    panel(x, y, w, h, { fyll: F.panel, kant: F.rosa }); hit(x, y, w, h, { block: true });
     rect(x + w - 30, y + 4, 24, 24, mixa(F.rosa, F.panel, 0.75)); ikon('telefon', x + w - 28, y + 6, F.rosa, 3);
     text($t('MOBIL · LÅST'), x + 5, y + 4, F.rosa);
     textB($t('KRÄVER TELEFONAVDELNINGEN'), x + 5, y + 11, F.text);

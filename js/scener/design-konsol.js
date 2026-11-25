@@ -11,7 +11,7 @@ import { NOD } from '../data/noder.js';
 import { GLIMT, glimtBild } from '../konsol/glimtar.js';
 import { harDel, harKaross, harFunktion, harEnhet, forvantan, fraschhet, prisNu, styckkostnad, teknik, betyg, kvalitetsMal, packinLediga } from '../sim/design.js';
 import { rimligtPris, veckoEfterfragan, snitt } from '../sim/marknad.js';
-import { byggdagar, fabriksPris, nastaNamn } from '../sim/projekt.js';
+import { byggdagar, fabriksPris, nastaNamn, prisVarde } from '../sim/projekt.js';
 import { klararKrav, packinDagar } from '../sim/konsol.js';
 import { status as nodStatus } from '../sim/forskning.js';
 import { kr, dec, proc } from '../sim/bas.js';
@@ -214,10 +214,12 @@ export function konsolSteg(api) {
       text(kapa(med == null ? $t`KÖPARE/V ~${utan}` : d.packin ? $t`KÖPARE/V ~${med} (UTAN ~${utan})` : $t`KÖPARE/V ~${utan} (MED SPEL ~${med})`, RW), RX, Math.min(yy, 168), F.dim2);
     },
     pris(y) {
-      const styck = styckkostnad(G, d, eff), b = gissning().betyg, rim = rimligt(b), marg = Math.round((1 - styck / d.pris) * 100);
+      const styck = styckkostnad(G, d, eff), b0 = gissning().betyg, rim = rimligt(b0), marg = Math.round((1 - styck / d.pris) * 100);
+      // priset i betyget (Carl 2026-11-25): väntat betyg räknar med priset, rimligt pris visar vad det gör
+      const pv = prisVarde(G.dag, b0, d.pris, d.enhet), b = Math.max(1, Math.min(10, b0 + pv.justering));
       y = radV(y, $t('ATT TILLVERKA'), kr(styck));
       y = radV(y, [$t('VÄNTAT BETYG'), $t('BETYG')], '~' + dec(b, 1), betygFarg(b));
-      y = radV(y, $t('RIMLIGT PRIS'), '~' + kr(rim), F.dim);
+      y = radV(y, $t('RIMLIGT PRIS'), '~' + kr(rim) + (pv.justering ? ` ${pv.justering > 0 ? '+' : ''}${dec(pv.justering, 1)}` : ''), pv.justering < 0 ? F.rod2 : pv.justering > 0 ? F.gron2 : F.dim);
       text($t('PRIS'), RX, y + 1, F.dim); textB(kr(d.pris), RX + RW, y, F.text, { just: 'h' }); y += 9;
       const pmin = Math.max(100, Math.round(styck * 1.05 / 10) * 10), pmax = Math.max(pmin + 100, Math.round(rim * 2.4 / 10) * 10);
       reglage(RX, y + 1, RW, d.pris, pmin, pmax, (v) => { d.pris = Math.round(v / 10) * 10; }, { namn: 'design-pris' }); y += 10;

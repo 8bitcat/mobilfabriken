@@ -94,7 +94,10 @@ export function dagligMoral(G) {
 export const lonPerManad = (G) => G.personal.reduce((s, p) => s + p.lon, 0);
 export function fpPerDag(G) {
   const v = kontorsVarden(G), mf = moralFaktor(G);
-  return G.personal.filter((p) => p.roll === 'forskare').reduce((s, p) => s + 0.6 * p.kraft * mf * v.forskning, 0) * (G.arv ? 1 + 0.1 * G.arv.saldaBolag : 1);
+  // forskningspoängen kommer långsamt i båda spelen (Carl 2026-11-25: "gör forskningen långsam … poängen går långsamt");
+  // konsolteknikerna efter 1982 kostar mer i stället, så att FP inte samlas på hög där (fpPris i forskning.js)
+  const per = arKonsolSpel(G) ? 0.4 : 0.6;   // konsolspelet: tekniken kommer år för år, så färre poäng räcker
+  return G.personal.filter((p) => p.roll === 'forskare').reduce((s, p) => s + per * p.kraft * mf * v.forskning, 0) * (G.arv ? 1 + 0.1 * G.arv.saldaBolag : 1);
 }
 // vad en sur figur ber om (pratbubbla i kontoret)
 export function onskemal(G) {

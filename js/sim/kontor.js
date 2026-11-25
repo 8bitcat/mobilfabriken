@@ -94,6 +94,6 @@ export function flytta(G, niva) {
   ko.niva = niva; ko.bord = fyll(ko.bord, k.bord); ko.golv = fyll(ko.golv, p.golv); ko.vagg = fyll(ko.vagg, p.vagg);
   const kNamn = k.namn;
   nyhet(G, 'DU', k.id === 'hk' ? $t`${G.bolag.namn} FLYTTAR IN I ETT EGET HUVUDKONTOR!` : $t`${G.bolag.namn} FLYTTAR IN I ETT ${kNamn}!`);
-  signal(G, 'stor', { rubrik: $t('NYTT KONTOR!'), text: $t`VÄLKOMMEN TILL ${kNamn}. ${k.bord} ARBETSPLATSER OCH ${k.labb} LABBSPÅR.`, paus: true, konfetti: true });
+  signal(G, 'stor', { rubrik: $t('NYTT KONTOR!'), text: $t`VÄLKOMMEN TILL ${kNamn}. ${k.bord} ARBETSPLATSER OCH ${k.labb} LABBSPÅR.`, paus: true, konfetti: true, ljud: 'flytt' });
   return { ok: true };
 }

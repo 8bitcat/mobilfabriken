@@ -76,7 +76,10 @@ export function show(A, o = {}) {
   let t = o.t || 0, spin = 0, ljudSteg = o.t ? 9 : 0;
   if (!p) return { tid: false, enter() { A.go('kontor'); }, rita() {} };
   const konsol = p.design.linje === 'konsol';
-  const C = konsol ? konsolCitat(p) : citat(p), stj = Math.max(1, Math.round(p.betyg / 2)), rim = Math.round(rimligtPris(p.lanseradDag, p.betyg, p.design.enhet) / 10) * 10;
+  const C0 = konsol ? konsolCitat(p) : citat(p);
+  // kritikerna säger vad de tycker om priset när det drar betyget (prisVarde i sim/projekt.js)
+  const pj = p.staplar?.prisJustering ?? 0;
+  const C = pj <= -1 ? [[C0[0][0], $t('ALLDELES FÖR DYR FÖR VAD DEN ÄR.')], ...C0.slice(1)] : pj >= 0.3 ? [[C0[0][0], konsol ? $t('MYCKET KONSOL FÖR PENGARNA.') : $t('MYCKET TELEFON FÖR PENGARNA.')], ...C0.slice(1)] : C0, stj = Math.max(1, Math.round(p.betyg / 2)), rim = Math.round(rimligtPris(p.lanseradDag, p.betyg, p.design.enhet) / 10) * 10;
   // konsolens reklamfilm (js/scener/reklam.js): { konsol } utan titel/spel ger konsollanseringen, där tv:n visar
   // spelet i lådan (glimten). En titel skulle göra filmen till en spelreklam. Tiden går igen när den tar slut.
   const reklam = () => { A.spelaTid(); A.go('reklam', { konsol: p.id, glimt: p.packin?.glimt || null, tillbaka: 'kontor' }); };
@@ -111,9 +114,12 @@ export function show(A, o = {}) {
         if (t > 5.8) { for (let i = 0; i < 5; i++) ikon('stjarna', x + 70 + i * 8, y + 13, i < stj ? 0xe8b230 : 0xb9ad94); rect(x + 70, y + 22, 50, 9, p.betyg >= 6 ? 0x2f8f46 : p.betyg >= 5 ? 0xe8b230 : 0x9e1b22); text(omdome(p.betyg), x + 95, y + 24, 0xffffff, { just: 'c' }); }
         // staplarna fylls en i taget
         const stapel = (namn, v, c, yy, start) => { const ff = Math.min(1, Math.max(0, (t - start) / 0.6)); text(namn, x + 6, yy, 0x3a3440); matare(x + 6, yy + 7, w - 12, 5, Math.min(1, v) * ff, c, { bak: 0xd8cfbe, segment: 10 }); };
-        stapel($t('TEKNIK MOT MARKNADEN'), p.staplar.teknik, 0x3a7bd5, y + 36, 3.0);
-        stapel($t('DESIGN'), p.staplar.design, 0x8e5bd1, y + 52, 3.5);
-        stapel($t('PUTS'), p.staplar.puts, 0x45b964, y + 68, 4.0);
+        // PRIS (Carl 2026-11-25): prisvärdheten – fjärde stapeln, finns på allt som lanserats från 0.3.0
+        const medPris = p.staplar.varde != null, sy = medPris ? 13 : 16;
+        stapel($t('TEKNIK MOT MARKNADEN'), p.staplar.teknik, 0x3a7bd5, y + 34, 3.0);
+        stapel($t('DESIGN'), p.staplar.design, 0x8e5bd1, y + 34 + sy, 3.5);
+        stapel($t('PUTS'), p.staplar.puts, 0x45b964, y + 34 + 2 * sy, 4.0);
+        if (medPris) stapel(p.staplar.prisJustering < 0 ? $t`PRIS (BETYG ${dec(p.staplar.prisJustering, 1)})` : p.staplar.prisJustering > 0 ? $t`PRIS (BETYG +${dec(p.staplar.prisJustering, 1)})` : $t('PRIS'), p.staplar.varde, p.staplar.prisJustering < 0 ? 0xd8452e : 0xe8a020, y + 34 + 3 * sy, 4.4);
         if (t > 6.0) {
           C.forEach(([tid, rad], i) => {
             const ff = Math.min(1, Math.max(0, (t - 6.0 - i * 0.5) / 0.6)); if (ff <= 0) return;

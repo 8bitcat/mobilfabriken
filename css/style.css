@@ -13,6 +13,8 @@ body { display: flex; align-items: center; justify-content: center; font-family:
 #gl { position: absolute; display: none; pointer-events: none; }
 #falt { position: absolute; display: none; font: 400 24px 'Pixelstad', monospace; text-transform: uppercase; color: var(--fg);
   background: #070912; border: 3px solid #6aa6ff; outline: none; padding: 0 8px; line-height: 1; letter-spacing: 1px; border-radius: 0; }
+/* pekskärm: fältet ligger högst upp medan man skriver (tangentbordet täcker annars), med skugga över spelet */
+#falt.upp { z-index: 6; box-shadow: 0 0 0 4000px rgba(5, 6, 15, 0.55), 4px 4px 0 #000; border-width: 4px; }
 #hemskarm { position: fixed; z-index: 5; left: 50%; bottom: calc(env(safe-area-inset-bottom, 0px) + 8px); transform: translateX(-50%);
   max-width: min(92vw, 520px); padding: 8px 12px; font: 400 16px/1.25 'Pixelstad', monospace; color: var(--fg); text-align: center;
   background: rgba(11, 14, 28, 0.94); border: 2px solid var(--guld); cursor: pointer; }

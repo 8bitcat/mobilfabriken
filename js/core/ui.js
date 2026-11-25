@@ -46,6 +46,35 @@ export function pekareNer(x, y, tol = 0) {
   else if (h.klick && !h.av) { h.klick(x, y); }
   return true;
 }
+// PEKSKÄRM (Carl 2026-11-25: "svårt att scrolla … trycker man på en gren så går det inte scrolla"): ett klick utlöses
+// först när fingret släpps och inte har rört sig. Rör fingret sig mer än 4 spelpixlar blir det ett drag: listan under
+// (en träff med drag) tar över, annars scenens eget drag (forskningsträdet, kontoret …). Dragträffar (reglage, listor)
+// startar direkt som förut. Musen använder pekareNer/pekareUpp som förut.
+const DRAGGRANS = 4;
+export function pekareNerPek(x, y, tol = 0) {
+  U.mus = { x, y, ned: true }; U.klickat = true; U.vantar = null;
+  let h = traff(U.hits, x, y);
+  if (tol > 0 && (!h || (!h.klick && !h.drag))) { const n = nara(U.hits, x, y, tol, h ? U.hits.lastIndexOf(h) : -1); if (n) { h = n; x = Math.max(n.x, Math.min(n.x + n.w - 1, x)); y = Math.max(n.y, Math.min(n.y + n.h - 1, y)); } }
+  if (h?.drag) { U.drag = h; h.drag(x, y, 'start'); return 'drag'; }
+  if (h?.klick && !h.av) { U.vantar = { h, x, y, x0: U.mus.x, y0: U.mus.y }; return 'vantar'; }
+  return h ? 'block' : 'inget';
+}
+export function pekareFlyttaPek(x, y) {
+  const v = U.vantar;
+  if (v && Math.abs(x - v.x0) + Math.abs(y - v.y0) > DRAGGRANS) {
+    U.vantar = null;
+    // en lista eller annan dragträff under fingrets startpunkt tar över draget
+    for (let i = U.hits.length - 1; i >= 0; i--) { const d = U.hits[i]; if (d.drag && v.x0 >= d.x && v.x0 < d.x + d.w && v.y0 >= d.y && v.y0 < d.y + d.h) { U.drag = d; d.drag(v.x0, v.y0, 'start'); break; } }
+  }
+  pekareFlytta(x, y);
+}
+// släppt: utlös klicket om fingret stod still. Returnerar true när ett klick utlöstes.
+export function pekareUppPek(x, y) {
+  const v = U.vantar; U.vantar = null;
+  pekareUpp(x, y);
+  if (v && !v.h.av) { v.h.klick(v.x, v.y); return true; }
+  return false;
+}
 export function pekareFlytta(x, y) { U.mus.x = x; U.mus.y = y; if (U.drag) U.drag.drag(x, y, 'drag'); }
 export function pekareUpp(x, y) { if (U.drag) { U.drag.drag(x, y, 'slut'); U.drag = null; } U.mus.ned = false; }
 export function hjul(x, y, dy) { for (let i = U.hits.length - 1; i >= 0; i--) { const h = U.hits[i]; if (h.hjul && x >= h.x && x < h.x + h.w && y >= h.y && y < h.y + h.h) { h.hjul(dy); return true; } } return false; }

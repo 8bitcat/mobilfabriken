@@ -158,6 +158,16 @@ export const kampanjer = (G, d) => (d?.linje === 'konsol'
   ? K_KAMPANJER.filter((k) => !k.fran || k.fran <= arAv(G.dag)).map((k) => ({ ...k, pris: Math.round(k.pris * prisniva(G) / 10_000) * 10_000 }))
   : KAMPANJER);
 export const FORSTA_PARTI = 100;
+// Prisets inverkan på betyget: kvoten pris / rimligt pris. Upp till 15 % över rimligt kostar inget; dyrare dras hårt
+// (−0,6 per 10 % över, högst −4); billigt ger plus (upp till +0,5 vid 80 % av rimligt). varde 0–1 är stapeln på showen.
+export function prisVarde(dag, betygUtanPris, pris, enhet) {
+  const rimligt = rimligtPris(dag, betygUtanPris, enhet), r = Math.max(0.1, pris) / Math.max(1, rimligt);
+  let justering = 0;
+  if (r <= 0.8) justering = 0.5;
+  else if (r < 1) justering = 0.5 * (1 - r) / 0.2;
+  else if (r > 1.15) justering = -Math.min(4, (r - 1.15) * 6);
+  return { justering: Math.round(justering * 10) / 10, varde: klamp(1.25 - 0.75 * r, 0, 1), kvot: r, rimligt };
+}
 // Kritikerna jämför med året som var högst ett halvår före lanseringen: ett bygge över nyår straffas inte,
 // men en färdig telefon som får ligga olanserad i åratal bedöms mot sin tid.
 export const betygsAr = (G, pr) => arAv(Math.max(pr.startDag ?? G.dag, G.dag - 180));
@@ -165,7 +175,11 @@ export function lanseringsKalkyl(G, prId, kampanjId) {
   const pr = G.projekt.find((p) => p.id === prId), K = kampanjer(G, pr.design), kamp = K.find((k) => k.id === kampanjId) || K[0];
   const eff = aktivaEffekter(G), styck = styckkostnad(G, pr.design, eff);
   const fabrik = fabriksPris(G, pr.design), parti = FORSTA_PARTI * styck;
-  const b = betygAv(G, pr.design, betygsAr(G, pr), pr.kvalitet, pr.kvalMal, pr.buggar, eff);
+  const b0 = betygAv(G, pr.design, betygsAr(G, pr), pr.kvalitet, pr.kvalMal, pr.buggar, eff);
+  // PRISET (Carl 2026-11-25: "pris som ett sätt att få betyg – value for price, om priset är för högt går betyget långt
+  // ner"): kritikerna jämför priset med vad prylen är värd (rimligt pris för betyget utan priset).
+  const v = prisVarde(G.dag, b0.betyg, pr.design.pris, pr.design.enhet);
+  const b = { ...b0, betyg: Math.round(klamp(b0.betyg + v.justering, 1, 10) * 10) / 10, varde: v.varde, prisJustering: v.justering };
   const hype = kamp.hype + (G.flaggor.influencer ? 0.6 : 0);
   const p = { id: '?' + pr.id, prognos: pr.id, packinStj: pr.packinStj, design: pr.design, betyg: b.betyg, pris: pr.design.pris, hype, lanseradDag: G.dag, aktiv: true };
   const ord = G.produkter; G.produkter = [...ord, p];
@@ -190,11 +204,11 @@ export function lansera(G, prId, kampanjId) {
   // en komponentbrist gäller bara partier som beställs medan den pågår (k.styck ovan, aktivaEffekter vid nya partier).
   const prod = {
     id: 't' + G.dag + '-' + G.produkter.length, design: d, namn: d.namn, lanseradDag: G.dag, ar: arAv(G.dag),
-    betyg: k.betyg.betyg, staplar: { teknik: Math.min(1, k.betyg.teknik), design: k.betyg.design, puts: k.betyg.puts }, buggar: pr.buggar, kvalitet: pr.kvalitet,
+    betyg: k.betyg.betyg, staplar: { teknik: Math.min(1, k.betyg.teknik), design: k.betyg.design, puts: k.betyg.puts, varde: k.betyg.varde, prisJustering: k.betyg.prisJustering }, buggar: pr.buggar, kvalitet: pr.kvalitet,
     pris: d.pris, styck: styckkostnad(G, d), kampanj: k.kamp.id, hype: k.kamp.hype + (G.flaggor.influencer ? 0.6 : 0),
     lager: FORSTA_PARTI, tillverkade: FORSTA_PARTI, bestallning: null, salda: 0, missade: 0, intakt: 0,
     kostnader: { fabrik: k.fabrik, utveckling: pr.kostnad, reklam: k.kamp.pris, tillverkning: k.parti },
-    veckor: [], veckaNu: 0, forraVeckan: 0, aktiv: true, viralDag: null, prisDag: null, rimligt: Math.round(rimligtPris(G.dag, k.betyg.betyg, d.enhet)),
+    veckor: [], veckaNu: 0, forraVeckan: 0, aktiv: true, viralDag: null, prisDag: null, rimligt: Math.round(rimligtPris(G.dag, k.betyg.betyg - (k.betyg.prisJustering || 0), d.enhet)),   // värdet utan prisstraffet
     skandal: pr.buggar >= 5, uppdaterad: false,
   };
   if (d.linje === 'konsol') {

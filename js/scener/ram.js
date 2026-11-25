@@ -1,5 +1,5 @@
 // Ramen runt spelet: HUD:en överst (bolag, kassa, FP, team, rykte, hastighet) och flikraden nederst.
-import { U, F, W, rect, ram, text, textB, knapp, ikon, hit, inne, tw, kapa, ljusa, mixa, BIG } from '../core/ui.js';
+import { U, F, W, rect, ram, text, textB, knapp, ikon, hit, inne, tw, kapa, ljusa, morka, mixa, BIG } from '../core/ui.js';
 import { kr, dec, datumText, arsdel, arAv } from '../sim/bas.js';
 import { ljudPa, sattLjud } from '../core/ljud.js';
 import { kontorsVarden } from '../sim/kontor.js';
@@ -22,14 +22,19 @@ export const FLIKAR = [
 export function hud(A) {
   const G = A.G, b = G.bolag;
   rect(0, 0, W, 14, 0x0a0d1a); rect(0, 13, W, 1, F.hi);
-  // bolagsbricka
-  rect(1, 1, 11, 11, F.bla); rect(1, 1, 11, 1, ljusa(F.bla, 0.3)); textB(b.initial, 7, 3, F.text, { just: 'c' });
+  // kontorsknappen (Carl 2026-11-25: "vi behöver också ha en knapp till kontoret högst upp i vänstra hörnet"): huset tar
+  // alltid till KONTORET, från vilken skärm som helst. Namnet och datumet bredvid öppnar BOLAGET som förut.
+  const iKontoret = A.scenNamn === 'kontor', hovH = inne(0, 0, 13, 13);
+  const hc = iKontoret ? F.bla : hovH ? ljusa(F.gron, 0.12) : F.gron;
+  rect(1, 1, 11, 11, hc); rect(1, 1, 11, 1, ljusa(hc, 0.3)); rect(1, 11, 11, 1, morka(hc, 0.3));
+  ikon('hus', 3, 3, F.text);
+  hit(0, 0, 13, 13, { klick: () => { if (A.scenNamn !== 'kontor') A.go('kontor'); }, namn: 'hud-kontor' });
   // namnet kapas i pixlar så att det slutar före KASSA (x 96); datumet är högst 43 px brett (slutar x 58),
   // så årslinjen börjar på x 61 och täcker aldrig årtalets sista siffra
   text(kapa(b.namn, 78), 15, 2, F.text);
   text(datumText(G.dag), 15, 8, F.dim);
   const del = arsdel(G.dag) - arAv(G.dag); rect(61, 9, 31, 3, F.lo); rect(61, 9, Math.round(31 * del), 3, F.bla);
-  hit(0, 0, 94, 13, { klick: () => A.go('bolaget'), namn: 'hud-bolag' });
+  hit(13, 0, 81, 13, { klick: () => A.go('bolaget'), namn: 'hud-bolag' });
   const cell = (x, ik, ikc, etikett, varde, vc, namn, klick) => {
     ikon(ik, x, 3, ikc); text(etikett, x + 9, 2, F.dim2); text(varde, x + 9, 8, vc);
     if (klick) hit(x - 1, 0, 50, 13, { klick, namn });

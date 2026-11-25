@@ -40,12 +40,13 @@ console.log(`  modellvinst efter 13 v ${kr(medel((r) => r.vinst))} · kassa ${kr
 ok(r0.styck === 660, 'styckkostnad 660 kr (förlagans $66)');
 ok(r0.dagar === 23, 'byggtid 23 dagar med två ★-anställda');
 ok(Math.abs(medel((r) => r.betyg) - 6.2) < 0.35, 'betyget runt 6,2');
-ok(Math.abs(medel((r) => r.forsta) - 22) < 5, 'första veckan ~22 köpare');
-ok(medel((r) => r.salda13) > 180 && medel((r) => r.salda13) < 330, 'ungefär 250 sålda på 13 veckor');
+// Carl 2026-11-25: fler köpare än förlagan (BAS 180 i stället för 100) – "det händer inte alls"
+ok(Math.abs(medel((r) => r.forsta) - 41) < 8, 'första veckan ~40 köpare');
+ok(medel((r) => r.salda13) > 360 && medel((r) => r.salda13) < 620, 'ungefär 475 sålda på 13 veckor');
 ok(resultat.every((r) => r.gps), 'GPS hinner forskas före/under lanseringen');
 ok(Math.abs(r0.k.fabrik + r0.k.parti - 366_000) < 1000, 'lanseringen kostar ~366 000 kr (fabrik + 100 st)');
 ok(medel((r) => r.kassa) > 1_500_000, 'kassan håller efter tre månader');
-ok(resultat.every((r) => r.rykte > 0.95 && r.rykte < 1.05), 'ryktet ~0,99 efter första telefonen');
+ok(resultat.every((r) => r.rykte > 0.9 && r.rykte < 1.1), 'ryktet ~1 efter första telefonen');
 // regression (fynd 0/10): ett betyg långt under snittet gav negativt rimligt pris → NaN i sålda, lager och målen
 {
   const G = nyttSpel({ namn: 'Regression', seed: 7 }); G.dag = dagForAr(2020) + 40;

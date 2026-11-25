@@ -22,7 +22,8 @@ export const kSnitt = (dag) => 6.2 + klamp((arsdel(dag) - 1982) / 30, 0, 1) * 1.
 // linje: 'telefon' (förval) eller 'konsol'
 export const snitt = (dag, linje) => (linje === 'konsol' ? kSnitt(dag) : tSnitt(dag));
 export const marknadspris = (dag) => 1740 * Math.pow(1.06, Math.max(0, arsdel(dag) - 2007));
-export const bas = (dag) => 100 * Math.pow(1.2, Math.max(0, arsdel(dag) - 2007));
+// 180 köpare/vecka 2007 (förlagan 100 – Carl 2026-11-25: "vi säljer inte många telefoner, det händer inte alls")
+export const bas = (dag) => 180 * Math.pow(1.2, Math.max(0, arsdel(dag) - 2007));
 export const kMarknadspris = (dag) => 1990 * Math.pow(1.03, Math.max(0, arsdel(dag) - 1982));
 export const kBas = (dag) => 60 * Math.pow(1.09, Math.max(0, arsdel(dag) - 1982));
 // golv 15 %: ett betyg mer än fyra under snittet gav annars negativt pris → NaN i hela försäljningen.

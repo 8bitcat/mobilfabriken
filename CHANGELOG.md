@@ -1,5 +1,26 @@
 # Nyheter i Mobilfabriken
 
+## 0.3.0 – Musik och ljud (2026-11-25)
+
+- Musik i hela spelet, komponerad medan du spelar. Den följer tiden: 8-bit på 80-talet, 16-bit på 90-talet, pop på
+  00-talet och synthwave från 2010. Lugn på kontoret och i designern, fest på lanseringen och showen, och ett eget tema
+  på startsidan. MENY → MUSIK stänger av den.
+- Nya ljud: studios knackar på, publiken jublar, tv-jingel i reklamfilmerna och vid spelsläpp, fyrverkerier vid nyår,
+  fanfar när du flyttar till ett nytt kontor och en signal vid världshändelser. Kassan klingar lite rikare.
+- PRISET RÄKNAS I BETYGET: kritikerna jämför priset med vad prylen är värd. Upp till 15 % över rimligt pris kostar
+  inget, dyrare drar betyget hårt (upp till −4) och ett lågt pris ger lite plus. Showen har en fjärde stapel PRIS, och
+  designern visar vad priset gör med betyget.
+- Fler köpare: den första telefonen säljer runt 40 i veckan i stället för 22, så det händer mer från början.
+- Forskningen går långsamt i båda spelen: konsolteknikerna efter 1982 kostar mer, så att forskningspoängen inte längre
+  samlas på hög i konsolspelet.
+- Står labbet ledigt blinkar rutan på kontoret, så att du ser att det är dags att forska.
+- Knappen med huset högst upp till vänster tar dig alltid till KONTORET. Namnet och datumet bredvid öppnar BOLAGET.
+- Lättare att skrolla med fingret: ett drag som börjar på en knapp, en rad eller en gren skrollar i stället för att
+  trycka på den, och ett stilla tryck väljer som förut. I forskningsträdet går det nu att både dra och välja grenar
+  med fingret (och med musen).
+- På mobilen flyttar namnrutan upp högst upp medan du skriver, så att tangentbordet inte täcker den – både för
+  bolagets namn och för konsolens eller telefonens namn.
+
 ## 0.2.1 – Konsolen på startsidan (2026-11-25)
 
 - Console Empire visar en spelkonsol på startsidan i stället för en telefon.
