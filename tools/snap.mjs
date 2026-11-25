@@ -30,7 +30,7 @@ const page = await browser.newPage({ viewport: { width: vw, height: vh }, device
 const fel = [];
 page.on('pageerror', (e) => fel.push(String(e.stack || e)));
 page.on('console', (m) => { if ((m.type() === 'error' || m.type() === 'warning') && !/deprecated with r150/.test(m.text())) fel.push(m.type() + ': ' + m.text()); });
-await page.goto(`http://127.0.0.1:${srv.address().port}/index.html?test${opt('lang', '') ? '&lang=' + opt('lang', '') : ''}`);
+await page.goto(`http://127.0.0.1:${srv.address().port}/index.html?test${opt('lang', '') ? '&lang=' + opt('lang', '') : ''}${opt('applage', '') ? '&applage=' + opt('applage', '') : ''}`);
 await page.waitForFunction(() => window.__A && window.__A.scen, null, { timeout: 15000 });
 await page.waitForTimeout(400);
 const resultat = await page.evaluate(async (kod) => {

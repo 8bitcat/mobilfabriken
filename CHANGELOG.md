@@ -1,5 +1,9 @@
 # Nyheter i Mobilfabriken
 
+## 0.2.1 – Konsolen på startsidan (2026-11-25)
+
+- Console Empire visar en spelkonsol på startsidan i stället för en telefon.
+
 ## 0.2.0 – Konsolfabriken 1982 (2026-11-23)
 
 - Spelet börjar nu 1982 med spelkonsoler. Välj KONSOLFABRIKEN 1982 (hela resan) eller SNABBSTART 2007

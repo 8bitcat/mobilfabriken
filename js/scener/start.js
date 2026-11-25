@@ -90,7 +90,7 @@ export function start(A, o = {}) {
       else { let ux = tx + text($t('KONSOLER 1982'), tx, 66, F.cyan) + 3; pil(ux, 66, F.cyan); ux += 9; text($t('MOBILER 2007. BYGG ETT IMPERIUM.'), ux, 66, F.cyan); }
       // prylen till höger: startvalets kort (det man pekar på, annars det valda) eller hjältetelefonen
       const hov = lage === 'val' ? SPELVAL.find((v, i) => inne(kortX(i), KY, KW, KH)) : null;
-      const visas = lage === 'val' ? (hov ? hov.lage : spelLage) : lage === 'nytt' ? spelLage : 'telefon';
+      const visas = lage === 'val' ? (hov ? hov.lage : spelLage) : lage === 'nytt' ? spelLage : APPLAGE === 'konsol' ? 'konsol' : 'telefon';   // Console Empire: konsolen även på startsidan
       if (visas === 'konsol') visaKonsol({ x: 258, y: 44, w: 126, h: 112 }, KONSOL_3D, { vy: 'auto', spin, pitch: 0.32, ctx });
       else Vy3d.visa({ x: 262, y: 20, w: 120, h: 180 }, HJALTE, { vy: 'auto', spin, pitch: 0.12, ctx });
       // bildtext under prylen (konsolen står högre upp än telefonen)
