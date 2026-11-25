@@ -3,10 +3,12 @@
 # webben: app/build.mjs kopierar spelet till app/www och lägger three.js lokalt.
 #   Starta: Codemagic → mobilfabriken → Start new build → iOS → TestFlight
 #           eller node app/tools/codemagic.mjs start <appId> ios-testflight main   (se Snabbfilens app/tools)
-#   Signering: App Store-profilen "Mobilfabriken App Store" (skapad via App Store Connect API 2026-11-23)
-#   hämtas i Codemagic: Teams → Personal account → Code signing identities → iOS provisioning profiles →
-#   Fetch profiles. Samma Apple Distribution-certifikat som Pixelcity.
-#   Före första bygget: APP_STORE_APPLE_ID nedan (App Store Connect → appen → App Information → Apple ID).
+#   Signering helt automatisk (2026-11-25, Carl: "automatisera hela skapandet av app id profiles"): bygget hämtar
+#   eller skapar App ID och App Store-profil själv via App Store Connect API (integrationen "Codemagic") med
+#   certifikatet "Apple Distribution" XVHF37T5LZ. Dess privata nyckel ligger som hemlig variabel
+#   CERTIFICATE_PRIVATE_KEY i gruppen apple_signing på Codemagic-appen (källa: .secrets/apple-dist-8bitcat.key
+#   hos Carl). Inget klick i Codemagic behövs.
+#   APP_STORE_APPLE_ID nedan = App Store Connect → appen → App Information → Apple ID.
 workflows:
   ios-testflight:
     name: iOS → TestFlight
@@ -15,10 +17,10 @@ workflows:
     integrations:
       app_store_connect: Codemagic        # API-nyckelns namn i Codemagic (Integrations → Developer Portal)
     environment:
-      ios_signing:
-        distribution_type: app_store
-        bundle_identifier: io.eightbitcat.mobilfabriken
+      groups:
+        - apple_signing                   # CERTIFICATE_PRIVATE_KEY (hemlig)
       vars:
+        BUNDLE_ID: io.eightbitcat.mobilfabriken
         APP_STORE_APPLE_ID: 6839119728    # Smartphone Empire / Mobilfabriken i App Store Connect (App Information → Apple ID)
         XCODE_PROJECT: App.xcodeproj
         XCODE_SCHEME: App
@@ -29,8 +31,12 @@ workflows:
         script: cd app && npm ci
       - name: Spelet in i appen
         script: cd app && node build.mjs && npx cap sync ios
-      - name: Signering
-        script: xcode-project use-profiles
+      - name: Signering (App ID, profil och certifikat hämtas eller skapas via API)
+        script: |
+          keychain initialize
+          app-store-connect fetch-signing-files "$BUNDLE_ID" --type IOS_APP_STORE --create --certificate-key=@env:CERTIFICATE_PRIVATE_KEY
+          keychain add-certificates
+          xcode-project use-profiles
       - name: Version och byggnummer
         script: |
           # appens version i App Store = app/package.json appVersion (t.ex. 1.0); byggnumret = senaste TestFlight-bygge + 1

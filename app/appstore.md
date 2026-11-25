@@ -14,10 +14,9 @@ Den här filen är den svenska sidan (namnet **Mobilfabriken**). Verktyget fylle
 1. **Carl – App Store Connect → My Apps → ＋ → New App.** Platforms iOS · Name `Smartphone Empire` · Primary Language **English (U.S.)** ·
    Bundle ID `io.eightbitcat.mobilfabriken` (ligger redan i listan – registrerat via API 2026-11-23) · SKU `mobilfabriken` ·
    User Access Full Access. Säg sedan till Claude (Apple ID hämtas via API:t och skrivs in i codemagic.yaml).
-2. **Carl – Codemagic → Teams → Personal account → Code signing identities → iOS provisioning profiles → Fetch profiles**
-   och välj `Mobilfabriken App Store` (profilen finns redan hos Apple, skapad via API 2026-11-23, utgår 2027-10-03).
-   Certifikatet är samma Apple Distribution som Pixelcity. Reserv om hämtningen inte hittar den:
-   `app/out/Mobilfabriken_App_Store.mobileprovision` (gitignorerad) laddas upp för hand.
+2. **Automatiskt (2026-11-25):** signeringen. Bygget hämtar eller skapar App ID och profil själv (codemagic.yaml,
+   certifikat XVHF37T5LZ, nyckeln som hemlig variabel i Codemagic). `node app/tools/ny-app.mjs --bundle … --namn …`
+   förbereder en ny app (App ID, Codemagic, nyckeln) och säger till när New App behövs.
 3. **Automatiskt:** `node app/tools/asc-app.mjs allt` fyller App Information (kategorier, rättigheter, åldersgräns 4+,
    namn, undertitel, integritets-URL), iOS 1.0 (copyright, manuell release, beskrivning, nyckelord, promo, support- och
    marknads-URL), skärmbilderna, App Review-kontakt och Notes samt pris (gratis, alla länder).
