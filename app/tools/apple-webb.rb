@@ -80,6 +80,35 @@ when 'privacy'
     state.publish!
     puts 'App Privacy: publicerad nu'
   end
+when 'kop-med-version'
+  # Första köpen av en typ måste följa med en appversion (FIRST_CONSUMABLE_MUST_BE_SUBMITTED_ON_VERSION), och det
+  # officiella API:t kan inte det. Webbsidan (iris, samma session) markerar köpet "submitWithNextAppStoreVersion".
+  bundle = ARGV[1]
+  logga_in
+  app = Spaceship::ConnectAPI::App.find(bundle) or abort("ingen app #{bundle}")
+  iris = Spaceship::ConnectAPI.client.tunes_request_client
+  # köpens id (och produkt-id) kommer från det officiella API:t: ruby apple-webb.rb kop-med-version <bundle> <id:produkt> …
+  lista = ARGV[2..].map { |x| id, pid = x.split(':', 2); { 'id' => id, 'attributes' => { 'productId' => pid } } }
+  abort('inga köp angivna') if lista.empty?
+  lista.each do |i|
+    a = i['attributes']
+    begin
+      sub = ENV['INSKICK']   # ett utkast (reviewSubmission) där versionen redan ligger: köpet läggs i samma inskick
+      r = if sub
+            iris.post('v1/reviewSubmissionItems', { data: { type: 'reviewSubmissionItems', relationships: { reviewSubmission: { data: { type: 'reviewSubmissions', id: sub } }, inAppPurchaseV2: { data: { type: 'inAppPurchases', id: i['id'] } } } } })
+          else
+            iris.post('v1/inAppPurchaseSubmissions', { data: { type: 'inAppPurchaseSubmissions', attributes: { submitWithNextAppStoreVersion: true }, relationships: { inAppPurchaseV2: { data: { type: 'inAppPurchases', id: i['id'] } } } } })
+          end
+      fel = r.body.is_a?(Hash) ? r.body['errors'] : nil
+      if fel && !fel.empty?
+        puts "  ✗ #{a['productId']}: #{fel.map { |e| "#{e['code']} #{e['detail']}" }.join(' | ')[0, 400]}"
+      else
+        puts "  ✓ #{a['productId']}: följer med nästa version"
+      end
+    rescue StandardError => e
+      puts "  ✗ #{a['productId']}: #{e.message[0, 400]}"
+    end
+  end
 else
   abort("okänt kommando #{cmd}")
 end

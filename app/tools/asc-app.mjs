@@ -105,7 +105,7 @@ async function koll() {
     const rd = await tyst404(call('GET', `/v1/appStoreVersions/${v.id}/appStoreReviewDetail`));
     console.log(`    granskning: ${rd?.data ? `${rd.data.attributes.contactFirstName} ${rd.data.attributes.contactLastName} ${rd.data.attributes.contactEmail} tel ${rd.data.attributes.contactPhone ? 'ja' : 'saknas'} noter ${(rd.data.attributes.notes || '').length} tecken` : 'inget'}`);
   }
-  const ps = await tyst404(call('GET', `/v1/apps/${app.id}/appPriceSchedule/manualPrices?include=appPricePoint`));
+  const ps = await tyst404(call('GET', `/v1/appPriceSchedules/${app.id}/manualPrices?include=appPricePoint`));
   console.log(`  pris: ${ps?.data?.length ? (ps.included || []).map((p) => p.attributes.customerPrice).join(', ') : 'inget prisschema'}`);
   const av = await tyst404(call('GET', `/v2/appAvailabilities/${app.id}/territoryAvailabilities?limit=200`));
   console.log(`  länder: ${av?.data ? av.data.filter((t) => t.attributes.available).length : '?'}`);
@@ -246,14 +246,26 @@ async function skicka() {
   const app = await appen(), v = await versionAv(app);
   const b = await tyst404(call('GET', `/v1/appStoreVersions/${v.id}/build`));
   if (!b?.data) throw new Error('inget bygge kopplat – kör bygge först');
-  // köpen som är redo skickas in tillsammans med versionen (första gången måste de följa med en appversion)
+  // 1. ett utkast till inskick (återanvänd ett osänt, så att omförsök inte lämnar nya utkast efter sig)
+  const utkast = (await alla(`/v1/reviewSubmissions?filter[app]=${app.id}&filter[platform]=IOS&limit=50`)).filter((r) => r.attributes.state === 'READY_FOR_REVIEW');
+  const rs = utkast[0] || (await call('POST', '/v1/reviewSubmissions', { data: { type: 'reviewSubmissions', attributes: { platform: 'IOS' }, relationships: { app: rel('apps', app.id) } } })).data;
+  // 2. versionen i utkastet
+  const items = await alla(`/v1/reviewSubmissions/${rs.id}/items?include=appStoreVersion,inAppPurchaseVersion&limit=50`);
+  if (!items.some((i) => i.relationships?.appStoreVersion?.data?.id === v.id)) await call('POST', '/v1/reviewSubmissionItems', { data: { type: 'reviewSubmissionItems', relationships: { reviewSubmission: rel('reviewSubmissions', rs.id), appStoreVersion: rel('appStoreVersions', v.id) } } });
+  console.log(`✓ version ${v.attributes.versionString} i inskicket ${rs.id.slice(0, 8)}`);
+  // 3. köpen som är redo – deras "versioner" läggs i SAMMA inskick som appversionen (reviewSubmissionItems med
+  //    inAppPurchaseVersion). Det är så första köpen av en typ följer med en appversion via det officiella API:t
+  //    (inAppPurchaseSubmissions ger FIRST_CONSUMABLE_MUST_BE_SUBMITTED_ON_VERSION; lärt av tddworks/asc-cli PR #27).
+  const iInskick = new Set(items.map((i) => i.relationships?.inAppPurchaseVersion?.data?.id).filter(Boolean));
   for (const iap of await alla(`/v1/apps/${app.id}/inAppPurchasesV2?limit=200`)) {
     if (iap.attributes.state !== 'READY_TO_SUBMIT') continue;
-    try { await call('POST', '/v1/inAppPurchaseSubmissions', { data: { type: 'inAppPurchaseSubmissions', relationships: { inAppPurchaseV2: { data: { type: 'inAppPurchases', id: iap.id } } } } }); console.log(`✓ köp med i granskningen: ${iap.attributes.productId}`); }
-    catch (e) { console.log(`✗ ${iap.attributes.productId}: ${e.message.slice(0, 300)}`); }
+    const iv = (await alla(`/v2/inAppPurchases/${iap.id}/versions?limit=20`)).find((x) => ['PREPARE_FOR_SUBMISSION', 'REJECTED', 'DEVELOPER_REJECTED'].includes(x.attributes.state));
+    if (!iv) { console.log(`- ${iap.attributes.productId}: ingen version att skicka`); continue; }
+    if (iInskick.has(iv.id)) { console.log(`✓ köp redan i inskicket: ${iap.attributes.productId}`); continue; }
+    try { await call('POST', '/v1/reviewSubmissionItems', { data: { type: 'reviewSubmissionItems', relationships: { reviewSubmission: rel('reviewSubmissions', rs.id), inAppPurchaseVersion: rel('inAppPurchaseVersions', iv.id) } } }); console.log(`✓ köp med i inskicket: ${iap.attributes.productId}`); }
+    catch (e) { throw new Error(`köpet ${iap.attributes.productId} kunde inte läggas i inskicket – skickar INTE: ${e.message.replace(/\s+/g, ' ').slice(0, 400)}`); }
   }
-  const rs = (await call('POST', '/v1/reviewSubmissions', { data: { type: 'reviewSubmissions', attributes: { platform: 'IOS' }, relationships: { app: rel('apps', app.id) } } })).data;
-  await call('POST', '/v1/reviewSubmissionItems', { data: { type: 'reviewSubmissionItems', relationships: { reviewSubmission: rel('reviewSubmissions', rs.id), appStoreVersion: rel('appStoreVersions', v.id) } } });
+  // 4. skicka
   await call('PATCH', `/v1/reviewSubmissions/${rs.id}`, { data: { type: 'reviewSubmissions', id: rs.id, attributes: { submitted: true } } });
   console.log(`✓ inskickad till App Review: ${v.attributes.versionString} med bygge ${b.data.attributes.version}`);
 }
